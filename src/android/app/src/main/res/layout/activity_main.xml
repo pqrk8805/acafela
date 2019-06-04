@@ -43,6 +43,27 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2"  />
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="256dp"
+        android:onClick="onClickSendBtn"
+        android:text="TESTSEND"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
+
+    <TextView
+        android:id="@+id/TESTTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:text="RCVData"
+        tools:layout_editor_absoluteX="176dp"
+        tools:layout_editor_absoluteY="632dp" />
 
 </android.support.constraint.ConstraintLayout>
