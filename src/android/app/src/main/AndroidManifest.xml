@@ -10,9 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service
-            android:name=".service.harmonyService"
+            android:name=".service.HarmonyService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="false"></service>
 
         <activity android:name=".MainActivity">
             <intent-filter>
