@@ -12,7 +12,7 @@ import java.util.List;
 
 
 public class AudioEncoderCore {
-    private static final String TAG = harmonyService.class.getName();
+    private static final String TAG = AudioEncoderCore.class.getName();
     private static final boolean VERBOSE = false;
 
     // TODO: these ought to be configurable as well
