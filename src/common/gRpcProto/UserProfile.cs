@@ -24,16 +24,16 @@ namespace Acafela.Rpc {
     static UserProfileReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChFVc2VyUHJvZmlsZS5wcm90bxILYWNhZmVsYS5ycGMiBwoFRW1wdHkiGgoL",
-            "VmVyc2lvbkluZm8SCwoDdmVyGAEgASgJMkkKC1VzZXJQcm9maWxlEjoKCmdl",
-            "dFZlcnNpb24SEi5hY2FmZWxhLnJwYy5FbXB0eRoYLmFjYWZlbGEucnBjLlZl",
-            "cnNpb25JbmZvQiEKH2NvbS5hY2FmZWxhLmhhcm1vbnkudXNlcnByb2ZpbGVi",
-            "BnByb3RvMw=="));
+            "ChFVc2VyUHJvZmlsZS5wcm90bxILYWNhZmVsYS5ycGMiBwoFRW1wdHkiHgoL",
+            "VmVyc2lvbkluZm8SDwoHdmVyc2lvbhgBIAEoCTJJCgtVc2VyUHJvZmlsZRI6",
+            "CgpnZXRWZXJzaW9uEhIuYWNhZmVsYS5ycGMuRW1wdHkaGC5hY2FmZWxhLnJw",
+            "Yy5WZXJzaW9uSW5mb0IhCh9jb20uYWNhZmVsYS5oYXJtb255LnVzZXJwcm9m",
+            "aWxlYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Acafela.Rpc.Empty), global::Acafela.Rpc.Empty.Parser, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Acafela.Rpc.VersionInfo), global::Acafela.Rpc.VersionInfo.Parser, new[]{ "Ver" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Acafela.Rpc.VersionInfo), global::Acafela.Rpc.VersionInfo.Parser, new[]{ "Version" }, null, null, null)
           }));
     }
     #endregion
@@ -166,7 +166,7 @@ namespace Acafela.Rpc {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public VersionInfo(VersionInfo other) : this() {
-      ver_ = other.ver_;
+      version_ = other.version_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -175,14 +175,14 @@ namespace Acafela.Rpc {
       return new VersionInfo(this);
     }
 
-    /// <summary>Field number for the "ver" field.</summary>
-    public const int VerFieldNumber = 1;
-    private string ver_ = "";
+    /// <summary>Field number for the "version" field.</summary>
+    public const int VersionFieldNumber = 1;
+    private string version_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Ver {
-      get { return ver_; }
+    public string Version {
+      get { return version_; }
       set {
-        ver_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        version_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -199,14 +199,14 @@ namespace Acafela.Rpc {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Ver != other.Ver) return false;
+      if (Version != other.Version) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (Ver.Length != 0) hash ^= Ver.GetHashCode();
+      if (Version.Length != 0) hash ^= Version.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -220,9 +220,9 @@ namespace Acafela.Rpc {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (Ver.Length != 0) {
+      if (Version.Length != 0) {
         output.WriteRawTag(10);
-        output.WriteString(Ver);
+        output.WriteString(Version);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -232,8 +232,8 @@ namespace Acafela.Rpc {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (Ver.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Ver);
+      if (Version.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Version);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -246,8 +246,8 @@ namespace Acafela.Rpc {
       if (other == null) {
         return;
       }
-      if (other.Ver.Length != 0) {
-        Ver = other.Ver;
+      if (other.Version.Length != 0) {
+        Version = other.Version;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -261,7 +261,7 @@ namespace Acafela.Rpc {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            Ver = input.ReadString();
+            Version = input.ReadString();
             break;
           }
         }

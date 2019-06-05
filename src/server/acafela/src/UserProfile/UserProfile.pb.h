@@ -249,25 +249,25 @@ class VersionInfo : public ::google::protobuf::Message /* @@protoc_insertion_poi
 
   // accessors -------------------------------------------------------
 
-  // string ver = 1;
-  void clear_ver();
-  static const int kVerFieldNumber = 1;
-  const ::std::string& ver() const;
-  void set_ver(const ::std::string& value);
+  // string version = 1;
+  void clear_version();
+  static const int kVersionFieldNumber = 1;
+  const ::std::string& version() const;
+  void set_version(const ::std::string& value);
   #if LANG_CXX11
-  void set_ver(::std::string&& value);
+  void set_version(::std::string&& value);
   #endif
-  void set_ver(const char* value);
-  void set_ver(const char* value, size_t size);
-  ::std::string* mutable_ver();
-  ::std::string* release_ver();
-  void set_allocated_ver(::std::string* ver);
+  void set_version(const char* value);
+  void set_version(const char* value, size_t size);
+  ::std::string* mutable_version();
+  ::std::string* release_version();
+  void set_allocated_version(::std::string* version);
 
   // @@protoc_insertion_point(class_scope:acafela.rpc.VersionInfo)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr ver_;
+  ::google::protobuf::internal::ArenaStringPtr version_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_UserProfile_2eproto::TableStruct;
 };
@@ -286,57 +286,57 @@ class VersionInfo : public ::google::protobuf::Message /* @@protoc_insertion_poi
 
 // VersionInfo
 
-// string ver = 1;
-inline void VersionInfo::clear_ver() {
-  ver_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// string version = 1;
+inline void VersionInfo::clear_version() {
+  version_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& VersionInfo::ver() const {
-  // @@protoc_insertion_point(field_get:acafela.rpc.VersionInfo.ver)
-  return ver_.GetNoArena();
+inline const ::std::string& VersionInfo::version() const {
+  // @@protoc_insertion_point(field_get:acafela.rpc.VersionInfo.version)
+  return version_.GetNoArena();
 }
-inline void VersionInfo::set_ver(const ::std::string& value) {
+inline void VersionInfo::set_version(const ::std::string& value) {
   
-  ver_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:acafela.rpc.VersionInfo.ver)
+  version_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:acafela.rpc.VersionInfo.version)
 }
 #if LANG_CXX11
-inline void VersionInfo::set_ver(::std::string&& value) {
+inline void VersionInfo::set_version(::std::string&& value) {
   
-  ver_.SetNoArena(
+  version_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:acafela.rpc.VersionInfo.ver)
+  // @@protoc_insertion_point(field_set_rvalue:acafela.rpc.VersionInfo.version)
 }
 #endif
-inline void VersionInfo::set_ver(const char* value) {
+inline void VersionInfo::set_version(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
-  ver_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:acafela.rpc.VersionInfo.ver)
+  version_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:acafela.rpc.VersionInfo.version)
 }
-inline void VersionInfo::set_ver(const char* value, size_t size) {
+inline void VersionInfo::set_version(const char* value, size_t size) {
   
-  ver_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  version_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:acafela.rpc.VersionInfo.ver)
+  // @@protoc_insertion_point(field_set_pointer:acafela.rpc.VersionInfo.version)
 }
-inline ::std::string* VersionInfo::mutable_ver() {
+inline ::std::string* VersionInfo::mutable_version() {
   
-  // @@protoc_insertion_point(field_mutable:acafela.rpc.VersionInfo.ver)
-  return ver_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  // @@protoc_insertion_point(field_mutable:acafela.rpc.VersionInfo.version)
+  return version_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* VersionInfo::release_ver() {
-  // @@protoc_insertion_point(field_release:acafela.rpc.VersionInfo.ver)
+inline ::std::string* VersionInfo::release_version() {
+  // @@protoc_insertion_point(field_release:acafela.rpc.VersionInfo.version)
   
-  return ver_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  return version_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void VersionInfo::set_allocated_ver(::std::string* ver) {
-  if (ver != NULL) {
+inline void VersionInfo::set_allocated_version(::std::string* version) {
+  if (version != NULL) {
     
   } else {
     
   }
-  ver_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ver);
-  // @@protoc_insertion_point(field_set_allocated:acafela.rpc.VersionInfo.ver)
+  version_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), version);
+  // @@protoc_insertion_point(field_set_allocated:acafela.rpc.VersionInfo.version)
 }
 
 #ifdef __GNUC__

@@ -12,13 +12,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Communicator\commonicator_ex.cpp" />
+    <ClCompile Include="src\Hislog.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\UserProfile\UserProfile.grpc.pb.cc" />
     <ClCompile Include="src\UserProfile\UserProfile.pb.cc" />
+    <ClCompile Include="src\UserProfile\UserProfileRpc.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Hislog.h" />
     <ClInclude Include="src\UserProfile\UserProfile.grpc.pb.h" />
     <ClInclude Include="src\UserProfile\UserProfile.pb.h" />
+    <ClInclude Include="src\UserProfile\UserProfileRpc.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -70,9 +74,9 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\external\gRPC\include;$(SolutionDir)..\..\external\gRPC\include\third_party\protobuf\src;$(ProjectDir)src\UserProfile;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\external\gRPC\include;$(SolutionDir)..\..\external\gRPC\include\third_party\protobuf\src;$(ProjectDir)src;$(ProjectDir)src\UserProfile;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>SDKDDKVer.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <Link>
@@ -90,9 +94,9 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\external\gRPC\include;$(SolutionDir)..\..\external\gRPC\include\third_party\protobuf\src;$(ProjectDir)src\UserProfile;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\external\gRPC\include;$(SolutionDir)..\..\external\gRPC\include\third_party\protobuf\src;$(ProjectDir)src;$(ProjectDir)src\UserProfile;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>SDKDDKVer.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <Link>

@@ -33,6 +33,12 @@
     <ClCompile Include="src\Communicator\commonicator_ex.cpp">
       <Filter>Source Files\Communicator</Filter>
     </ClCompile>
+    <ClCompile Include="src\UserProfile\UserProfileRpc.cpp">
+      <Filter>Source Files\UserProfile</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hislog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\UserProfile\UserProfile.grpc.pb.h">
@@ -40,6 +46,12 @@
     </ClInclude>
     <ClInclude Include="src\UserProfile\UserProfile.pb.h">
       <Filter>Source Files\UserProfile</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UserProfile\UserProfileRpc.h">
+      <Filter>Source Files\UserProfile</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hislog.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

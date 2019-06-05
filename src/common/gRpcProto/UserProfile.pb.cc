@@ -80,7 +80,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::rpc::VersionInfo, ver_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::rpc::VersionInfo, version_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::acafela::rpc::Empty)},
@@ -114,13 +114,13 @@ void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\021UserProfile.proto\022\013acafela.rpc\"\007\n\005Empt"
-      "y\"\032\n\013VersionInfo\022\013\n\003ver\030\001 \001(\t2I\n\013UserPro"
-      "file\022:\n\ngetVersion\022\022.acafela.rpc.Empty\032\030"
-      ".acafela.rpc.VersionInfoB!\n\037com.acafela."
-      "harmony.userprofileb\006proto3"
+      "y\"\036\n\013VersionInfo\022\017\n\007version\030\001 \001(\t2I\n\013Use"
+      "rProfile\022:\n\ngetVersion\022\022.acafela.rpc.Emp"
+      "ty\032\030.acafela.rpc.VersionInfoB!\n\037com.acaf"
+      "ela.harmony.userprofileb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 187);
+      descriptor, 191);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "UserProfile.proto", &protobuf_RegisterTypes);
 }
@@ -323,7 +323,7 @@ void Empty::InternalSwap(Empty* other) {
 void VersionInfo::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int VersionInfo::kVerFieldNumber;
+const int VersionInfo::kVersionFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 VersionInfo::VersionInfo()
@@ -337,15 +337,15 @@ VersionInfo::VersionInfo(const VersionInfo& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ver_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.ver().size() > 0) {
-    ver_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.ver_);
+  version_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.version().size() > 0) {
+    version_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.version_);
   }
   // @@protoc_insertion_point(copy_constructor:acafela.rpc.VersionInfo)
 }
 
 void VersionInfo::SharedCtor() {
-  ver_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  version_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 VersionInfo::~VersionInfo() {
@@ -354,7 +354,7 @@ VersionInfo::~VersionInfo() {
 }
 
 void VersionInfo::SharedDtor() {
-  ver_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  version_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 void VersionInfo::SetCachedSize(int size) const {
@@ -377,7 +377,7 @@ void VersionInfo::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ver_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  version_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   _internal_metadata_.Clear();
 }
 
@@ -391,16 +391,16 @@ bool VersionInfo::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // string ver = 1;
+      // string version = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_ver()));
+                input, this->mutable_version()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->ver().data(), static_cast<int>(this->ver().length()),
+            this->version().data(), static_cast<int>(this->version().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "acafela.rpc.VersionInfo.ver"));
+            "acafela.rpc.VersionInfo.version"));
         } else {
           goto handle_unusual;
         }
@@ -433,14 +433,14 @@ void VersionInfo::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string ver = 1;
-  if (this->ver().size() > 0) {
+  // string version = 1;
+  if (this->version().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->ver().data(), static_cast<int>(this->ver().length()),
+      this->version().data(), static_cast<int>(this->version().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "acafela.rpc.VersionInfo.ver");
+      "acafela.rpc.VersionInfo.version");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      1, this->ver(), output);
+      1, this->version(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -457,15 +457,15 @@ void VersionInfo::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string ver = 1;
-  if (this->ver().size() > 0) {
+  // string version = 1;
+  if (this->version().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->ver().data(), static_cast<int>(this->ver().length()),
+      this->version().data(), static_cast<int>(this->version().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "acafela.rpc.VersionInfo.ver");
+      "acafela.rpc.VersionInfo.version");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->ver(), target);
+        1, this->version(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -485,11 +485,11 @@ size_t VersionInfo::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // string ver = 1;
-  if (this->ver().size() > 0) {
+  // string version = 1;
+  if (this->version().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->ver());
+        this->version());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -519,9 +519,9 @@ void VersionInfo::MergeFrom(const VersionInfo& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.ver().size() > 0) {
+  if (from.version().size() > 0) {
 
-    ver_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.ver_);
+    version_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.version_);
   }
 }
 
@@ -549,7 +549,7 @@ void VersionInfo::Swap(VersionInfo* other) {
 }
 void VersionInfo::InternalSwap(VersionInfo* other) {
   using std::swap;
-  ver_.Swap(&other->ver_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  version_.Swap(&other->version_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
