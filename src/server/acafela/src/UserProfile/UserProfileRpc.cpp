@@ -17,6 +17,10 @@ UserProfileRpc::~UserProfileRpc()
         delete mServer;
         mServer = nullptr;
     }
+
+    if (mWorker.joinable()) {
+        mWorker.join();
+    }
 }
 
 int UserProfileRpc::start(const std::string& addressUri)
@@ -34,9 +38,16 @@ int UserProfileRpc::start(const std::string& addressUri)
 
     mServer = server.release();
     FUNC_LOGI("UserProfile RPC server listen on: %s", addressUri.c_str());
-    mServer->Wait();
+    std::thread t ( [this]() { this->wait(); } );
+    mWorker.swap(t);
+
     return 0;
 }
+
+ void UserProfileRpc::wait()
+ {
+     if (mServer) mServer->Wait();
+ }
 
 void UserProfileRpc::shutdown()
 {

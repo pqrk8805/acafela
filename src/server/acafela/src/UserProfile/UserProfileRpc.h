@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <thread>
 #include <grpcpp/server.h>
 #include "UserProfile.grpc.pb.h"
 
@@ -8,6 +9,9 @@ class UserProfileRpc final : public acafela::rpc::UserProfile::Service
 {
 private:
     ::grpc::Server* mServer;
+    std::thread mWorker;
+
+    void wait();
 
 public:
     UserProfileRpc();
