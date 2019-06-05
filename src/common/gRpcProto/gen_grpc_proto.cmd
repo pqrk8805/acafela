@@ -5,7 +5,7 @@ set CMD_PROTOC=..\..\..\external\gRPC\bin\protoc.exe
 set INC_PROTO=..\..\..\external\gRPC\include\third_party\protobuf\src
 set GRPC_PLUGIN_CPP=..\..\..\external\gRPC\bin\grpc_cpp_plugin.exe
 
-set PROTO_RPC_FILES=AcafelaRPC.proto
+set PROTO_RPC_FILES=UserProfile.proto
 
 
 %CMD_PROTOC% ^

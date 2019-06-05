@@ -12,6 +12,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\UserProfile\UserProfile.grpc.pb.cc" />
+    <ClCompile Include="src\UserProfile\UserProfile.pb.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\UserProfile\UserProfile.grpc.pb.h" />
+    <ClInclude Include="src\UserProfile\UserProfile.pb.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -65,10 +71,13 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\external\gRPC\include;$(SolutionDir)..\..\external\gRPC\include\third_party\protobuf\src;$(ProjectDir)src\UserProfile;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>SDKDDKVer.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\address_sorting.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\gpr.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\grpc.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\grpc++.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\grpc++_reflection.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\protobuf\libprotobuf.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\boringssl\ssl\ssl.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\boringssl\crypto\crypto.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\cares\cares\lib\cares.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\zlib\zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -82,12 +91,15 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\external\gRPC\include;$(SolutionDir)..\..\external\gRPC\include\third_party\protobuf\src;$(ProjectDir)src\UserProfile;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>SDKDDKVer.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\address_sorting.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\gpr.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\grpc.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\grpc++.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\grpc++_reflection.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\protobuf\libprotobuf.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\boringssl\ssl\ssl.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\boringssl\crypto\crypto.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\cares\cares\lib\cares.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\zlib\zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
