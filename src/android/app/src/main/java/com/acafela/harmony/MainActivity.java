@@ -1,10 +1,14 @@
 package com.acafela.harmony;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,17 +24,45 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String SERVERIPAddr = "192.168.1.6";
     private static final String LOG_TAG = MainActivity.class.getName();
+
+    private static final String SERVERIPAddr = "192.168.1.6";
 
     public static final String INTENT_CONTROL = "CONTROL";
     public static final String INTENT_INITIATE_CALL = "INITIATE_CALL";
     public static final String INTENT_TERMINATE_CALL = "TERMINATE_CALL";
 
+    private static final int PERMISSION_ALL_ID = 1;
+    String[] PERMISSIONS = {
+            android.Manifest.permission.RECORD_AUDIO,
+            android.Manifest.permission.CAMERA
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        requestPermissions();
+    }
+
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private void requestPermissions() {
+        if(!hasPermissions(this, PERMISSIONS)) {
+            ActivityCompat.requestPermissions(this,
+                    PERMISSIONS,
+                    PERMISSION_ALL_ID);
+        }
     }
 
     public void onClickRegisterUserBtn(View v) {
