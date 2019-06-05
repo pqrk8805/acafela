@@ -12,6 +12,6 @@ message Empty {
 }
 
 message VersionInfo {
-    string version = 1;
+    string ver = 1;
 }
 

@@ -13,10 +13,14 @@ import com.acafela.harmony.MainActivity;
 public class HarmonyService extends Service {
     private static final String LOG_TAG = HarmonyService.class.getName();
 
+    private UserProfile mUserProfile;
+
     @Override
     public void onCreate() {
         super.onCreate();
         Log.i(LOG_TAG, "onCreate");
+
+        mUserProfile = new UserProfile();
     }
 
     @Override
