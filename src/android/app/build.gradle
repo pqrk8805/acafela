@@ -20,27 +20,27 @@ android {
 }
 
 //  GRPC
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.8'
-    }
-}
-
 protobuf {
     protoc {
-        artifact = 'com.google.protobuf:protoc:3.7.1'
+        artifact = 'com.google.protobuf:protoc:3.0.0'
     }
     plugins {
         grpc {
             artifact = 'io.grpc:protoc-gen-grpc-java:1.21.0'
         }
+        javalite {
+            artifact = 'com.google.protobuf:protoc-gen-javalite:3.0.0'
+        }
     }
     generateProtoTasks {
         all()*.plugins {
-            grpc {}
+            javalite {}
+        }
+        ofNonTest()*.plugins {
+            grpc {
+                // Options added to --grpc_out
+                option 'lite'
+            }
         }
     }
 }
