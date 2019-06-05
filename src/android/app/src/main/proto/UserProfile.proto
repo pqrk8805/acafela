@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package acafela.rpc;
+
+option java_package = "com.acafela.harmony.userprofile";
+
+service UserProfile {
+    rpc getVersion(Empty) returns (VersionInfo);
+}
+
+message Empty {
+}
+
+message VersionInfo {
+    string ver = 1;
+}
+
