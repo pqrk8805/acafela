@@ -1,0 +1,152 @@
+package com.acafela.harmony.service;
+
+
+import java.io.IOException;
+import android.media.AudioFormat;
+
+import android.media.AudioRecord;
+import android.media.MediaRecorder;
+import android.util.Log;
+
+import java.io.InputStream;
+import java.net.DatagramSocket;
+import java.net.DatagramPacket;
+import java.net.InetAddress;
+import java.net.SocketException;
+
+
+public class SenderAudio implements DataSender {
+    private  InetAddress mIpAddress;
+    private int mPort;
+    private Thread mSenderThread = null;
+    private boolean senderAudioThreadRun = false;
+
+    private static final int MILLISECONDS_IN_A_SECOND = 1000;
+    private static final int SAMPLE_RATE = 8000; // Hertz
+    private static final int SAMPLE_INTERVAL = 20;   // Milliseconds
+    private static final int BYTES_PER_SAMPLE = 2;    // Bytes Per Sampl;e
+    private static final int RAW_BUFFER_SIZE = SAMPLE_RATE / (MILLISECONDS_IN_A_SECOND / SAMPLE_INTERVAL) * BYTES_PER_SAMPLE;
+    private static final int GSM_BUFFER_SIZE = 33;
+    private static final String LOG_TAG = "SenderAudio";
+
+    private int mSimVoice;
+
+    public boolean setSession(String ip,int port)
+    {
+        try {
+            this.mIpAddress = InetAddress.getByName(ip);
+            //this.mIpAddress = ip;
+            this.mPort = port;
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "Exception Answer Messagwe: " + e);
+            return false;
+        }
+        return true;
+    }
+
+    public boolean startSender()
+    {
+        startSenderAudioThread();
+        senderAudioThreadRun = true;
+        return true;
+    }
+    public boolean endSender()
+    {
+        if (mSenderThread != null && mSenderThread.isAlive()) {
+            senderAudioThreadRun = false;
+            Log.i(LOG_TAG, "mSenderThread Thread Join started");
+            try {
+                mSenderThread.join();
+            } catch (InterruptedException e) {
+                Log.i(LOG_TAG, "mSenderThread Join interruped");
+            }
+            Log.i(LOG_TAG, " mSenderThread Join successs");
+        }
+        senderAudioThreadRun = false;
+        return true;
+    }
+    private InputStream OpenSimVoice(int SimVoice) {
+        InputStream VoiceFile = null;
+        switch (SimVoice) {
+            case 0:
+                break;
+           /* case 1:
+                VoiceFile = mContext.getResources().openRawResource(R.raw.t18k16bit);
+                break;
+            case 2:
+                VoiceFile = mContext.getResources().openRawResource(R.raw.t28k16bit);
+                break;
+            case 3:
+                VoiceFile = mContext.getResources().openRawResource(R.raw.t38k16bit);
+                break;
+            case 4:
+                VoiceFile = mContext.getResources().openRawResource(R.raw.t48k16bit);
+                break;*/
+            default:
+                break;
+        }
+        return VoiceFile;
+    }
+
+    private void startSenderAudioThread()
+    {
+        // Create thread for receiving audio data
+        mSenderThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Create an instance of AudioTrack, used for playing back audio
+                Log.i(LOG_TAG, "Receive Data Thread Started. Thread id: " + Thread.currentThread().getId());
+                InputStream InputPlayFile;
+
+                AudioRecord Recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLE_RATE,
+                        AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT,
+                        AudioRecord.getMinBufferSize(SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT));
+
+                int BytesRead;
+                byte[] rawbuf = new byte[RAW_BUFFER_SIZE];
+                //byte[] gsmbuf = new byte[GSM_BUFFER_SIZE];
+                InputPlayFile = OpenSimVoice(mSimVoice);
+
+                try {
+                    DatagramSocket socket = new DatagramSocket();
+                    Recorder.startRecording();
+                    while (senderAudioThreadRun)
+                    {
+                        // Capture audio from microphone and send
+                        BytesRead = Recorder.read(rawbuf, 0, RAW_BUFFER_SIZE);
+                        if (InputPlayFile != null) {
+                            BytesRead = InputPlayFile.read(rawbuf, 0, RAW_BUFFER_SIZE);
+                            if (BytesRead != RAW_BUFFER_SIZE) {
+                                InputPlayFile.close();
+                                InputPlayFile = OpenSimVoice(mSimVoice);
+                                BytesRead = InputPlayFile.read(rawbuf, 0, RAW_BUFFER_SIZE);
+                            }
+                        }
+                        if (BytesRead == RAW_BUFFER_SIZE) {
+                            //JniGsmEncodeB(rawbuf, gsmbuf);
+                            //DatagramPacket packet = new DatagramPacket(gsmbuf, GSM_BUFFER_SIZE, RemoteIp, VOIP_DATA_UDP_PORT);
+                            DatagramPacket packet = new DatagramPacket(rawbuf, RAW_BUFFER_SIZE, mIpAddress, mPort);
+                            socket.send(packet);
+                        }
+                    Recorder.stop();
+                    Recorder.release();
+                        if (InputPlayFile != null) InputPlayFile.close();
+                }
+                socket.disconnect();
+                socket.close();
+
+
+                } catch (SocketException e) {
+                    senderAudioThreadRun = false;
+                    Log.e(LOG_TAG, "SocketException: " + e.toString());
+                } catch (IOException e) {
+                    senderAudioThreadRun = false;
+                    Log.e(LOG_TAG, "IOException: " + e.toString());
+                }
+            }
+        });
+        mSenderThread.start();
+    }
+
+}
+
