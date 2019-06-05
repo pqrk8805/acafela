@@ -16,6 +16,9 @@
     <Filter Include="Source Files\UserProfile">
       <UniqueIdentifier>{bdcb4021-241b-40e4-8457-cf19b591813e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Communicator">
+      <UniqueIdentifier>{6760098b-f2f2-4c1c-a78a-22c625945aab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -26,6 +29,9 @@
     </ClCompile>
     <ClCompile Include="src\UserProfile\UserProfile.pb.cc">
       <Filter>Source Files\UserProfile</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Communicator\commonicator_ex.cpp">
+      <Filter>Source Files\Communicator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.28307.645
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "acafela", "acafela\acafela.vcxproj", "{5AEF89ED-9EA3-4467-AEDC-FF2A3E6401F0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "acafela_Communicator", "acafela_Communicator\acafela_Communicator.vcxproj", "{61B8A1FF-EACD-4FDD-BA7F-CC633D06A877}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,14 +19,6 @@ Global
 		{5AEF89ED-9EA3-4467-AEDC-FF2A3E6401F0}.Release|x64.ActiveCfg = Release|x64
 		{5AEF89ED-9EA3-4467-AEDC-FF2A3E6401F0}.Release|x64.Build.0 = Release|x64
 		{5AEF89ED-9EA3-4467-AEDC-FF2A3E6401F0}.Release|x86.ActiveCfg = Release|x64
-		{61B8A1FF-EACD-4FDD-BA7F-CC633D06A877}.Debug|x64.ActiveCfg = Debug|x64
-		{61B8A1FF-EACD-4FDD-BA7F-CC633D06A877}.Debug|x64.Build.0 = Debug|x64
-		{61B8A1FF-EACD-4FDD-BA7F-CC633D06A877}.Debug|x86.ActiveCfg = Debug|Win32
-		{61B8A1FF-EACD-4FDD-BA7F-CC633D06A877}.Debug|x86.Build.0 = Debug|Win32
-		{61B8A1FF-EACD-4FDD-BA7F-CC633D06A877}.Release|x64.ActiveCfg = Release|x64
-		{61B8A1FF-EACD-4FDD-BA7F-CC633D06A877}.Release|x64.Build.0 = Release|x64
-		{61B8A1FF-EACD-4FDD-BA7F-CC633D06A877}.Release|x86.ActiveCfg = Release|Win32
-		{61B8A1FF-EACD-4FDD-BA7F-CC633D06A877}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

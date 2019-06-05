@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Communicator\commonicator_ex.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\UserProfile\UserProfile.grpc.pb.cc" />
     <ClCompile Include="src\UserProfile\UserProfile.pb.cc" />
@@ -24,7 +25,7 @@
     <ProjectGuid>{5AEF89ED-9EA3-4467-AEDC-FF2A3E6401F0}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>acafela</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
