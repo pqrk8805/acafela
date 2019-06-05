@@ -132,4 +132,9 @@ public class MainActivity extends AppCompatActivity {
         });
         thread.start();
     }
+
+    public void onClickTestEncodingBtn(View v) {
+        Intent intent = new Intent(this, TestEncodingActivity.class);
+        startActivity(intent);
+    }
 }
