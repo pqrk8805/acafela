@@ -8,7 +8,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.acafela.harmony.MainActivity;
+import com.acafela.harmony.activity.CallActivity;
 
 public class HarmonyService extends Service {
     private static final String LOG_TAG = HarmonyService.class.getName();
@@ -31,12 +31,13 @@ public class HarmonyService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i(LOG_TAG, "onStartCommand");
 
-        String control = intent.getStringExtra(MainActivity.INTENT_CONTROL);
+        String control = intent.getStringExtra(CallActivity.INTENT_CONTROL);
         switch (control)  {
-            case MainActivity.INTENT_INITIATE_CALL:
-                initiateCall();
+            case CallActivity.INTENT_INITIATE_CALL:
+                String serverIp = intent.getStringExtra(CallActivity.INTENT_SERVERIP);
+                initiateCall(serverIp);
                 break;
-            case MainActivity.INTENT_TERMINATE_CALL:
+            case CallActivity.INTENT_TERMINATE_CALL:
                 terminateCall();
                 break;
         }
@@ -57,21 +58,20 @@ public class HarmonyService extends Service {
     }
 
     // this method may move to another class
-    private void initiateCall() {
+    private void initiateCall(String serverIp) {
         Log.i(LOG_TAG, "initiateCall");
         showToastInService("initiateCall");
 
-        String server ="10.0.2.151";
         int sendPort =5000;
         int receivePort =5001;
 
         senderAudio = new SenderAudio();
-        senderAudio.setSession(server,sendPort);
+        senderAudio.setSession(serverIp,sendPort);
         senderAudio.startSender();
 
 
         receiverAudio = new ReceiverAudio(getApplicationContext());
-        receiverAudio.setSession(server,receivePort);
+        receiverAudio.setSession(serverIp,receivePort);
         receiverAudio.startReceiver();
     }
 

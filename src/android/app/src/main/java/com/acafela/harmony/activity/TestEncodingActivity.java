@@ -1,6 +1,5 @@
-package com.acafela.harmony;
+package com.acafela.harmony.activity;
 
-import android.content.Intent;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioRecord;
@@ -13,7 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import java.util.Arrays;
+import com.acafela.harmony.R;
 
 public class TestEncodingActivity extends AppCompatActivity {
     private static final String LOG_TAG = TestEncodingActivity.class.getName();
@@ -21,7 +20,6 @@ public class TestEncodingActivity extends AppCompatActivity {
     Button mStartButton;
     Button mStopButton;
     AudioThread mAudioThread = new AudioThread();
-    private boolean mIsStarted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +31,6 @@ public class TestEncodingActivity extends AppCompatActivity {
     }
 
     public void onClickStartBtn(View v) {
-
-
-        mIsStarted = true;
-
         mStartButton.setEnabled(false);
         mStopButton.setEnabled(true);
         mAudioThread = new AudioThread();
@@ -52,8 +46,6 @@ public class TestEncodingActivity extends AppCompatActivity {
         }
         mStartButton.setEnabled(true);
         mStopButton.setEnabled(false);
-
-        mIsStarted = false;
     }
 
     private class AudioThread extends Thread {
