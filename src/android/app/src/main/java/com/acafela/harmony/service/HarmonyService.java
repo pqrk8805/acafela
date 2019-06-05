@@ -15,6 +15,10 @@ public class HarmonyService extends Service {
 
     private UserProfile mUserProfile;
 
+    //temporary value;
+    SenderAudio senderAudio;
+    ReceiverAudio receiverAudio;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -56,10 +60,26 @@ public class HarmonyService extends Service {
     private void initiateCall() {
         Log.i(LOG_TAG, "initiateCall");
         showToastInService("initiateCall");
+
+        String server ="10.0.2.151";
+        int sendPort =5000;
+        int receivePort =5001;
+
+        senderAudio = new SenderAudio();
+        senderAudio.setSession(server,sendPort);
+        senderAudio.startSender();
+
+
+        receiverAudio = new ReceiverAudio(getApplicationContext());
+        receiverAudio.setSession(server,receivePort);
+        receiverAudio.startReceiver();
     }
 
     // this method may move to another class
     private void terminateCall() {
+        senderAudio.endSender();
+        receiverAudio.endReceiver();
+
         Log.i(LOG_TAG, "terminateCall");
         showToastInService("terminateCall");
     }

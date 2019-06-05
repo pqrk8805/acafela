@@ -25,7 +25,6 @@ public class ReceiverAudio implements DataReceiver {
     private static final int BYTES_PER_SAMPLE = 2;    // Bytes Per Sampl;e
     private static final int RAW_BUFFER_SIZE = SAMPLE_RATE / (MILLISECONDS_IN_A_SECOND / SAMPLE_INTERVAL) * BYTES_PER_SAMPLE;
     private static final int GSM_BUFFER_SIZE = 33;
-    private static final int VOIP_DATA_UDP_PORT = 5124;
 
     private static final String LOG_TAG = "ReceiverAudio";
     private  InetAddress mIpAddress;
@@ -39,6 +38,9 @@ public class ReceiverAudio implements DataReceiver {
 
     private Context mContext;
 
+    ReceiverAudio (Context context) {
+        mContext = context;
+    }
     public boolean setSession(String ip,int port)
     {
         try {
@@ -106,15 +108,14 @@ public class ReceiverAudio implements DataReceiver {
                     // Setup socket to receive the audio data
                     RecvUdpSocket = new DatagramSocket(null);
                     RecvUdpSocket.setReuseAddress(true);
-                    RecvUdpSocket.bind(new InetSocketAddress(VOIP_DATA_UDP_PORT));
+                    RecvUdpSocket.bind(new InetSocketAddress(mPort));
 
                     while (UdpVoipReceiveDataThreadRun) {
                         byte[] rawbuf = new byte[RAW_BUFFER_SIZE];
                         DatagramPacket packet = new DatagramPacket(rawbuf, RAW_BUFFER_SIZE);
-                        Log.i(LOG_TAG, "Packet received: " + packet.getLength());
+                        //Log.i(LOG_TAG, "Packet received: " + packet.getLength());
                         RecvUdpSocket.receive(packet);
                         IncommingpacketQueue.add(rawbuf);
-
 
                         /*byte[] rawbuf = new byte[RAW_BUFFER_SIZE];
                         byte[] gsmbuf = new byte[GSM_BUFFER_SIZE];

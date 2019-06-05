@@ -3,11 +3,9 @@ package com.acafela.harmony.service;
 
 import java.io.IOException;
 import android.media.AudioFormat;
-
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.util.Log;
-
 import java.io.InputStream;
 import java.net.DatagramSocket;
 import java.net.DatagramPacket;
@@ -107,7 +105,8 @@ public class SenderAudio implements DataSender {
                 //byte[] gsmbuf = new byte[GSM_BUFFER_SIZE];
                 InputPlayFile = OpenSimVoice(mSimVoice);
 
-                try {
+                try
+                {
                     DatagramSocket socket = new DatagramSocket();
                     Recorder.startRecording();
                     while (senderAudioThreadRun)
@@ -128,13 +127,11 @@ public class SenderAudio implements DataSender {
                             DatagramPacket packet = new DatagramPacket(rawbuf, RAW_BUFFER_SIZE, mIpAddress, mPort);
                             socket.send(packet);
                         }
+                    }
                     Recorder.stop();
                     Recorder.release();
-                        if (InputPlayFile != null) InputPlayFile.close();
-                }
-                socket.disconnect();
-                socket.close();
-
+                    if (InputPlayFile != null) InputPlayFile.close();
+                    socket.disconnect();
 
                 } catch (SocketException e) {
                     senderAudioThreadRun = false;
