@@ -11,7 +11,7 @@ int main(int argc, char** argv)
 {
     FUNC_LOGI("Acafela Server started");
     UserProfileRpc userProfileRpc;
-    int err = userProfileRpc.start("localhost:9000");
+    int err = userProfileRpc.start("10.0.1.3:9000");
     if (err) {
         FUNC_LOGE("ERROR(%d): fail to start UserProfileRpc server");
         return -1;

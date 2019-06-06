@@ -13,8 +13,6 @@ import com.acafela.harmony.activity.CallActivity;
 public class HarmonyService extends Service {
     private static final String LOG_TAG = HarmonyService.class.getName();
 
-    private UserProfile mUserProfile;
-
     //temporary value;
     SenderAudio senderAudio;
     ReceiverAudio receiverAudio;
@@ -23,8 +21,6 @@ public class HarmonyService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.i(LOG_TAG, "onCreate");
-
-        mUserProfile = new UserProfile();
     }
 
     @Override
