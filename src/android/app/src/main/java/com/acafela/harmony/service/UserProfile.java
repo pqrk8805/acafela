@@ -36,8 +36,8 @@ public class UserProfile
                             .build();
         UserProfileBlockingStub blockingStub
                                     = UserProfileGrpc.newBlockingStub(mChannel);
-        VersionInfo versionInfo = blockingStub.getVersion(EMPTY_MSG);
-        Log.i(LOG_TAG, "Server Version: " + versionInfo.getVersion());
+        //VersionInfo versionInfo = blockingStub.getVersion(EMPTY_MSG);
+        //Log.i(LOG_TAG, "Server Version: " + versionInfo.getVersion());
 
         return 0;
     }
