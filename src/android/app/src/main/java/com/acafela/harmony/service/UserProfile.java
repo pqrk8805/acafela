@@ -24,6 +24,7 @@ public class UserProfile
     public UserProfile()
     {
         Log.i(LOG_TAG, "UserProfile");
+        connect();
     }
 
 

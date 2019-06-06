@@ -60,10 +60,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void onClickRegisterUserBtn(View v) {
-        Log.d(LOG_TAG, "onClickRegisterUserBtn");
+    public void onClickUserProfileBtn(View v) {
+        Log.d(LOG_TAG, "onClickUserProfileBtn");
 
-        Toast.makeText(getApplicationContext(), "Not Implemented Register User", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, UserProfileActivity.class);
+        startActivity(intent);
     }
 
     public void onClickCallBtn(View v) {
