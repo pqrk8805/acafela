@@ -6,12 +6,41 @@ option java_package = "com.acafela.harmony.userprofile";
 
 service UserProfile {
     rpc getVersion(Empty) returns (VersionInfo);
+
+    rpc registerUser(RegisterParam) returns (RegisterResp);
+    rpc changePassword(ChangePasswordParam) returns (Error);
+    rpc restorePassword(RestorePasswordParam) returns (Error);
 }
 
 message Empty {
+}
+
+message Error {
+    int32 err = 1;
+    string message = 2;
 }
 
 message VersionInfo {
     string version = 1;
 }
 
+message RegisterParam {
+    string email_address = 1;
+    string password = 2;
+}
+
+message RegisterResp {
+    Error error = 1;
+    string phone_number = 2;
+}
+
+message ChangePasswordParam {
+    string email_address = 1;
+    string old_password = 2;
+    string new_password = 3;
+}
+
+message RestorePasswordParam {
+    string email_address = 1;
+    string phone_number = 2;
+}

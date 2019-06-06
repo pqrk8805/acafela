@@ -19,6 +19,7 @@
       </ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\UserProfile\UserProfile.cpp" />
     <ClCompile Include="src\UserProfile\UserProfile.grpc.pb.cc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </ExcludedFromBuild>
@@ -41,6 +42,7 @@
   <ItemGroup>
     <ClInclude Include="src\Communicator\communicator.h" />
     <ClInclude Include="src\Hislog.h" />
+    <ClInclude Include="src\UserProfile\IUserProfile.h" />
     <ClInclude Include="src\UserProfile\UserProfile.grpc.pb.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </ExcludedFromBuild>
@@ -53,6 +55,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="src\UserProfile\UserProfile.h" />
     <ClInclude Include="src\UserProfile\UserProfileRpc.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </ExcludedFromBuild>

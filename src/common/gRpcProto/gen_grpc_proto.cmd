@@ -23,5 +23,6 @@ set PROTO_RPC_FILES=UserProfile.proto
         %PROTO_RPC_FILES%
 
 
-copy *.h ..\..\server\acafela\src\UserProfile\
-copy *.cc ..\..\server\acafela\src\UserProfile\
+copy UserProfile.proto ..\..\android\app\src\main\proto\
+move *.h ..\..\server\acafela\src\UserProfile\
+move *.cc ..\..\server\acafela\src\UserProfile\

@@ -14,11 +14,20 @@ import com.acafela.harmony.userprofile.UserProfileGrpc.UserProfileBlockingStub;
 import com.acafela.harmony.userprofile.UserProfileOuterClass.Empty;
 import com.acafela.harmony.userprofile.UserProfileOuterClass.VersionInfo;
 
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManagerFactory;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.okhttp.OkHttpChannelBuilder;
+
+import org.conscrypt.Conscrypt;
+
+import java.security.KeyStore;
+import java.security.Security;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateFactory;
 
 public class UserProfileActivity extends AppCompatActivity
 {
@@ -47,10 +56,35 @@ public class UserProfileActivity extends AppCompatActivity
         }
 
         try {
+            //Security.insertProviderAt(Conscrypt.newProvider(), 1);
+
+            /*
+            KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
+            ks.load(null, null);
+            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+            Certificate cert = cf.generateCertificate(theRawCert);
+            ks.setCertificateEntry("customca", cert);
+
+            TrustManagerFactory trustManagerFactory =
+                    TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+            trustManagerFactory.init(ks);
+            SSLContext context = SSLContext.getInstance("TLS", provider);
+            context.init(null, trustManagerFactory.getTrustManagers(), null);
+            SSLSocketFactory factory = context.getSocketFactory();
+            */
+
+            Log.i(LOG_TAG, serverAddress);
             mChannel = ManagedChannelBuilder
                                     .forAddress(serverAddress, SERVER_PORT)
                                     .usePlaintext()
                                     .build();
+            /*
+            mChannel = OkHttpChannelBuilder
+                                    .forAddress(serverAddress, SERVER_PORT)
+                                    .sslSocketFactory(factory)
+                                    .build();
+            */
+
             UserProfileBlockingStub blockingStub
                                     = UserProfileGrpc.newBlockingStub(mChannel);
 
@@ -61,8 +95,8 @@ public class UserProfileActivity extends AppCompatActivity
             TextView tv = findViewById(R.id.txtUserProfileServerVersion);
             tv.setText(versionInfo.getVersion());
         } catch (Exception e) {
-            Log.e(LOG_TAG, e.getMessage());
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            Log.e(LOG_TAG, "UNAVAILABLE", e);
+            Toast.makeText(this, "UNAVAILABLE", Toast.LENGTH_LONG).show();
         }
     }
 }

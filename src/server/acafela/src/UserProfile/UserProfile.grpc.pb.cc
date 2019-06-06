@@ -20,6 +20,9 @@ namespace rpc {
 
 static const char* UserProfile_method_names[] = {
   "/acafela.rpc.UserProfile/getVersion",
+  "/acafela.rpc.UserProfile/registerUser",
+  "/acafela.rpc.UserProfile/changePassword",
+  "/acafela.rpc.UserProfile/restorePassword",
 };
 
 std::unique_ptr< UserProfile::Stub> UserProfile::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -30,6 +33,9 @@ std::unique_ptr< UserProfile::Stub> UserProfile::NewStub(const std::shared_ptr< 
 
 UserProfile::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
   : channel_(channel), rpcmethod_getVersion_(UserProfile_method_names[0], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_registerUser_(UserProfile_method_names[1], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_changePassword_(UserProfile_method_names[2], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_restorePassword_(UserProfile_method_names[3], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status UserProfile::Stub::getVersion(::grpc::ClientContext* context, const ::acafela::rpc::Empty& request, ::acafela::rpc::VersionInfo* response) {
@@ -48,18 +54,102 @@ void UserProfile::Stub::experimental_async::getVersion(::grpc::ClientContext* co
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::acafela::rpc::VersionInfo>::Create(channel_.get(), cq, rpcmethod_getVersion_, context, request, false);
 }
 
+::grpc::Status UserProfile::Stub::registerUser(::grpc::ClientContext* context, const ::acafela::rpc::RegisterParam& request, ::acafela::rpc::RegisterResp* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_registerUser_, context, request, response);
+}
+
+void UserProfile::Stub::experimental_async::registerUser(::grpc::ClientContext* context, const ::acafela::rpc::RegisterParam* request, ::acafela::rpc::RegisterResp* response, std::function<void(::grpc::Status)> f) {
+  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_registerUser_, context, request, response, std::move(f));
+}
+
+::grpc::ClientAsyncResponseReader< ::acafela::rpc::RegisterResp>* UserProfile::Stub::AsyncregisterUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::RegisterParam& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::acafela::rpc::RegisterResp>::Create(channel_.get(), cq, rpcmethod_registerUser_, context, request, true);
+}
+
+::grpc::ClientAsyncResponseReader< ::acafela::rpc::RegisterResp>* UserProfile::Stub::PrepareAsyncregisterUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::RegisterParam& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::acafela::rpc::RegisterResp>::Create(channel_.get(), cq, rpcmethod_registerUser_, context, request, false);
+}
+
+::grpc::Status UserProfile::Stub::changePassword(::grpc::ClientContext* context, const ::acafela::rpc::ChangePasswordParam& request, ::acafela::rpc::Error* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_changePassword_, context, request, response);
+}
+
+void UserProfile::Stub::experimental_async::changePassword(::grpc::ClientContext* context, const ::acafela::rpc::ChangePasswordParam* request, ::acafela::rpc::Error* response, std::function<void(::grpc::Status)> f) {
+  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_changePassword_, context, request, response, std::move(f));
+}
+
+::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* UserProfile::Stub::AsyncchangePasswordRaw(::grpc::ClientContext* context, const ::acafela::rpc::ChangePasswordParam& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::acafela::rpc::Error>::Create(channel_.get(), cq, rpcmethod_changePassword_, context, request, true);
+}
+
+::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* UserProfile::Stub::PrepareAsyncchangePasswordRaw(::grpc::ClientContext* context, const ::acafela::rpc::ChangePasswordParam& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::acafela::rpc::Error>::Create(channel_.get(), cq, rpcmethod_changePassword_, context, request, false);
+}
+
+::grpc::Status UserProfile::Stub::restorePassword(::grpc::ClientContext* context, const ::acafela::rpc::RestorePasswordParam& request, ::acafela::rpc::Error* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_restorePassword_, context, request, response);
+}
+
+void UserProfile::Stub::experimental_async::restorePassword(::grpc::ClientContext* context, const ::acafela::rpc::RestorePasswordParam* request, ::acafela::rpc::Error* response, std::function<void(::grpc::Status)> f) {
+  return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_restorePassword_, context, request, response, std::move(f));
+}
+
+::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* UserProfile::Stub::AsyncrestorePasswordRaw(::grpc::ClientContext* context, const ::acafela::rpc::RestorePasswordParam& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::acafela::rpc::Error>::Create(channel_.get(), cq, rpcmethod_restorePassword_, context, request, true);
+}
+
+::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* UserProfile::Stub::PrepareAsyncrestorePasswordRaw(::grpc::ClientContext* context, const ::acafela::rpc::RestorePasswordParam& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::acafela::rpc::Error>::Create(channel_.get(), cq, rpcmethod_restorePassword_, context, request, false);
+}
+
 UserProfile::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       UserProfile_method_names[0],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< UserProfile::Service, ::acafela::rpc::Empty, ::acafela::rpc::VersionInfo>(
           std::mem_fn(&UserProfile::Service::getVersion), this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      UserProfile_method_names[1],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< UserProfile::Service, ::acafela::rpc::RegisterParam, ::acafela::rpc::RegisterResp>(
+          std::mem_fn(&UserProfile::Service::registerUser), this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      UserProfile_method_names[2],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< UserProfile::Service, ::acafela::rpc::ChangePasswordParam, ::acafela::rpc::Error>(
+          std::mem_fn(&UserProfile::Service::changePassword), this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      UserProfile_method_names[3],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< UserProfile::Service, ::acafela::rpc::RestorePasswordParam, ::acafela::rpc::Error>(
+          std::mem_fn(&UserProfile::Service::restorePassword), this)));
 }
 
 UserProfile::Service::~Service() {
 }
 
 ::grpc::Status UserProfile::Service::getVersion(::grpc::ServerContext* context, const ::acafela::rpc::Empty* request, ::acafela::rpc::VersionInfo* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status UserProfile::Service::registerUser(::grpc::ServerContext* context, const ::acafela::rpc::RegisterParam* request, ::acafela::rpc::RegisterResp* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status UserProfile::Service::changePassword(::grpc::ServerContext* context, const ::acafela::rpc::ChangePasswordParam* request, ::acafela::rpc::Error* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status UserProfile::Service::restorePassword(::grpc::ServerContext* context, const ::acafela::rpc::RestorePasswordParam* request, ::acafela::rpc::Error* response) {
   (void) context;
   (void) request;
   (void) response;

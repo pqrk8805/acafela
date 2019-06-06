@@ -43,15 +43,45 @@ class UserProfile final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::VersionInfo>> PrepareAsyncgetVersion(::grpc::ClientContext* context, const ::acafela::rpc::Empty& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::VersionInfo>>(PrepareAsyncgetVersionRaw(context, request, cq));
     }
+    virtual ::grpc::Status registerUser(::grpc::ClientContext* context, const ::acafela::rpc::RegisterParam& request, ::acafela::rpc::RegisterResp* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::RegisterResp>> AsyncregisterUser(::grpc::ClientContext* context, const ::acafela::rpc::RegisterParam& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::RegisterResp>>(AsyncregisterUserRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::RegisterResp>> PrepareAsyncregisterUser(::grpc::ClientContext* context, const ::acafela::rpc::RegisterParam& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::RegisterResp>>(PrepareAsyncregisterUserRaw(context, request, cq));
+    }
+    virtual ::grpc::Status changePassword(::grpc::ClientContext* context, const ::acafela::rpc::ChangePasswordParam& request, ::acafela::rpc::Error* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>> AsyncchangePassword(::grpc::ClientContext* context, const ::acafela::rpc::ChangePasswordParam& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>>(AsyncchangePasswordRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>> PrepareAsyncchangePassword(::grpc::ClientContext* context, const ::acafela::rpc::ChangePasswordParam& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>>(PrepareAsyncchangePasswordRaw(context, request, cq));
+    }
+    virtual ::grpc::Status restorePassword(::grpc::ClientContext* context, const ::acafela::rpc::RestorePasswordParam& request, ::acafela::rpc::Error* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>> AsyncrestorePassword(::grpc::ClientContext* context, const ::acafela::rpc::RestorePasswordParam& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>>(AsyncrestorePasswordRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>> PrepareAsyncrestorePassword(::grpc::ClientContext* context, const ::acafela::rpc::RestorePasswordParam& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>>(PrepareAsyncrestorePasswordRaw(context, request, cq));
+    }
     class experimental_async_interface {
      public:
       virtual ~experimental_async_interface() {}
       virtual void getVersion(::grpc::ClientContext* context, const ::acafela::rpc::Empty* request, ::acafela::rpc::VersionInfo* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void registerUser(::grpc::ClientContext* context, const ::acafela::rpc::RegisterParam* request, ::acafela::rpc::RegisterResp* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void changePassword(::grpc::ClientContext* context, const ::acafela::rpc::ChangePasswordParam* request, ::acafela::rpc::Error* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void restorePassword(::grpc::ClientContext* context, const ::acafela::rpc::RestorePasswordParam* request, ::acafela::rpc::Error* response, std::function<void(::grpc::Status)>) = 0;
     };
     virtual class experimental_async_interface* experimental_async() { return nullptr; }
   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::VersionInfo>* AsyncgetVersionRaw(::grpc::ClientContext* context, const ::acafela::rpc::Empty& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::VersionInfo>* PrepareAsyncgetVersionRaw(::grpc::ClientContext* context, const ::acafela::rpc::Empty& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::RegisterResp>* AsyncregisterUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::RegisterParam& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::RegisterResp>* PrepareAsyncregisterUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::RegisterParam& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>* AsyncchangePasswordRaw(::grpc::ClientContext* context, const ::acafela::rpc::ChangePasswordParam& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>* PrepareAsyncchangePasswordRaw(::grpc::ClientContext* context, const ::acafela::rpc::ChangePasswordParam& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>* AsyncrestorePasswordRaw(::grpc::ClientContext* context, const ::acafela::rpc::RestorePasswordParam& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>* PrepareAsyncrestorePasswordRaw(::grpc::ClientContext* context, const ::acafela::rpc::RestorePasswordParam& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -63,10 +93,34 @@ class UserProfile final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::VersionInfo>> PrepareAsyncgetVersion(::grpc::ClientContext* context, const ::acafela::rpc::Empty& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::VersionInfo>>(PrepareAsyncgetVersionRaw(context, request, cq));
     }
+    ::grpc::Status registerUser(::grpc::ClientContext* context, const ::acafela::rpc::RegisterParam& request, ::acafela::rpc::RegisterResp* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::RegisterResp>> AsyncregisterUser(::grpc::ClientContext* context, const ::acafela::rpc::RegisterParam& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::RegisterResp>>(AsyncregisterUserRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::RegisterResp>> PrepareAsyncregisterUser(::grpc::ClientContext* context, const ::acafela::rpc::RegisterParam& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::RegisterResp>>(PrepareAsyncregisterUserRaw(context, request, cq));
+    }
+    ::grpc::Status changePassword(::grpc::ClientContext* context, const ::acafela::rpc::ChangePasswordParam& request, ::acafela::rpc::Error* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>> AsyncchangePassword(::grpc::ClientContext* context, const ::acafela::rpc::ChangePasswordParam& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>>(AsyncchangePasswordRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>> PrepareAsyncchangePassword(::grpc::ClientContext* context, const ::acafela::rpc::ChangePasswordParam& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>>(PrepareAsyncchangePasswordRaw(context, request, cq));
+    }
+    ::grpc::Status restorePassword(::grpc::ClientContext* context, const ::acafela::rpc::RestorePasswordParam& request, ::acafela::rpc::Error* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>> AsyncrestorePassword(::grpc::ClientContext* context, const ::acafela::rpc::RestorePasswordParam& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>>(AsyncrestorePasswordRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>> PrepareAsyncrestorePassword(::grpc::ClientContext* context, const ::acafela::rpc::RestorePasswordParam& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>>(PrepareAsyncrestorePasswordRaw(context, request, cq));
+    }
     class experimental_async final :
       public StubInterface::experimental_async_interface {
      public:
       void getVersion(::grpc::ClientContext* context, const ::acafela::rpc::Empty* request, ::acafela::rpc::VersionInfo* response, std::function<void(::grpc::Status)>) override;
+      void registerUser(::grpc::ClientContext* context, const ::acafela::rpc::RegisterParam* request, ::acafela::rpc::RegisterResp* response, std::function<void(::grpc::Status)>) override;
+      void changePassword(::grpc::ClientContext* context, const ::acafela::rpc::ChangePasswordParam* request, ::acafela::rpc::Error* response, std::function<void(::grpc::Status)>) override;
+      void restorePassword(::grpc::ClientContext* context, const ::acafela::rpc::RestorePasswordParam* request, ::acafela::rpc::Error* response, std::function<void(::grpc::Status)>) override;
      private:
       friend class Stub;
       explicit experimental_async(Stub* stub): stub_(stub) { }
@@ -80,7 +134,16 @@ class UserProfile final {
     class experimental_async async_stub_{this};
     ::grpc::ClientAsyncResponseReader< ::acafela::rpc::VersionInfo>* AsyncgetVersionRaw(::grpc::ClientContext* context, const ::acafela::rpc::Empty& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::acafela::rpc::VersionInfo>* PrepareAsyncgetVersionRaw(::grpc::ClientContext* context, const ::acafela::rpc::Empty& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::acafela::rpc::RegisterResp>* AsyncregisterUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::RegisterParam& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::acafela::rpc::RegisterResp>* PrepareAsyncregisterUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::RegisterParam& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* AsyncchangePasswordRaw(::grpc::ClientContext* context, const ::acafela::rpc::ChangePasswordParam& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* PrepareAsyncchangePasswordRaw(::grpc::ClientContext* context, const ::acafela::rpc::ChangePasswordParam& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* AsyncrestorePasswordRaw(::grpc::ClientContext* context, const ::acafela::rpc::RestorePasswordParam& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* PrepareAsyncrestorePasswordRaw(::grpc::ClientContext* context, const ::acafela::rpc::RestorePasswordParam& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_getVersion_;
+    const ::grpc::internal::RpcMethod rpcmethod_registerUser_;
+    const ::grpc::internal::RpcMethod rpcmethod_changePassword_;
+    const ::grpc::internal::RpcMethod rpcmethod_restorePassword_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -89,6 +152,9 @@ class UserProfile final {
     Service();
     virtual ~Service();
     virtual ::grpc::Status getVersion(::grpc::ServerContext* context, const ::acafela::rpc::Empty* request, ::acafela::rpc::VersionInfo* response);
+    virtual ::grpc::Status registerUser(::grpc::ServerContext* context, const ::acafela::rpc::RegisterParam* request, ::acafela::rpc::RegisterResp* response);
+    virtual ::grpc::Status changePassword(::grpc::ServerContext* context, const ::acafela::rpc::ChangePasswordParam* request, ::acafela::rpc::Error* response);
+    virtual ::grpc::Status restorePassword(::grpc::ServerContext* context, const ::acafela::rpc::RestorePasswordParam* request, ::acafela::rpc::Error* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_getVersion : public BaseClass {
@@ -110,7 +176,67 @@ class UserProfile final {
       ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_getVersion<Service > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_registerUser : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithAsyncMethod_registerUser() {
+      ::grpc::Service::MarkMethodAsync(1);
+    }
+    ~WithAsyncMethod_registerUser() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status registerUser(::grpc::ServerContext* context, const ::acafela::rpc::RegisterParam* request, ::acafela::rpc::RegisterResp* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestregisterUser(::grpc::ServerContext* context, ::acafela::rpc::RegisterParam* request, ::grpc::ServerAsyncResponseWriter< ::acafela::rpc::RegisterResp>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_changePassword : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithAsyncMethod_changePassword() {
+      ::grpc::Service::MarkMethodAsync(2);
+    }
+    ~WithAsyncMethod_changePassword() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status changePassword(::grpc::ServerContext* context, const ::acafela::rpc::ChangePasswordParam* request, ::acafela::rpc::Error* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestchangePassword(::grpc::ServerContext* context, ::acafela::rpc::ChangePasswordParam* request, ::grpc::ServerAsyncResponseWriter< ::acafela::rpc::Error>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_restorePassword : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithAsyncMethod_restorePassword() {
+      ::grpc::Service::MarkMethodAsync(3);
+    }
+    ~WithAsyncMethod_restorePassword() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status restorePassword(::grpc::ServerContext* context, const ::acafela::rpc::RestorePasswordParam* request, ::acafela::rpc::Error* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestrestorePassword(::grpc::ServerContext* context, ::acafela::rpc::RestorePasswordParam* request, ::grpc::ServerAsyncResponseWriter< ::acafela::rpc::Error>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_getVersion<WithAsyncMethod_registerUser<WithAsyncMethod_changePassword<WithAsyncMethod_restorePassword<Service > > > > AsyncService;
   template <class BaseClass>
   class WithGenericMethod_getVersion : public BaseClass {
    private:
@@ -124,6 +250,57 @@ class UserProfile final {
     }
     // disable synchronous version of this method
     ::grpc::Status getVersion(::grpc::ServerContext* context, const ::acafela::rpc::Empty* request, ::acafela::rpc::VersionInfo* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_registerUser : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithGenericMethod_registerUser() {
+      ::grpc::Service::MarkMethodGeneric(1);
+    }
+    ~WithGenericMethod_registerUser() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status registerUser(::grpc::ServerContext* context, const ::acafela::rpc::RegisterParam* request, ::acafela::rpc::RegisterResp* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_changePassword : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithGenericMethod_changePassword() {
+      ::grpc::Service::MarkMethodGeneric(2);
+    }
+    ~WithGenericMethod_changePassword() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status changePassword(::grpc::ServerContext* context, const ::acafela::rpc::ChangePasswordParam* request, ::acafela::rpc::Error* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_restorePassword : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithGenericMethod_restorePassword() {
+      ::grpc::Service::MarkMethodGeneric(3);
+    }
+    ~WithGenericMethod_restorePassword() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status restorePassword(::grpc::ServerContext* context, const ::acafela::rpc::RestorePasswordParam* request, ::acafela::rpc::Error* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -149,6 +326,66 @@ class UserProfile final {
     }
   };
   template <class BaseClass>
+  class WithRawMethod_registerUser : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithRawMethod_registerUser() {
+      ::grpc::Service::MarkMethodRaw(1);
+    }
+    ~WithRawMethod_registerUser() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status registerUser(::grpc::ServerContext* context, const ::acafela::rpc::RegisterParam* request, ::acafela::rpc::RegisterResp* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestregisterUser(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_changePassword : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithRawMethod_changePassword() {
+      ::grpc::Service::MarkMethodRaw(2);
+    }
+    ~WithRawMethod_changePassword() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status changePassword(::grpc::ServerContext* context, const ::acafela::rpc::ChangePasswordParam* request, ::acafela::rpc::Error* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestchangePassword(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_restorePassword : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithRawMethod_restorePassword() {
+      ::grpc::Service::MarkMethodRaw(3);
+    }
+    ~WithRawMethod_restorePassword() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status restorePassword(::grpc::ServerContext* context, const ::acafela::rpc::RestorePasswordParam* request, ::acafela::rpc::Error* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestrestorePassword(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_getVersion : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
@@ -168,9 +405,69 @@ class UserProfile final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedgetVersion(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::acafela::rpc::Empty,::acafela::rpc::VersionInfo>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_getVersion<Service > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_registerUser : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithStreamedUnaryMethod_registerUser() {
+      ::grpc::Service::MarkMethodStreamed(1,
+        new ::grpc::internal::StreamedUnaryHandler< ::acafela::rpc::RegisterParam, ::acafela::rpc::RegisterResp>(std::bind(&WithStreamedUnaryMethod_registerUser<BaseClass>::StreamedregisterUser, this, std::placeholders::_1, std::placeholders::_2)));
+    }
+    ~WithStreamedUnaryMethod_registerUser() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status registerUser(::grpc::ServerContext* context, const ::acafela::rpc::RegisterParam* request, ::acafela::rpc::RegisterResp* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedregisterUser(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::acafela::rpc::RegisterParam,::acafela::rpc::RegisterResp>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_changePassword : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithStreamedUnaryMethod_changePassword() {
+      ::grpc::Service::MarkMethodStreamed(2,
+        new ::grpc::internal::StreamedUnaryHandler< ::acafela::rpc::ChangePasswordParam, ::acafela::rpc::Error>(std::bind(&WithStreamedUnaryMethod_changePassword<BaseClass>::StreamedchangePassword, this, std::placeholders::_1, std::placeholders::_2)));
+    }
+    ~WithStreamedUnaryMethod_changePassword() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status changePassword(::grpc::ServerContext* context, const ::acafela::rpc::ChangePasswordParam* request, ::acafela::rpc::Error* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedchangePassword(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::acafela::rpc::ChangePasswordParam,::acafela::rpc::Error>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_restorePassword : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithStreamedUnaryMethod_restorePassword() {
+      ::grpc::Service::MarkMethodStreamed(3,
+        new ::grpc::internal::StreamedUnaryHandler< ::acafela::rpc::RestorePasswordParam, ::acafela::rpc::Error>(std::bind(&WithStreamedUnaryMethod_restorePassword<BaseClass>::StreamedrestorePassword, this, std::placeholders::_1, std::placeholders::_2)));
+    }
+    ~WithStreamedUnaryMethod_restorePassword() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status restorePassword(::grpc::ServerContext* context, const ::acafela::rpc::RestorePasswordParam* request, ::acafela::rpc::Error* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedrestorePassword(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::acafela::rpc::RestorePasswordParam,::acafela::rpc::Error>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_getVersion<WithStreamedUnaryMethod_registerUser<WithStreamedUnaryMethod_changePassword<WithStreamedUnaryMethod_restorePassword<Service > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_getVersion<Service > StreamedService;
+  typedef WithStreamedUnaryMethod_getVersion<WithStreamedUnaryMethod_registerUser<WithStreamedUnaryMethod_changePassword<WithStreamedUnaryMethod_restorePassword<Service > > > > StreamedService;
 };
 
 }  // namespace rpc

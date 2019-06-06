@@ -58,4 +58,6 @@ dependencies {
     implementation 'io.grpc:grpc-protobuf-lite:1.21.0'
     implementation 'io.grpc:grpc-stub:1.21.0'
     implementation 'javax.annotation:javax.annotation-api:1.2'
+
+    implementation 'org.conscrypt:conscrypt-android:2.1.0'
 }

@@ -38,7 +38,7 @@ namespace protobuf_UserProfile_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[2];
+  static const ::google::protobuf::internal::ParseTable schema[7];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -47,9 +47,24 @@ void AddDescriptors();
 }  // namespace protobuf_UserProfile_2eproto
 namespace acafela {
 namespace rpc {
+class ChangePasswordParam;
+class ChangePasswordParamDefaultTypeInternal;
+extern ChangePasswordParamDefaultTypeInternal _ChangePasswordParam_default_instance_;
 class Empty;
 class EmptyDefaultTypeInternal;
 extern EmptyDefaultTypeInternal _Empty_default_instance_;
+class Error;
+class ErrorDefaultTypeInternal;
+extern ErrorDefaultTypeInternal _Error_default_instance_;
+class RegisterParam;
+class RegisterParamDefaultTypeInternal;
+extern RegisterParamDefaultTypeInternal _RegisterParam_default_instance_;
+class RegisterResp;
+class RegisterRespDefaultTypeInternal;
+extern RegisterRespDefaultTypeInternal _RegisterResp_default_instance_;
+class RestorePasswordParam;
+class RestorePasswordParamDefaultTypeInternal;
+extern RestorePasswordParamDefaultTypeInternal _RestorePasswordParam_default_instance_;
 class VersionInfo;
 class VersionInfoDefaultTypeInternal;
 extern VersionInfoDefaultTypeInternal _VersionInfo_default_instance_;
@@ -57,7 +72,12 @@ extern VersionInfoDefaultTypeInternal _VersionInfo_default_instance_;
 }  // namespace acafela
 namespace google {
 namespace protobuf {
+template<> ::acafela::rpc::ChangePasswordParam* Arena::CreateMaybeMessage<::acafela::rpc::ChangePasswordParam>(Arena*);
 template<> ::acafela::rpc::Empty* Arena::CreateMaybeMessage<::acafela::rpc::Empty>(Arena*);
+template<> ::acafela::rpc::Error* Arena::CreateMaybeMessage<::acafela::rpc::Error>(Arena*);
+template<> ::acafela::rpc::RegisterParam* Arena::CreateMaybeMessage<::acafela::rpc::RegisterParam>(Arena*);
+template<> ::acafela::rpc::RegisterResp* Arena::CreateMaybeMessage<::acafela::rpc::RegisterResp>(Arena*);
+template<> ::acafela::rpc::RestorePasswordParam* Arena::CreateMaybeMessage<::acafela::rpc::RestorePasswordParam>(Arena*);
 template<> ::acafela::rpc::VersionInfo* Arena::CreateMaybeMessage<::acafela::rpc::VersionInfo>(Arena*);
 }  // namespace protobuf
 }  // namespace google
@@ -162,6 +182,124 @@ class Empty : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
 };
 // -------------------------------------------------------------------
 
+class Error : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:acafela.rpc.Error) */ {
+ public:
+  Error();
+  virtual ~Error();
+
+  Error(const Error& from);
+
+  inline Error& operator=(const Error& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  Error(Error&& from) noexcept
+    : Error() {
+    *this = ::std::move(from);
+  }
+
+  inline Error& operator=(Error&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Error& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const Error* internal_default_instance() {
+    return reinterpret_cast<const Error*>(
+               &_Error_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    1;
+
+  void Swap(Error* other);
+  friend void swap(Error& a, Error& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline Error* New() const final {
+    return CreateMaybeMessage<Error>(NULL);
+  }
+
+  Error* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<Error>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const Error& from);
+  void MergeFrom(const Error& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(Error* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string message = 2;
+  void clear_message();
+  static const int kMessageFieldNumber = 2;
+  const ::std::string& message() const;
+  void set_message(const ::std::string& value);
+  #if LANG_CXX11
+  void set_message(::std::string&& value);
+  #endif
+  void set_message(const char* value);
+  void set_message(const char* value, size_t size);
+  ::std::string* mutable_message();
+  ::std::string* release_message();
+  void set_allocated_message(::std::string* message);
+
+  // int32 err = 1;
+  void clear_err();
+  static const int kErrFieldNumber = 1;
+  ::google::protobuf::int32 err() const;
+  void set_err(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:acafela.rpc.Error)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr message_;
+  ::google::protobuf::int32 err_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_UserProfile_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class VersionInfo : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:acafela.rpc.VersionInfo) */ {
  public:
   VersionInfo();
@@ -197,7 +335,7 @@ class VersionInfo : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_VersionInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    1;
+    2;
 
   void Swap(VersionInfo* other);
   friend void swap(VersionInfo& a, VersionInfo& b) {
@@ -271,6 +409,523 @@ class VersionInfo : public ::google::protobuf::Message /* @@protoc_insertion_poi
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_UserProfile_2eproto::TableStruct;
 };
+// -------------------------------------------------------------------
+
+class RegisterParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:acafela.rpc.RegisterParam) */ {
+ public:
+  RegisterParam();
+  virtual ~RegisterParam();
+
+  RegisterParam(const RegisterParam& from);
+
+  inline RegisterParam& operator=(const RegisterParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  RegisterParam(RegisterParam&& from) noexcept
+    : RegisterParam() {
+    *this = ::std::move(from);
+  }
+
+  inline RegisterParam& operator=(RegisterParam&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const RegisterParam& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const RegisterParam* internal_default_instance() {
+    return reinterpret_cast<const RegisterParam*>(
+               &_RegisterParam_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    3;
+
+  void Swap(RegisterParam* other);
+  friend void swap(RegisterParam& a, RegisterParam& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline RegisterParam* New() const final {
+    return CreateMaybeMessage<RegisterParam>(NULL);
+  }
+
+  RegisterParam* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<RegisterParam>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const RegisterParam& from);
+  void MergeFrom(const RegisterParam& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(RegisterParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string email_address = 1;
+  void clear_email_address();
+  static const int kEmailAddressFieldNumber = 1;
+  const ::std::string& email_address() const;
+  void set_email_address(const ::std::string& value);
+  #if LANG_CXX11
+  void set_email_address(::std::string&& value);
+  #endif
+  void set_email_address(const char* value);
+  void set_email_address(const char* value, size_t size);
+  ::std::string* mutable_email_address();
+  ::std::string* release_email_address();
+  void set_allocated_email_address(::std::string* email_address);
+
+  // string password = 2;
+  void clear_password();
+  static const int kPasswordFieldNumber = 2;
+  const ::std::string& password() const;
+  void set_password(const ::std::string& value);
+  #if LANG_CXX11
+  void set_password(::std::string&& value);
+  #endif
+  void set_password(const char* value);
+  void set_password(const char* value, size_t size);
+  ::std::string* mutable_password();
+  ::std::string* release_password();
+  void set_allocated_password(::std::string* password);
+
+  // @@protoc_insertion_point(class_scope:acafela.rpc.RegisterParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr email_address_;
+  ::google::protobuf::internal::ArenaStringPtr password_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_UserProfile_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class RegisterResp : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:acafela.rpc.RegisterResp) */ {
+ public:
+  RegisterResp();
+  virtual ~RegisterResp();
+
+  RegisterResp(const RegisterResp& from);
+
+  inline RegisterResp& operator=(const RegisterResp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  RegisterResp(RegisterResp&& from) noexcept
+    : RegisterResp() {
+    *this = ::std::move(from);
+  }
+
+  inline RegisterResp& operator=(RegisterResp&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const RegisterResp& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const RegisterResp* internal_default_instance() {
+    return reinterpret_cast<const RegisterResp*>(
+               &_RegisterResp_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    4;
+
+  void Swap(RegisterResp* other);
+  friend void swap(RegisterResp& a, RegisterResp& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline RegisterResp* New() const final {
+    return CreateMaybeMessage<RegisterResp>(NULL);
+  }
+
+  RegisterResp* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<RegisterResp>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const RegisterResp& from);
+  void MergeFrom(const RegisterResp& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(RegisterResp* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string phone_number = 2;
+  void clear_phone_number();
+  static const int kPhoneNumberFieldNumber = 2;
+  const ::std::string& phone_number() const;
+  void set_phone_number(const ::std::string& value);
+  #if LANG_CXX11
+  void set_phone_number(::std::string&& value);
+  #endif
+  void set_phone_number(const char* value);
+  void set_phone_number(const char* value, size_t size);
+  ::std::string* mutable_phone_number();
+  ::std::string* release_phone_number();
+  void set_allocated_phone_number(::std::string* phone_number);
+
+  // .acafela.rpc.Error error = 1;
+  bool has_error() const;
+  void clear_error();
+  static const int kErrorFieldNumber = 1;
+  private:
+  const ::acafela::rpc::Error& _internal_error() const;
+  public:
+  const ::acafela::rpc::Error& error() const;
+  ::acafela::rpc::Error* release_error();
+  ::acafela::rpc::Error* mutable_error();
+  void set_allocated_error(::acafela::rpc::Error* error);
+
+  // @@protoc_insertion_point(class_scope:acafela.rpc.RegisterResp)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr phone_number_;
+  ::acafela::rpc::Error* error_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_UserProfile_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ChangePasswordParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:acafela.rpc.ChangePasswordParam) */ {
+ public:
+  ChangePasswordParam();
+  virtual ~ChangePasswordParam();
+
+  ChangePasswordParam(const ChangePasswordParam& from);
+
+  inline ChangePasswordParam& operator=(const ChangePasswordParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ChangePasswordParam(ChangePasswordParam&& from) noexcept
+    : ChangePasswordParam() {
+    *this = ::std::move(from);
+  }
+
+  inline ChangePasswordParam& operator=(ChangePasswordParam&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ChangePasswordParam& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ChangePasswordParam* internal_default_instance() {
+    return reinterpret_cast<const ChangePasswordParam*>(
+               &_ChangePasswordParam_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    5;
+
+  void Swap(ChangePasswordParam* other);
+  friend void swap(ChangePasswordParam& a, ChangePasswordParam& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ChangePasswordParam* New() const final {
+    return CreateMaybeMessage<ChangePasswordParam>(NULL);
+  }
+
+  ChangePasswordParam* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<ChangePasswordParam>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const ChangePasswordParam& from);
+  void MergeFrom(const ChangePasswordParam& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ChangePasswordParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string email_address = 1;
+  void clear_email_address();
+  static const int kEmailAddressFieldNumber = 1;
+  const ::std::string& email_address() const;
+  void set_email_address(const ::std::string& value);
+  #if LANG_CXX11
+  void set_email_address(::std::string&& value);
+  #endif
+  void set_email_address(const char* value);
+  void set_email_address(const char* value, size_t size);
+  ::std::string* mutable_email_address();
+  ::std::string* release_email_address();
+  void set_allocated_email_address(::std::string* email_address);
+
+  // string old_password = 2;
+  void clear_old_password();
+  static const int kOldPasswordFieldNumber = 2;
+  const ::std::string& old_password() const;
+  void set_old_password(const ::std::string& value);
+  #if LANG_CXX11
+  void set_old_password(::std::string&& value);
+  #endif
+  void set_old_password(const char* value);
+  void set_old_password(const char* value, size_t size);
+  ::std::string* mutable_old_password();
+  ::std::string* release_old_password();
+  void set_allocated_old_password(::std::string* old_password);
+
+  // string new_password = 3;
+  void clear_new_password();
+  static const int kNewPasswordFieldNumber = 3;
+  const ::std::string& new_password() const;
+  void set_new_password(const ::std::string& value);
+  #if LANG_CXX11
+  void set_new_password(::std::string&& value);
+  #endif
+  void set_new_password(const char* value);
+  void set_new_password(const char* value, size_t size);
+  ::std::string* mutable_new_password();
+  ::std::string* release_new_password();
+  void set_allocated_new_password(::std::string* new_password);
+
+  // @@protoc_insertion_point(class_scope:acafela.rpc.ChangePasswordParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr email_address_;
+  ::google::protobuf::internal::ArenaStringPtr old_password_;
+  ::google::protobuf::internal::ArenaStringPtr new_password_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_UserProfile_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class RestorePasswordParam : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:acafela.rpc.RestorePasswordParam) */ {
+ public:
+  RestorePasswordParam();
+  virtual ~RestorePasswordParam();
+
+  RestorePasswordParam(const RestorePasswordParam& from);
+
+  inline RestorePasswordParam& operator=(const RestorePasswordParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  RestorePasswordParam(RestorePasswordParam&& from) noexcept
+    : RestorePasswordParam() {
+    *this = ::std::move(from);
+  }
+
+  inline RestorePasswordParam& operator=(RestorePasswordParam&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const RestorePasswordParam& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const RestorePasswordParam* internal_default_instance() {
+    return reinterpret_cast<const RestorePasswordParam*>(
+               &_RestorePasswordParam_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    6;
+
+  void Swap(RestorePasswordParam* other);
+  friend void swap(RestorePasswordParam& a, RestorePasswordParam& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline RestorePasswordParam* New() const final {
+    return CreateMaybeMessage<RestorePasswordParam>(NULL);
+  }
+
+  RestorePasswordParam* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<RestorePasswordParam>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const RestorePasswordParam& from);
+  void MergeFrom(const RestorePasswordParam& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(RestorePasswordParam* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string email_address = 1;
+  void clear_email_address();
+  static const int kEmailAddressFieldNumber = 1;
+  const ::std::string& email_address() const;
+  void set_email_address(const ::std::string& value);
+  #if LANG_CXX11
+  void set_email_address(::std::string&& value);
+  #endif
+  void set_email_address(const char* value);
+  void set_email_address(const char* value, size_t size);
+  ::std::string* mutable_email_address();
+  ::std::string* release_email_address();
+  void set_allocated_email_address(::std::string* email_address);
+
+  // string phone_number = 2;
+  void clear_phone_number();
+  static const int kPhoneNumberFieldNumber = 2;
+  const ::std::string& phone_number() const;
+  void set_phone_number(const ::std::string& value);
+  #if LANG_CXX11
+  void set_phone_number(::std::string&& value);
+  #endif
+  void set_phone_number(const char* value);
+  void set_phone_number(const char* value, size_t size);
+  ::std::string* mutable_phone_number();
+  ::std::string* release_phone_number();
+  void set_allocated_phone_number(::std::string* phone_number);
+
+  // @@protoc_insertion_point(class_scope:acafela.rpc.RestorePasswordParam)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr email_address_;
+  ::google::protobuf::internal::ArenaStringPtr phone_number_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_UserProfile_2eproto::TableStruct;
+};
 // ===================================================================
 
 
@@ -281,6 +936,77 @@ class VersionInfo : public ::google::protobuf::Message /* @@protoc_insertion_poi
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
 // Empty
+
+// -------------------------------------------------------------------
+
+// Error
+
+// int32 err = 1;
+inline void Error::clear_err() {
+  err_ = 0;
+}
+inline ::google::protobuf::int32 Error::err() const {
+  // @@protoc_insertion_point(field_get:acafela.rpc.Error.err)
+  return err_;
+}
+inline void Error::set_err(::google::protobuf::int32 value) {
+  
+  err_ = value;
+  // @@protoc_insertion_point(field_set:acafela.rpc.Error.err)
+}
+
+// string message = 2;
+inline void Error::clear_message() {
+  message_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Error::message() const {
+  // @@protoc_insertion_point(field_get:acafela.rpc.Error.message)
+  return message_.GetNoArena();
+}
+inline void Error::set_message(const ::std::string& value) {
+  
+  message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:acafela.rpc.Error.message)
+}
+#if LANG_CXX11
+inline void Error::set_message(::std::string&& value) {
+  
+  message_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:acafela.rpc.Error.message)
+}
+#endif
+inline void Error::set_message(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:acafela.rpc.Error.message)
+}
+inline void Error::set_message(const char* value, size_t size) {
+  
+  message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:acafela.rpc.Error.message)
+}
+inline ::std::string* Error::mutable_message() {
+  
+  // @@protoc_insertion_point(field_mutable:acafela.rpc.Error.message)
+  return message_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Error::release_message() {
+  // @@protoc_insertion_point(field_release:acafela.rpc.Error.message)
+  
+  return message_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Error::set_allocated_message(::std::string* message) {
+  if (message != NULL) {
+    
+  } else {
+    
+  }
+  message_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), message);
+  // @@protoc_insertion_point(field_set_allocated:acafela.rpc.Error.message)
+}
 
 // -------------------------------------------------------------------
 
@@ -339,9 +1065,513 @@ inline void VersionInfo::set_allocated_version(::std::string* version) {
   // @@protoc_insertion_point(field_set_allocated:acafela.rpc.VersionInfo.version)
 }
 
+// -------------------------------------------------------------------
+
+// RegisterParam
+
+// string email_address = 1;
+inline void RegisterParam::clear_email_address() {
+  email_address_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RegisterParam::email_address() const {
+  // @@protoc_insertion_point(field_get:acafela.rpc.RegisterParam.email_address)
+  return email_address_.GetNoArena();
+}
+inline void RegisterParam::set_email_address(const ::std::string& value) {
+  
+  email_address_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:acafela.rpc.RegisterParam.email_address)
+}
+#if LANG_CXX11
+inline void RegisterParam::set_email_address(::std::string&& value) {
+  
+  email_address_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:acafela.rpc.RegisterParam.email_address)
+}
+#endif
+inline void RegisterParam::set_email_address(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  email_address_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:acafela.rpc.RegisterParam.email_address)
+}
+inline void RegisterParam::set_email_address(const char* value, size_t size) {
+  
+  email_address_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:acafela.rpc.RegisterParam.email_address)
+}
+inline ::std::string* RegisterParam::mutable_email_address() {
+  
+  // @@protoc_insertion_point(field_mutable:acafela.rpc.RegisterParam.email_address)
+  return email_address_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RegisterParam::release_email_address() {
+  // @@protoc_insertion_point(field_release:acafela.rpc.RegisterParam.email_address)
+  
+  return email_address_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RegisterParam::set_allocated_email_address(::std::string* email_address) {
+  if (email_address != NULL) {
+    
+  } else {
+    
+  }
+  email_address_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), email_address);
+  // @@protoc_insertion_point(field_set_allocated:acafela.rpc.RegisterParam.email_address)
+}
+
+// string password = 2;
+inline void RegisterParam::clear_password() {
+  password_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RegisterParam::password() const {
+  // @@protoc_insertion_point(field_get:acafela.rpc.RegisterParam.password)
+  return password_.GetNoArena();
+}
+inline void RegisterParam::set_password(const ::std::string& value) {
+  
+  password_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:acafela.rpc.RegisterParam.password)
+}
+#if LANG_CXX11
+inline void RegisterParam::set_password(::std::string&& value) {
+  
+  password_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:acafela.rpc.RegisterParam.password)
+}
+#endif
+inline void RegisterParam::set_password(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  password_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:acafela.rpc.RegisterParam.password)
+}
+inline void RegisterParam::set_password(const char* value, size_t size) {
+  
+  password_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:acafela.rpc.RegisterParam.password)
+}
+inline ::std::string* RegisterParam::mutable_password() {
+  
+  // @@protoc_insertion_point(field_mutable:acafela.rpc.RegisterParam.password)
+  return password_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RegisterParam::release_password() {
+  // @@protoc_insertion_point(field_release:acafela.rpc.RegisterParam.password)
+  
+  return password_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RegisterParam::set_allocated_password(::std::string* password) {
+  if (password != NULL) {
+    
+  } else {
+    
+  }
+  password_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), password);
+  // @@protoc_insertion_point(field_set_allocated:acafela.rpc.RegisterParam.password)
+}
+
+// -------------------------------------------------------------------
+
+// RegisterResp
+
+// .acafela.rpc.Error error = 1;
+inline bool RegisterResp::has_error() const {
+  return this != internal_default_instance() && error_ != NULL;
+}
+inline void RegisterResp::clear_error() {
+  if (GetArenaNoVirtual() == NULL && error_ != NULL) {
+    delete error_;
+  }
+  error_ = NULL;
+}
+inline const ::acafela::rpc::Error& RegisterResp::_internal_error() const {
+  return *error_;
+}
+inline const ::acafela::rpc::Error& RegisterResp::error() const {
+  const ::acafela::rpc::Error* p = error_;
+  // @@protoc_insertion_point(field_get:acafela.rpc.RegisterResp.error)
+  return p != NULL ? *p : *reinterpret_cast<const ::acafela::rpc::Error*>(
+      &::acafela::rpc::_Error_default_instance_);
+}
+inline ::acafela::rpc::Error* RegisterResp::release_error() {
+  // @@protoc_insertion_point(field_release:acafela.rpc.RegisterResp.error)
+  
+  ::acafela::rpc::Error* temp = error_;
+  error_ = NULL;
+  return temp;
+}
+inline ::acafela::rpc::Error* RegisterResp::mutable_error() {
+  
+  if (error_ == NULL) {
+    auto* p = CreateMaybeMessage<::acafela::rpc::Error>(GetArenaNoVirtual());
+    error_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:acafela.rpc.RegisterResp.error)
+  return error_;
+}
+inline void RegisterResp::set_allocated_error(::acafela::rpc::Error* error) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete error_;
+  }
+  if (error) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      error = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, error, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  error_ = error;
+  // @@protoc_insertion_point(field_set_allocated:acafela.rpc.RegisterResp.error)
+}
+
+// string phone_number = 2;
+inline void RegisterResp::clear_phone_number() {
+  phone_number_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RegisterResp::phone_number() const {
+  // @@protoc_insertion_point(field_get:acafela.rpc.RegisterResp.phone_number)
+  return phone_number_.GetNoArena();
+}
+inline void RegisterResp::set_phone_number(const ::std::string& value) {
+  
+  phone_number_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:acafela.rpc.RegisterResp.phone_number)
+}
+#if LANG_CXX11
+inline void RegisterResp::set_phone_number(::std::string&& value) {
+  
+  phone_number_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:acafela.rpc.RegisterResp.phone_number)
+}
+#endif
+inline void RegisterResp::set_phone_number(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  phone_number_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:acafela.rpc.RegisterResp.phone_number)
+}
+inline void RegisterResp::set_phone_number(const char* value, size_t size) {
+  
+  phone_number_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:acafela.rpc.RegisterResp.phone_number)
+}
+inline ::std::string* RegisterResp::mutable_phone_number() {
+  
+  // @@protoc_insertion_point(field_mutable:acafela.rpc.RegisterResp.phone_number)
+  return phone_number_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RegisterResp::release_phone_number() {
+  // @@protoc_insertion_point(field_release:acafela.rpc.RegisterResp.phone_number)
+  
+  return phone_number_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RegisterResp::set_allocated_phone_number(::std::string* phone_number) {
+  if (phone_number != NULL) {
+    
+  } else {
+    
+  }
+  phone_number_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), phone_number);
+  // @@protoc_insertion_point(field_set_allocated:acafela.rpc.RegisterResp.phone_number)
+}
+
+// -------------------------------------------------------------------
+
+// ChangePasswordParam
+
+// string email_address = 1;
+inline void ChangePasswordParam::clear_email_address() {
+  email_address_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ChangePasswordParam::email_address() const {
+  // @@protoc_insertion_point(field_get:acafela.rpc.ChangePasswordParam.email_address)
+  return email_address_.GetNoArena();
+}
+inline void ChangePasswordParam::set_email_address(const ::std::string& value) {
+  
+  email_address_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:acafela.rpc.ChangePasswordParam.email_address)
+}
+#if LANG_CXX11
+inline void ChangePasswordParam::set_email_address(::std::string&& value) {
+  
+  email_address_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:acafela.rpc.ChangePasswordParam.email_address)
+}
+#endif
+inline void ChangePasswordParam::set_email_address(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  email_address_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:acafela.rpc.ChangePasswordParam.email_address)
+}
+inline void ChangePasswordParam::set_email_address(const char* value, size_t size) {
+  
+  email_address_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:acafela.rpc.ChangePasswordParam.email_address)
+}
+inline ::std::string* ChangePasswordParam::mutable_email_address() {
+  
+  // @@protoc_insertion_point(field_mutable:acafela.rpc.ChangePasswordParam.email_address)
+  return email_address_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ChangePasswordParam::release_email_address() {
+  // @@protoc_insertion_point(field_release:acafela.rpc.ChangePasswordParam.email_address)
+  
+  return email_address_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ChangePasswordParam::set_allocated_email_address(::std::string* email_address) {
+  if (email_address != NULL) {
+    
+  } else {
+    
+  }
+  email_address_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), email_address);
+  // @@protoc_insertion_point(field_set_allocated:acafela.rpc.ChangePasswordParam.email_address)
+}
+
+// string old_password = 2;
+inline void ChangePasswordParam::clear_old_password() {
+  old_password_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ChangePasswordParam::old_password() const {
+  // @@protoc_insertion_point(field_get:acafela.rpc.ChangePasswordParam.old_password)
+  return old_password_.GetNoArena();
+}
+inline void ChangePasswordParam::set_old_password(const ::std::string& value) {
+  
+  old_password_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:acafela.rpc.ChangePasswordParam.old_password)
+}
+#if LANG_CXX11
+inline void ChangePasswordParam::set_old_password(::std::string&& value) {
+  
+  old_password_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:acafela.rpc.ChangePasswordParam.old_password)
+}
+#endif
+inline void ChangePasswordParam::set_old_password(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  old_password_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:acafela.rpc.ChangePasswordParam.old_password)
+}
+inline void ChangePasswordParam::set_old_password(const char* value, size_t size) {
+  
+  old_password_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:acafela.rpc.ChangePasswordParam.old_password)
+}
+inline ::std::string* ChangePasswordParam::mutable_old_password() {
+  
+  // @@protoc_insertion_point(field_mutable:acafela.rpc.ChangePasswordParam.old_password)
+  return old_password_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ChangePasswordParam::release_old_password() {
+  // @@protoc_insertion_point(field_release:acafela.rpc.ChangePasswordParam.old_password)
+  
+  return old_password_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ChangePasswordParam::set_allocated_old_password(::std::string* old_password) {
+  if (old_password != NULL) {
+    
+  } else {
+    
+  }
+  old_password_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), old_password);
+  // @@protoc_insertion_point(field_set_allocated:acafela.rpc.ChangePasswordParam.old_password)
+}
+
+// string new_password = 3;
+inline void ChangePasswordParam::clear_new_password() {
+  new_password_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ChangePasswordParam::new_password() const {
+  // @@protoc_insertion_point(field_get:acafela.rpc.ChangePasswordParam.new_password)
+  return new_password_.GetNoArena();
+}
+inline void ChangePasswordParam::set_new_password(const ::std::string& value) {
+  
+  new_password_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:acafela.rpc.ChangePasswordParam.new_password)
+}
+#if LANG_CXX11
+inline void ChangePasswordParam::set_new_password(::std::string&& value) {
+  
+  new_password_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:acafela.rpc.ChangePasswordParam.new_password)
+}
+#endif
+inline void ChangePasswordParam::set_new_password(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  new_password_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:acafela.rpc.ChangePasswordParam.new_password)
+}
+inline void ChangePasswordParam::set_new_password(const char* value, size_t size) {
+  
+  new_password_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:acafela.rpc.ChangePasswordParam.new_password)
+}
+inline ::std::string* ChangePasswordParam::mutable_new_password() {
+  
+  // @@protoc_insertion_point(field_mutable:acafela.rpc.ChangePasswordParam.new_password)
+  return new_password_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ChangePasswordParam::release_new_password() {
+  // @@protoc_insertion_point(field_release:acafela.rpc.ChangePasswordParam.new_password)
+  
+  return new_password_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ChangePasswordParam::set_allocated_new_password(::std::string* new_password) {
+  if (new_password != NULL) {
+    
+  } else {
+    
+  }
+  new_password_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), new_password);
+  // @@protoc_insertion_point(field_set_allocated:acafela.rpc.ChangePasswordParam.new_password)
+}
+
+// -------------------------------------------------------------------
+
+// RestorePasswordParam
+
+// string email_address = 1;
+inline void RestorePasswordParam::clear_email_address() {
+  email_address_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RestorePasswordParam::email_address() const {
+  // @@protoc_insertion_point(field_get:acafela.rpc.RestorePasswordParam.email_address)
+  return email_address_.GetNoArena();
+}
+inline void RestorePasswordParam::set_email_address(const ::std::string& value) {
+  
+  email_address_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:acafela.rpc.RestorePasswordParam.email_address)
+}
+#if LANG_CXX11
+inline void RestorePasswordParam::set_email_address(::std::string&& value) {
+  
+  email_address_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:acafela.rpc.RestorePasswordParam.email_address)
+}
+#endif
+inline void RestorePasswordParam::set_email_address(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  email_address_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:acafela.rpc.RestorePasswordParam.email_address)
+}
+inline void RestorePasswordParam::set_email_address(const char* value, size_t size) {
+  
+  email_address_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:acafela.rpc.RestorePasswordParam.email_address)
+}
+inline ::std::string* RestorePasswordParam::mutable_email_address() {
+  
+  // @@protoc_insertion_point(field_mutable:acafela.rpc.RestorePasswordParam.email_address)
+  return email_address_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RestorePasswordParam::release_email_address() {
+  // @@protoc_insertion_point(field_release:acafela.rpc.RestorePasswordParam.email_address)
+  
+  return email_address_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RestorePasswordParam::set_allocated_email_address(::std::string* email_address) {
+  if (email_address != NULL) {
+    
+  } else {
+    
+  }
+  email_address_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), email_address);
+  // @@protoc_insertion_point(field_set_allocated:acafela.rpc.RestorePasswordParam.email_address)
+}
+
+// string phone_number = 2;
+inline void RestorePasswordParam::clear_phone_number() {
+  phone_number_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RestorePasswordParam::phone_number() const {
+  // @@protoc_insertion_point(field_get:acafela.rpc.RestorePasswordParam.phone_number)
+  return phone_number_.GetNoArena();
+}
+inline void RestorePasswordParam::set_phone_number(const ::std::string& value) {
+  
+  phone_number_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:acafela.rpc.RestorePasswordParam.phone_number)
+}
+#if LANG_CXX11
+inline void RestorePasswordParam::set_phone_number(::std::string&& value) {
+  
+  phone_number_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:acafela.rpc.RestorePasswordParam.phone_number)
+}
+#endif
+inline void RestorePasswordParam::set_phone_number(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  phone_number_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:acafela.rpc.RestorePasswordParam.phone_number)
+}
+inline void RestorePasswordParam::set_phone_number(const char* value, size_t size) {
+  
+  phone_number_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:acafela.rpc.RestorePasswordParam.phone_number)
+}
+inline ::std::string* RestorePasswordParam::mutable_phone_number() {
+  
+  // @@protoc_insertion_point(field_mutable:acafela.rpc.RestorePasswordParam.phone_number)
+  return phone_number_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RestorePasswordParam::release_phone_number() {
+  // @@protoc_insertion_point(field_release:acafela.rpc.RestorePasswordParam.phone_number)
+  
+  return phone_number_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RestorePasswordParam::set_allocated_phone_number(::std::string* phone_number) {
+  if (phone_number != NULL) {
+    
+  } else {
+    
+  }
+  phone_number_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), phone_number);
+  // @@protoc_insertion_point(field_set_allocated:acafela.rpc.RestorePasswordParam.phone_number)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 
