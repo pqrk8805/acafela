@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.acafela.harmony.R;
 import com.acafela.harmony.userprofile.UserProfileGrpc;
@@ -45,29 +46,23 @@ public class UserProfileActivity extends AppCompatActivity
             return;
         }
 
-        if (connect(serverAddress) == 0) {
-            UserProfileBlockingStub blockingStub
-                                    = UserProfileGrpc.newBlockingStub(mChannel);
-            VersionInfo versionInfo = blockingStub.getVersion(EMPTY_MSG);
-            Log.i(LOG_TAG, "Server Version: " + versionInfo.getVersion());
-
-            TextView tv = findViewById(R.id.txtUserProfileServerVersion);
-            tv.setText(versionInfo.getVersion());
-        }
-    }
-
-    private int connect(String address)
-    {
-        int err = 0;
         try {
             mChannel = ManagedChannelBuilder
-                                        .forAddress(address, SERVER_PORT)
-                                        .usePlaintext()
-                                        .build();
+                                    .forAddress(serverAddress, SERVER_PORT)
+                                    .usePlaintext()
+                                    .build();
+            UserProfileBlockingStub blockingStub
+                                    = UserProfileGrpc.newBlockingStub(mChannel);
+
+            // just test to connection
+            //
+            VersionInfo versionInfo = blockingStub.getVersion(EMPTY_MSG);
+            Log.i(LOG_TAG, "Server Version: " + versionInfo.getVersion());
+            TextView tv = findViewById(R.id.txtUserProfileServerVersion);
+            tv.setText(versionInfo.getVersion());
         } catch (Exception e) {
             Log.e(LOG_TAG, e.getMessage());
-            err = -1;
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
-        return err;
     }
 }
