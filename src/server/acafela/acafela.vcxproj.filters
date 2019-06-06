@@ -30,14 +30,14 @@
     <ClCompile Include="src\UserProfile\UserProfile.pb.cc">
       <Filter>Source Files\UserProfile</Filter>
     </ClCompile>
-    <ClCompile Include="src\Communicator\commonicator_ex.cpp">
-      <Filter>Source Files\Communicator</Filter>
-    </ClCompile>
     <ClCompile Include="src\UserProfile\UserProfileRpc.cpp">
       <Filter>Source Files\UserProfile</Filter>
     </ClCompile>
     <ClCompile Include="src\Hislog.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Communicator\communicator.cpp">
+      <Filter>Source Files\Communicator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -52,6 +52,9 @@
     </ClInclude>
     <ClInclude Include="src\Hislog.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Communicator\communicator.h">
+      <Filter>Source Files\Communicator</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

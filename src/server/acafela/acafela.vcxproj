@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Communicator\commonicator_ex.cpp" />
+    <ClCompile Include="src\Communicator\communicator.cpp" />
     <ClCompile Include="src\Hislog.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </ExcludedFromBuild>
@@ -39,6 +39,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Communicator\communicator.h" />
     <ClInclude Include="src\Hislog.h" />
     <ClInclude Include="src\UserProfile\UserProfile.grpc.pb.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
