@@ -5,8 +5,6 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <atlstr.h>
-#include <tlhelp32.h>
 #include <time.h>
 #include <Windows.h>
 
