@@ -60,6 +60,8 @@ public class HarmonyService extends Service {
 
         int sendPort =5000;
         int receivePort =5001;
+        //int sendPort =5002;
+        //int receivePort =5003;
 
         senderAudio = new SenderAudio();
         senderAudio.setSession(serverIp,sendPort);
