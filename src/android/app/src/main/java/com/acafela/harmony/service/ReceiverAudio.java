@@ -25,6 +25,7 @@ public class ReceiverAudio implements DataReceiver {
     private static final int BYTES_PER_SAMPLE = 2;    // Bytes Per Sampl;e
     private static final int RAW_BUFFER_SIZE = SAMPLE_RATE / (MILLISECONDS_IN_A_SECOND / SAMPLE_INTERVAL) * BYTES_PER_SAMPLE;
     private static final int GSM_BUFFER_SIZE = 33;
+    private static final boolean isTimeStamp = true;
 
     private static final String LOG_TAG = "ReceiverAudio";
     private  InetAddress mIpAddress;
@@ -111,12 +112,30 @@ public class ReceiverAudio implements DataReceiver {
                     RecvUdpSocket.bind(new InetSocketAddress(mPort));
 
                     while (UdpVoipReceiveDataThreadRun) {
-                        byte[] rawbuf = new byte[RAW_BUFFER_SIZE];
-                        DatagramPacket packet = new DatagramPacket(rawbuf, RAW_BUFFER_SIZE);
-                        //Log.i(LOG_TAG, "Packet received: " + packet.getLength());
-                        RecvUdpSocket.receive(packet);
-                        IncommingpacketQueue.add(rawbuf);
+                        if(isTimeStamp) {
+                            byte[] rawbuf = new byte[RAW_BUFFER_SIZE+4];
+                            DatagramPacket packet = new DatagramPacket(rawbuf, RAW_BUFFER_SIZE+4);
 
+                            RecvUdpSocket.receive(packet);
+                            Long tsLong = System.currentTimeMillis() % 10000;
+
+                            int timestamp;
+                            timestamp =  (rawbuf[0]&0xFF)<<24;
+                            timestamp += (rawbuf[1]&0xFF)<<16;
+                            timestamp += (rawbuf[2]&0xFF)<<8;
+                            timestamp += rawbuf[3]&0xFF;
+                            //Log.i(LOG_TAG, "Packet received: " + timestamp);
+                            Log.i(LOG_TAG, "Packet latency: " + (tsLong - timestamp));
+                            //Log.i(LOG_TAG, "Packet received: " + packet.getLength());
+                            IncommingpacketQueue.add(rawbuf);
+                        }
+                        else {
+                            byte[] rawbuf = new byte[RAW_BUFFER_SIZE];
+                            DatagramPacket packet = new DatagramPacket(rawbuf, RAW_BUFFER_SIZE);
+                            //Log.i(LOG_TAG, "Packet received: " + packet.getLength());
+                            RecvUdpSocket.receive(packet);
+                            IncommingpacketQueue.add(rawbuf);
+                        }
                         /*byte[] rawbuf = new byte[RAW_BUFFER_SIZE];
                         byte[] gsmbuf = new byte[GSM_BUFFER_SIZE];
                         DatagramPacket packet = new DatagramPacket(gsmbuf, GSM_BUFFER_SIZE);
@@ -188,7 +207,10 @@ public class ReceiverAudio implements DataReceiver {
                             byte[] AudioOutputBufferBytes = IncommingpacketQueue.remove();
                             //if (!MainActivity.BoostAudio)
                             if (true) {
-                                OutputTrack.write(AudioOutputBufferBytes, 0, RAW_BUFFER_SIZE);
+                                if(isTimeStamp)
+                                    OutputTrack.write(AudioOutputBufferBytes, 4, RAW_BUFFER_SIZE);
+                                else
+                                    OutputTrack.write(AudioOutputBufferBytes, 0, RAW_BUFFER_SIZE);
                             } else {
                                 short[] AudioOutputBufferShorts = new short[AudioOutputBufferBytes.length / 2];
                                 // to turn bytes to shorts as either big endian or little endian.
