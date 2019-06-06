@@ -12,8 +12,8 @@ void pingpongCommunicator_init() {
 		exit(EXIT_FAILURE);
 	}
 	Conversation * conversation = new Conversation();
-	conversation->addCommunicator("10.0.1.151", { 0,0 }, { 5000,5001 });
-	conversation->addCommunicator("10.0.1.152", { 0,0 }, { 5002,5003 });
+	conversation->addCommunicator("10.0.1.230", { 0,0 }, { 5001,5000 });
+	conversation->addCommunicator("10.0.1.41", { 0,0 }, { 5003,5002 });
 }
 
 void Conversation::broadcast(int len, char * data) {
@@ -42,9 +42,11 @@ Communicator::Communicator(Conversation * conversationRoom, std::string clientIP
 	this->clientIP = clientIP;
 	this->controlStreamPort = controlStreamPort;
 	this->dataStreamPort = dataStreamPort;
+	printf("\n------------Init 4 clientIP : %s \n\n", clientIP);
 	InitializeCriticalSection(&crit);
 	controlStream_create();
 	dataStream_create();
+	printf("\n------------Done 4 clientIP : %s \n\n\n", clientIP);
 };
 
 void Communicator::controlStream_create() {
@@ -55,11 +57,11 @@ void Communicator::dataStream_create() {
 	dataStreamSocket.server = SocketCreator().createSocket_serverSocket(dataStreamPort.receive, IPPROTO_UDP);
 	dataStreamSocket.client = SocketCreator().createSocket_clientSocket(clientIP, dataStreamPort.send, IPPROTO_UDP);
 
+	struct sockaddr_in * server = new struct sockaddr_in;
+	server->sin_family = AF_INET;
+	server->sin_port = htons(dataStreamPort.send);
+	inet_pton(AF_INET, clientIP.c_str(), &(server->sin_addr));
 	// send
-	struct sockaddr_in server;
-	server.sin_family = AF_INET;
-	inet_pton(AF_INET, clientIP.c_str(), &(server.sin_addr));
-	server.sin_port = htons(dataStreamPort.send);
 	threadList.push_back(new std::thread([&] { 
 		while (1) {
 			EnterCriticalSection(&crit);
@@ -72,7 +74,7 @@ void Communicator::dataStream_create() {
 			dataBuffer.erase(dataBuffer.begin());
 			LeaveCriticalSection(&crit);
 
-			if (sendto(dataStreamSocket.client, buf, recv_len, 0, (struct sockaddr*) &server, sizeof(server)) == SOCKET_ERROR)
+			if (sendto(dataStreamSocket.client, buf, recv_len, 0, (struct sockaddr*) server, sizeof(struct sockaddr_in)) == SOCKET_ERROR)
 				printf("sendto() failed with error code : %d\n", WSAGetLastError());
 			delete buf;
 		}
@@ -91,6 +93,8 @@ void Communicator::dataStream_create() {
 				//exit(EXIT_FAILURE);
 			}
 			conversation->broadcast_exceptMe(this, recv_len, buf);
+			//conversation->broadcast(recv_len, buf);
+			delete buf;
 		}
 	}));
 	for (auto * th : threadList)
@@ -99,6 +103,8 @@ void Communicator::dataStream_create() {
 
 void Communicator::dataStream_addToSend(int len, char * data) {
 	char * buf = new char[BUFLEN];
+	memset(buf, NULL, BUFLEN);
+	memcpy(buf, data, len+1);
 	EnterCriticalSection(&crit);
 	dataBuffer.push_back(std::make_tuple(len, buf));
 	LeaveCriticalSection(&crit);
@@ -108,8 +114,8 @@ SOCKET SocketCreator::createSocket_clientSocket(std::string clientIP, int port, 
 	SOCKET s;
 	if ((s = socket(AF_INET, SOCK_DGRAM, socketType)) == INVALID_SOCKET)
 		printf("Could not create socket : %d", WSAGetLastError());
-	
-	printf("Client Socket created.\n");
+	printf("Client Socket created : %s.\n", clientIP.c_str());
+
 	struct sockaddr_in server;
 	server.sin_family = AF_INET;
 	inet_pton(AF_INET, clientIP.c_str(), &(server.sin_addr));
@@ -124,15 +130,11 @@ SOCKET SocketCreator::createSocket_clientSocket(std::string clientIP, int port, 
 
 SOCKET SocketCreator::createSocket_serverSocket(int port, IPPROTO socketType) {
 	SOCKET s;
-	struct sockaddr_in server;
-
-	//Create a socket
 	if ((s = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == INVALID_SOCKET)
-	{
 		printf("Could not create socket : %d", WSAGetLastError());
-	}
 	printf("Server Socket created.\n");
 
+	struct sockaddr_in server;
 	server.sin_family = AF_INET;
 	server.sin_addr.s_addr = INADDR_ANY;
 	server.sin_port = htons(port);
