@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Harmony</string>
     <string name="LocalIp">Local IP: %1$s</string>
+
+    <string-array name="audioPath_array">
+        <item>Speaker</item>
+        <item>EarPiece</item>
+        <item>Bluetooth</item>
+    </string-array>
 </resources>

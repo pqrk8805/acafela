@@ -1,5 +1,6 @@
 package com.acafela.harmony.activity;
 
+import android.content.Context;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioRecord;
@@ -10,15 +11,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.acafela.harmony.R;
 
 public class TestEncodingActivity extends AppCompatActivity {
     private static final String LOG_TAG = TestEncodingActivity.class.getName();
 
+    private static final int SPINNER_SPEAKER = 0;
+    private static final int SPINNER_EARPIECE = 1;
+    private static final int SPINNER_BLUETOOTH = 2;
+
     Button mStartButton;
     Button mStopButton;
+    private AudioManager mAudioManager;
     AudioThread mAudioThread = new AudioThread();
 
     @Override
@@ -28,6 +38,61 @@ public class TestEncodingActivity extends AppCompatActivity {
 
         mStartButton = findViewById(R.id.start_button);
         mStopButton = findViewById(R.id.stop_button);
+
+        mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        mAudioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+
+        Spinner spinner = (Spinner) findViewById(R.id.audiopath_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.audioPath_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case SPINNER_SPEAKER:
+                    default:
+                        Toast.makeText(getApplicationContext(), "Speaker is Selected", Toast.LENGTH_SHORT).show();
+                        mAudioManager.setBluetoothScoOn(false);
+                        mAudioManager.stopBluetoothSco();
+                        mAudioManager.setSpeakerphoneOn(true);
+                        break;
+
+                    case SPINNER_EARPIECE:
+                        Toast.makeText(getApplicationContext(), "EarPiece is Selected", Toast.LENGTH_SHORT).show();
+                        mAudioManager.setBluetoothScoOn(false);
+                        mAudioManager.stopBluetoothSco();
+                        mAudioManager.setSpeakerphoneOn(false);
+                        break;
+
+                    case SPINNER_BLUETOOTH:
+                        Toast.makeText(getApplicationContext(), "Bluetooth is Selected", Toast.LENGTH_SHORT).show();
+                        mAudioManager.setSpeakerphoneOn(false);
+                        mAudioManager.setBluetoothScoOn(true);
+                        mAudioManager.startBluetoothSco();
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        spinner.setSelection(SPINNER_SPEAKER);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        mAudioThread.interrupt();
+        try {
+            mAudioThread.join();
+        } catch (InterruptedException e) {
+            Log.w(LOG_TAG, "Interrupted waiting for audio thread to finish");
+        }
     }
 
     public void onClickStartBtn(View v) {
