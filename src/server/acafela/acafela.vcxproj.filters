@@ -19,6 +19,9 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="Source Files\StorageAccessor">
+      <UniqueIdentifier>{35bd6000-c78b-471b-b4fa-feba017d5707}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -42,6 +45,9 @@
     <ClCompile Include="src\UserProfile\UserProfile.cpp">
       <Filter>Source Files\UserProfile</Filter>
     </ClCompile>
+    <ClCompile Include="src\StorageAccessor\FileStorageAccessor.cpp">
+      <Filter>Source Files\StorageAccessor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\UserProfile\UserProfile.grpc.pb.h">
@@ -61,6 +67,15 @@
     </ClInclude>
     <ClInclude Include="src\UserProfile\IUserProfile.h">
       <Filter>Source Files\UserProfile</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UserProfile\UserProfile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\StorageAccessor\FileStorageAccessor.h">
+      <Filter>Source Files\StorageAccessor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\StorageAccessor\IStorageAccessor.h">
+      <Filter>Source Files\StorageAccessor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

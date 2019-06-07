@@ -1,8 +1,9 @@
 #pragma once
 
 #include "IUserProfile.h"
+#include <memory>
 
-
+class IStorageAccessor;
 class UserProfile : public IUserProfile
 {
 public:
@@ -22,4 +23,7 @@ public:
     int restorePassword(
                 const std::string& emailAddress,
                 const std::string& phoneNumber) override;
+
+private:
+	std::unique_ptr<IStorageAccessor> mSA;
 };
