@@ -18,6 +18,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.acafela.harmony.R;
+import com.acafela.harmony.service.AudioEncoderCore;
+
+import java.io.IOException;
 
 public class TestEncodingActivity extends AppCompatActivity {
     private static final String LOG_TAG = TestEncodingActivity.class.getName();
@@ -30,6 +33,11 @@ public class TestEncodingActivity extends AppCompatActivity {
     Button mStopButton;
     private AudioManager mAudioManager;
     AudioThread mAudioThread = new AudioThread();
+
+    AudioEncoderCore mAudioEncoder = new AudioEncoderCore();
+
+    public TestEncodingActivity() throws IOException {
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,6 +177,16 @@ public class TestEncodingActivity extends AppCompatActivity {
                         offset += read;
                     }
 
+                    mAudioEncoder.queueInputBuffer(inBuf);
+/*                   byte[] temp = mAudioEncoder.dequeueOutputBuffer();
+                   if(temp != null) {
+                       inBuf = temp;
+                       Log.i("xxx", "output is ok!");
+                   }
+                   else
+                       Log.i("xxx", "output is null!");
+*/
+
                     track.write(inBuf, 0, inBuf.length);
                 }
             } finally {
@@ -176,6 +194,8 @@ public class TestEncodingActivity extends AppCompatActivity {
                 recorder.release();
                 track.stop();
                 track.release();
+                mAudioEncoder.release();
+                
             }
         }
     }

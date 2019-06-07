@@ -16,10 +16,12 @@ import java.nio.ByteBuffer;
 import java.util.LinkedList;
 import java.util.List;
 
-
 public class AudioEncoderCore {
     private static final String TAG = AudioEncoderCore.class.getName();
     private static final boolean VERBOSE = false;
+	private static final byte NULL = 0;
+
+	private final int DEQUEUE_TIMEOUT = 20;
 
     // TODO: these ought to be configurable as well
     private static final String MIME_TYPE = MediaFormat.MIMETYPE_AUDIO_AMR_NB;    // H.264 Advanced Video Coding
@@ -28,6 +30,9 @@ public class AudioEncoderCore {
 
     private MediaCodec mEncoder;
     private MediaCodec.BufferInfo mBufferInfo;
+
+	private MediaFormat mOutputFormat;
+
 //	AudioRecord mRecorder;
 //  private AudioThread mAudioThread = null;
 
@@ -49,6 +54,8 @@ public class AudioEncoderCore {
 
         mEncoder = MediaCodec.createEncoderByType(MIME_TYPE);		
 
+        // 일단 sync 로 구현해달라는 요청이 있음.. 그래서 sync 로 변경하고, async 는 잠시 묻어 둠.
+		/*
 		mEncoder.setCallback(new MediaCodec.Callback() {
 		  @Override
 		  public final void onInputBufferAvailable(MediaCodec codec, int index) {
@@ -57,10 +64,8 @@ public class AudioEncoderCore {
 
 			//
 
-			
 			// mEncoder.queueInputBuffer(inputBufferId, ��);
 		  }
-
 
 		  @Override
 		  public final void onOutputBufferAvailable(MediaCodec codec, int index, MediaCodec.BufferInfo info) {
@@ -79,16 +84,6 @@ public class AudioEncoderCore {
 		    // Can ignore if using getOutputFormat(outputBufferId)
 		    // mOutputFormat = format; // option B
 		  }
-/*
-			@Override
-			public final void onOutputFormatChanged(@NonNull MediaCodec mediaCodec, @NonNull MediaFormat mediaFormat) {
-				try {
-					onOutputFormatChangedSafe(mediaCodec, mediaFormat);
-				} catch (Exception exception) {
-					handleException(exception);
-				}
-			}
-*/
 
 		  @Override
 		  public final void onError(MediaCodec mediaCodec, MediaCodec.CodecException e) {
@@ -96,7 +91,7 @@ public class AudioEncoderCore {
 		  }
 
 		 });
-
+		*/
 		
         mEncoder.configure(
                 format,
@@ -110,14 +105,49 @@ public class AudioEncoderCore {
 				AudioRecord.getMinBufferSize(KEY_SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT));
 */
 
-        mEncoder.start();
- //       mRecorder.startRecording();
+		mOutputFormat = mEncoder.getOutputFormat();
 
+        mEncoder.start();
     }
 
 
+	public void queueInputBuffer(byte[] input) {
+		int nIndex = 0;
 
-	protected void startEncoding() {
+		nIndex = mEncoder.dequeueInputBuffer(DEQUEUE_TIMEOUT);
+		if (nIndex >= 0) {
+			ByteBuffer inputBuffer = mEncoder.getInputBuffer(nIndex);
+			inputBuffer.clear();
+			inputBuffer.put(input);
+			mEncoder.queueInputBuffer(nIndex, 0, input.length, 0, 0);
+		}
+	}
+
+	public byte[] dequeueOutputBuffer() {
+		int nIndex = 0;
+		byte[] output = new byte[10240000];
+		MediaCodec.BufferInfo info = new MediaCodec.BufferInfo();
+
+		nIndex = mEncoder.dequeueOutputBuffer(info, DEQUEUE_TIMEOUT);
+
+		if (nIndex >= 0) {
+			ByteBuffer outputBuffer = mEncoder.getOutputBuffer(nIndex);
+			MediaFormat bufferFormat = mEncoder.getOutputFormat(nIndex);
+			if (outputBuffer != null) {
+				outputBuffer.get(output);
+			}
+		}
+		else {
+			Log.e(TAG, "Check the encoder output buffer :" + nIndex);
+			return null;
+		}
+
+		//mEncoder.releaseOutputBuffer(nIndex, true);
+
+		return output;
+	}
+
+	public void startEncoding() {
 
     	/*
 		// create and execute audio capturing thread using internal mic
@@ -129,7 +159,7 @@ public class AudioEncoderCore {
 	}
 
 
-	protected void release() {
+	public void release() {
 
 		mEncoder.stop();
 		mEncoder.release();
@@ -137,71 +167,6 @@ public class AudioEncoderCore {
 //		mRecorder.release();
 
 	}
-
-	/*
-private class AudioThread extends Thread {
-	@Override
-	public void run() {
-		android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO);
-		try {
-			final int min_buffer_size = AudioRecord.getMinBufferSize(
-					KEY_SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO,
-				AudioFormat.ENCODING_PCM_16BIT);
-			int buffer_size = SAMPLES_PER_FRAME * FRAMES_PER_BUFFER;
-			if (buffer_size < min_buffer_size)
-				buffer_size = ((min_buffer_size / SAMPLES_PER_FRAME) + 1) * SAMPLES_PER_FRAME * 2;
-
-			AudioRecord audioRecord = null;
-			for (final int source : AUDIO_SOURCES) {
-				try {
-					audioRecord = new AudioRecord(
-						source, KEY_SAMPLE_RATE,
-						AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT, buffer_size);
-					if (audioRecord.getState() != AudioRecord.STATE_INITIALIZED)
-						audioRecord = null;
-				} catch (final Exception e) {
-					audioRecord = null;
-				}
-				if (audioRecord != null) break;
-			}
-			if (audioRecord != null) {
-				try {
-					if (mIsCapturing) {
-						Log.v(TAG, "AudioThread:start audio recording");
-						final ByteBuffer buf = ByteBuffer.allocateDirect(SAMPLES_PER_FRAME);
-						int readBytes;
-						audioRecord.startRecording();
-						try {
-							for (; mIsCapturing && !mRequestStop && !mIsEOS ;) {
-								// read audio data from internal mic
-								buf.clear();
-								readBytes = audioRecord.read(buf, SAMPLES_PER_FRAME);
-								if (readBytes > 0) {
-									// set audio data to encoder
-									buf.position(readBytes);
-									buf.flip();
-									encode(buf, readBytes, getPTSUs());
-									frameAvailableSoon();
-								}
-							}
-							frameAvailableSoon();
-						} finally {
-							audioRecord.stop();
-						}
-					}
-				} finally {
-					audioRecord.release();
-				}
-			} else {
-				Log.e(TAG, "failed to initialize AudioRecord");
-			}
-		} catch (final Exception e) {
-			Log.e(TAG, "AudioThread#run", e);
-		}
-		//if (DEBUG) Log.v(TAG, "AudioThread:finished");
-	}
-}
-*/
 
 }
 
