@@ -9,14 +9,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.acafela.harmony.R;
-import com.acafela.harmony.userprofile.UserProfileGrpc;
 import com.acafela.harmony.userprofile.UserProfileGrpc.UserProfileBlockingStub;
 import com.acafela.harmony.userprofile.UserProfileOuterClass.Empty;
 import com.acafela.harmony.userprofile.UserProfileOuterClass.VersionInfo;
 import com.acafela.harmony.userprofile.UserProfileRpc;
-
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
 
 public class UserProfileActivity extends AppCompatActivity
 {
@@ -45,26 +41,16 @@ public class UserProfileActivity extends AppCompatActivity
             return;
         }
 
-        /*
-        mChannel = ManagedChannelBuilder
-                                .forAddress(serverAddress, SERVER_PORT)
-                                .usePlaintext()
-                                .build();
-        */
         mUserProfileRpc = new UserProfileRpc(
-                serverAddress,
-                SERVER_PORT,
-                getResources().openRawResource(R.raw.ca),
-                getResources().openRawResource(R.raw.server));
+                                serverAddress,
+                                SERVER_PORT,
+                                getResources().openRawResource(R.raw.ca),
+                                getResources().openRawResource(R.raw.server));
         try {
             // just test to connection
             //
             UserProfileBlockingStub blockingStub
                                         = mUserProfileRpc.getBlockingStub();
-            /*
-            UserProfileBlockingStub blockingStub
-                                    = UserProfileGrpc.newBlockingStub(mChannel);
-            */
             VersionInfo versionInfo = blockingStub.getVersion(EMPTY_MSG);
             Log.i(LOG_TAG, "Server Version: " + versionInfo.getVersion());
             TextView tv = findViewById(R.id.txtUserProfileServerVersion);
@@ -74,12 +60,4 @@ public class UserProfileActivity extends AppCompatActivity
             Toast.makeText(this, "UNAVAILABLE", Toast.LENGTH_LONG).show();
         }
     }
-
-    /*
-    @Override
-    public Resources getResources()
-    {
-        return super.getResources();
-    }
-    */
 }
