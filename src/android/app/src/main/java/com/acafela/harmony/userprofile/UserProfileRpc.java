@@ -93,13 +93,13 @@ public class UserProfileRpc
             context = SSLContext.getInstance("TLS");
             context.init(null, tmf.getTrustManagers() , null);
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG, "Exception", e);
         } catch (KeyStoreException e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG, "Exception", e);
         } catch (KeyManagementException e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG, "Exception", e);
         }
-        return context.getSocketFactory();
+        return context != null ? context.getSocketFactory() : null;
     }
 
 }
