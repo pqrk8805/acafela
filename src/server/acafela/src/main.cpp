@@ -17,7 +17,7 @@ int main(int argc, char** argv)
 
     UserProfile userProfile;
     UserProfileRpc userProfileRpc(userProfile);
-    int err = userProfileRpc.start("10.0.1.3:9000");
+    int err = userProfileRpc.start("10.0.1.2:9000");
     if (err) {
         FUNC_LOGE("ERROR(%d): fail to start UserProfileRpc server", err);
         return err;

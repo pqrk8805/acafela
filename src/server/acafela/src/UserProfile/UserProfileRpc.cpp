@@ -43,7 +43,7 @@ std::string read(const std::string& filename)
 
 int UserProfileRpc::start(const std::string& addressUri)
 {
-#if 1
+#if 0
     ::grpc::ServerBuilder builder;
     builder.AddListeningPort(
                         addressUri,
@@ -55,7 +55,6 @@ int UserProfileRpc::start(const std::string& addressUri)
         return -1;
     }
 
-    mServer = server.release();
 #else
     std::string cert = read("server.crt");
 	std::string key = read ("server.key");
@@ -74,6 +73,8 @@ int UserProfileRpc::start(const std::string& addressUri)
     builder.RegisterService(this);
     std::unique_ptr<::grpc::Server> server(builder.BuildAndStart());
 #endif
+
+    mServer = server.release();
     FUNC_LOGI("UserProfile RPC server listen on: %s", addressUri.c_str());
     std::thread t ( [this]() { this->wait(); } );
     mWorker.swap(t);
