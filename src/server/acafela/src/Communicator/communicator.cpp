@@ -13,7 +13,7 @@ void pingpongCommunicator_init() {
 	}
 	Conversation * conversation = new Conversation();
 	conversation->addCommunicator("10.0.1.230", { 0,0 }, { 5001,5000 });
-	conversation->addCommunicator("10.0.1.41", { 0,0 }, { 5003,5002 });
+	conversation->addCommunicator("10.0.2.41", { 0,0 }, { 5003,5002 });
 }
 
 void Conversation::broadcast(int len, char * data) {
@@ -42,11 +42,11 @@ Communicator::Communicator(Conversation * conversationRoom, std::string clientIP
 	this->clientIP = clientIP;
 	this->controlStreamPort = controlStreamPort;
 	this->dataStreamPort = dataStreamPort;
-	printf("\n------------Init 4 clientIP : %s \n\n", clientIP);
+	printf("\n------------Init 4 clientIP : %s \n\n", clientIP.c_str());
 	InitializeCriticalSection(&crit);
 	controlStream_create();
 	dataStream_create();
-	printf("\n------------Done 4 clientIP : %s \n\n\n", clientIP);
+	printf("\n------------Done 4 clientIP : %s \n\n\n", clientIP.c_str());
 };
 
 void Communicator::controlStream_create() {
@@ -57,10 +57,6 @@ void Communicator::dataStream_create() {
 	dataStreamSocket.server = SocketCreator().createSocket_serverSocket(dataStreamPort.receive, IPPROTO_UDP);
 	dataStreamSocket.client = SocketCreator().createSocket_clientSocket(clientIP, dataStreamPort.send, IPPROTO_UDP);
 
-	struct sockaddr_in * server = new struct sockaddr_in;
-	server->sin_family = AF_INET;
-	server->sin_port = htons(dataStreamPort.send);
-	inet_pton(AF_INET, clientIP.c_str(), &(server->sin_addr));
 	// send
 	threadList.push_back(new std::thread([&] { 
 		while (1) {
@@ -74,7 +70,11 @@ void Communicator::dataStream_create() {
 			dataBuffer.erase(dataBuffer.begin());
 			LeaveCriticalSection(&crit);
 
-			if (sendto(dataStreamSocket.client, buf, recv_len, 0, (struct sockaddr*) server, sizeof(struct sockaddr_in)) == SOCKET_ERROR)
+			struct sockaddr_in server;
+			server.sin_family = AF_INET;
+			server.sin_port = htons(dataStreamPort.send);
+			inet_pton(AF_INET, clientIP.c_str(), &(server.sin_addr));
+			if (sendto(dataStreamSocket.client, buf, recv_len, 0, (struct sockaddr*) &server, sizeof(struct sockaddr_in)) == SOCKET_ERROR)
 				printf("sendto() failed with error code : %d\n", WSAGetLastError());
 			delete buf;
 		}
@@ -94,6 +94,7 @@ void Communicator::dataStream_create() {
 			}
 			conversation->broadcast_exceptMe(this, recv_len, buf);
 			//conversation->broadcast(recv_len, buf);
+			//printf("rcvto() : %s\n", clientIP.c_str());
 			delete buf;
 		}
 	}));
