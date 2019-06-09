@@ -6,6 +6,9 @@ import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.util.Log;
+
+import com.acafela.harmony.crypto.ICrypto;
+
 import java.io.InputStream;
 import java.net.DatagramSocket;
 import java.net.DatagramPacket;
@@ -18,6 +21,7 @@ public class SenderAudio implements DataSender {
     private int mPort;
     private Thread mSenderThread = null;
     private boolean senderAudioThreadRun = false;
+    private ICrypto mCrypto;
 
     private static final int MILLISECONDS_IN_A_SECOND = 1000;
     private static final int SAMPLE_RATE = 8000; // Hertz
@@ -28,9 +32,15 @@ public class SenderAudio implements DataSender {
     private static final String LOG_TAG = "SenderAudio";
     private boolean isSenderAudioRun=false;
 
-    private static final boolean isTimeStamp = true;
+    private static final boolean isTimeStamp = false;
 
     private int mSimVoice;
+
+
+    public SenderAudio(ICrypto crypto)
+    {
+        mCrypto = crypto;
+    }
 
     public boolean setSession(String ip,int port)
     {
@@ -151,7 +161,13 @@ public class SenderAudio implements DataSender {
                                 DatagramPacket packet2 = new DatagramPacket(rawbuf, RAW_BUFFER_SIZE + 5, mIpAddress, mPort);
                                 socket.send(packet2);
                             } else {
-                                DatagramPacket packet = new DatagramPacket(rawbuf, RAW_BUFFER_SIZE, mIpAddress, mPort);
+                                byte[] encrypted = mCrypto.encrypt(rawbuf);
+                                //byte[] encrypted = rawbuf;
+                                DatagramPacket packet = new DatagramPacket(
+                                                            encrypted,
+                                                            encrypted.length,
+                                                            mIpAddress,
+                                                            mPort);
                                 socket.send(packet);
                             }
                         }

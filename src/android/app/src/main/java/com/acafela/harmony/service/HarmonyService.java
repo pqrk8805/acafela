@@ -9,6 +9,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.acafela.harmony.activity.CallActivity;
+import com.acafela.harmony.crypto.CryptoFactory;
+import com.acafela.harmony.crypto.ICrypto;
 
 public class HarmonyService extends Service {
     private static final String LOG_TAG = HarmonyService.class.getName();
@@ -60,18 +62,20 @@ public class HarmonyService extends Service {
         Log.i(LOG_TAG, "initiateCall");
         showToastInService("initiateCall");
 
+        ICrypto crypto = CryptoFactory.create("AES");
+        crypto.init("12345".getBytes());
+
         int sendPort =5000;
         //int receivePort =5001;
         int receivePort =5000;
         //int sendPort =5002;
         //int receivePort =5003;
 
-        senderAudio = new SenderAudio();
+        senderAudio = new SenderAudio(crypto);
         senderAudio.setSession(serverIp,sendPort);
         senderAudio.startSender();
 
-
-        receiverAudio = new ReceiverAudio(getApplicationContext());
+        receiverAudio = new ReceiverAudio(getApplicationContext(), crypto);
         receiverAudio.setSession(serverIp,receivePort);
         receiverAudio.startReceiver();
 /*

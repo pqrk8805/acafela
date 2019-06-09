@@ -16,6 +16,9 @@ import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.Process;
 import android.util.Log;
+
+import com.acafela.harmony.crypto.ICrypto;
+
 import java.net.SocketException;
 
 public class ReceiverAudio implements DataReceiver {
@@ -25,7 +28,7 @@ public class ReceiverAudio implements DataReceiver {
     private static final int BYTES_PER_SAMPLE = 2;    // Bytes Per Sampl;e
     private static final int RAW_BUFFER_SIZE = SAMPLE_RATE / (MILLISECONDS_IN_A_SECOND / SAMPLE_INTERVAL) * BYTES_PER_SAMPLE;
     private static final int GSM_BUFFER_SIZE = 33;
-    private static final boolean isTimeStamp = true;
+    private static final boolean isTimeStamp = false;
 
     private static final String LOG_TAG = "ReceiverAudio";
     private  InetAddress mIpAddress;
@@ -39,9 +42,12 @@ public class ReceiverAudio implements DataReceiver {
     private boolean isReceverAudioRun=false;
 
     private Context mContext;
+    private ICrypto mCrypto;
 
-    ReceiverAudio (Context context) {
+    ReceiverAudio (Context context, ICrypto crypto)
+    {
         mContext = context;
+        mCrypto = crypto;
     }
     public boolean setSession(String ip,int port)
     {
@@ -150,11 +156,20 @@ public class ReceiverAudio implements DataReceiver {
                             IncommingpacketQueue.add(rawbuf);
                         }
                         else {
+                            /*
                             byte[] rawbuf = new byte[RAW_BUFFER_SIZE];
                             DatagramPacket packet = new DatagramPacket(rawbuf, RAW_BUFFER_SIZE);
                             //Log.i(LOG_TAG, "Packet received: " + packet.getLength());
+
                             RecvUdpSocket.receive(packet);
                             IncommingpacketQueue.add(rawbuf);
+                            */
+                            byte[] encrypted = new byte[(RAW_BUFFER_SIZE / 16 + 1) * 16];
+                            DatagramPacket packet = new DatagramPacket(encrypted, encrypted.length);
+                            RecvUdpSocket.receive(packet);
+
+                            byte[] plane = mCrypto.decrypt(encrypted);
+                            IncommingpacketQueue.add(plane);
                         }
                         /*byte[] rawbuf = new byte[RAW_BUFFER_SIZE];
                         byte[] gsmbuf = new byte[GSM_BUFFER_SIZE];
