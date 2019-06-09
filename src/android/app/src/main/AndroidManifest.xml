@@ -23,6 +23,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".activity.MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".activity.CallActivity" />
         <activity android:name=".activity.TestEncodingActivity" />
         <activity android:name=".activity.UserProfileActivity" />
@@ -32,7 +36,7 @@
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.TestMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -7,4 +7,12 @@
         <item>EarPiece</item>
         <item>Bluetooth</item>
     </string-array>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="tab_text_1">Dial</string>
+    <string name="tab_text_2">Contacts</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="description_delete_button">backspace</string>
+    <string name="description_pick_contact_button">Pick contact</string>
+    <string name="description_dial_button">Dial</string>
 </resources>

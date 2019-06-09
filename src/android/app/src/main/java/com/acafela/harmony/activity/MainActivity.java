@@ -1,127 +1,190 @@
 package com.acafela.harmony.activity;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
-import android.os.Handler;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import com.acafela.harmony.FormatChecker;
 import com.acafela.harmony.R;
-import com.acafela.harmony.service.HarmonyService;
+import com.acafela.harmony.activity.ui.main.ContactsFragment;
+import com.acafela.harmony.activity.ui.main.DialpadFragment;
+import com.acafela.harmony.activity.ui.main.SectionsPagerAdapter;
+import com.acafela.harmony.userprofile.UserProfileGrpc;
+import com.acafela.harmony.userprofile.UserProfileRpc;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements DialpadFragment.OnFragmentInteractionListener, ContactsFragment.OnFragmentInteractionListener {
     private static final String LOG_TAG = MainActivity.class.getName();
 
-    private static final String SERVERIPAddr = "192.168.1.6";
-
-    private static final int PERMISSION_ALL_ID = 1;
-    private static final String[] PERMISSIONS = {
-            android.Manifest.permission.RECORD_AUDIO,
-            android.Manifest.permission.CAMERA
-    };
+    private FloatingActionButton mFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
+        ViewPager viewPager = findViewById(R.id.view_pager);
+        viewPager.setAdapter(sectionsPagerAdapter);
+        TabLayout tabs = findViewById(R.id.tabs);
+        tabs.setupWithViewPager(viewPager);
+        tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                animateFab(tab.getPosition());
+            }
 
-        requestPermissions();
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+
+        mFab = findViewById(R.id.fab);
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+        mFab.hide();
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(getResources().getString(R.string.app_name));
+        setSupportActionBar(toolbar);
     }
 
-    public static boolean hasPermissions(Context context, String... permissions) {
-        if (context != null && permissions != null) {
-            for (String permission : permissions) {
-                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
-            }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.menu_register:
+                registerDialog();
+                break;
+            case R.id.menu_changepassword:
+                Toast.makeText(MainActivity.this, "Change Password Not Implemented", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.menu_restorepassword:
+                Toast.makeText(MainActivity.this, "Restore Password Not Implemented", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
         }
         return true;
     }
 
-    private void requestPermissions() {
-        if(!hasPermissions(this, PERMISSIONS)) {
-            ActivityCompat.requestPermissions(this,
-                    PERMISSIONS,
-                    PERMISSION_ALL_ID);
+    private void registerDialog()
+    {
+        final Dialog myDialog = new Dialog(this);
+        myDialog.setContentView(R.layout.dialog_register);
+        myDialog.setCancelable(true);
+        myDialog.show();
+
+        final EditText editText_email = (EditText) myDialog.findViewById(R.id.editText_email);
+        final EditText editText_password = (EditText) myDialog.findViewById(R.id.editText_password);
+        final EditText editText_repeatPassword = (EditText) myDialog.findViewById(R.id.editText_repeatPassword);
+        Button buttonRegister = (Button) myDialog.findViewById(R.id.btn_register);
+        buttonRegister.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v)
+            {
+                String email = editText_email.getText().toString();
+                if (!FormatChecker.isValidEmail(email)) {
+                    editText_email.setError("Enter a valid email address");
+                    return;
+                }
+
+                String password = editText_password.getText().toString();
+                if (!FormatChecker.isValidPassword(password)) {
+                    editText_password.setError("Input 4 digits");
+                    return;
+                }
+
+                String repeatPassword = editText_repeatPassword.getText().toString();
+                if (!FormatChecker.isValidRepeatPassword(password, repeatPassword)) {
+                    editText_repeatPassword.setError("Password should be same");
+                    return;
+                }
+
+                final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this,
+                        R.style.Theme_AppCompat_DayNight_Dialog);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setMessage("Creating Account...");
+                progressDialog.show();
+
+                new android.os.Handler().postDelayed(
+                        new Runnable() {
+                            public void run() {
+                                UserProfileRpc mUserProfileRpc = new UserProfileRpc(
+                                        "10.0.0.1",
+                                        0,
+                                        getResources().openRawResource(R.raw.ca),
+                                        getResources().openRawResource(R.raw.server));
+                                UserProfileGrpc.UserProfileBlockingStub blockingStub
+                                        = mUserProfileRpc.getBlockingStub();
+
+                                progressDialog.dismiss();
+                                myDialog.dismiss();
+                            }
+                        }, 3000);
+            }
+        });
+
+        Button buttonCancel = (Button) myDialog.findViewById(R.id.btn_cancel);
+        buttonCancel.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v)
+            {
+                myDialog.dismiss();
+            }
+        });
+
+    }
+
+    private void animateFab(int position) {
+        switch (position) {
+            case 0:
+                mFab.hide();
+                break;
+            case 1:
+            default:
+                mFab.show();
+                break;
         }
     }
 
-    public void onClickUserProfileBtn(View v) {
-        Log.d(LOG_TAG, "onClickUserProfileBtn");
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
-        Intent intent = new Intent(this, UserProfileActivity.class);
-        startActivity(intent);
-    }
-
-    public void onClickCallBtn(View v) {
-        Log.d(LOG_TAG, "onClickCallBtn");
-
-        Intent intent = new Intent(this, CallActivity.class);
-        startActivity(intent);
-    }
-
-    public void onClickSendBtn(View v)
-    {
-        WifiManager wifiMan = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        WifiInfo wifiInf = wifiMan.getConnectionInfo();
-        int ipAddress = wifiInf.getIpAddress();
-        String ip = String.format("%d.%d.%d.%d", (ipAddress & 0xff),(ipAddress >> 8 & 0xff),(ipAddress >> 16 & 0xff),(ipAddress >> 24 & 0xff));
-        Toast.makeText(this, ip, Toast.LENGTH_LONG).show();
-        sendMessage(ip);
-    }
-
-    private void sendMessage(final String message) {
-        final Handler handler = new Handler();
-        Thread thread = new Thread(new Runnable() {
-            String stringData;
-            @Override
-            public void run() {
-                DatagramSocket ds = null;
-                try {
-                    ds = new DatagramSocket();
-                    InetAddress serverAddr = InetAddress.getByName(SERVERIPAddr);
-                    DatagramPacket dp;
-                    dp = new DatagramPacket(message.getBytes(), message.length(), serverAddr, 5000);
-                    ds.send(dp);
-
-                    byte[] lMsg = new byte[1000];
-                    dp = new DatagramPacket(lMsg, lMsg.length);
-                    ds.receive(dp);
-                    stringData = new String(lMsg, 0, dp.getLength());
-                    final TextView TESTTextView = findViewById(R.id.TESTTextView);
-                    TESTTextView.post(new Runnable() {
-                        public void run() {
-                            TESTTextView.setText("RCV DATA : " + stringData);
-                        }
-                    });
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    if (ds != null) {
-                        ds.close();
-                    }
-                }
-            }
-        });
-        thread.start();
-    }
-
-    public void onClickTestEncodingBtn(View v) {
-        Intent intent = new Intent(this, TestEncodingActivity.class);
-        startActivity(intent);
     }
 }

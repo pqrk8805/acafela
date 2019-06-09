@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="SpaStyle">
+        <attr name="sp_call_btn_text_color" format="color|reference"/>
+
+        <!-- Attributes for number/name field text -->
+        <attr name="sp_dial_text_color" format="color|reference"/>
+        <attr name="sp_dial_text_background" format="color|reference"/>
+        <attr name="sp_name_text_peer_match" format="color|reference"/>
+
+        <attr name="sp_sec_info_green" format="color|reference"/>
+        <attr name="sp_sec_info_yellow" format="color|reference"/>
+
+        <!-- Attributes for drawers, header text color, header background, etc -->
+        <attr name="sp_drawer_background" format="color|reference"/>
+        <attr name="sp_drawer_header_background" format="color|reference"/>
+        <attr name="sp_drawer_header_text_color" format="color|reference"/>
+        <attr name="sp_drawer_text_color" format="color|reference"/>
+        <attr name="sp_drawer_secondary_text_color" format="color|reference"/>
+        <attr name="sp_drawer_separator_color" format="color|reference"/>
+
+        <!-- ?
+                <attr name="sp_ab_title_style" format="reference" />
+        <attr name="sp_ab_subtitle_style" format="reference" />
+        -->
+        <attr name="sp_actionbar_color" format="color|reference"/>
+        <attr name="sp_actionbar_title_text_color" format="color|reference"/>
+
+        <!-- Attributes for the icons in buttons and elsewhere
+             We define them as integer because in the style this resolves to a
+             '@drawable/some_thing' and this is an integer (R.drawable.some_thing
+        -->
+        <attr name="sp_ic_add_call" format="integer|reference"/>
+        <attr name="sp_ic_backspace" format="integer|reference"/>
+        <attr name="sp_ic_call" format="integer|reference"/>
+        <attr name="sp_ic_call_hold" format="integer|reference"/>
+        <attr name="sp_ic_call_not_hold" format="integer|reference"/>
+        <attr name="sp_ic_dial_pad" format="integer|reference"/>
+        <attr name="sp_ic_new_chat" format="integer|reference"/>
+        <attr name="sp_ic_end_call" format="integer|reference"/>
+        <attr name="sp_ic_headset" format="integer|reference"/>
+        <attr name="sp_ic_keyboard" format="integer|reference"/>
+        <attr name="sp_ic_mic" format="integer|reference"/>
+        <attr name="sp_ic_mic_muted" format="integer|reference"/>
+        <attr name="sp_ic_start_chat" format="integer|reference"/>
+        <attr name="sp_ic_switch_camera" format="integer|reference"/>
+        <attr name="sp_ic_video" format="integer|reference"/>
+        <attr name="sp_ic_video_muted" format="integer|reference"/>
+        <attr name="sp_ic_volume_muted" format="integer|reference"/>
+        <attr name="sp_ic_volume_on" format="integer|reference"/>
+        <attr name="sp_ic_volume_bt" format="integer|reference"/>
+        <attr name="sp_ic_volume_bt_muted" format="integer|reference"/>
+        <attr name="sp_ic_add_group" format="integer|reference"/>
+        <attr name="sp_ic_add_person" format="integer|reference"/>
+        <attr name="sp_ic_view_list" format="integer|reference"/>
+        <attr name="sp_ic_edit" format="integer|reference"/>
+        <attr name="sp_ic_contact_picture" format="integer|reference"/>
+        <attr name="sp_ic_contacts" format="integer|reference"/>
+
+        <attr name="sp_ic_add_call_menu" format="integer|reference"/>
+        <attr name="sp_ic_mic_menu" format="integer|reference"/>
+        <attr name="sp_ic_mic_muted_menu" format="integer|reference"/>
+        <attr name="sp_ic_volume_muted_menu" format="integer|reference"/>
+        <attr name="sp_ic_volume_on_menu" format="integer|reference"/>
+
+        <attr name="sp_call_manager_small_button" format="integer|reference"/>
+
+        <attr name="sp_ic_in_app_purchase" format="integer|reference"/>
+
+        <!-- Icons for action bar. We may use the same or different icons on
+         the AB -->
+        <attr name="sp_ic_dial_pad_ab" format="integer|reference"/>
+        <attr name="sp_ic_call_manager_ab" format="integer|reference"/>
+        <attr name="sp_ic_ab_video" format="integer|reference"/>     <!-- video icon on action bar -->
+
+
+        <!-- Attributes for dial button, text color, button shape itself -->
+        <attr name="sp_dial_button_primary_color" format="reference|color"/>
+        <attr name="sp_dial_button_secondary_color" format="reference|color"/>
+        <attr name="sp_dial_button" format="reference|integer"/>
+
+        <attr name="sp_call_button_background" format="reference|color"/>
+        <attr name="sp_hangup_button_background" format="reference|color"/>
+        <attr name="sp_decline_button_background" format="reference|color"/>
+        <attr name="sp_accept_button_background" format="reference|color"/>
+
+        <attr name="sp_call_manager_line_background" format="reference|color"/>
+        <attr name="sp_call_manager_divider" format="reference|color"/>
+
+        <!-- Round button -->
+        <attr name="sp_button_round" format="reference|integer"/>
+
+        <attr name="sp_drawer_button" format="reference|integer"/>
+        <attr name="sp_drawer_shadow" format="reference|integer"/>
+
+        <!-- Colour of the main divider around texts, etc -->
+        <attr name="sp_divider_color" format="reference|color"/>
+
+        <attr name="sp_sas_verified_color" format="reference|color"/>
+
+        <attr name="sp_ab_title_style" format="reference" />
+        <attr name="sp_ab_subtitle_style" format="reference" />
+        <attr name="sp_ab_dark_title_style" format="reference" />
+
+        <attr name="sp_dialog_text_color" format="reference|color"/>
+
+        <!-- main activity background and text colors -->
+        <attr name="sp_activity_background_color" format="reference|color"/>
+        <attr name="sp_activity_secondary_background_color" format="reference|color"/>
+        <attr name="sp_activity_primary_text_color" format="reference|color"/>
+        <attr name="sp_activity_secondary_text_color" format="reference|color"/>
+        <attr name="sp_activity_button_background_selector" format="reference|color"/>
+        <attr name="sp_activity_button_text_selector" format="reference|color"/>
+        <attr name="sp_activity_text_selector" format="reference|color"/>
+
+        <!-- dialpad background -->
+        <attr name="sp_diaplad_background_color" format="reference|color"/>
+
+        <!-- message bubble background and text colours -->
+        <attr name="sp_incoming_message_background_selector" format="reference|color"/>
+        <attr name="sp_retained_incoming_message_background_selector" format="reference|color"/>
+        <attr name="sp_incoming_message_text_selector" format="reference|color"/>
+        <attr name="sp_outgoing_message_background_selector" format="reference|color"/>
+        <attr name="sp_chat_compose_background_color" format="reference|color"/>
+        <attr name="sp_retained_outgoing_message_background_selector" format="reference|color"/>
+        <attr name="sp_outgoing_message_text_selector" format="reference|color"/>
+        <attr name="sp_message_description_text_color" format="reference|color"/>
+        <attr name="sp_error_message_text_selector" format="reference|color"/>
+        <attr name="sp_info_message_text_selector" format="reference|color"/>
+        <attr name="sp_date_header_text_color" format="reference|color"/>
+        <attr name="sp_date_header_background_tint_color" format="reference|color"/>
+        <attr name="sp_message_send_tint_color" format="reference|color"/>
+        <attr name="sp_message_action_button_background" format="reference|color"/>
+        <attr name="sp_outgoing_message_background" format="reference|color"/>
+        <attr name="sp_incoming_message_background" format="reference|color"/>
+        <attr name="sp_attachment_grid_background"  format="reference|color"/>
+        <attr name="sp_call_message_background_selector" format="reference|color"/>
+        <attr name="sp_retained_call_message_background_selector" format="reference|color"/>
+
+    </declare-styleable>
+</resources>

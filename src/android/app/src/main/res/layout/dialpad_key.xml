@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/DialpadButtonStyle">
+    <LinearLayout
+        android:id="@+id/dialpad_rnd_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/dialpad_key_number"
+            style="@style/DialKeyNumberStyle"
+            android:filterTouchesWhenObscured="false"
+            tools:text="2"/>
+        <TextView
+            android:id="@+id/dialpad_key_letters"
+            style="@style/DialKeyLetterStyle"
+            android:filterTouchesWhenObscured="false"
+            tools:text="ABC"/>
+    </LinearLayout>
+</FrameLayout>
