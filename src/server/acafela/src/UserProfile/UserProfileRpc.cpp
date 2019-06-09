@@ -56,9 +56,9 @@ int UserProfileRpc::start(const std::string& addressUri)
     }
 
 #else
-    std::string cert = read("server.crt");
-	std::string key = read ("server.key");
-	std::string root = read ("ca.crt");
+    std::string cert = read("certs/server.crt");
+	std::string key = read ("certs/server.key");
+	std::string root = read ("certs/ca.crt");
 
     std::shared_ptr<grpc::ServerCredentials> creds;
     grpc::SslServerCredentialsOptions::PemKeyCertPair pkcp = {key, cert};

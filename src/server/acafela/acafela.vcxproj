@@ -126,6 +126,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\address_sorting.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\gpr.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\grpc.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\grpc++.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\grpc++_reflection.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\protobuf\libprotobuf.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\boringssl\ssl\ssl.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\boringssl\crypto\crypto.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\cares\cares\lib\cares.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\zlib\zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y/d/i/e $(ProjectDir)certs $(OutDir)certs</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -148,6 +151,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\address_sorting.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\gpr.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\grpc.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\grpc++.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\grpc++_reflection.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\protobuf\libprotobuf.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\boringssl\ssl\ssl.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\boringssl\crypto\crypto.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\cares\cares\lib\cares.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\zlib\zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y/d/i/e $(ProjectDir)certs $(OutDir)certs</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
