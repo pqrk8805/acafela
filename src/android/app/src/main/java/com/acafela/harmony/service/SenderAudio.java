@@ -162,7 +162,6 @@ public class SenderAudio implements DataSender {
                                 socket.send(packet2);
                             } else {
                                 byte[] encrypted = mCrypto.encrypt(rawbuf);
-                                //byte[] encrypted = rawbuf;
                                 DatagramPacket packet = new DatagramPacket(
                                                             encrypted,
                                                             encrypted.length,
