@@ -31,11 +31,12 @@ public class ReceiverAudio implements DataReceiver {
     private  InetAddress mIpAddress;
     private int mPort;
     private boolean UdpVoipReceiveDataThreadRun = false;
-    private boolean  AudioIoThreadThreadRun =false;
+    private boolean  AudioIoPlayerThreadRun =false;
     private Thread mRecieverThread = null;
     private Thread mPlayerThread = null;
     private DatagramSocket RecvUdpSocket;
     private ConcurrentLinkedQueue<byte[]> IncommingpacketQueue;
+    private boolean isReceverAudioRun=false;
 
     private Context mContext;
 
@@ -57,11 +58,18 @@ public class ReceiverAudio implements DataReceiver {
 
     public boolean startReceiver()
     {
+        if(isReceverAudioRun) {
+            Log.i(LOG_TAG, "UdpReceiveDataThread Thread already Started started");
+            return false;
+        }
         IncommingpacketQueue = new ConcurrentLinkedQueue<>();
+
+        UdpVoipReceiveDataThreadRun = true;
+        AudioIoPlayerThreadRun = true;
         startReceiveDataThread();
         startAudioPlayerThread();
-        UdpVoipReceiveDataThreadRun = true;
-        AudioIoThreadThreadRun = true;
+
+        isReceverAudioRun = true;
         return true;
     }
     public boolean endReceiver()
@@ -78,7 +86,7 @@ public class ReceiverAudio implements DataReceiver {
             Log.i(LOG_TAG, " UdpReceiveDataThread Join successs");
         }
         if (mPlayerThread != null && mPlayerThread.isAlive()) {
-            AudioIoThreadThreadRun = false;
+            AudioIoPlayerThreadRun = false;
             Log.i(LOG_TAG, "Audio Thread Join started");
 
             try {
@@ -93,8 +101,10 @@ public class ReceiverAudio implements DataReceiver {
         mRecieverThread = null;
         IncommingpacketQueue = null;
         RecvUdpSocket = null;
-
+        AudioIoPlayerThreadRun = false;
         UdpVoipReceiveDataThreadRun = false;
+        isReceverAudioRun = false;
+
         return true;
     }
     private void startReceiveDataThread()
@@ -110,11 +120,12 @@ public class ReceiverAudio implements DataReceiver {
                     RecvUdpSocket = new DatagramSocket(null);
                     RecvUdpSocket.setReuseAddress(true);
                     RecvUdpSocket.bind(new InetSocketAddress(mPort));
+                    boolean prevPrimaryData =false;
 
                     while (UdpVoipReceiveDataThreadRun) {
                         if(isTimeStamp) {
-                            byte[] rawbuf = new byte[RAW_BUFFER_SIZE+4];
-                            DatagramPacket packet = new DatagramPacket(rawbuf, RAW_BUFFER_SIZE+4);
+                            byte[] rawbuf = new byte[RAW_BUFFER_SIZE+5];
+                            DatagramPacket packet = new DatagramPacket(rawbuf, RAW_BUFFER_SIZE+5);
 
                             RecvUdpSocket.receive(packet);
                             Long tsLong = System.currentTimeMillis() % 10000;
@@ -124,8 +135,17 @@ public class ReceiverAudio implements DataReceiver {
                             timestamp += (rawbuf[1]&0xFF)<<16;
                             timestamp += (rawbuf[2]&0xFF)<<8;
                             timestamp += rawbuf[3]&0xFF;
+                            Boolean primaryData =false;
+                            if(rawbuf[4]==0)
+                                primaryData = true;
+                            if(!primaryData && prevPrimaryData) {
+                                prevPrimaryData = primaryData;
+                                continue;
+                            }
+                            prevPrimaryData = primaryData;
+
                             //Log.i(LOG_TAG, "Packet received: " + timestamp);
-                            Log.i(LOG_TAG, "Packet latency: " + (tsLong - timestamp));
+                            //Log.i(LOG_TAG, "Packet latency: " + (tsLong - timestamp));
                             //Log.i(LOG_TAG, "Packet received: " + packet.getLength());
                             IncommingpacketQueue.add(rawbuf);
                         }
@@ -167,7 +187,6 @@ public class ReceiverAudio implements DataReceiver {
     private void startAudioPlayerThread()
     {
         // Creates the thread for capturing and transmitting audio
-        AudioIoThreadThreadRun = true;
         mPlayerThread = new Thread(new Runnable()
         {
             @Override
@@ -201,14 +220,14 @@ public class ReceiverAudio implements DataReceiver {
                         .build();
                 {
                     OutputTrack.play();
-                    while (AudioIoThreadThreadRun)
+                    while (AudioIoPlayerThreadRun)
                     {
                         if (IncommingpacketQueue.size() > 0) {
                             byte[] AudioOutputBufferBytes = IncommingpacketQueue.remove();
                             //if (!MainActivity.BoostAudio)
                             if (true) {
                                 if(isTimeStamp)
-                                    OutputTrack.write(AudioOutputBufferBytes, 4, RAW_BUFFER_SIZE);
+                                    OutputTrack.write(AudioOutputBufferBytes, 5, RAW_BUFFER_SIZE);
                                 else
                                     OutputTrack.write(AudioOutputBufferBytes, 0, RAW_BUFFER_SIZE);
                             } else {

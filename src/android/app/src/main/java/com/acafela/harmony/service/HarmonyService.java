@@ -16,6 +16,8 @@ public class HarmonyService extends Service {
     //temporary value;
     SenderAudio senderAudio;
     ReceiverAudio receiverAudio;
+    SenderVideo senderVideo;
+    ReceiverVideo receiverVideo;
 
     @Override
     public void onCreate() {
@@ -59,7 +61,8 @@ public class HarmonyService extends Service {
         showToastInService("initiateCall");
 
         int sendPort =5000;
-        int receivePort =5001;
+        //int receivePort =5001;
+        int receivePort =5000;
         //int sendPort =5002;
         //int receivePort =5003;
 
@@ -71,13 +74,22 @@ public class HarmonyService extends Service {
         receiverAudio = new ReceiverAudio(getApplicationContext());
         receiverAudio.setSession(serverIp,receivePort);
         receiverAudio.startReceiver();
+/*
+        senderVideo = new SenderVideo();
+        senderVideo.setSession(serverIp,6001);
+        senderVideo.startSender();
+
+
+        receiverVideo = new ReceiverVideo();
+        receiverVideo.setSession(serverIp,6001);
+        receiverVideo.startReceiver();*/
     }
 
     // this method may move to another class
     private void terminateCall() {
         senderAudio.endSender();
         receiverAudio.endReceiver();
-
+        senderVideo.endSender();
         Log.i(LOG_TAG, "terminateCall");
         showToastInService("terminateCall");
     }

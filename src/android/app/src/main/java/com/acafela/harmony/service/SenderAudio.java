@@ -26,6 +26,7 @@ public class SenderAudio implements DataSender {
     private static final int RAW_BUFFER_SIZE = SAMPLE_RATE / (MILLISECONDS_IN_A_SECOND / SAMPLE_INTERVAL) * BYTES_PER_SAMPLE;
     private static final int GSM_BUFFER_SIZE = 33;
     private static final String LOG_TAG = "SenderAudio";
+    private boolean isSenderAudioRun=false;
 
     private static final boolean isTimeStamp = true;
 
@@ -46,8 +47,12 @@ public class SenderAudio implements DataSender {
 
     public boolean startSender()
     {
-        startSenderAudioThread();
+        if(isSenderAudioRun)
+            return false;
         senderAudioThreadRun = true;
+        startSenderAudioThread();
+
+        isSenderAudioRun = true;
         return true;
     }
     public boolean endSender()
@@ -63,6 +68,7 @@ public class SenderAudio implements DataSender {
             Log.i(LOG_TAG, " mSenderThread Join successs");
         }
         senderAudioThreadRun = false;
+        isSenderAudioRun = false;
         return true;
     }
     private InputStream OpenSimVoice(int SimVoice) {
@@ -103,7 +109,7 @@ public class SenderAudio implements DataSender {
                         AudioRecord.getMinBufferSize(SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT));
 
                 int BytesRead;
-                byte[] rawbuf = new byte[RAW_BUFFER_SIZE+4];
+                byte[] rawbuf = new byte[RAW_BUFFER_SIZE+5];
                 //byte[] gsmbuf = new byte[GSM_BUFFER_SIZE];
                 InputPlayFile = OpenSimVoice(mSimVoice);
 
@@ -121,7 +127,7 @@ public class SenderAudio implements DataSender {
                             rawbuf[1] = (byte) ((tsLong >> 16) & 0x000000ff);
                             rawbuf[0] = (byte) ((tsLong >> 24) & 0x000000ff);
                             //Log.i(LOG_TAG, "Packet send time: " + (tsLong));
-                            BytesRead = Recorder.read(rawbuf, 4, RAW_BUFFER_SIZE);
+                            BytesRead = Recorder.read(rawbuf, 5, RAW_BUFFER_SIZE);
                         }
                         else
                             BytesRead = Recorder.read(rawbuf, 0, RAW_BUFFER_SIZE);
@@ -138,8 +144,12 @@ public class SenderAudio implements DataSender {
                             //JniGsmEncodeB(rawbuf, gsmbuf);
                             //DatagramPacket packet = new DatagramPacket(gsmbuf, GSM_BUFFER_SIZE, RemoteIp, VOIP_DATA_UDP_PORT);
                             if(isTimeStamp) {
-                                DatagramPacket packet = new DatagramPacket(rawbuf, RAW_BUFFER_SIZE + 4, mIpAddress, mPort);
+                                rawbuf[4] = (byte)0;//primary packet
+                                DatagramPacket packet = new DatagramPacket(rawbuf, RAW_BUFFER_SIZE + 5, mIpAddress, mPort);
                                 socket.send(packet);
+                                rawbuf[4] = (byte)1;//sub packet
+                                DatagramPacket packet2 = new DatagramPacket(rawbuf, RAW_BUFFER_SIZE + 5, mIpAddress, mPort);
+                                socket.send(packet2);
                             } else {
                                 DatagramPacket packet = new DatagramPacket(rawbuf, RAW_BUFFER_SIZE, mIpAddress, mPort);
                                 socket.send(packet);
