@@ -24,6 +24,8 @@ public:
 	int restorePassword(
 		const std::string& emailAddress,
 		const std::string& phoneNumber) override;
+
+	int deleteUser(const std::string& emailAddress);
 private:
 	std::mutex			mFileLock;
 };

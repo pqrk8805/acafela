@@ -91,6 +91,18 @@ int FileStorageAccessor::restorePassword(const string& emailAddress, const strin
 	return -1;
 }
 
+int FileStorageAccessor::deleteUser(const std::string& emailAddress)
+{
+	lock_guard<mutex> lock(mFileLock);
+	string encEmailAddress = GetHashData(emailAddress) + ".bin";
+	int ret = remove(encEmailAddress.c_str());
+
+	if (ret != 0)
+		return -1;
+	else
+		return 0;
+}
+
 bool FileStorageAccessor::confirmUser(const std::string& emailAddress, const std::string& password)
 {
 	lock_guard<mutex> lock(mFileLock);
