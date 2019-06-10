@@ -17,6 +17,10 @@ public:
 		const std::string& oldPassword,
 		const std::string& newPassword) override;
 
+	bool confirmUser(
+		const std::string& emailAddress,
+		const std::string& password);
+
 	int restorePassword(
 		const std::string& emailAddress,
 		const std::string& phoneNumber) override;

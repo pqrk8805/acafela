@@ -48,6 +48,9 @@
     <ClCompile Include="src\StorageAccessor\FileStorageAccessor.cpp">
       <Filter>Source Files\StorageAccessor</Filter>
     </ClCompile>
+    <ClCompile Include="src\StorageAccessor\MD5Encryption.cpp">
+      <Filter>Source Files\StorageAccessor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\UserProfile\UserProfile.grpc.pb.h">
@@ -75,6 +78,9 @@
       <Filter>Source Files\StorageAccessor</Filter>
     </ClInclude>
     <ClInclude Include="src\StorageAccessor\IStorageAccessor.h">
+      <Filter>Source Files\StorageAccessor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\StorageAccessor\MD5Encryption.h">
       <Filter>Source Files\StorageAccessor</Filter>
     </ClInclude>
   </ItemGroup>
