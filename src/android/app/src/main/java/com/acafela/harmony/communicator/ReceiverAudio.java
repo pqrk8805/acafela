@@ -1,4 +1,4 @@
-package com.acafela.harmony.service;
+package com.acafela.harmony.communicator;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
@@ -44,7 +44,7 @@ public class ReceiverAudio implements DataReceiver {
     private Context mContext;
     private ICrypto mCrypto;
 
-    ReceiverAudio (Context context, ICrypto crypto)
+    public ReceiverAudio (Context context, ICrypto crypto)
     {
         mContext = context;
         mCrypto = crypto;

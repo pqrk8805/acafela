@@ -1,4 +1,4 @@
-package com.acafela.harmony.service;
+package com.acafela.harmony.communicator;
 
 
 import java.io.IOException;

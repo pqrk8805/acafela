@@ -1,4 +1,4 @@
-package com.acafela.harmony.service;
+package com.acafela.harmony.communicator;
 
 public interface DataSender {
     public boolean setSession(String ip,int port);

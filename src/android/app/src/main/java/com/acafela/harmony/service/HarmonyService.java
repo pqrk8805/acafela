@@ -9,6 +9,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.acafela.harmony.activity.CallActivity;
+import com.acafela.harmony.communicator.ReceiverAudio;
+import com.acafela.harmony.communicator.ReceiverVideo;
+import com.acafela.harmony.communicator.SenderAudio;
+import com.acafela.harmony.communicator.SenderVideo;
 import com.acafela.harmony.crypto.CryptoFactory;
 import com.acafela.harmony.crypto.ICrypto;
 
