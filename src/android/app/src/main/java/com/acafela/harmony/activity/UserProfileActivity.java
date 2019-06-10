@@ -9,8 +9,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.acafela.harmony.R;
-import com.acafela.harmony.crypto.CryptoAES;
-import com.acafela.harmony.crypto.CryptoFactory;
 import com.acafela.harmony.userprofile.UserProfileGrpc.UserProfileBlockingStub;
 import com.acafela.harmony.userprofile.UserProfileOuterClass.Empty;
 import com.acafela.harmony.userprofile.UserProfileOuterClass.VersionInfo;
@@ -29,15 +27,6 @@ public class UserProfileActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
-
-        com.acafela.harmony.crypto.ICrypto crypto = CryptoFactory.create("AES");
-        crypto.init("12345".getBytes());
-        byte[] encrypted = crypto.encrypt("abcdefg".getBytes());
-        Log.d(LOG_TAG, "encrypted: " + new String(encrypted));
-
-        byte[] plane = crypto.decrypt(encrypted);
-        Log.d(LOG_TAG, "decrypted: " + new String(plane));
-
     }
 
     public void onClickConnectBtn(View v)

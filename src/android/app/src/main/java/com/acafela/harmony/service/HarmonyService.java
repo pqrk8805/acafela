@@ -13,7 +13,8 @@ import com.acafela.harmony.communicator.ReceiverAudio;
 import com.acafela.harmony.communicator.ReceiverVideo;
 import com.acafela.harmony.communicator.SenderAudio;
 import com.acafela.harmony.communicator.SenderVideo;
-import com.acafela.harmony.crypto.CryptoFactory;
+import com.acafela.harmony.crypto.Crypto;
+import com.acafela.harmony.crypto.CryptoBroker;
 import com.acafela.harmony.crypto.ICrypto;
 
 public class HarmonyService extends Service {
@@ -29,6 +30,8 @@ public class HarmonyService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.i(LOG_TAG, "onCreate");
+
+        Crypto.init();
     }
 
     @Override
@@ -66,7 +69,7 @@ public class HarmonyService extends Service {
         Log.i(LOG_TAG, "initiateCall");
         showToastInService("initiateCall");
 
-        ICrypto crypto = CryptoFactory.create("AES");
+        ICrypto crypto = CryptoBroker.getInstance().create("AES");
         crypto.init("12345".getBytes());
 
         int sendPort =5000;

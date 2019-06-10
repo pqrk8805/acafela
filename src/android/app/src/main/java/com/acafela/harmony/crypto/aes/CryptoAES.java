@@ -1,6 +1,8 @@
-package com.acafela.harmony.crypto;
+package com.acafela.harmony.crypto.aes;
 
 import android.util.Log;
+
+import com.acafela.harmony.crypto.ICrypto;
 
 import java.security.SecureRandom;
 
@@ -16,7 +18,12 @@ public class CryptoAES implements ICrypto
     private Cipher mDecryptCipher;
 
     public CryptoAES()
+    {}
+
+    @Override
+    public ICrypto create()
     {
+        return new CryptoAES();
     }
 
     @Override
