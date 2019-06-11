@@ -23,6 +23,9 @@ public:
 	virtual int restorePassword(
 		const std::string& emailAddress,
 		const std::string& phoneNumber) = 0;
+
+	//virtual int saveDSItems(const string& phoneNumber, const string& ipAddress) = 0;
+	//virtual std::map<std::string, std::string> getDSItems() = 0;
 private:
 	static IStorageAccessor* mInst;
 };

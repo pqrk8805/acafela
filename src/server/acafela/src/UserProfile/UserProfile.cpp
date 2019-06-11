@@ -1,12 +1,14 @@
 #include "UserProfile.h"
 #include "Hislog.h"
 #include "StorageAccessor/FileStorageAccessor.h"
+#include "MD5Hash.h"
 #define LOG_TAG "UserProfile"
 
 using namespace std;
 UserProfile::UserProfile()
 {
 	mSA = make_unique<FileStorageAccessor>();
+	mSP = make_unique<MD5>();
 }
 
 UserProfile::~UserProfile()
@@ -18,7 +20,13 @@ std::string UserProfile::registerUser(
                         const std::string& password)
 {
     FUNC_LOGD("BEGIN");	
-    return mSA->registerUser(emailAddress, password);
+	
+	string encEmailAddress = mSP->GetSecureData(emailAddress);
+	encEmailAddress = mSP->GetSecureData(emailAddress);
+	encEmailAddress = mSP->GetSecureData(emailAddress);
+	encEmailAddress = mSP->GetSecureData(emailAddress);
+	string encPassword = mSP->GetSecureData(password);
+    return mSA->registerUser(encEmailAddress, encPassword);
 }
 
 int UserProfile::changePassword(
@@ -27,7 +35,11 @@ int UserProfile::changePassword(
                         const std::string& newPassword)
 {
     FUNC_LOGD("BEGIN");	
-    return mSA->changePassword(emailAddress, oldPassword, newPassword);
+	
+	string encEmailAddress = mSP->GetSecureData(emailAddress);
+	string encOldPassword = mSP->GetSecureData(oldPassword);
+	string encNewPassword = mSP->GetSecureData(newPassword);
+    return mSA->changePassword(encEmailAddress, encOldPassword, encNewPassword);
 }
 
  int UserProfile::restorePassword(
@@ -35,6 +47,8 @@ int UserProfile::changePassword(
                         const std::string& phoneNumber)
  {
     FUNC_LOGD("BEGIN");
-	return restorePassword(emailAddress, phoneNumber);
+	
+	string encEmailAddress = mSP->GetSecureData(emailAddress);	
+	return restorePassword(encEmailAddress, phoneNumber);
  }
 

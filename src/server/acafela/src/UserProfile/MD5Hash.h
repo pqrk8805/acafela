@@ -2,8 +2,12 @@
 #include <array>
 #include <iterator>
 #include <cstdint>
+#include "ISecurityProvider.h"
 
-class MD5 {
+class MD5 : public ISecurityProvider 
+{
+public :
+	std::string GetSecureData(const std::string& data) override;
 private:
 	std::uint32_t a0_;
 	std::uint32_t b0_;
@@ -17,6 +21,14 @@ private:
 	static const std::array<std::uint32_t, 64> s_array_;
 
 private:
+	void ResetInitialValue()
+	{
+		a0_ = 0x67452301;
+		b0_ = 0xefcdab89;
+		c0_ = 0x98badcfe;
+		d0_ = 0x10325476;
+	}
+
 	static std::uint32_t left_rotate(std::uint32_t x, std::uint32_t c) {
 		return (x << c) | (x >> (32 - c));
 	}

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IUserProfile.h"
+#include "ISecurityProvider.h"
 #include <memory>
 
 class IStorageAccessor;
@@ -26,4 +27,5 @@ public:
 
 private:
 	std::unique_ptr<IStorageAccessor> mSA;
+	std::unique_ptr<ISecurityProvider> mSP;
 };

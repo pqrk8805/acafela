@@ -48,9 +48,6 @@
     <ClCompile Include="src\StorageAccessor\FileStorageAccessor.cpp">
       <Filter>Source Files\StorageAccessor</Filter>
     </ClCompile>
-    <ClCompile Include="src\StorageAccessor\MD5Encryption.cpp">
-      <Filter>Source Files\StorageAccessor</Filter>
-    </ClCompile>
     <ClCompile Include="src\Communicator\ConversationManager.cpp">
       <Filter>Source Files\Communicator</Filter>
     </ClCompile>
@@ -62,6 +59,9 @@
     </ClCompile>
     <ClCompile Include="src\Communicator\DataPath.cpp">
       <Filter>Source Files\Communicator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UserProfile\MD5Hash.cpp">
+      <Filter>Source Files\UserProfile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -92,8 +92,11 @@
     <ClInclude Include="src\StorageAccessor\IStorageAccessor.h">
       <Filter>Source Files\StorageAccessor</Filter>
     </ClInclude>
-    <ClInclude Include="src\StorageAccessor\MD5Encryption.h">
-      <Filter>Source Files\StorageAccessor</Filter>
+    <ClInclude Include="src\UserProfile\ISecurityProvider.h">
+      <Filter>Source Files\UserProfile</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UserProfile\MD5Hash.h">
+      <Filter>Source Files\UserProfile</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

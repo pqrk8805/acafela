@@ -24,7 +24,7 @@
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\StorageAccessor\FileStorageAccessor.cpp" />
-    <ClCompile Include="src\StorageAccessor\MD5Encryption.cpp" />
+    <ClCompile Include="src\UserProfile\MD5Hash.cpp" />
     <ClCompile Include="src\UserProfile\UserProfile.cpp" />
     <ClCompile Include="src\UserProfile\UserProfile.grpc.pb.cc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -50,8 +50,9 @@
     <ClInclude Include="src\Hislog.h" />
     <ClInclude Include="src\StorageAccessor\FileStorageAccessor.h" />
     <ClInclude Include="src\StorageAccessor\IStorageAccessor.h" />
-    <ClInclude Include="src\StorageAccessor\MD5Encryption.h" />
+    <ClInclude Include="src\UserProfile\ISecurityProvider.h" />
     <ClInclude Include="src\UserProfile\IUserProfile.h" />
+    <ClInclude Include="src\UserProfile\MD5Hash.h" />
     <ClInclude Include="src\UserProfile\UserProfile.grpc.pb.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </ExcludedFromBuild>

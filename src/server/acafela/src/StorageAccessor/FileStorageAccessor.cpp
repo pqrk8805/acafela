@@ -40,28 +40,13 @@ private:
 	int mSize = -1;
 };
 
-#include "MD5Encryption.h"
-string GetHashData(const string& data)
-{
-	//std::string data = "Hello World";
-	std::string data_hex_digest;
-
-	MD5 hash;
-	hash.update(data.begin(), data.end());
-	hash.hex_digest(data_hex_digest);
-
-	return data_hex_digest;
-}
-
 string FileStorageAccessor::registerUser(const string& emailAddress, const string& password)
 {
 	lock_guard<mutex> lock(mFileLock);
 
-	string encEmailAddress = GetHashData(emailAddress);
-	SmartFile f(encEmailAddress.c_str(), "wb");
+	SmartFile f(emailAddress.c_str(), "wb");
 
-	string encPassword = GetHashData(password);
-	fwrite(encPassword.c_str(), encPassword.length(), 1, f.GetPF());
+	fwrite(password.c_str(), password.length(), 1, f.GetPF());
 
 	return string("TBD");
 }
@@ -74,11 +59,10 @@ int FileStorageAccessor::changePassword(const string& emailAddress, const string
 	}
 	
 	lock_guard<mutex> lock(mFileLock);	
-	string encEmailAddress = GetHashData(emailAddress);
-	SmartFile f(encEmailAddress.c_str(), "wb");
 
-	string encPassword = GetHashData(newPassword);
-	fwrite(encPassword.c_str(), encPassword.length(), 1, f.GetPF());
+	SmartFile f(emailAddress.c_str(), "wb");
+
+	fwrite(emailAddress.c_str(), newPassword.length(), 1, f.GetPF());
 
 	return -1;
 }
@@ -94,8 +78,8 @@ int FileStorageAccessor::restorePassword(const string& emailAddress, const strin
 int FileStorageAccessor::deleteUser(const std::string& emailAddress)
 {
 	lock_guard<mutex> lock(mFileLock);
-	string encEmailAddress = GetHashData(emailAddress) + ".bin";
-	int ret = remove(encEmailAddress.c_str());
+	
+	int ret = remove((emailAddress + ".bin").c_str());
 
 	if (ret != 0)
 		return -1;
@@ -107,8 +91,7 @@ bool FileStorageAccessor::confirmUser(const std::string& emailAddress, const std
 {
 	lock_guard<mutex> lock(mFileLock);
 
-	string encEmailAddress = GetHashData(emailAddress);
-	SmartFile f(encEmailAddress.c_str(), "rb");
+	SmartFile f(emailAddress.c_str(), "rb");
 
 	if (f.GetPF() == nullptr)
 	{
@@ -118,8 +101,7 @@ bool FileStorageAccessor::confirmUser(const std::string& emailAddress, const std
 	string savedPassword(80, '\0');
 	fread( &savedPassword[0], f.GetSize(), 1, f.GetPF());
 
-	string encPassword = GetHashData(password);
-	if (encPassword.compare(0, encPassword.length(), savedPassword, 0, encPassword.length()) == 0)
+	if (password.compare(0, password.length(), savedPassword, 0, password.length()) == 0)
 		return true;
 	else
 		return false;
