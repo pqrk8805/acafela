@@ -6,6 +6,7 @@ import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.util.Log;
+import android.media.audiofx.AcousticEchoCanceler; // AEC
 
 import com.acafela.harmony.crypto.ICrypto;
 
@@ -22,6 +23,11 @@ public class SenderAudio implements DataSender {
     private Thread mSenderThread = null;
     private boolean senderAudioThreadRun = false;
     private ICrypto mCrypto;
+
+    // AEC start
+    private AcousticEchoCanceler mAudioEchoCanceler;
+    private int mAudioRecordSessionId;
+    // AEC end
 
     private static final int MILLISECONDS_IN_A_SECOND = 1000;
     private static final int SAMPLE_RATE = 8000; // Hertz
@@ -118,6 +124,23 @@ public class SenderAudio implements DataSender {
                         AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT,
                         AudioRecord.getMinBufferSize(SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT));
 
+                // AEC start
+                mAudioRecordSessionId = Recorder.getAudioSessionId();
+
+                if (AcousticEchoCanceler.isAvailable()) {
+                    mAudioEchoCanceler = AcousticEchoCanceler.create(mAudioRecordSessionId);
+                    Log.i("AEC", "audio echo canceler enable");
+
+                    Log.i("AEC", "AEC is " + (mAudioEchoCanceler.getEnabled()?"enabled":"disabled"));
+
+                    if ( !mAudioEchoCanceler.getEnabled() )
+                    {
+                        mAudioEchoCanceler.setEnabled(true);
+                        Log.i("AEC", "AEC is " + (mAudioEchoCanceler.getEnabled()?"enabled":"disabled" +" after trying to disable"));
+                    }
+                }
+                // AEC end
+
                 int BytesRead;
                 byte[] rawbuf = new byte[RAW_BUFFER_SIZE+5];
                 //byte[] gsmbuf = new byte[GSM_BUFFER_SIZE];
@@ -175,6 +198,10 @@ public class SenderAudio implements DataSender {
                     Recorder.release();
                     if (InputPlayFile != null) InputPlayFile.close();
                     socket.disconnect();
+
+                    // AEC start
+                    mAudioEchoCanceler.release();
+                    // AEC end
 
                 } catch (SocketException e) {
                     senderAudioThreadRun = false;

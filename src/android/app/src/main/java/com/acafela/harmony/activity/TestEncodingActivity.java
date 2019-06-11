@@ -49,11 +49,6 @@ public class TestEncodingActivity extends AppCompatActivity {
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         mAudioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
 
-        if (AcousticEchoCanceler.isAvailable())
-            Log.i("Audio", "AEC enabled status");
-        else
-            Log.i("Audio", "AEC not enabled status");
-
         Spinner spinner = (Spinner) findViewById(R.id.audiopath_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.audioPath_array, android.R.layout.simple_spinner_item);
@@ -219,6 +214,7 @@ public class TestEncodingActivity extends AppCompatActivity {
                 track.stop();
                 track.release();
                 mAudioCodec.stop();
+                mAudioEchoCanceler.release();
             }
         }
     }
