@@ -1,14 +1,13 @@
 #pragma once
 #include <vector>
 #include <thread>
+#include <map>
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include <windows.h>
 #define BUFLEN 512
-typedef struct {
-	int send;
-	int receive;
-} PortGroup;
+#define CTRLSERVERPORT 5000
+#pragma comment(lib,"ws2_32.lib")
 
 typedef struct {
 	SOCKET server;
@@ -16,38 +15,84 @@ typedef struct {
 } SocketGroup;
 
 class Conversation;
-
-class Communicator {
+class Participant;
+class ConversationManager {
 private:
-	std::vector<std::thread *> threadList;
-	std::vector<std::tuple<int, char *>> dataBuffer;
-	std::vector<std::tuple<int, char *>> controlBuffer; // is it needed?
-	PortGroup controlStreamPort;
-	PortGroup dataStreamPort;
-	SocketGroup controlStreamSocket;
+	SOCKET ctrlPathServer;
+	std::map<Participant *,Conversation *> conversationMap;
+public:
+	void createControlServer();
+	void createClientCtrlPath();
+	Participant * createParticipant(std::string clientIP);
+	void request_CreateControlPath(Participant *);
+	void request_CreateDataPath(Participant *);
+};
+
+class ControlPath {
+private:
+	SOCKET ctrlPathClient;
+	std::thread * threadList;
+public:
+	void initiateClientSocket(std::string clientIP, int port);
+};
+
+class DataPath {
+private:
+	int receivePort;
+	Participant * ownerPart;
 	SocketGroup dataStreamSocket;
-	std::string clientIP;
+	Conversation * conversation;
+	std::map<Participant *, int> sendPortDirectory;
+	std::vector<std::tuple<Participant *, int, char *>> dataBuffer;
 	CRITICAL_SECTION crit;
+	std::string clientIP;
+	std::vector<std::thread *> threadList;
+	void createSocket();
+public:
+	DataPath(Participant * ownerPart, Conversation * conversation, std::string clientIP, int receivePort) {
+		this->ownerPart = ownerPart;
+		this->conversation = conversation;
+		this->clientIP = clientIP;
+		this->receivePort = receivePort;
+		createDataPath();
+	}
+	void createDataPath();
+	void addParticipant(Participant * part, int port);
+	void addToSendData(Participant * part, int len, char * data);
+};
+
+class Participant {
+private:
+	std::vector<std::tuple<int, char *>> controlBuffer; // is it needed?
+	DataPath * dataPath;
+	ControlPath * ctrlPath;
+	std::string clientIP;
 	Conversation * conversation;
 public:
-	Communicator(Conversation * conversation, std::string clientIP, PortGroup controlStreamPort, PortGroup dataStreamPort);
-	void controlStream_create();
-	void dataStream_create();
-	void dataStream_addToSend(int len, char * data);
+	Participant(std::string clientIP) {
+		this->clientIP = clientIP;
+	}
+	DataPath * getDataPath();
+	std::string getIP();
+	void setDataPath(DataPath * dataPath);
+	void joinConversation(Conversation * conversation);
 };
 
 class Conversation {
 private :
-	std::vector<Communicator *> conversationRoom;
+	std::vector<std::tuple<Participant *, int>> conversationRoom;
 public :
-	void broadcast(int len, char * data);
-	void broadcast_exceptMe(Communicator * me, int len, char * data);
-	void addCommunicator(std::string clientIP, PortGroup controlStreamPort, PortGroup dataStreamPort);
+	void broadcast_Data(Participant * partSend, int len, char * data);
+	void boradcast_Ctrl(std::string msg);
+	void addParticipant(Participant * part, int port);
+	void makeConversation(std::vector<std::tuple<Participant *, int>> partList);
 };
 
-//need refactor
-class SocketCreator {
+class PortHandler {
+private:
+	static int portNo;
 public:
-	SOCKET createSocket_serverSocket(int port, IPPROTO socketType);
-	SOCKET createSocket_clientSocket(std::string clientIP, int port, IPPROTO socketType);
+	static int getPortNumber() {
+		return ++portNo;
+	}
 };

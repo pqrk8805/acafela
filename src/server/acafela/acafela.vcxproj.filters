@@ -12,15 +12,15 @@
     <Filter Include="Source Files\UserProfile">
       <UniqueIdentifier>{bdcb4021-241b-40e4-8457-cf19b591813e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Communicator">
-      <UniqueIdentifier>{6760098b-f2f2-4c1c-a78a-22c625945aab}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
     <Filter Include="Source Files\StorageAccessor">
       <UniqueIdentifier>{35bd6000-c78b-471b-b4fa-feba017d5707}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Communicator">
+      <UniqueIdentifier>{6760098b-f2f2-4c1c-a78a-22c625945aab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -50,6 +50,18 @@
     </ClCompile>
     <ClCompile Include="src\StorageAccessor\MD5Encryption.cpp">
       <Filter>Source Files\StorageAccessor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Communicator\ConversationManager.cpp">
+      <Filter>Source Files\Communicator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Communicator\Conversation.cpp">
+      <Filter>Source Files\Communicator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Communicator\Participant.cpp">
+      <Filter>Source Files\Communicator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Communicator\DataPath.cpp">
+      <Filter>Source Files\Communicator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
