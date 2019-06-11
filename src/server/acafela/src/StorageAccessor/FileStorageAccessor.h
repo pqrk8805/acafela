@@ -6,7 +6,8 @@
 class FileStorageAccessor : public IStorageAccessor
 {
 public:
-	FileStorageAccessor() {}
+	FileStorageAccessor();
+	~FileStorageAccessor();
 
 	std::string registerUser(
 		const std::string& emailAddress,
@@ -26,6 +27,13 @@ public:
 		const std::string& phoneNumber) override;
 
 	int deleteUser(const std::string& emailAddress);
+
+	void getTotalUserNumber();
+	void updateUserNumber();	
+
+	std::string generateUserPhoneNumber();
 private:
-	std::mutex			mFileLock;
+	int			mUserNumber = 0;
+	std::mutex	mUserNumberLock;
+	std::mutex	mUserProfileLock;
 };

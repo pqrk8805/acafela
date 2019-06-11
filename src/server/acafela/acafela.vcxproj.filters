@@ -63,6 +63,9 @@
     <ClCompile Include="src\UserProfile\MD5Hash.cpp">
       <Filter>Source Files\UserProfile</Filter>
     </ClCompile>
+    <ClCompile Include="src\StorageAccessor\DBFile.cpp">
+      <Filter>Source Files\StorageAccessor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\UserProfile\UserProfile.grpc.pb.h">
@@ -97,6 +100,9 @@
     </ClInclude>
     <ClInclude Include="src\UserProfile\MD5Hash.h">
       <Filter>Source Files\UserProfile</Filter>
+    </ClInclude>
+    <ClInclude Include="src\StorageAccessor\DBFile.h">
+      <Filter>Source Files\StorageAccessor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

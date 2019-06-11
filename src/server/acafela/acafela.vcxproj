@@ -23,6 +23,7 @@
       </ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\StorageAccessor\DBFile.cpp" />
     <ClCompile Include="src\StorageAccessor\FileStorageAccessor.cpp" />
     <ClCompile Include="src\UserProfile\MD5Hash.cpp" />
     <ClCompile Include="src\UserProfile\UserProfile.cpp" />
@@ -48,6 +49,7 @@
   <ItemGroup>
     <ClInclude Include="src\Communicator\communicator.h" />
     <ClInclude Include="src\Hislog.h" />
+    <ClInclude Include="src\StorageAccessor\DBFile.h" />
     <ClInclude Include="src\StorageAccessor\FileStorageAccessor.h" />
     <ClInclude Include="src\StorageAccessor\IStorageAccessor.h" />
     <ClInclude Include="src\UserProfile\ISecurityProvider.h" />
