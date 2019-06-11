@@ -7,10 +7,9 @@ import android.media.AudioRecord;
 import android.media.AudioTrack;
 import android.media.MediaRecorder;
 import android.media.audiofx.AcousticEchoCanceler;
-
+import android.os.Bundle;
 import android.os.Process;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,12 +19,10 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.acafela.harmony.R;
-import com.acafela.harmony.service.AudioEncoderCore;
-
-import java.io.IOException;
+import com.acafela.harmony.codec.AudioCodecSync;
 
 public class TestEncodingActivity extends AppCompatActivity {
-    private static final String LOG_TAG = TestEncodingActivity.class.getName();
+    private static final String TAG = TestEncodingActivity.class.getName();
 
     private static final int SPINNER_SPEAKER = 0;
     private static final int SPINNER_EARPIECE = 1;
@@ -39,10 +36,7 @@ public class TestEncodingActivity extends AppCompatActivity {
     private AcousticEchoCanceler mAudioEchoCanceler;
     private int mAudioRecordSessionId;
 
-    AudioEncoderCore mAudioEncoder = new AudioEncoderCore();
-
-    public TestEncodingActivity() throws IOException {
-    }
+    AudioCodecSync mAudioCodec = new AudioCodecSync();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,8 +103,15 @@ public class TestEncodingActivity extends AppCompatActivity {
         try {
             mAudioThread.join();
         } catch (InterruptedException e) {
-            Log.w(LOG_TAG, "Interrupted waiting for audio thread to finish");
+            Log.w(TAG, "Interrupted waiting for audio thread to finish");
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        mAudioCodec.release();
     }
 
     public void onClickStartBtn(View v) {
@@ -118,6 +119,7 @@ public class TestEncodingActivity extends AppCompatActivity {
         mStopButton.setEnabled(true);
         mAudioThread = new AudioThread();
         mAudioThread.start();
+        mAudioCodec.start();
     }
 
     public void onClickStopBtn(View v) {
@@ -125,7 +127,7 @@ public class TestEncodingActivity extends AppCompatActivity {
         try {
             mAudioThread.join();
         } catch (InterruptedException e) {
-            Log.w(LOG_TAG, "Interrupted waiting for audio thread to finish");
+            Log.w(TAG, "Interrupted waiting for audio thread to finish");
         }
         mStartButton.setEnabled(true);
         mStopButton.setEnabled(false);
@@ -162,18 +164,17 @@ public class TestEncodingActivity extends AppCompatActivity {
 
             if (AcousticEchoCanceler.isAvailable()) {
                 mAudioEchoCanceler = AcousticEchoCanceler.create(mAudioRecordSessionId);
-                Log.i("Audio", "audio echo canceler enable");
+                Log.i(TAG, "audio echo canceler enable");
 
-                Log.i(LOG_TAG, "AEC is " + (mAudioEchoCanceler.getEnabled()?"enabled":"disabled"));
+                Log.i(TAG, "AEC is " + (mAudioEchoCanceler.getEnabled()?"enabled":"disabled"));
 
                 if ( !mAudioEchoCanceler.getEnabled() )
                 {
                     mAudioEchoCanceler.setEnabled(true);
-                    Log.i(LOG_TAG, "AEC is " + (mAudioEchoCanceler.getEnabled()?"enabled":"disabled" +" after trying to disable"));
+                    Log.i(TAG, "AEC is " + (mAudioEchoCanceler.getEnabled()?"enabled":"disabled" +" after trying to disable"));
                 }
             }
 
-            // init audio track
             AudioTrack track = new AudioTrack(AudioManager.STREAM_SYSTEM,
                     SAMPLE_RATE,
                     NUM_CHANNELS == 1 ? AudioFormat.CHANNEL_OUT_MONO : AudioFormat.CHANNEL_OUT_STEREO,
@@ -181,7 +182,6 @@ public class TestEncodingActivity extends AppCompatActivity {
                     minBufSize,
                     AudioTrack.MODE_STREAM);
 
-            // start
             recorder.startRecording();
             track.play();
 
@@ -201,25 +201,24 @@ public class TestEncodingActivity extends AppCompatActivity {
                         offset += read;
                     }
 
-                    /* mAudioEncoder.queueInputBuffer(inBuf); */
-/*                   byte[] temp = mAudioEncoder.dequeueOutputBuffer();
-                   if(temp != null) {
-                       inBuf = temp;
-                       Log.i("xxx", "output is ok!");
-                   }
-                   else
-                       Log.i("xxx", "output is null!");
-*/
+                    byte[] encodedBuf = mAudioCodec.encode(inBuf);
+                    if (encodedBuf == null) {
+                        continue;
+                    }
 
-                    track.write(inBuf, 0, inBuf.length);
+                    byte[] decodedBuf = mAudioCodec.decode(encodedBuf);
+                    if (decodedBuf == null) {
+                        continue;
+                    }
+
+                    track.write(decodedBuf, 0, decodedBuf.length);
                 }
             } finally {
                 recorder.stop();
                 recorder.release();
                 track.stop();
                 track.release();
-                mAudioEncoder.release();
-                
+                mAudioCodec.stop();
             }
         }
     }
