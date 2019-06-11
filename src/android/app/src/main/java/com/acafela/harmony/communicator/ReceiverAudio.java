@@ -168,7 +168,7 @@ public class ReceiverAudio implements DataReceiver {
                             DatagramPacket packet = new DatagramPacket(encrypted, encrypted.length);
                             RecvUdpSocket.receive(packet);
 
-                            byte[] plane = mCrypto.decrypt(encrypted);
+                            byte[] plane = mCrypto.decrypt(encrypted, 0, packet.getLength());
                             IncommingpacketQueue.add(plane);
                         }
                         /*byte[] rawbuf = new byte[RAW_BUFFER_SIZE];

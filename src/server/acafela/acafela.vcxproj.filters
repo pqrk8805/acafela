@@ -22,6 +22,9 @@
     <Filter Include="Source Files\Communicator">
       <UniqueIdentifier>{6760098b-f2f2-4c1c-a78a-22c625945aab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\RpcCommon">
+      <UniqueIdentifier>{99209780-afcb-42d6-8651-c8b8c760a026}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -63,6 +66,9 @@
     <ClCompile Include="src\UserProfile\MD5Hash.cpp">
       <Filter>Source Files\UserProfile</Filter>
     </ClCompile>
+    <ClCompile Include="src\RpcCommon\Common.pb.cc">
+      <Filter>Source Files\RpcCommon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\UserProfile\UserProfile.grpc.pb.h">
@@ -97,6 +103,9 @@
     </ClInclude>
     <ClInclude Include="src\UserProfile\MD5Hash.h">
       <Filter>Source Files\UserProfile</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RpcCommon\Common.pb.h">
+      <Filter>Source Files\RpcCommon</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

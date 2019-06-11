@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package acafela.rpc;
+
+option java_package = "com.acafela.harmony.rpc";
+
+message Empty {
+}
+
+message Error {
+    int32 err = 1;
+    string message = 2;
+}
