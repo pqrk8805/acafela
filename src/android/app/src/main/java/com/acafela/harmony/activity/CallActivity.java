@@ -24,6 +24,8 @@ public class CallActivity extends AppCompatActivity {
 
     public static final String INTENT_CONTROL = "CONTROL";
     public static final String INTENT_SERVERIP = "SERVER";
+    public static final String INTENT_SERVERSENDPORT = "SERVERSENDPORT";
+    public static final String INTENT_SERVERRCVPORT = "SERVERRCVPORT";
     public static final String INTENT_INITIATE_CALL = "INITIATE_CALL";
     public static final String INTENT_TERMINATE_CALL = "TERMINATE_CALL";
 
@@ -79,10 +81,13 @@ public class CallActivity extends AppCompatActivity {
             });
             alert.show();
         }
-
+        int remoteSNDPort = Integer.parseInt(((TextView)findViewById(R.id.editTextRemoteSendPort)).getText().toString());
+        int remoteRCVPort = Integer.parseInt(((TextView)findViewById(R.id.editTextRemoteRcvPort)).getText().toString());
         Intent intent = new Intent(getApplicationContext(), HarmonyService.class);
         intent.putExtra(INTENT_CONTROL, INTENT_INITIATE_CALL);
         intent.putExtra(INTENT_SERVERIP, RemoteIP);
+        intent.putExtra(INTENT_SERVERSENDPORT, remoteSNDPort);
+        intent.putExtra(INTENT_SERVERRCVPORT, remoteRCVPort);
         startService(intent);
     }
 

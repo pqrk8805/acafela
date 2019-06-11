@@ -42,7 +42,9 @@ public class HarmonyService extends Service {
         switch (control)  {
             case CallActivity.INTENT_INITIATE_CALL:
                 String serverIp = intent.getStringExtra(CallActivity.INTENT_SERVERIP);
-                initiateCall(serverIp);
+                int serverSndPort = intent.getIntExtra(CallActivity.INTENT_SERVERSENDPORT, 0);
+                int serverRcvPort = intent.getIntExtra(CallActivity.INTENT_SERVERRCVPORT, 0);
+                initiateCall(serverIp, serverSndPort, serverRcvPort);
                 break;
             case CallActivity.INTENT_TERMINATE_CALL:
                 terminateCall();
@@ -65,16 +67,16 @@ public class HarmonyService extends Service {
     }
 
     // this method may move to another class
-    private void initiateCall(String serverIp) {
+    private void initiateCall(String serverIp, int sendPort, int receivePort) {
         Log.i(LOG_TAG, "initiateCall");
         showToastInService("initiateCall");
 
         ICrypto crypto = CryptoBroker.getInstance().create("AES");
         crypto.init("12345".getBytes());
 
-        int sendPort =5000;
+        //int sendPort =5000;
         //int receivePort =5001;
-        int receivePort =5000;
+        //int receivePort =5000;
         //int sendPort =5002;
         //int receivePort =5003;
 
