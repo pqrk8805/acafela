@@ -22,6 +22,9 @@
     <Filter Include="Source Files\Communicator">
       <UniqueIdentifier>{6760098b-f2f2-4c1c-a78a-22c625945aab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\RpcCommon">
+      <UniqueIdentifier>{99209780-afcb-42d6-8651-c8b8c760a026}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -65,6 +68,8 @@
     </ClCompile>
     <ClCompile Include="src\StorageAccessor\DBFile.cpp">
       <Filter>Source Files\StorageAccessor</Filter>
+    <ClCompile Include="src\RpcCommon\Common.pb.cc">
+      <Filter>Source Files\RpcCommon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +108,7 @@
     </ClInclude>
     <ClInclude Include="src\StorageAccessor\DBFile.h">
       <Filter>Source Files\StorageAccessor</Filter>
+    <ClInclude Include="src\RpcCommon\Common.pb.h">
+      <Filter>Source Files\RpcCommon</Filter>
     </ClInclude>
-  </ItemGroup>
-</Project>
+  </ItemGroup></Project>

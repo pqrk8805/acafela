@@ -30,6 +30,7 @@
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
 #include <google/protobuf/unknown_field_set.h>
+#include "Common.pb.h"
 // @@protoc_insertion_point(includes)
 #define PROTOBUF_INTERNAL_EXPORT_protobuf_UserProfile_2eproto 
 
@@ -38,7 +39,7 @@ namespace protobuf_UserProfile_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[7];
+  static const ::google::protobuf::internal::ParseTable schema[5];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -50,12 +51,6 @@ namespace rpc {
 class ChangePasswordParam;
 class ChangePasswordParamDefaultTypeInternal;
 extern ChangePasswordParamDefaultTypeInternal _ChangePasswordParam_default_instance_;
-class Empty;
-class EmptyDefaultTypeInternal;
-extern EmptyDefaultTypeInternal _Empty_default_instance_;
-class Error;
-class ErrorDefaultTypeInternal;
-extern ErrorDefaultTypeInternal _Error_default_instance_;
 class RegisterParam;
 class RegisterParamDefaultTypeInternal;
 extern RegisterParamDefaultTypeInternal _RegisterParam_default_instance_;
@@ -73,8 +68,6 @@ extern VersionInfoDefaultTypeInternal _VersionInfo_default_instance_;
 namespace google {
 namespace protobuf {
 template<> ::acafela::rpc::ChangePasswordParam* Arena::CreateMaybeMessage<::acafela::rpc::ChangePasswordParam>(Arena*);
-template<> ::acafela::rpc::Empty* Arena::CreateMaybeMessage<::acafela::rpc::Empty>(Arena*);
-template<> ::acafela::rpc::Error* Arena::CreateMaybeMessage<::acafela::rpc::Error>(Arena*);
 template<> ::acafela::rpc::RegisterParam* Arena::CreateMaybeMessage<::acafela::rpc::RegisterParam>(Arena*);
 template<> ::acafela::rpc::RegisterResp* Arena::CreateMaybeMessage<::acafela::rpc::RegisterResp>(Arena*);
 template<> ::acafela::rpc::RestorePasswordParam* Arena::CreateMaybeMessage<::acafela::rpc::RestorePasswordParam>(Arena*);
@@ -85,220 +78,6 @@ namespace acafela {
 namespace rpc {
 
 // ===================================================================
-
-class Empty : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:acafela.rpc.Empty) */ {
- public:
-  Empty();
-  virtual ~Empty();
-
-  Empty(const Empty& from);
-
-  inline Empty& operator=(const Empty& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  Empty(Empty&& from) noexcept
-    : Empty() {
-    *this = ::std::move(from);
-  }
-
-  inline Empty& operator=(Empty&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const Empty& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const Empty* internal_default_instance() {
-    return reinterpret_cast<const Empty*>(
-               &_Empty_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    0;
-
-  void Swap(Empty* other);
-  friend void swap(Empty& a, Empty& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline Empty* New() const final {
-    return CreateMaybeMessage<Empty>(NULL);
-  }
-
-  Empty* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<Empty>(arena);
-  }
-  void CopyFrom(const ::google::protobuf::Message& from) final;
-  void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const Empty& from);
-  void MergeFrom(const Empty& from);
-  void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) final;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const final;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(Empty* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // @@protoc_insertion_point(class_scope:acafela.rpc.Empty)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  mutable ::google::protobuf::internal::CachedSize _cached_size_;
-  friend struct ::protobuf_UserProfile_2eproto::TableStruct;
-};
-// -------------------------------------------------------------------
-
-class Error : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:acafela.rpc.Error) */ {
- public:
-  Error();
-  virtual ~Error();
-
-  Error(const Error& from);
-
-  inline Error& operator=(const Error& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  Error(Error&& from) noexcept
-    : Error() {
-    *this = ::std::move(from);
-  }
-
-  inline Error& operator=(Error&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const Error& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const Error* internal_default_instance() {
-    return reinterpret_cast<const Error*>(
-               &_Error_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    1;
-
-  void Swap(Error* other);
-  friend void swap(Error& a, Error& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline Error* New() const final {
-    return CreateMaybeMessage<Error>(NULL);
-  }
-
-  Error* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<Error>(arena);
-  }
-  void CopyFrom(const ::google::protobuf::Message& from) final;
-  void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const Error& from);
-  void MergeFrom(const Error& from);
-  void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) final;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const final;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(Error* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // string message = 2;
-  void clear_message();
-  static const int kMessageFieldNumber = 2;
-  const ::std::string& message() const;
-  void set_message(const ::std::string& value);
-  #if LANG_CXX11
-  void set_message(::std::string&& value);
-  #endif
-  void set_message(const char* value);
-  void set_message(const char* value, size_t size);
-  ::std::string* mutable_message();
-  ::std::string* release_message();
-  void set_allocated_message(::std::string* message);
-
-  // int32 err = 1;
-  void clear_err();
-  static const int kErrFieldNumber = 1;
-  ::google::protobuf::int32 err() const;
-  void set_err(::google::protobuf::int32 value);
-
-  // @@protoc_insertion_point(class_scope:acafela.rpc.Error)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr message_;
-  ::google::protobuf::int32 err_;
-  mutable ::google::protobuf::internal::CachedSize _cached_size_;
-  friend struct ::protobuf_UserProfile_2eproto::TableStruct;
-};
-// -------------------------------------------------------------------
 
 class VersionInfo : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:acafela.rpc.VersionInfo) */ {
  public:
@@ -335,7 +114,7 @@ class VersionInfo : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_VersionInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    0;
 
   void Swap(VersionInfo* other);
   friend void swap(VersionInfo& a, VersionInfo& b) {
@@ -446,7 +225,7 @@ class RegisterParam : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_RegisterParam_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    1;
 
   void Swap(RegisterParam* other);
   friend void swap(RegisterParam& a, RegisterParam& b) {
@@ -572,7 +351,7 @@ class RegisterResp : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_RegisterResp_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    2;
 
   void Swap(RegisterResp* other);
   friend void swap(RegisterResp& a, RegisterResp& b) {
@@ -696,7 +475,7 @@ class ChangePasswordParam : public ::google::protobuf::Message /* @@protoc_inser
                &_ChangePasswordParam_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    3;
 
   void Swap(ChangePasswordParam* other);
   friend void swap(ChangePasswordParam& a, ChangePasswordParam& b) {
@@ -837,7 +616,7 @@ class RestorePasswordParam : public ::google::protobuf::Message /* @@protoc_inse
                &_RestorePasswordParam_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    4;
 
   void Swap(RestorePasswordParam* other);
   friend void swap(RestorePasswordParam& a, RestorePasswordParam& b) {
@@ -935,81 +714,6 @@ class RestorePasswordParam : public ::google::protobuf::Message /* @@protoc_inse
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
-// Empty
-
-// -------------------------------------------------------------------
-
-// Error
-
-// int32 err = 1;
-inline void Error::clear_err() {
-  err_ = 0;
-}
-inline ::google::protobuf::int32 Error::err() const {
-  // @@protoc_insertion_point(field_get:acafela.rpc.Error.err)
-  return err_;
-}
-inline void Error::set_err(::google::protobuf::int32 value) {
-  
-  err_ = value;
-  // @@protoc_insertion_point(field_set:acafela.rpc.Error.err)
-}
-
-// string message = 2;
-inline void Error::clear_message() {
-  message_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& Error::message() const {
-  // @@protoc_insertion_point(field_get:acafela.rpc.Error.message)
-  return message_.GetNoArena();
-}
-inline void Error::set_message(const ::std::string& value) {
-  
-  message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:acafela.rpc.Error.message)
-}
-#if LANG_CXX11
-inline void Error::set_message(::std::string&& value) {
-  
-  message_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:acafela.rpc.Error.message)
-}
-#endif
-inline void Error::set_message(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:acafela.rpc.Error.message)
-}
-inline void Error::set_message(const char* value, size_t size) {
-  
-  message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:acafela.rpc.Error.message)
-}
-inline ::std::string* Error::mutable_message() {
-  
-  // @@protoc_insertion_point(field_mutable:acafela.rpc.Error.message)
-  return message_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* Error::release_message() {
-  // @@protoc_insertion_point(field_release:acafela.rpc.Error.message)
-  
-  return message_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void Error::set_allocated_message(::std::string* message) {
-  if (message != NULL) {
-    
-  } else {
-    
-  }
-  message_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), message);
-  // @@protoc_insertion_point(field_set_allocated:acafela.rpc.Error.message)
-}
-
-// -------------------------------------------------------------------
-
 // VersionInfo
 
 // string version = 1;
@@ -1183,12 +887,6 @@ inline void RegisterParam::set_allocated_password(::std::string* password) {
 inline bool RegisterResp::has_error() const {
   return this != internal_default_instance() && error_ != NULL;
 }
-inline void RegisterResp::clear_error() {
-  if (GetArenaNoVirtual() == NULL && error_ != NULL) {
-    delete error_;
-  }
-  error_ = NULL;
-}
 inline const ::acafela::rpc::Error& RegisterResp::_internal_error() const {
   return *error_;
 }
@@ -1217,7 +915,7 @@ inline ::acafela::rpc::Error* RegisterResp::mutable_error() {
 inline void RegisterResp::set_allocated_error(::acafela::rpc::Error* error) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == NULL) {
-    delete error_;
+    delete reinterpret_cast< ::google::protobuf::MessageLite*>(error_);
   }
   if (error) {
     ::google::protobuf::Arena* submessage_arena = NULL;
@@ -1562,10 +1260,6 @@ inline void RestorePasswordParam::set_allocated_phone_number(::std::string* phon
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

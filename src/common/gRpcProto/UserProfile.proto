@@ -4,20 +4,15 @@ package acafela.rpc;
 
 option java_package = "com.acafela.harmony.userprofile";
 
+import "Common.proto";
+
+
 service UserProfile {
     rpc getVersion(Empty) returns (VersionInfo);
 
     rpc registerUser(RegisterParam) returns (RegisterResp);
     rpc changePassword(ChangePasswordParam) returns (Error);
     rpc restorePassword(RestorePasswordParam) returns (Error);
-}
-
-message Empty {
-}
-
-message Error {
-    int32 err = 1;
-    string message = 2;
 }
 
 message VersionInfo {

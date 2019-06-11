@@ -19,21 +19,11 @@
 #endif
 // @@protoc_insertion_point(includes)
 
-namespace protobuf_UserProfile_2eproto {
-extern PROTOBUF_INTERNAL_EXPORT_protobuf_UserProfile_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_Error;
-}  // namespace protobuf_UserProfile_2eproto
+namespace protobuf_Common_2eproto {
+extern PROTOBUF_INTERNAL_EXPORT_protobuf_Common_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_Error;
+}  // namespace protobuf_Common_2eproto
 namespace acafela {
 namespace rpc {
-class EmptyDefaultTypeInternal {
- public:
-  ::google::protobuf::internal::ExplicitlyConstructed<Empty>
-      _instance;
-} _Empty_default_instance_;
-class ErrorDefaultTypeInternal {
- public:
-  ::google::protobuf::internal::ExplicitlyConstructed<Error>
-      _instance;
-} _Error_default_instance_;
 class VersionInfoDefaultTypeInternal {
  public:
   ::google::protobuf::internal::ExplicitlyConstructed<VersionInfo>
@@ -62,34 +52,6 @@ class RestorePasswordParamDefaultTypeInternal {
 }  // namespace rpc
 }  // namespace acafela
 namespace protobuf_UserProfile_2eproto {
-static void InitDefaultsEmpty() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::acafela::rpc::_Empty_default_instance_;
-    new (ptr) ::acafela::rpc::Empty();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::acafela::rpc::Empty::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_Empty =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsEmpty}, {}};
-
-static void InitDefaultsError() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::acafela::rpc::_Error_default_instance_;
-    new (ptr) ::acafela::rpc::Error();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::acafela::rpc::Error::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_Error =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsError}, {}};
-
 static void InitDefaultsVersionInfo() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
@@ -131,7 +93,7 @@ static void InitDefaultsRegisterResp() {
 
 ::google::protobuf::internal::SCCInfo<1> scc_info_RegisterResp =
     {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsRegisterResp}, {
-      &protobuf_UserProfile_2eproto::scc_info_Error.base,}};
+      &protobuf_Common_2eproto::scc_info_Error.base,}};
 
 static void InitDefaultsChangePasswordParam() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -162,8 +124,6 @@ static void InitDefaultsRestorePasswordParam() {
     {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsRestorePasswordParam}, {}};
 
 void InitDefaults() {
-  ::google::protobuf::internal::InitSCC(&scc_info_Empty.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_Error.base);
   ::google::protobuf::internal::InitSCC(&scc_info_VersionInfo.base);
   ::google::protobuf::internal::InitSCC(&scc_info_RegisterParam.base);
   ::google::protobuf::internal::InitSCC(&scc_info_RegisterResp.base);
@@ -171,21 +131,9 @@ void InitDefaults() {
   ::google::protobuf::internal::InitSCC(&scc_info_RestorePasswordParam.base);
 }
 
-::google::protobuf::Metadata file_level_metadata[7];
+::google::protobuf::Metadata file_level_metadata[5];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-  ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::rpc::Empty, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::rpc::Error, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::rpc::Error, err_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::rpc::Error, message_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::rpc::VersionInfo, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -223,18 +171,14 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::rpc::RestorePasswordParam, phone_number_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, sizeof(::acafela::rpc::Empty)},
-  { 5, -1, sizeof(::acafela::rpc::Error)},
-  { 12, -1, sizeof(::acafela::rpc::VersionInfo)},
-  { 18, -1, sizeof(::acafela::rpc::RegisterParam)},
-  { 25, -1, sizeof(::acafela::rpc::RegisterResp)},
-  { 32, -1, sizeof(::acafela::rpc::ChangePasswordParam)},
-  { 40, -1, sizeof(::acafela::rpc::RestorePasswordParam)},
+  { 0, -1, sizeof(::acafela::rpc::VersionInfo)},
+  { 6, -1, sizeof(::acafela::rpc::RegisterParam)},
+  { 13, -1, sizeof(::acafela::rpc::RegisterResp)},
+  { 20, -1, sizeof(::acafela::rpc::ChangePasswordParam)},
+  { 28, -1, sizeof(::acafela::rpc::RestorePasswordParam)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::google::protobuf::Message*>(&::acafela::rpc::_Empty_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::acafela::rpc::_Error_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::acafela::rpc::_VersionInfo_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::acafela::rpc::_RegisterParam_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::acafela::rpc::_RegisterResp_default_instance_),
@@ -257,36 +201,36 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 7);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 5);
 }
 
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-      "\n\021UserProfile.proto\022\013acafela.rpc\"\007\n\005Empt"
-      "y\"%\n\005Error\022\013\n\003err\030\001 \001(\005\022\017\n\007message\030\002 \001(\t"
-      "\"\036\n\013VersionInfo\022\017\n\007version\030\001 \001(\t\"8\n\rRegi"
-      "sterParam\022\025\n\remail_address\030\001 \001(\t\022\020\n\010pass"
-      "word\030\002 \001(\t\"G\n\014RegisterResp\022!\n\005error\030\001 \001("
-      "\0132\022.acafela.rpc.Error\022\024\n\014phone_number\030\002 "
-      "\001(\t\"X\n\023ChangePasswordParam\022\025\n\remail_addr"
-      "ess\030\001 \001(\t\022\024\n\014old_password\030\002 \001(\t\022\024\n\014new_p"
-      "assword\030\003 \001(\t\"C\n\024RestorePasswordParam\022\025\n"
-      "\remail_address\030\001 \001(\t\022\024\n\014phone_number\030\002 \001"
-      "(\t2\242\002\n\013UserProfile\022:\n\ngetVersion\022\022.acafe"
-      "la.rpc.Empty\032\030.acafela.rpc.VersionInfo\022E"
-      "\n\014registerUser\022\032.acafela.rpc.RegisterPar"
-      "am\032\031.acafela.rpc.RegisterResp\022F\n\016changeP"
-      "assword\022 .acafela.rpc.ChangePasswordPara"
-      "m\032\022.acafela.rpc.Error\022H\n\017restorePassword"
-      "\022!.acafela.rpc.RestorePasswordParam\032\022.ac"
-      "afela.rpc.ErrorB!\n\037com.acafela.harmony.u"
-      "serprofileb\006proto3"
+      "\n\021UserProfile.proto\022\013acafela.rpc\032\014Common"
+      ".proto\"\036\n\013VersionInfo\022\017\n\007version\030\001 \001(\t\"8"
+      "\n\rRegisterParam\022\025\n\remail_address\030\001 \001(\t\022\020"
+      "\n\010password\030\002 \001(\t\"G\n\014RegisterResp\022!\n\005erro"
+      "r\030\001 \001(\0132\022.acafela.rpc.Error\022\024\n\014phone_num"
+      "ber\030\002 \001(\t\"X\n\023ChangePasswordParam\022\025\n\remai"
+      "l_address\030\001 \001(\t\022\024\n\014old_password\030\002 \001(\t\022\024\n"
+      "\014new_password\030\003 \001(\t\"C\n\024RestorePasswordPa"
+      "ram\022\025\n\remail_address\030\001 \001(\t\022\024\n\014phone_numb"
+      "er\030\002 \001(\t2\242\002\n\013UserProfile\022:\n\ngetVersion\022\022"
+      ".acafela.rpc.Empty\032\030.acafela.rpc.Version"
+      "Info\022E\n\014registerUser\022\032.acafela.rpc.Regis"
+      "terParam\032\031.acafela.rpc.RegisterResp\022F\n\016c"
+      "hangePassword\022 .acafela.rpc.ChangePasswo"
+      "rdParam\032\022.acafela.rpc.Error\022H\n\017restorePa"
+      "ssword\022!.acafela.rpc.RestorePasswordPara"
+      "m\032\022.acafela.rpc.ErrorB!\n\037com.acafela.har"
+      "mony.userprofileb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 738);
+      descriptor, 704);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "UserProfile.proto", &protobuf_RegisterTypes);
+  ::protobuf_Common_2eproto::AddDescriptors();
 }
 
 void AddDescriptors() {
@@ -302,466 +246,6 @@ struct StaticDescriptorInitializer {
 }  // namespace protobuf_UserProfile_2eproto
 namespace acafela {
 namespace rpc {
-
-// ===================================================================
-
-void Empty::InitAsDefaultInstance() {
-}
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
-Empty::Empty()
-  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
-  ::google::protobuf::internal::InitSCC(
-      &protobuf_UserProfile_2eproto::scc_info_Empty.base);
-  SharedCtor();
-  // @@protoc_insertion_point(constructor:acafela.rpc.Empty)
-}
-Empty::Empty(const Empty& from)
-  : ::google::protobuf::Message(),
-      _internal_metadata_(NULL) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:acafela.rpc.Empty)
-}
-
-void Empty::SharedCtor() {
-}
-
-Empty::~Empty() {
-  // @@protoc_insertion_point(destructor:acafela.rpc.Empty)
-  SharedDtor();
-}
-
-void Empty::SharedDtor() {
-}
-
-void Empty::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
-}
-const ::google::protobuf::Descriptor* Empty::descriptor() {
-  ::protobuf_UserProfile_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_UserProfile_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
-}
-
-const Empty& Empty::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_UserProfile_2eproto::scc_info_Empty.base);
-  return *internal_default_instance();
-}
-
-
-void Empty::Clear() {
-// @@protoc_insertion_point(message_clear_start:acafela.rpc.Empty)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _internal_metadata_.Clear();
-}
-
-bool Empty::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:acafela.rpc.Empty)
-  for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-  handle_unusual:
-    if (tag == 0) {
-      goto success;
-    }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
-          input, tag, _internal_metadata_.mutable_unknown_fields()));
-  }
-success:
-  // @@protoc_insertion_point(parse_success:acafela.rpc.Empty)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:acafela.rpc.Empty)
-  return false;
-#undef DO_
-}
-
-void Empty::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:acafela.rpc.Empty)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
-  }
-  // @@protoc_insertion_point(serialize_end:acafela.rpc.Empty)
-}
-
-::google::protobuf::uint8* Empty::InternalSerializeWithCachedSizesToArray(
-    bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:acafela.rpc.Empty)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:acafela.rpc.Empty)
-  return target;
-}
-
-size_t Empty::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:acafela.rpc.Empty)
-  size_t total_size = 0;
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
-  }
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
-}
-
-void Empty::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:acafela.rpc.Empty)
-  GOOGLE_DCHECK_NE(&from, this);
-  const Empty* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const Empty>(
-          &from);
-  if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:acafela.rpc.Empty)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:acafela.rpc.Empty)
-    MergeFrom(*source);
-  }
-}
-
-void Empty::MergeFrom(const Empty& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:acafela.rpc.Empty)
-  GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-}
-
-void Empty::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:acafela.rpc.Empty)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void Empty::CopyFrom(const Empty& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:acafela.rpc.Empty)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool Empty::IsInitialized() const {
-  return true;
-}
-
-void Empty::Swap(Empty* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
-void Empty::InternalSwap(Empty* other) {
-  using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-}
-
-::google::protobuf::Metadata Empty::GetMetadata() const {
-  protobuf_UserProfile_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_UserProfile_2eproto::file_level_metadata[kIndexInFileMessages];
-}
-
-
-// ===================================================================
-
-void Error::InitAsDefaultInstance() {
-}
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int Error::kErrFieldNumber;
-const int Error::kMessageFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
-Error::Error()
-  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
-  ::google::protobuf::internal::InitSCC(
-      &protobuf_UserProfile_2eproto::scc_info_Error.base);
-  SharedCtor();
-  // @@protoc_insertion_point(constructor:acafela.rpc.Error)
-}
-Error::Error(const Error& from)
-  : ::google::protobuf::Message(),
-      _internal_metadata_(NULL) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  message_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.message().size() > 0) {
-    message_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.message_);
-  }
-  err_ = from.err_;
-  // @@protoc_insertion_point(copy_constructor:acafela.rpc.Error)
-}
-
-void Error::SharedCtor() {
-  message_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  err_ = 0;
-}
-
-Error::~Error() {
-  // @@protoc_insertion_point(destructor:acafela.rpc.Error)
-  SharedDtor();
-}
-
-void Error::SharedDtor() {
-  message_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-
-void Error::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
-}
-const ::google::protobuf::Descriptor* Error::descriptor() {
-  ::protobuf_UserProfile_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_UserProfile_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
-}
-
-const Error& Error::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_UserProfile_2eproto::scc_info_Error.base);
-  return *internal_default_instance();
-}
-
-
-void Error::Clear() {
-// @@protoc_insertion_point(message_clear_start:acafela.rpc.Error)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  message_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  err_ = 0;
-  _internal_metadata_.Clear();
-}
-
-bool Error::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:acafela.rpc.Error)
-  for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // int32 err = 1;
-      case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &err_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // string message = 2;
-      case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_message()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->message().data(), static_cast<int>(this->message().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "acafela.rpc.Error.message"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:acafela.rpc.Error)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:acafela.rpc.Error)
-  return false;
-#undef DO_
-}
-
-void Error::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:acafela.rpc.Error)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // int32 err = 1;
-  if (this->err() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->err(), output);
-  }
-
-  // string message = 2;
-  if (this->message().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->message().data(), static_cast<int>(this->message().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "acafela.rpc.Error.message");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->message(), output);
-  }
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
-  }
-  // @@protoc_insertion_point(serialize_end:acafela.rpc.Error)
-}
-
-::google::protobuf::uint8* Error::InternalSerializeWithCachedSizesToArray(
-    bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:acafela.rpc.Error)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // int32 err = 1;
-  if (this->err() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->err(), target);
-  }
-
-  // string message = 2;
-  if (this->message().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->message().data(), static_cast<int>(this->message().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "acafela.rpc.Error.message");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->message(), target);
-  }
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:acafela.rpc.Error)
-  return target;
-}
-
-size_t Error::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:acafela.rpc.Error)
-  size_t total_size = 0;
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
-  }
-  // string message = 2;
-  if (this->message().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->message());
-  }
-
-  // int32 err = 1;
-  if (this->err() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->err());
-  }
-
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
-}
-
-void Error::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:acafela.rpc.Error)
-  GOOGLE_DCHECK_NE(&from, this);
-  const Error* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const Error>(
-          &from);
-  if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:acafela.rpc.Error)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:acafela.rpc.Error)
-    MergeFrom(*source);
-  }
-}
-
-void Error::MergeFrom(const Error& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:acafela.rpc.Error)
-  GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (from.message().size() > 0) {
-
-    message_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.message_);
-  }
-  if (from.err() != 0) {
-    set_err(from.err());
-  }
-}
-
-void Error::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:acafela.rpc.Error)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void Error::CopyFrom(const Error& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:acafela.rpc.Error)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool Error::IsInitialized() const {
-  return true;
-}
-
-void Error::Swap(Error* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
-void Error::InternalSwap(Error* other) {
-  using std::swap;
-  message_.Swap(&other->message_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
-  swap(err_, other->err_);
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-}
-
-::google::protobuf::Metadata Error::GetMetadata() const {
-  protobuf_UserProfile_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_UserProfile_2eproto::file_level_metadata[kIndexInFileMessages];
-}
-
 
 // ===================================================================
 
@@ -1310,6 +794,12 @@ void RegisterParam::InternalSwap(RegisterParam* other) {
 void RegisterResp::InitAsDefaultInstance() {
   ::acafela::rpc::_RegisterResp_default_instance_._instance.get_mutable()->error_ = const_cast< ::acafela::rpc::Error*>(
       ::acafela::rpc::Error::internal_default_instance());
+}
+void RegisterResp::clear_error() {
+  if (GetArenaNoVirtual() == NULL && error_ != NULL) {
+    delete error_;
+  }
+  error_ = NULL;
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int RegisterResp::kErrorFieldNumber;
@@ -2260,12 +1750,6 @@ void RestorePasswordParam::InternalSwap(RestorePasswordParam* other) {
 }  // namespace acafela
 namespace google {
 namespace protobuf {
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::acafela::rpc::Empty* Arena::CreateMaybeMessage< ::acafela::rpc::Empty >(Arena* arena) {
-  return Arena::CreateInternal< ::acafela::rpc::Empty >(arena);
-}
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::acafela::rpc::Error* Arena::CreateMaybeMessage< ::acafela::rpc::Error >(Arena* arena) {
-  return Arena::CreateInternal< ::acafela::rpc::Error >(arena);
-}
 template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::acafela::rpc::VersionInfo* Arena::CreateMaybeMessage< ::acafela::rpc::VersionInfo >(Arena* arena) {
   return Arena::CreateInternal< ::acafela::rpc::VersionInfo >(arena);
 }
