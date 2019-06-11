@@ -2,9 +2,11 @@ package com.acafela.harmony.communicator;
 
 import android.util.Log;
 
+import com.acafela.harmony.sip.SipMessage;
+
 import java.net.DatagramSocket;
 
-public class ReceiverVideo implements DataReceiver {
+public class ReceiverVideo implements DataCommunicator {
     private static final int VIDEO_BUFFER_SIZE = 65507;
     private boolean UdpVoipReceiveVideoThreadRun = false;
     private DatagramSocket RecvVideoUdpSocket;
@@ -13,7 +15,10 @@ public class ReceiverVideo implements DataReceiver {
     private  String mIpAddress;
     private int mPort;
 
-
+    public SipMessage.SessionType getType()
+    {
+        return SipMessage.SessionType.RECIEVEVIDEO;
+    }
     public boolean setSession(String ip,int port)
     {
         this.mIpAddress = ip;
@@ -21,12 +26,12 @@ public class ReceiverVideo implements DataReceiver {
         return true;
     }
 
-    public boolean startReceiver()
+    public boolean startCommunicator()
     {
        // StartReceiveVideoThread();
         return true;
     }
-    public boolean endReceiver()
+    public boolean endCommunicator()
     {
         if (!UdpVoipReceiveVideoThreadRun) return false;
         if (UdpReceiveVideoThread != null && UdpReceiveVideoThread.isAlive()) {

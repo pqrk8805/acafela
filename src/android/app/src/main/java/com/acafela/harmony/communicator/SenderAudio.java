@@ -9,6 +9,7 @@ import android.util.Log;
 import android.media.audiofx.AcousticEchoCanceler; // AEC
 
 import com.acafela.harmony.crypto.ICrypto;
+import com.acafela.harmony.sip.SipMessage;
 
 import java.io.InputStream;
 import java.net.DatagramSocket;
@@ -17,7 +18,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 
 
-public class SenderAudio implements DataSender {
+public class SenderAudio implements DataCommunicator {
     private  InetAddress mIpAddress;
     private int mPort;
     private Thread mSenderThread = null;
@@ -60,8 +61,17 @@ public class SenderAudio implements DataSender {
         }
         return true;
     }
-
-    public boolean startSender()
+    public boolean setSession(InetAddress ip,int port)
+    {
+        this.mIpAddress = ip;
+        this.mPort = port;
+        return true;
+    }
+    public SipMessage.SessionType getType()
+    {
+        return SipMessage.SessionType.SENDAUDIO;
+    }
+    public boolean startCommunicator()
     {
         if(isSenderAudioRun)
             return false;
@@ -71,7 +81,7 @@ public class SenderAudio implements DataSender {
         isSenderAudioRun = true;
         return true;
     }
-    public boolean endSender()
+    public boolean endCommunicator()
     {
         if (mSenderThread != null && mSenderThread.isAlive()) {
             senderAudioThreadRun = false;

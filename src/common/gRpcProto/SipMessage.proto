@@ -15,6 +15,7 @@ enum Command {
     TERMINATE = 7;
     BYE = 8;
     REGISTER = 9;
+    CLOSESESSION = 10;
 }
 
 enum SessionType {

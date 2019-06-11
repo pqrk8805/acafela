@@ -13,22 +13,29 @@ import com.acafela.harmony.communicator.ReceiverAudio;
 import com.acafela.harmony.communicator.ReceiverVideo;
 import com.acafela.harmony.communicator.SenderAudio;
 import com.acafela.harmony.communicator.SenderVideo;
+
 import com.acafela.harmony.crypto.Crypto;
 import com.acafela.harmony.crypto.CryptoBroker;
 import com.acafela.harmony.crypto.ICrypto;
+
+import com.acafela.harmony.controller.VoipController;
 
 public class HarmonyService extends Service {
     private static final String LOG_TAG = HarmonyService.class.getName();
 
     //temporary value;
+    VoipController controller;
     SenderAudio senderAudio;
     ReceiverAudio receiverAudio;
     SenderVideo senderVideo;
     ReceiverVideo receiverVideo;
+    boolean isFirst=true;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        controller = new VoipController(getApplicationContext());
+        controller.startListenerController();
         Log.i(LOG_TAG, "onCreate");
 
         Crypto.init();
@@ -48,6 +55,17 @@ public class HarmonyService extends Service {
                 break;
             case CallActivity.INTENT_TERMINATE_CALL:
                 terminateCall();
+                break;
+            case CallActivity.INTENT_SIP_INVITE_CALL:
+
+                sipinvite(intent.getStringExtra(CallActivity.INTENT_SERVERIP), intent.getIntExtra(CallActivity.INTENT_SERVERSENDPORT, 0), intent.getIntExtra(CallActivity.INTENT_SERVERRCVPORT, 0));
+
+                break;
+            case CallActivity.INTENT_SIP_ACCEPT_CALL:
+                sipaccept();
+                break;
+            case CallActivity.INTENT_SIP_TERMINATE_CALL:
+                sipterminate();
                 break;
         }
 
@@ -74,39 +92,44 @@ public class HarmonyService extends Service {
         ICrypto crypto = CryptoBroker.getInstance().create("AES");
         crypto.init("12345".getBytes());
 
-        //int sendPort =5000;
-        //int receivePort =5001;
-        //int receivePort =5000;
-        //int sendPort =5002;
-        //int receivePort =5003;
-
         senderAudio = new SenderAudio(crypto);
         senderAudio.setSession(serverIp,sendPort);
-        senderAudio.startSender();
+        senderAudio.startCommunicator();
 
         receiverAudio = new ReceiverAudio(getApplicationContext(), crypto);
         receiverAudio.setSession(serverIp,receivePort);
-        receiverAudio.startReceiver();
-/*
-        senderVideo = new SenderVideo();
-        senderVideo.setSession(serverIp,6001);
-        senderVideo.startSender();
-
-
-        receiverVideo = new ReceiverVideo();
-        receiverVideo.setSession(serverIp,6001);
-        receiverVideo.startReceiver();*/
+        receiverAudio.startCommunicator();
     }
+
 
     // this method may move to another class
     private void terminateCall() {
-        senderAudio.endSender();
-        receiverAudio.endReceiver();
-        senderVideo.endSender();
+        senderAudio.endCommunicator();
+        receiverAudio.endCommunicator();
+
+        controller.terminateCall();
         Log.i(LOG_TAG, "terminateCall");
         showToastInService("terminateCall");
     }
 
+    private void sipinvite(String serverIp, int sendPort, int receivePort) {
+        Log.i(LOG_TAG, "initiateCall");
+        showToastInService("initiateCall");
+        if(isFirst)
+            isFirst =false;
+        else
+            controller.inviteCall(serverIp);
+    }
+    private void sipaccept() {
+        controller.acceptCall();
+        Log.i(LOG_TAG, "acceptCall");
+        showToastInService("acceptCall");
+    }
+    private void sipterminate() {
+        controller.terminateCall();
+        Log.i(LOG_TAG, "terminateCall");
+        showToastInService("terminateCall");
+    }
     private void showToastInService(final String string) {
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {

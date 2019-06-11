@@ -17,8 +17,8 @@ public class BroadcastReceiverOnBootComplete extends BroadcastReceiver {
             if (ActionString.equalsIgnoreCase(Intent.ACTION_BOOT_COMPLETED)) {
                 // Start UDP listen Service
                 Intent serviceIntent = new Intent(context, HarmonyService.class);
-                    context.startService(serviceIntent);
-                    Log.e(LOG_TAG, "Started UDPListenerService.class");
+                context.startService(serviceIntent);
+                Log.e(LOG_TAG, "Started UDPListenerService.class");
 
             }
         }

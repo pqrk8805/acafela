@@ -28,7 +28,9 @@ public class CallActivity extends AppCompatActivity {
     public static final String INTENT_SERVERRCVPORT = "SERVERRCVPORT";
     public static final String INTENT_INITIATE_CALL = "INITIATE_CALL";
     public static final String INTENT_TERMINATE_CALL = "TERMINATE_CALL";
-
+    public static final String INTENT_SIP_INVITE_CALL = "SIPINVITE";
+    public static final String INTENT_SIP_ACCEPT_CALL = "SIPACCEPT";
+    public static final String INTENT_SIP_TERMINATE_CALL = "SIPTERMINATE";
     private static final Pattern IP_ADDRESS
             = Pattern.compile(
             "((25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9])\\.(25[0-5]|2[0-4]"
@@ -96,6 +98,28 @@ public class CallActivity extends AppCompatActivity {
 
         Intent intent = new Intent(getApplicationContext(), HarmonyService.class);
         intent.putExtra(INTENT_CONTROL, INTENT_TERMINATE_CALL);
+        startService(intent);
+    }
+
+    public void onClickSipInviteCallBtn(View v) {
+        Log.d(LOG_TAG, "onClickTerminateCallBtn");
+
+        Intent intent = new Intent(getApplicationContext(), HarmonyService.class);
+        intent.putExtra(INTENT_CONTROL, INTENT_SIP_INVITE_CALL);
+        startService(intent);
+    }
+    public void onClickSipAcceptCallBtn(View v) {
+        Log.d(LOG_TAG, "onClickTerminateCallBtn");
+
+        Intent intent = new Intent(getApplicationContext(), HarmonyService.class);
+        intent.putExtra(INTENT_CONTROL, INTENT_SIP_ACCEPT_CALL);
+        startService(intent);
+    }
+    public void onClickSipTerminateCallBtn(View v) {
+        Log.d(LOG_TAG, "onClickTerminateCallBtn");
+
+        Intent intent = new Intent(getApplicationContext(), HarmonyService.class);
+        intent.putExtra(INTENT_CONTROL, INTENT_SIP_TERMINATE_CALL);
         startService(intent);
     }
 }

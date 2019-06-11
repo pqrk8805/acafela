@@ -8,6 +8,8 @@ import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.util.Log;
 
+import com.acafela.harmony.sip.SipMessage;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -15,7 +17,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
-public class SenderVideo implements DataSender,Camera.PreviewCallback {
+public class SenderVideo implements DataCommunicator,Camera.PreviewCallback {
     private static final String LOG_TAG = "SenderVideo";
     private static final int MAX_VIDEO_FRAME_SIZE =640*480*4;
     private DatagramSocket SendUdpSocket;
@@ -41,8 +43,12 @@ public class SenderVideo implements DataSender,Camera.PreviewCallback {
         }
         return true;
     }
+    public SipMessage.SessionType getType()
+    {
+        return SipMessage.SessionType.SENDVIDEO;
+    }
 
-    public boolean startSender()
+    public boolean startCommunicator()
     {
         if (IsRunning) return (false);
 
@@ -50,7 +56,7 @@ public class SenderVideo implements DataSender,Camera.PreviewCallback {
         IsRunning = true;
         return true;
     }
-    public boolean endSender()
+    public boolean endCommunicator()
     {
         if (!IsRunning) return (true);
         Log.i(LOG_TAG, "Ending Viop Audio");

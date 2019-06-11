@@ -18,10 +18,14 @@ import android.os.Process;
 import android.util.Log;
 
 import com.acafela.harmony.crypto.ICrypto;
+import com.acafela.harmony.sip.SipMessage;
 
 import java.net.SocketException;
+import com.acafela.harmony.sip.SipMessage;
+import com.acafela.harmony.sip.SipMessage.SIPMessage;
 
-public class ReceiverAudio implements DataReceiver {
+
+public class ReceiverAudio implements DataCommunicator {
     private static final int MILLISECONDS_IN_A_SECOND = 1000;
     private static final int SAMPLE_RATE = 8000; // Hertz
     private static final int SAMPLE_INTERVAL = 20;   // Milliseconds
@@ -61,8 +65,18 @@ public class ReceiverAudio implements DataReceiver {
         }
         return true;
     }
+    public SipMessage.SessionType getType()
+    {
+        return SipMessage.SessionType.RECIEVEAUDIO;
+    }
+    public boolean setSession(InetAddress ip,int port)
+    {
+        this.mIpAddress = ip;
+        this.mPort = port;
+        return true;
+    }
 
-    public boolean startReceiver()
+    public boolean startCommunicator()
     {
         if(isReceverAudioRun) {
             Log.i(LOG_TAG, "UdpReceiveDataThread Thread already Started started");
@@ -78,7 +92,7 @@ public class ReceiverAudio implements DataReceiver {
         isReceverAudioRun = true;
         return true;
     }
-    public boolean endReceiver()
+    public boolean endCommunicator()
     {
         if (mRecieverThread != null && mRecieverThread.isAlive()) {
             UdpVoipReceiveDataThreadRun = false;
