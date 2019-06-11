@@ -6,6 +6,8 @@ import android.media.AudioManager;
 import android.media.AudioRecord;
 import android.media.AudioTrack;
 import android.media.MediaRecorder;
+import android.media.audiofx.AcousticEchoCanceler;
+
 import android.os.Process;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,6 +36,9 @@ public class TestEncodingActivity extends AppCompatActivity {
     private AudioManager mAudioManager;
     AudioThread mAudioThread = new AudioThread();
 
+    private AcousticEchoCanceler mAudioEchoCanceler;
+    private int mAudioRecordSessionId;
+
     AudioEncoderCore mAudioEncoder = new AudioEncoderCore();
 
     public TestEncodingActivity() throws IOException {
@@ -49,6 +54,11 @@ public class TestEncodingActivity extends AppCompatActivity {
 
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         mAudioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+
+        if (AcousticEchoCanceler.isAvailable())
+            Log.i("Audio", "AEC enabled status");
+        else
+            Log.i("Audio", "AEC not enabled status");
 
         Spinner spinner = (Spinner) findViewById(R.id.audiopath_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -148,6 +158,20 @@ public class TestEncodingActivity extends AppCompatActivity {
                     AudioFormat.ENCODING_PCM_16BIT,
                     minBufSize);
 
+            mAudioRecordSessionId = recorder.getAudioSessionId();
+
+            if (AcousticEchoCanceler.isAvailable()) {
+                mAudioEchoCanceler = AcousticEchoCanceler.create(mAudioRecordSessionId);
+                Log.i("Audio", "audio echo canceler enable");
+
+                Log.i(LOG_TAG, "AEC is " + (mAudioEchoCanceler.getEnabled()?"enabled":"disabled"));
+
+                if ( !mAudioEchoCanceler.getEnabled() )
+                {
+                    mAudioEchoCanceler.setEnabled(true);
+                    Log.i(LOG_TAG, "AEC is " + (mAudioEchoCanceler.getEnabled()?"enabled":"disabled" +" after trying to disable"));
+                }
+            }
 
             // init audio track
             AudioTrack track = new AudioTrack(AudioManager.STREAM_SYSTEM,
@@ -177,7 +201,7 @@ public class TestEncodingActivity extends AppCompatActivity {
                         offset += read;
                     }
 
-                    mAudioEncoder.queueInputBuffer(inBuf);
+                    /* mAudioEncoder.queueInputBuffer(inBuf); */
 /*                   byte[] temp = mAudioEncoder.dequeueOutputBuffer();
                    if(temp != null) {
                        inBuf = temp;
