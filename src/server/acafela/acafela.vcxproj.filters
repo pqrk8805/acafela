@@ -68,6 +68,7 @@
     </ClCompile>
     <ClCompile Include="src\StorageAccessor\DBFile.cpp">
       <Filter>Source Files\StorageAccessor</Filter>
+    </ClCompile>
     <ClCompile Include="src\RpcCommon\Common.pb.cc">
       <Filter>Source Files\RpcCommon</Filter>
     </ClCompile>
@@ -108,6 +109,7 @@
     </ClInclude>
     <ClInclude Include="src\StorageAccessor\DBFile.h">
       <Filter>Source Files\StorageAccessor</Filter>
+    </ClInclude>
     <ClInclude Include="src\RpcCommon\Common.pb.h">
       <Filter>Source Files\RpcCommon</Filter>
     </ClInclude>
