@@ -9,8 +9,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.acafela.harmony.R;
+import com.acafela.harmony.rpc.Common;
 import com.acafela.harmony.userprofile.UserProfileGrpc.UserProfileBlockingStub;
-import com.acafela.harmony.userprofile.UserProfileOuterClass.Empty;
 import com.acafela.harmony.userprofile.UserProfileOuterClass.VersionInfo;
 import com.acafela.harmony.userprofile.UserProfileRpc;
 
@@ -18,7 +18,7 @@ public class UserProfileActivity extends AppCompatActivity
 {
     private static final String LOG_TAG = "UserProfile_Act";
     private static final int SERVER_PORT = 9000;
-    private static final Empty EMPTY_MSG = Empty.getDefaultInstance();
+    private static final Common.Empty EMPTY_MSG = Common.Empty.getDefaultInstance();
 
     private UserProfileRpc mUserProfileRpc = null;
 
