@@ -9,6 +9,11 @@
 
 #define LOG_TAG "MAIN"
 
+#define SERVER_IP "10.0.1.2"
+#define RPC_PORT_USERVER_PROFILE    "9000"
+#define RPC_PORT_DIRECTORY_SERVICE  "9100"
+
+
 std::vector<std::thread *> additionalThreadList; 
 void pingpongCommunicator_init();
 
@@ -21,7 +26,7 @@ int main(int argc, char** argv)
 
     UserProfile userProfile;
     UserProfileRpc userProfileRpc(userProfile);
-    err = userProfileRpc.start("10.0.1.2:9000");
+    err = userProfileRpc.start(SERVER_IP ":" RPC_PORT_USERVER_PROFILE);
     if (err) {
         FUNC_LOGE("ERROR(%d): fail to start UserProfileRpc server", err);
         return err;
@@ -29,7 +34,7 @@ int main(int argc, char** argv)
 
     DirectoryService directoryService;
     DirectoryServiceRpc directoryServiceRpc(directoryService);
-    err = directoryServiceRpc.start("10.0.1.2:9100");
+    err = directoryServiceRpc.start(SERVER_IP ":" RPC_PORT_DIRECTORY_SERVICE);
     if (err) {
         FUNC_LOGE("ERROR(%d): fail to start DirectoryServiceRpc server", err);
         return err;
