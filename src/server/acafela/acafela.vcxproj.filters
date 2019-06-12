@@ -25,6 +25,9 @@
     <Filter Include="Source Files\RpcCommon">
       <UniqueIdentifier>{99209780-afcb-42d6-8651-c8b8c760a026}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\SipMassage">
+      <UniqueIdentifier>{34ff8494-9ac8-4055-ae66-23560e62e36a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -72,6 +75,9 @@
     <ClCompile Include="src\RpcCommon\Common.pb.cc">
       <Filter>Source Files\RpcCommon</Filter>
     </ClCompile>
+    <ClCompile Include="src\SipMessage\SipMessage.pb.cc">
+      <Filter>Source Files\SipMassage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\UserProfile\UserProfile.grpc.pb.h">
@@ -113,4 +119,8 @@
     <ClInclude Include="src\RpcCommon\Common.pb.h">
       <Filter>Source Files\RpcCommon</Filter>
     </ClInclude>
-  </ItemGroup></Project>
+    <ClInclude Include="src\SipMessage\SipMessage.pb.h">
+      <Filter>Source Files\SipMassage</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
