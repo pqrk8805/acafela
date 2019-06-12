@@ -43,19 +43,6 @@ std::string read(const std::string& filename)
 
 int UserProfileRpc::start(const std::string& addressUri)
 {
-#if 0
-    ::grpc::ServerBuilder builder;
-    builder.AddListeningPort(
-                        addressUri,
-                        ::grpc::InsecureServerCredentials());
-    builder.RegisterService(this);
-    std::unique_ptr<::grpc::Server> server(builder.BuildAndStart());
-    if (server == nullptr) {
-        FUNC_LOGE("ERROR: fail to create server: %s", addressUri.c_str());
-        return -1;
-    }
-
-#else
     std::string cert = read("certs/server.crt");
 	std::string key = read ("certs/server.key");
 	std::string root = read ("certs/ca.crt");
@@ -72,7 +59,6 @@ int UserProfileRpc::start(const std::string& addressUri)
                         addressUri, creds);
     builder.RegisterService(this);
     std::unique_ptr<::grpc::Server> server(builder.BuildAndStart());
-#endif
 
     mServer = server.release();
     FUNC_LOGI("UserProfile RPC server listen on: %s", addressUri.c_str());

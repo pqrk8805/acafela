@@ -37,6 +37,7 @@ int DirectoryServiceRpc::start(const std::string& addressUri)
         return -1;
     }
 
+    mServer = server.release();
     FUNC_LOGI("DirectoryService RPC server listen on: %s", addressUri.c_str());
     std::thread t ( [this]() { this->wait(); } );
     mWorker.swap(t);

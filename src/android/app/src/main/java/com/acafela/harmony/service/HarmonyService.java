@@ -2,12 +2,15 @@ package com.acafela.harmony.service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.Network;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.acafela.harmony.Config;
 import com.acafela.harmony.activity.CallActivity;
 import com.acafela.harmony.communicator.ReceiverAudio;
 import com.acafela.harmony.communicator.ReceiverVideo;
@@ -17,11 +20,15 @@ import com.acafela.harmony.communicator.SenderVideo;
 import com.acafela.harmony.crypto.Crypto;
 import com.acafela.harmony.crypto.CryptoBroker;
 import com.acafela.harmony.crypto.ICrypto;
+import com.acafela.harmony.directoryservice.DirectoryServiceRpc;
+import com.acafela.harmony.dirserv.DirectoryServiceOuterClass.DirInfo;
+import com.acafela.harmony.rpc.Common;
 
 import com.acafela.harmony.controller.VoipController;
 
 public class HarmonyService extends Service {
     private static final String LOG_TAG = HarmonyService.class.getName();
+
 
     //temporary value;
     VoipController controller;
@@ -39,6 +46,19 @@ public class HarmonyService extends Service {
         Log.i(LOG_TAG, "onCreate");
 
         Crypto.init();
+
+        /* Just Test
+        DirectoryServiceRpc directoryServiceRpc = new DirectoryServiceRpc(
+                                            Config.SERVER_IP,
+                                            Config.RPC_PORT_DIRECTORY_SERVICE);
+        DirInfo info = DirInfo.newBuilder()
+                              .setPhoneNumber("2964-6476")
+                              .setAddress("10.0.1.3")
+                              .build();
+        Common.Error err = directoryServiceRpc.getBlockingStub().update(info);
+        Log.i(LOG_TAG, "Error: " + err.getErr());
+        directoryServiceRpc.shutdown();
+        */
     }
 
     @Override
@@ -77,6 +97,9 @@ public class HarmonyService extends Service {
         // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
     }
+
+
+
 
     @Override
     public void onDestroy() {

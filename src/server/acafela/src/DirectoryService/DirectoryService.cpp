@@ -18,7 +18,7 @@ int DirectoryService::update(
     std::lock_guard<std::mutex> guard(mLock);
     mBook[phoneNumber] = ipAddress;
 
-    FUNC_LOGI("Updated: %s : %s", phoneNumber, ipAddress);
+    FUNC_LOGI("Updated: %s : %s", phoneNumber.c_str(), ipAddress.c_str());
 
     return 0;
 }
