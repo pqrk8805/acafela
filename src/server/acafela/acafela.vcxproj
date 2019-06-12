@@ -16,6 +16,9 @@
     <ClCompile Include="src\Communicator\ConversationManager.cpp" />
     <ClCompile Include="src\Communicator\DataPath.cpp" />
     <ClCompile Include="src\Communicator\Participant.cpp" />
+    <ClCompile Include="src\CryptoKey\CryptoKey.grpc.pb.cc" />
+    <ClCompile Include="src\CryptoKey\CryptoKey.pb.cc" />
+    <ClCompile Include="src\CryptoKey\CryptoKeyRpc.cpp" />
     <ClCompile Include="src\DirectoryService\DirectoryService.cpp" />
     <ClCompile Include="src\DirectoryService\DirectoryService.grpc.pb.cc" />
     <ClCompile Include="src\DirectoryService\DirectoryService.pb.cc" />
@@ -54,6 +57,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Communicator\communicator.h" />
+    <ClInclude Include="src\CryptoKey\CryptoKey.grpc.pb.h" />
+    <ClInclude Include="src\CryptoKey\CryptoKey.pb.h" />
+    <ClInclude Include="src\CryptoKey\CryptoKeyRpc.h" />
+    <ClInclude Include="src\CryptoKey\ICryptoKeyMgr.h" />
+    <ClInclude Include="src\CryptoKey\ICryptoKeyRepo.h" />
     <ClInclude Include="src\DirectoryService\DirectoryService.grpc.pb.h" />
     <ClInclude Include="src\DirectoryService\DirectoryService.h" />
     <ClInclude Include="src\DirectoryService\DirectoryService.pb.h" />

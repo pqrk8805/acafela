@@ -31,6 +31,9 @@
     <Filter Include="Source Files\DirectoryService">
       <UniqueIdentifier>{9951c991-2a8d-4785-aa93-de36c4332189}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\CryptoKey">
+      <UniqueIdentifier>{6ad49459-a8b4-41ec-bbdb-44d0903b43a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -93,6 +96,15 @@
     <ClCompile Include="src\DirectoryService\DirectoryService.cpp">
       <Filter>Source Files\DirectoryService</Filter>
     </ClCompile>
+    <ClCompile Include="src\CryptoKey\CryptoKey.grpc.pb.cc">
+      <Filter>Source Files\CryptoKey</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CryptoKey\CryptoKey.pb.cc">
+      <Filter>Source Files\CryptoKey</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CryptoKey\CryptoKeyRpc.cpp">
+      <Filter>Source Files\CryptoKey</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\UserProfile\UserProfile.grpc.pb.h">
@@ -151,6 +163,21 @@
     </ClInclude>
     <ClInclude Include="src\DirectoryService\DirectoryService.h">
       <Filter>Source Files\DirectoryService</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CryptoKey\CryptoKey.grpc.pb.h">
+      <Filter>Source Files\CryptoKey</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CryptoKey\CryptoKey.pb.h">
+      <Filter>Source Files\CryptoKey</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CryptoKey\ICryptoKeyRepo.h">
+      <Filter>Source Files\CryptoKey</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CryptoKey\ICryptoKeyMgr.h">
+      <Filter>Source Files\CryptoKey</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CryptoKey\CryptoKeyRpc.h">
+      <Filter>Source Files\CryptoKey</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

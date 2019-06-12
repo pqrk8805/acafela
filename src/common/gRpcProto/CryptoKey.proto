@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package acafela.rpc;
+
+option java_package = "com.acafela.harmony.crypto";
+
+service CryptoKey {
+    rpc request(Session) returns (Key);
+}
+
+message Session {
+    string id = 1;
+}
+
+message Key {
+    bytes key = 1;
+}
