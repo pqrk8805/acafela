@@ -16,6 +16,10 @@
     <ClCompile Include="src\Communicator\ConversationManager.cpp" />
     <ClCompile Include="src\Communicator\DataPath.cpp" />
     <ClCompile Include="src\Communicator\Participant.cpp" />
+    <ClCompile Include="src\DirectoryService\DirectoryService.cpp" />
+    <ClCompile Include="src\DirectoryService\DirectoryService.grpc.pb.cc" />
+    <ClCompile Include="src\DirectoryService\DirectoryService.pb.cc" />
+    <ClCompile Include="src\DirectoryService\DirectoryServiceRpc.cpp" />
     <ClCompile Include="src\Hislog.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </ExcludedFromBuild>
@@ -23,6 +27,7 @@
       </ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\SipMessage\SipMessage.pb.cc" />
     <ClCompile Include="src\StorageAccessor\DBFile.cpp" />
     <ClCompile Include="src\RpcCommon\Common.pb.cc" />
     <ClCompile Include="src\StorageAccessor\FileStorageAccessor.cpp" />
@@ -49,7 +54,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Communicator\communicator.h" />
+    <ClInclude Include="src\DirectoryService\DirectoryService.grpc.pb.h" />
+    <ClInclude Include="src\DirectoryService\DirectoryService.h" />
+    <ClInclude Include="src\DirectoryService\DirectoryService.pb.h" />
+    <ClInclude Include="src\DirectoryService\DirectoryServiceRpc.h" />
+    <ClInclude Include="src\DirectoryService\IDirectoryService.h" />
     <ClInclude Include="src\Hislog.h" />
+    <ClInclude Include="src\SipMessage\SipMessage.pb.h" />
     <ClInclude Include="src\StorageAccessor\DBFile.h" />
     <ClInclude Include="src\RpcCommon\Common.pb.h" />
     <ClInclude Include="src\StorageAccessor\FileStorageAccessor.h" />
@@ -129,7 +140,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\external\gRPC\include;$(SolutionDir)..\..\external\gRPC\include\third_party\protobuf\src;$(ProjectDir)src;$(ProjectDir)src\RpcCommon;$(ProjectDir)src\UserProfile;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\external\gRPC\include;$(SolutionDir)..\..\external\gRPC\include\third_party\protobuf\src;$(ProjectDir)src;$(ProjectDir)src\RpcCommon;$(ProjectDir)src\UserProfile;$(ProjectDir)src\DirectoryService;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>SDKDDKVer.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <Link>
@@ -152,7 +163,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\external\gRPC\include;$(SolutionDir)..\..\external\gRPC\include\third_party\protobuf\src;$(ProjectDir)src;$(ProjectDir)src\RpcCommon;$(ProjectDir)src\UserProfile;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\external\gRPC\include;$(SolutionDir)..\..\external\gRPC\include\third_party\protobuf\src;$(ProjectDir)src;$(ProjectDir)src\RpcCommon;$(ProjectDir)src\UserProfile;$(ProjectDir)src\DirectoryService;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>SDKDDKVer.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <Link>

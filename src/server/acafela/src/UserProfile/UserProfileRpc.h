@@ -39,6 +39,4 @@ public:
                         ::grpc::ServerContext* context,
                         const ::acafela::rpc::RestorePasswordParam* request,
                         ::acafela::rpc::Error* response) override;
-
-
 };

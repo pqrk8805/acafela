@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -24,6 +24,12 @@
     </Filter>
     <Filter Include="Source Files\RpcCommon">
       <UniqueIdentifier>{99209780-afcb-42d6-8651-c8b8c760a026}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SipMassage">
+      <UniqueIdentifier>{34ff8494-9ac8-4055-ae66-23560e62e36a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DirectoryService">
+      <UniqueIdentifier>{9951c991-2a8d-4785-aa93-de36c4332189}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +78,21 @@
     <ClCompile Include="src\RpcCommon\Common.pb.cc">
       <Filter>Source Files\RpcCommon</Filter>
     </ClCompile>
+    <ClCompile Include="src\SipMessage\SipMessage.pb.cc">
+      <Filter>Source Files\SipMassage</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DirectoryService\DirectoryService.grpc.pb.cc">
+      <Filter>Source Files\DirectoryService</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DirectoryService\DirectoryService.pb.cc">
+      <Filter>Source Files\DirectoryService</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DirectoryService\DirectoryServiceRpc.cpp">
+      <Filter>Source Files\DirectoryService</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DirectoryService\DirectoryService.cpp">
+      <Filter>Source Files\DirectoryService</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\UserProfile\UserProfile.grpc.pb.h">
@@ -113,4 +134,23 @@
     <ClInclude Include="src\RpcCommon\Common.pb.h">
       <Filter>Source Files\RpcCommon</Filter>
     </ClInclude>
-  </ItemGroup></Project>
+    <ClInclude Include="src\SipMessage\SipMessage.pb.h">
+      <Filter>Source Files\SipMassage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DirectoryService\DirectoryService.grpc.pb.h">
+      <Filter>Source Files\DirectoryService</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DirectoryService\DirectoryService.pb.h">
+      <Filter>Source Files\DirectoryService</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DirectoryService\DirectoryServiceRpc.h">
+      <Filter>Source Files\DirectoryService</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DirectoryService\IDirectoryService.h">
+      <Filter>Source Files\DirectoryService</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DirectoryService\DirectoryService.h">
+      <Filter>Source Files\DirectoryService</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
