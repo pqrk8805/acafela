@@ -128,4 +128,9 @@ public class TestMainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
+    public void onClickTestAsyncEncodingBtn(View v) {
+        Intent intent = new Intent(this, TestAsyncEncodingActivity.class);
+        startActivity(intent);
+    }
 }

@@ -1,47 +1,75 @@
 package com.acafela.harmony.codec;
 
+import android.media.MediaCodec;
 import android.media.MediaFormat;
+import android.util.Log;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
+
+import static com.acafela.harmony.codec.AudioMediaFormat.AUDIO_MIME_TYPE;
+import static com.acafela.harmony.codec.AudioMediaFormat.AUDIO_QUEUE_TIMEOUT_US;
 
 public class AudioCodecSync {
-    private static final String TAG = AudioCodecSync.class.getName();
+	private static final String TAG = AudioCodecSync.class.getName();
 
-    protected static final String MIME_TYPE = MediaFormat.MIMETYPE_AUDIO_AMR_NB;
-    protected static final int KEY_SAMPLE_RATE  = 8000;
-    protected static final int KEY_CHANNEL_COUNT = 1;
-    protected static final int KEY_BIT_RATE = 4750;
-    protected static final int QUEUE_TIMEOUT_US = 10000;
+	private MediaCodec mCodec;
+	private boolean mIsEncoder;
 
-    protected MediaFormat mFormat = new MediaFormat();
-    AudioEncoderSync mAudioEncoder = new AudioEncoderSync();
-    AudioDecoderSync mAudioDecoder = new AudioDecoderSync();
+	public AudioCodecSync(boolean isEncoder) {
+		mIsEncoder = isEncoder;
+	}
 
-    public AudioCodecSync() {
-        mFormat.setString(MediaFormat.KEY_MIME, MIME_TYPE);
-        mFormat.setInteger(MediaFormat.KEY_SAMPLE_RATE, KEY_SAMPLE_RATE);
-        mFormat.setInteger(MediaFormat.KEY_CHANNEL_COUNT, KEY_CHANNEL_COUNT);
-        mFormat.setInteger(MediaFormat.KEY_BIT_RATE, KEY_BIT_RATE);
-    }
+	public void start(MediaFormat format) {
+		try {
+			mCodec = mIsEncoder?
+					MediaCodec.createEncoderByType(AUDIO_MIME_TYPE):
+					MediaCodec.createDecoderByType(AUDIO_MIME_TYPE);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		mCodec.configure(
+				format,
+				null /* surface */,
+				null /* crypto */,
+				mIsEncoder?
+						MediaCodec.CONFIGURE_FLAG_ENCODE:
+						0);
 
-    public void start() {
-        mAudioEncoder.start(mFormat);
-        mAudioDecoder.start(mFormat);
-    }
+		mCodec.start();
+	}
 
-    public void stop() {
-        mAudioEncoder.stop();
-        mAudioDecoder.stop();
-    }
+	public void stop() {
+		mCodec.stop();
+		mCodec.release();
+	}
 
-    public void release() {
-        mAudioEncoder.release();
-        mAudioDecoder.release();
-    }
+	public byte[] handle(byte[] input) {
+		int inputBufferId = mCodec.dequeueInputBuffer(AUDIO_QUEUE_TIMEOUT_US);
+		if (inputBufferId >= 0) {
+			ByteBuffer inputBuffer = mCodec.getInputBuffer(inputBufferId);
+			inputBuffer.clear();
+			inputBuffer.put(input);
+			mCodec.queueInputBuffer(
+					inputBufferId,
+					0,
+					input.length,
+					0,
+					0);
+		}
 
-    public byte[] encode(byte[] input) {
-        return mAudioEncoder.encode(input);
-    }
+		MediaCodec.BufferInfo bufferInfo = new MediaCodec.BufferInfo();
+		int outputBufferId = mCodec.dequeueOutputBuffer(bufferInfo, AUDIO_QUEUE_TIMEOUT_US);
 
-    public byte[] decode(byte[] input) {
-        return mAudioDecoder.decode(input);
-    }
+		if (outputBufferId < 0) {
+			Log.i(TAG, "outputBufferId: " + outputBufferId);
+			return null;
+		}
+		ByteBuffer outputBuffer = mCodec.getOutputBuffer(outputBufferId);
+		byte[] outData = new byte[bufferInfo.size];
+		outputBuffer.get(outData, 0, bufferInfo.size);
+		mCodec.releaseOutputBuffer(outputBufferId, false);
+		return outData;
+	}
 }
+

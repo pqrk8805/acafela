@@ -29,6 +29,7 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".activity.CallActivity" />
         <activity android:name=".activity.TestEncodingActivity" />
+        <activity android:name=".activity.TestAsyncEncodingActivity" />
         <activity android:name=".activity.UserProfileActivity" />
 
         <service
