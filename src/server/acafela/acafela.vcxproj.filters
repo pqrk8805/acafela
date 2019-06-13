@@ -105,6 +105,9 @@
     <ClCompile Include="src\CryptoKey\CryptoKeyRpc.cpp">
       <Filter>Source Files\CryptoKey</Filter>
     </ClCompile>
+    <ClCompile Include="src\UserProfile\EmailSender.cpp">
+      <Filter>Source Files\UserProfile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\UserProfile\UserProfile.grpc.pb.h">
@@ -178,6 +181,9 @@
     </ClInclude>
     <ClInclude Include="src\CryptoKey\CryptoKeyRpc.h">
       <Filter>Source Files\CryptoKey</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UserProfile\EmailSender.h">
+      <Filter>Source Files\UserProfile</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

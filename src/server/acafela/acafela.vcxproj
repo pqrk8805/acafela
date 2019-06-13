@@ -34,6 +34,7 @@
     <ClCompile Include="src\StorageAccessor\DBFile.cpp" />
     <ClCompile Include="src\RpcCommon\Common.pb.cc" />
     <ClCompile Include="src\StorageAccessor\FileStorageAccessor.cpp" />
+    <ClCompile Include="src\UserProfile\EmailSender.cpp" />
     <ClCompile Include="src\UserProfile\MD5Hash.cpp" />
     <ClCompile Include="src\UserProfile\UserProfile.cpp" />
     <ClCompile Include="src\UserProfile\UserProfile.grpc.pb.cc">
@@ -73,6 +74,7 @@
     <ClInclude Include="src\RpcCommon\Common.pb.h" />
     <ClInclude Include="src\StorageAccessor\FileStorageAccessor.h" />
     <ClInclude Include="src\StorageAccessor\IStorageAccessor.h" />
+    <ClInclude Include="src\UserProfile\EmailSender.h" />
     <ClInclude Include="src\UserProfile\ISecurityProvider.h" />
     <ClInclude Include="src\UserProfile\IUserProfile.h" />
     <ClInclude Include="src\UserProfile\MD5Hash.h" />
@@ -157,7 +159,8 @@
       <AdditionalDependencies>$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\address_sorting.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\gpr.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\grpc.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\grpc++.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\grpc++_reflection.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\protobuf\libprotobuf.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\boringssl\ssl\ssl.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\boringssl\crypto\crypto.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\cares\cares\lib\cares.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\zlib\zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y/d/i/e $(ProjectDir)certs $(OutDir)certs</Command>
+      <Command>xcopy /y/d/i/e $(ProjectDir)certs $(OutDir)certs
+xcopy /y/d/i/e $(SolutionDir)..\..\external\email $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -182,7 +185,8 @@
       <AdditionalDependencies>$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\address_sorting.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\gpr.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\grpc.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\grpc++.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\grpc++_reflection.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\protobuf\libprotobuf.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\boringssl\ssl\ssl.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\boringssl\crypto\crypto.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\cares\cares\lib\cares.lib;$(SolutionDir)..\..\external\gRPC\lib\$(Configuration)\third_party\zlib\zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y/d/i/e $(ProjectDir)certs $(OutDir)certs</Command>
+      <Command>xcopy /y/d/i/e $(ProjectDir)certs $(OutDir)certs
+xcopy /y/d/i/e $(SolutionDir)..\..\external\email $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
