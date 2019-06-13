@@ -24,20 +24,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".activity.CallActivity" />
-        <activity android:name=".activity.TestEncodingActivity" />
-        <activity android:name=".activity.TestAsyncEncodingActivity" />
-        <activity android:name=".activity.UserProfileActivity" />
+        <activity android:name=".ui.CallActivity" />
+        <activity android:name=".ui.TestEncodingActivity" />
+        <activity android:name=".ui.TestAsyncEncodingActivity" />
+        <activity android:name=".ui.UserProfileActivity" />
 
         <service
             android:name=".service.HarmonyService"
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name=".activity.TestMainActivity">
+        <activity android:name=".ui.TestMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

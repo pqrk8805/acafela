@@ -1,4 +1,4 @@
-package com.acafela.harmony.activity;
+package com.acafela.harmony.ui;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;

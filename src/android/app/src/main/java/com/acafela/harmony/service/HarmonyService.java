@@ -2,16 +2,13 @@ package com.acafela.harmony.service;
 
 import android.app.Service;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.Network;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.acafela.harmony.Config;
-import com.acafela.harmony.activity.CallActivity;
+import com.acafela.harmony.ui.CallActivity;
 import com.acafela.harmony.communicator.ReceiverAudio;
 import com.acafela.harmony.communicator.ReceiverVideo;
 import com.acafela.harmony.communicator.SenderAudio;
@@ -20,9 +17,6 @@ import com.acafela.harmony.communicator.SenderVideo;
 import com.acafela.harmony.crypto.Crypto;
 import com.acafela.harmony.crypto.CryptoBroker;
 import com.acafela.harmony.crypto.ICrypto;
-import com.acafela.harmony.directoryservice.DirectoryServiceRpc;
-import com.acafela.harmony.dirserv.DirectoryServiceOuterClass.DirInfo;
-import com.acafela.harmony.rpc.Common;
 
 import com.acafela.harmony.controller.VoipController;
 

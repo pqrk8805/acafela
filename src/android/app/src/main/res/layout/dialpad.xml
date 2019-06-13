@@ -22,7 +22,7 @@ the FrameLayout that wraps the button construction.
     android:background="@color/sc_ng_background"
     android:visibility="visible"
     tools:ignore="DuplicateIncludedIds"
-    tools:context=".activity.MainActivity">
+    tools:context=".ui.MainActivity">
     <!-- android:stretchColumns="0,1,2" - this should go together with changes
          in RowStyle -->
     <TableRow

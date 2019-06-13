@@ -1,6 +1,5 @@
-package com.acafela.harmony.activity.ui.main;
+package com.acafela.harmony.ui.main;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.media.AudioManager;
@@ -20,7 +19,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.acafela.harmony.R;
-import com.acafela.harmony.activity.MainActivity;
 
 /**
  * A simple {@link Fragment} subclass.

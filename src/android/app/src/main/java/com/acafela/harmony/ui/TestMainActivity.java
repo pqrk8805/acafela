@@ -1,4 +1,4 @@
-package com.acafela.harmony.activity;
+package com.acafela.harmony.ui;
 
 import android.content.Context;
 import android.content.Intent;

@@ -1,4 +1,4 @@
-package com.acafela.harmony;
+package com.acafela.harmony.userprofile;
 
 public class FormatChecker {
     private static final String LOG_TAG = FormatChecker.class.getName();

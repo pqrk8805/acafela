@@ -1,4 +1,4 @@
-package com.acafela.harmony.activity.ui.main;
+package com.acafela.harmony.ui.main;
 
 import android.content.Context;
 import android.support.annotation.Nullable;

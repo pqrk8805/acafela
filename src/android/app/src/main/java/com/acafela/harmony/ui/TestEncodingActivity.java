@@ -1,4 +1,4 @@
-package com.acafela.harmony.activity;
+package com.acafela.harmony.ui;
 
 import android.content.Context;
 import android.media.AudioFormat;
@@ -19,15 +19,13 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.acafela.harmony.R;
-import com.acafela.harmony.codec.AudioCodecAsync.AudoiCallback;
-import com.acafela.harmony.codec.AudioControllerAsync;
+import com.acafela.harmony.codec.AudioControllerSync;
 
 import static com.acafela.harmony.codec.AudioMediaFormat.AUDIO_FRAME_BYTE;
 import static com.acafela.harmony.codec.AudioMediaFormat.AUDIO_CHANNEL_COUNT;
-import static com.acafela.harmony.codec.AudioMediaFormat.AUDIO_SAMPLE_RATE;
 
-public class TestAsyncEncodingActivity extends AppCompatActivity {
-    private static final String TAG = TestAsyncEncodingActivity.class.getName();
+public class TestEncodingActivity extends AppCompatActivity {
+    private static final String TAG = TestEncodingActivity.class.getName();
 
     private static final int SPINNER_SPEAKER = 0;
     private static final int SPINNER_EARPIECE = 1;
@@ -41,9 +39,7 @@ public class TestAsyncEncodingActivity extends AppCompatActivity {
     private AcousticEchoCanceler mAudioEchoCanceler;
     private int mAudioRecordSessionId;
 
-    AudioControllerAsync mAudioControllerAsync;
-    AudioTrack mTrack;
-    int mMinBufSize;
+    AudioControllerSync mAudioCodec;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,38 +92,12 @@ public class TestAsyncEncodingActivity extends AppCompatActivity {
         });
         spinner.setSelection(SPINNER_SPEAKER);
 
-        mAudioControllerAsync = new AudioControllerAsync();
-        mAudioControllerAsync.setEncoderCallback(new AudoiCallback() {
-            @Override
-            public void onOutputBytesAvailable(byte[] outputBytes) {
-                mAudioControllerAsync.enqueueEncodedBytes(outputBytes);
-            }
-        });
-
-        mAudioControllerAsync.setDecoderCallback(new AudoiCallback() {
-            @Override
-            public void onOutputBytesAvailable(byte[] outputBytes) {
-                mTrack.write(outputBytes, 0, outputBytes.length);
-            }
-        });
-
-        mMinBufSize = AudioRecord.getMinBufferSize(AUDIO_SAMPLE_RATE,
-                AUDIO_CHANNEL_COUNT == 1 ? AudioFormat.CHANNEL_IN_MONO : AudioFormat.CHANNEL_IN_STEREO,
-                AudioFormat.ENCODING_PCM_16BIT);
-
-        mTrack = new AudioTrack(AudioManager.STREAM_SYSTEM,
-                AUDIO_SAMPLE_RATE,
-                AUDIO_CHANNEL_COUNT == 1 ? AudioFormat.CHANNEL_OUT_MONO : AudioFormat.CHANNEL_OUT_STEREO,
-                AudioFormat.ENCODING_PCM_16BIT,
-                mMinBufSize,
-                AudioTrack.MODE_STREAM);
+        mAudioCodec = new AudioControllerSync();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        mTrack.release();
     }
 
     @Override
@@ -147,8 +117,7 @@ public class TestAsyncEncodingActivity extends AppCompatActivity {
         mStopButton.setEnabled(true);
         mAudioThread = new AudioThread();
         mAudioThread.start();
-        mAudioControllerAsync.start();
-        mTrack.play();
+        mAudioCodec.start();
     }
 
     public void onClickStopBtn(View v) {
@@ -160,22 +129,28 @@ public class TestAsyncEncodingActivity extends AppCompatActivity {
         }
         mStartButton.setEnabled(true);
         mStopButton.setEnabled(false);
-        mAudioControllerAsync.stop();
-        mTrack.stop();
+        mAudioCodec.stop();
     }
 
     private class AudioThread extends Thread {
+
+        static final int SAMPLE_RATE = 8000;
 
         @Override
         public void run() {
             Process.setThreadPriority(Process.THREAD_PRIORITY_MORE_FAVORABLE);
 
+
+            int minBufSize = AudioRecord.getMinBufferSize(SAMPLE_RATE,
+                    AUDIO_CHANNEL_COUNT == 1 ? AudioFormat.CHANNEL_IN_MONO : AudioFormat.CHANNEL_IN_STEREO,
+                    AudioFormat.ENCODING_PCM_16BIT);
+
             // initialize audio recorder
             AudioRecord recorder = new AudioRecord(MediaRecorder.AudioSource.MIC,
-                    AUDIO_SAMPLE_RATE,
+                    SAMPLE_RATE,
                     AUDIO_CHANNEL_COUNT == 1 ? AudioFormat.CHANNEL_IN_MONO : AudioFormat.CHANNEL_IN_STEREO,
                     AudioFormat.ENCODING_PCM_16BIT,
-                    mMinBufSize);
+                    minBufSize);
 
             mAudioRecordSessionId = recorder.getAudioSessionId();
 
@@ -192,7 +167,15 @@ public class TestAsyncEncodingActivity extends AppCompatActivity {
                 }
             }
 
+            AudioTrack track = new AudioTrack(AudioManager.STREAM_SYSTEM,
+                    SAMPLE_RATE,
+                    AUDIO_CHANNEL_COUNT == 1 ? AudioFormat.CHANNEL_OUT_MONO : AudioFormat.CHANNEL_OUT_STEREO,
+                    AudioFormat.ENCODING_PCM_16BIT,
+                    minBufSize,
+                    AudioTrack.MODE_STREAM);
+
             recorder.startRecording();
+            track.play();
 
             byte[] inBuf = new byte[AUDIO_FRAME_BYTE];
 
@@ -210,11 +193,23 @@ public class TestAsyncEncodingActivity extends AppCompatActivity {
                         offset += read;
                     }
 
-                    mAudioControllerAsync.enqueueRawBytes(inBuf);
+                    byte[] encodedBuf = mAudioCodec.encode(inBuf);
+                    if (encodedBuf == null) {
+                        continue;
+                    }
+
+                    byte[] decodedBuf = mAudioCodec.decode(encodedBuf);
+                    if (decodedBuf == null) {
+                        continue;
+                    }
+
+                    track.write(decodedBuf, 0, decodedBuf.length);
                 }
             } finally {
                 recorder.stop();
                 recorder.release();
+                track.stop();
+                track.release();
                 mAudioEchoCanceler.release();
             }
         }

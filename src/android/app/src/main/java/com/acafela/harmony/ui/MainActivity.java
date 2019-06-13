@@ -1,4 +1,4 @@
-package com.acafela.harmony.activity;
+package com.acafela.harmony.ui;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -17,17 +17,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.acafela.harmony.FormatChecker;
+import com.acafela.harmony.userprofile.FormatChecker;
 import com.acafela.harmony.R;
-import com.acafela.harmony.activity.ui.main.ContactsFragment;
-import com.acafela.harmony.activity.ui.main.DialpadFragment;
-import com.acafela.harmony.activity.ui.main.SectionsPagerAdapter;
+import com.acafela.harmony.ui.main.ContactsFragment;
+import com.acafela.harmony.ui.main.DialpadFragment;
+import com.acafela.harmony.ui.main.SectionsPagerAdapter;
 import com.acafela.harmony.userprofile.UserProfileGrpc;
 import com.acafela.harmony.userprofile.UserProfileRpc;
 
 public class MainActivity extends AppCompatActivity
         implements DialpadFragment.OnFragmentInteractionListener, ContactsFragment.OnFragmentInteractionListener {
-    private static final String LOG_TAG = MainActivity.class.getName();
+    private static final String TAG = MainActivity.class.getName();
 
     private FloatingActionButton mFab;
 
@@ -106,10 +106,10 @@ public class MainActivity extends AppCompatActivity
         myDialog.setCancelable(true);
         myDialog.show();
 
-        final EditText editText_email = (EditText) myDialog.findViewById(R.id.editText_email);
-        final EditText editText_password = (EditText) myDialog.findViewById(R.id.editText_password);
-        final EditText editText_repeatPassword = (EditText) myDialog.findViewById(R.id.editText_repeatPassword);
-        Button buttonRegister = (Button) myDialog.findViewById(R.id.btn_register);
+        final EditText editText_email = myDialog.findViewById(R.id.editText_email);
+        final EditText editText_password = myDialog.findViewById(R.id.editText_password);
+        final EditText editText_repeatPassword = myDialog.findViewById(R.id.editText_repeatPassword);
+        Button buttonRegister = myDialog.findViewById(R.id.btn_register);
         buttonRegister.setOnClickListener(new View.OnClickListener()
         {
 
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        Button buttonCancel = (Button) myDialog.findViewById(R.id.btn_cancel);
+        Button buttonCancel = myDialog.findViewById(R.id.btn_cancel);
         buttonCancel.setOnClickListener(new View.OnClickListener()
         {
 
