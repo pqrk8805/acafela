@@ -16,6 +16,7 @@
     <ClCompile Include="src\Communicator\ConversationManager.cpp" />
     <ClCompile Include="src\Communicator\DataPath.cpp" />
     <ClCompile Include="src\Communicator\Participant.cpp" />
+    <ClCompile Include="src\CryptoKey\CryptoKey.cpp" />
     <ClCompile Include="src\CryptoKey\CryptoKey.grpc.pb.cc" />
     <ClCompile Include="src\CryptoKey\CryptoKey.pb.cc" />
     <ClCompile Include="src\CryptoKey\CryptoKeyRpc.cpp" />
@@ -30,6 +31,7 @@
       </ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\RpcCommon\RpcUtils.cpp" />
     <ClCompile Include="src\SipMessage\SipMessage.pb.cc" />
     <ClCompile Include="src\StorageAccessor\DBFile.cpp" />
     <ClCompile Include="src\RpcCommon\Common.pb.cc" />
@@ -59,6 +61,7 @@
   <ItemGroup>
     <ClInclude Include="src\Communicator\communicator.h" />
     <ClInclude Include="src\CryptoKey\CryptoKey.grpc.pb.h" />
+    <ClInclude Include="src\CryptoKey\CryptoKey.h" />
     <ClInclude Include="src\CryptoKey\CryptoKey.pb.h" />
     <ClInclude Include="src\CryptoKey\CryptoKeyRpc.h" />
     <ClInclude Include="src\CryptoKey\ICryptoKeyMgr.h" />
@@ -69,6 +72,7 @@
     <ClInclude Include="src\DirectoryService\DirectoryServiceRpc.h" />
     <ClInclude Include="src\DirectoryService\IDirectoryService.h" />
     <ClInclude Include="src\Hislog.h" />
+    <ClInclude Include="src\RpcCommon\RpcUtils.h" />
     <ClInclude Include="src\SipMessage\SipMessage.pb.h" />
     <ClInclude Include="src\StorageAccessor\DBFile.h" />
     <ClInclude Include="src\RpcCommon\Common.pb.h" />

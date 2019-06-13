@@ -1,7 +1,7 @@
 #include "UserProfileRpc.h"
 #include <fstream>
 #include <sstream>
-#include <grpcpp/server_builder.h>
+#include "RpcUtils.h"
 #include "Hislog.h"
 
 #define LOG_TAG "UP_RPC"
@@ -26,41 +26,9 @@ UserProfileRpc::~UserProfileRpc()
     }
 }
 
-static
-std::string read(const std::string& filename)
-{
-    std::string data;
-    std::ifstream file (filename.c_str(), std::ios::in);
-
-	if (file.is_open()) {
-		std::stringstream ss;
-		ss << file.rdbuf ();
-		file.close ();
-		data = ss.str();
-	}
-    return data;
-}
-
 int UserProfileRpc::start(const std::string& addressUri)
 {
-    std::string cert = read("certs/server.crt");
-	std::string key = read ("certs/server.key");
-	std::string root = read ("certs/ca.crt");
-
-    std::shared_ptr<grpc::ServerCredentials> creds;
-    grpc::SslServerCredentialsOptions::PemKeyCertPair pkcp = {key, cert};
-    grpc::SslServerCredentialsOptions ssl_opts;
-    ssl_opts.pem_root_certs = root;
-    ssl_opts.pem_key_cert_pairs.push_back(pkcp);
-    creds = grpc::SslServerCredentials(ssl_opts);
-
-    ::grpc::ServerBuilder builder;
-    builder.AddListeningPort(
-                        addressUri, creds);
-    builder.RegisterService(this);
-    std::unique_ptr<::grpc::Server> server(builder.BuildAndStart());
-
-    mServer = server.release();
+    mServer = RpcUtils::initSecureServer(addressUri, this);
     FUNC_LOGI("UserProfile RPC server listen on: %s", addressUri.c_str());
     std::thread t ( [this]() { this->wait(); } );
     mWorker.swap(t);
@@ -68,14 +36,14 @@ int UserProfileRpc::start(const std::string& addressUri)
     return 0;
 }
 
- void UserProfileRpc::wait()
- {
-     if (mServer) mServer->Wait();
- }
+void UserProfileRpc::wait()
+{
+    if (mServer) mServer->Wait();
+}
 
 void UserProfileRpc::shutdown()
 {
-    mServer->Shutdown();
+    if (mServer) mServer->Shutdown();
 }
 
 ::grpc::Status UserProfileRpc::getVersion(

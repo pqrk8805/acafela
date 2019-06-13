@@ -12,5 +12,6 @@ protected:
 public:
     virtual ~ICryptoKeyRepo() {}
 
-    virtual std::vector<uint8_t> getKey(const std::string sessionId) = 0;
+    virtual std::vector<char> getKey(
+                                const std::string sessionId) = 0;
 };

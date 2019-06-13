@@ -108,6 +108,12 @@
     <ClCompile Include="src\UserProfile\EmailSender.cpp">
       <Filter>Source Files\UserProfile</Filter>
     </ClCompile>
+    <ClCompile Include="src\RpcCommon\RpcUtils.cpp">
+      <Filter>Source Files\RpcCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CryptoKey\CryptoKey.cpp">
+      <Filter>Source Files\CryptoKey</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\UserProfile\UserProfile.grpc.pb.h">
@@ -184,6 +190,12 @@
     </ClInclude>
     <ClInclude Include="src\UserProfile\EmailSender.h">
       <Filter>Source Files\UserProfile</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RpcCommon\RpcUtils.h">
+      <Filter>Source Files\RpcCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CryptoKey\CryptoKey.h">
+      <Filter>Source Files\CryptoKey</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
