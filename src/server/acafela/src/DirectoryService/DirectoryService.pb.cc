@@ -56,6 +56,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::rpc::DirInfo, phone_number_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::rpc::DirInfo, password_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::rpc::DirInfo, address_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
@@ -88,14 +89,14 @@ void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\026DirectoryService.proto\022\013acafela.rpc\032\014C"
-      "ommon.proto\"0\n\007DirInfo\022\024\n\014phone_number\030\001"
-      " \001(\t\022\017\n\007address\030\002 \001(\t2F\n\020DirectoryServic"
-      "e\0222\n\006update\022\024.acafela.rpc.DirInfo\032\022.acaf"
-      "ela.rpc.ErrorB\035\n\033com.acafela.harmony.dir"
-      "servb\006proto3"
+      "ommon.proto\"B\n\007DirInfo\022\024\n\014phone_number\030\001"
+      " \001(\t\022\020\n\010password\030\002 \001(\t\022\017\n\007address\030\003 \001(\t2"
+      "F\n\020DirectoryService\0222\n\006update\022\024.acafela."
+      "rpc.DirInfo\032\022.acafela.rpc.ErrorB\035\n\033com.a"
+      "cafela.harmony.dirservb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 212);
+      descriptor, 230);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "DirectoryService.proto", &protobuf_RegisterTypes);
   ::protobuf_Common_2eproto::AddDescriptors();
@@ -121,6 +122,7 @@ void DirInfo::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int DirInfo::kPhoneNumberFieldNumber;
+const int DirInfo::kPasswordFieldNumber;
 const int DirInfo::kAddressFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -139,6 +141,10 @@ DirInfo::DirInfo(const DirInfo& from)
   if (from.phone_number().size() > 0) {
     phone_number_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.phone_number_);
   }
+  password_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.password().size() > 0) {
+    password_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.password_);
+  }
   address_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (from.address().size() > 0) {
     address_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.address_);
@@ -148,6 +154,7 @@ DirInfo::DirInfo(const DirInfo& from)
 
 void DirInfo::SharedCtor() {
   phone_number_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  password_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   address_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
@@ -158,6 +165,7 @@ DirInfo::~DirInfo() {
 
 void DirInfo::SharedDtor() {
   phone_number_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  password_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   address_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
@@ -182,6 +190,7 @@ void DirInfo::Clear() {
   (void) cached_has_bits;
 
   phone_number_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  password_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   address_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   _internal_metadata_.Clear();
 }
@@ -212,10 +221,26 @@ bool DirInfo::MergePartialFromCodedStream(
         break;
       }
 
-      // string address = 2;
+      // string password = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_password()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->password().data(), static_cast<int>(this->password().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "acafela.rpc.DirInfo.password"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string address = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_address()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -264,14 +289,24 @@ void DirInfo::SerializeWithCachedSizes(
       1, this->phone_number(), output);
   }
 
-  // string address = 2;
+  // string password = 2;
+  if (this->password().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->password().data(), static_cast<int>(this->password().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "acafela.rpc.DirInfo.password");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->password(), output);
+  }
+
+  // string address = 3;
   if (this->address().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->address().data(), static_cast<int>(this->address().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "acafela.rpc.DirInfo.address");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->address(), output);
+      3, this->address(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -299,7 +334,18 @@ void DirInfo::SerializeWithCachedSizes(
         1, this->phone_number(), target);
   }
 
-  // string address = 2;
+  // string password = 2;
+  if (this->password().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->password().data(), static_cast<int>(this->password().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "acafela.rpc.DirInfo.password");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->password(), target);
+  }
+
+  // string address = 3;
   if (this->address().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->address().data(), static_cast<int>(this->address().length()),
@@ -307,7 +353,7 @@ void DirInfo::SerializeWithCachedSizes(
       "acafela.rpc.DirInfo.address");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->address(), target);
+        3, this->address(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -334,7 +380,14 @@ size_t DirInfo::ByteSizeLong() const {
         this->phone_number());
   }
 
-  // string address = 2;
+  // string password = 2;
+  if (this->password().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->password());
+  }
+
+  // string address = 3;
   if (this->address().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -372,6 +425,10 @@ void DirInfo::MergeFrom(const DirInfo& from) {
 
     phone_number_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.phone_number_);
   }
+  if (from.password().size() > 0) {
+
+    password_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.password_);
+  }
   if (from.address().size() > 0) {
 
     address_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.address_);
@@ -403,6 +460,8 @@ void DirInfo::Swap(DirInfo* other) {
 void DirInfo::InternalSwap(DirInfo* other) {
   using std::swap;
   phone_number_.Swap(&other->phone_number_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  password_.Swap(&other->password_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
   address_.Swap(&other->address_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());

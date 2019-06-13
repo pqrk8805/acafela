@@ -16,6 +16,7 @@ public:
 
     int update(
             const std::string& phoneNumber,
+            const std::string& password,
             const std::string& ipAddress) override;
     int query(
             const std::string& phoneNumber,

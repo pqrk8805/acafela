@@ -13,6 +13,7 @@ public:
 
     virtual int update(
                     const std::string& phoneNumber,
+                    const std::string& password,
                     const std::string& ipAddress) = 0;
     virtual int query(
                     const std::string& phoneNumber,

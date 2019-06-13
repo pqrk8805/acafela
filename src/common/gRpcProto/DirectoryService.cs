@@ -25,14 +25,15 @@ namespace Acafela.Rpc {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChZEaXJlY3RvcnlTZXJ2aWNlLnByb3RvEgthY2FmZWxhLnJwYxoMQ29tbW9u",
-            "LnByb3RvIjAKB0RpckluZm8SFAoMcGhvbmVfbnVtYmVyGAEgASgJEg8KB2Fk",
-            "ZHJlc3MYAiABKAkyRgoQRGlyZWN0b3J5U2VydmljZRIyCgZ1cGRhdGUSFC5h",
-            "Y2FmZWxhLnJwYy5EaXJJbmZvGhIuYWNhZmVsYS5ycGMuRXJyb3JCHQobY29t",
-            "LmFjYWZlbGEuaGFybW9ueS5kaXJzZXJ2YgZwcm90bzM="));
+            "LnByb3RvIkIKB0RpckluZm8SFAoMcGhvbmVfbnVtYmVyGAEgASgJEhAKCHBh",
+            "c3N3b3JkGAIgASgJEg8KB2FkZHJlc3MYAyABKAkyRgoQRGlyZWN0b3J5U2Vy",
+            "dmljZRIyCgZ1cGRhdGUSFC5hY2FmZWxhLnJwYy5EaXJJbmZvGhIuYWNhZmVs",
+            "YS5ycGMuRXJyb3JCHQobY29tLmFjYWZlbGEuaGFybW9ueS5kaXJzZXJ2YgZw",
+            "cm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Acafela.Rpc.CommonReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Acafela.Rpc.DirInfo), global::Acafela.Rpc.DirInfo.Parser, new[]{ "PhoneNumber", "Address" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Acafela.Rpc.DirInfo), global::Acafela.Rpc.DirInfo.Parser, new[]{ "PhoneNumber", "Password", "Address" }, null, null, null)
           }));
     }
     #endregion
@@ -65,6 +66,7 @@ namespace Acafela.Rpc {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public DirInfo(DirInfo other) : this() {
       phoneNumber_ = other.phoneNumber_;
+      password_ = other.password_;
       address_ = other.address_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -85,8 +87,19 @@ namespace Acafela.Rpc {
       }
     }
 
+    /// <summary>Field number for the "password" field.</summary>
+    public const int PasswordFieldNumber = 2;
+    private string password_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Password {
+      get { return password_; }
+      set {
+        password_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     /// <summary>Field number for the "address" field.</summary>
-    public const int AddressFieldNumber = 2;
+    public const int AddressFieldNumber = 3;
     private string address_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Address {
@@ -110,6 +123,7 @@ namespace Acafela.Rpc {
         return true;
       }
       if (PhoneNumber != other.PhoneNumber) return false;
+      if (Password != other.Password) return false;
       if (Address != other.Address) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -118,6 +132,7 @@ namespace Acafela.Rpc {
     public override int GetHashCode() {
       int hash = 1;
       if (PhoneNumber.Length != 0) hash ^= PhoneNumber.GetHashCode();
+      if (Password.Length != 0) hash ^= Password.GetHashCode();
       if (Address.Length != 0) hash ^= Address.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -136,8 +151,12 @@ namespace Acafela.Rpc {
         output.WriteRawTag(10);
         output.WriteString(PhoneNumber);
       }
-      if (Address.Length != 0) {
+      if (Password.Length != 0) {
         output.WriteRawTag(18);
+        output.WriteString(Password);
+      }
+      if (Address.Length != 0) {
+        output.WriteRawTag(26);
         output.WriteString(Address);
       }
       if (_unknownFields != null) {
@@ -150,6 +169,9 @@ namespace Acafela.Rpc {
       int size = 0;
       if (PhoneNumber.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(PhoneNumber);
+      }
+      if (Password.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Password);
       }
       if (Address.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Address);
@@ -167,6 +189,9 @@ namespace Acafela.Rpc {
       }
       if (other.PhoneNumber.Length != 0) {
         PhoneNumber = other.PhoneNumber;
+      }
+      if (other.Password.Length != 0) {
+        Password = other.Password;
       }
       if (other.Address.Length != 0) {
         Address = other.Address;
@@ -187,6 +212,10 @@ namespace Acafela.Rpc {
             break;
           }
           case 18: {
+            Password = input.ReadString();
+            break;
+          }
+          case 26: {
             Address = input.ReadString();
             break;
           }

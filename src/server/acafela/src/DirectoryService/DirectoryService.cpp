@@ -13,6 +13,7 @@ DirectoryService::~DirectoryService()
 
 int DirectoryService::update(
                         const std::string& phoneNumber,
+                        const std::string& password,
                         const std::string& ipAddress)
 {
     std::lock_guard<std::mutex> guard(mLock);

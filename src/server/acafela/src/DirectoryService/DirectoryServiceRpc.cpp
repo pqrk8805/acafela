@@ -1,5 +1,6 @@
 #include "DirectoryServiceRpc.h"
 #include <grpcpp/server_builder.h>
+#include "RpcUtils.h"
 #include "Hislog.h"
 
 #define LOG_TAG "DS_RPC"
@@ -26,18 +27,7 @@ DirectoryServiceRpc::~DirectoryServiceRpc()
 
 int DirectoryServiceRpc::start(const std::string& addressUri)
 {
-    ::grpc::ServerBuilder builder;
-    builder.AddListeningPort(
-                        addressUri,
-                        ::grpc::InsecureServerCredentials());
-    builder.RegisterService(this);
-    std::unique_ptr<::grpc::Server> server(builder.BuildAndStart());
-    if (server == nullptr) {
-        FUNC_LOGE("ERROR: fail to create server: %s", addressUri.c_str());
-        return -1;
-    }
-
-    mServer = server.release();
+    mServer = RpcUtils::initSecureServer(addressUri, this);
     FUNC_LOGI("DirectoryService RPC server listen on: %s", addressUri.c_str());
     std::thread t ( [this]() { this->wait(); } );
     mWorker.swap(t);
@@ -62,6 +52,7 @@ void DirectoryServiceRpc::shutdown()
 {
     int err = mDirectoryService.update(
                                     request->phone_number(),
+                                    request->password(),
                                     request->address());
     response->set_err(err);
     response->set_message(err ? "Fail" : "OK");

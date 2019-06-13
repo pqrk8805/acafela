@@ -164,9 +164,23 @@ class DirInfo : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::std::string* release_phone_number();
   void set_allocated_phone_number(::std::string* phone_number);
 
-  // string address = 2;
+  // string password = 2;
+  void clear_password();
+  static const int kPasswordFieldNumber = 2;
+  const ::std::string& password() const;
+  void set_password(const ::std::string& value);
+  #if LANG_CXX11
+  void set_password(::std::string&& value);
+  #endif
+  void set_password(const char* value);
+  void set_password(const char* value, size_t size);
+  ::std::string* mutable_password();
+  ::std::string* release_password();
+  void set_allocated_password(::std::string* password);
+
+  // string address = 3;
   void clear_address();
-  static const int kAddressFieldNumber = 2;
+  static const int kAddressFieldNumber = 3;
   const ::std::string& address() const;
   void set_address(const ::std::string& value);
   #if LANG_CXX11
@@ -183,6 +197,7 @@ class DirInfo : public ::google::protobuf::Message /* @@protoc_insertion_point(c
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr phone_number_;
+  ::google::protobuf::internal::ArenaStringPtr password_;
   ::google::protobuf::internal::ArenaStringPtr address_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_DirectoryService_2eproto::TableStruct;
@@ -251,7 +266,60 @@ inline void DirInfo::set_allocated_phone_number(::std::string* phone_number) {
   // @@protoc_insertion_point(field_set_allocated:acafela.rpc.DirInfo.phone_number)
 }
 
-// string address = 2;
+// string password = 2;
+inline void DirInfo::clear_password() {
+  password_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& DirInfo::password() const {
+  // @@protoc_insertion_point(field_get:acafela.rpc.DirInfo.password)
+  return password_.GetNoArena();
+}
+inline void DirInfo::set_password(const ::std::string& value) {
+  
+  password_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:acafela.rpc.DirInfo.password)
+}
+#if LANG_CXX11
+inline void DirInfo::set_password(::std::string&& value) {
+  
+  password_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:acafela.rpc.DirInfo.password)
+}
+#endif
+inline void DirInfo::set_password(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  password_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:acafela.rpc.DirInfo.password)
+}
+inline void DirInfo::set_password(const char* value, size_t size) {
+  
+  password_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:acafela.rpc.DirInfo.password)
+}
+inline ::std::string* DirInfo::mutable_password() {
+  
+  // @@protoc_insertion_point(field_mutable:acafela.rpc.DirInfo.password)
+  return password_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DirInfo::release_password() {
+  // @@protoc_insertion_point(field_release:acafela.rpc.DirInfo.password)
+  
+  return password_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DirInfo::set_allocated_password(::std::string* password) {
+  if (password != NULL) {
+    
+  } else {
+    
+  }
+  password_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), password);
+  // @@protoc_insertion_point(field_set_allocated:acafela.rpc.DirInfo.password)
+}
+
+// string address = 3;
 inline void DirInfo::clear_address() {
   address_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
