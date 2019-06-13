@@ -106,8 +106,12 @@ public class HarmonyService extends Service {
         Log.i(LOG_TAG, "initiateCall");
         showToastInService("initiateCall");
 
+        // ToDo:
+        // 키를 서버에서 받아와야 함
+        //
+        byte[] tempKey = {-108, -110, -109, -7, -33, 126, 75, 78, 110, -25, -40, -109, -12, 40, -40, 96,};
         ICrypto crypto = CryptoBroker.getInstance().create("AES");
-        crypto.init("12345".getBytes());
+        crypto.init(tempKey);
 
         senderAudio = new SenderAudio(crypto);
         senderAudio.setSession(serverIp,sendPort);

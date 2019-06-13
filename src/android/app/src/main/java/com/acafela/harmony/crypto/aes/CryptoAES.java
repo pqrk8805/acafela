@@ -27,20 +27,19 @@ public class CryptoAES implements ICrypto
     }
 
     @Override
-    public void init(byte[] password)
+    public void init(byte[] keyBytes)
     {
         try {
             /*
             SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
-            sr.setSeed(password);
+            sr.setSeed(keyBytes);
             KeyGenerator keygen = KeyGenerator.getInstance("AES");
             keygen.init(128, sr); // 192 and 256 bits may not be available 
             SecretKey secretKey = keygen.generateKey();
             SecretKeySpec keySpec = new SecretKeySpec(secretKey.getEncoded(), "AES");
             */
 
-            byte[] tempKey = {-108, -110, -109, -7, -33, 126, 75, 78, 110, -25, -40, -109, -12, 40, -40, 96,};
-            SecretKeySpec keySpec = new SecretKeySpec(tempKey, "AES");
+            SecretKeySpec keySpec = new SecretKeySpec(keyBytes, "AES");
 
             mEncryptCipher = Cipher.getInstance("AES");
             mEncryptCipher.init(Cipher.ENCRYPT_MODE, keySpec);

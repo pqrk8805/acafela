@@ -25,7 +25,10 @@ std::vector<char> CryptoKey::getKey(
 {
     // temp
     //
-    static const std::vector<char> aesKey {-108, -110, -109, -7, -33, 126, 75, 78, 110, -25, -40, -109, -12, 40, -40, 96,};
+    static const std::vector<char> aesKey {
+                            -108, -110, -109,   -7, -33, 126,  75, 78,
+                             110,  -25,  -40, -109, -12, 40,  -40, 96,
+    };
     return aesKey;
 }
 
