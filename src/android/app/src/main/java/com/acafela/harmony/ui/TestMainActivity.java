@@ -59,13 +59,6 @@ public class TestMainActivity extends AppCompatActivity {
         }
     }
 
-    public void onClickUserProfileBtn(View v) {
-        Log.d(LOG_TAG, "onClickUserProfileBtn");
-
-        Intent intent = new Intent(this, UserProfileActivity.class);
-        startActivity(intent);
-    }
-
     public void onClickCallBtn(View v) {
         Log.d(LOG_TAG, "onClickCallBtn");
 
