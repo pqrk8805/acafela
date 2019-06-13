@@ -1,7 +1,9 @@
 #include "UserProfile.h"
+#include "EmailSender.h"
 #include "Hislog.h"
 #include "StorageAccessor/FileStorageAccessor.h"
 #include "MD5Hash.h"
+
 #define LOG_TAG "UserProfile"
 
 using namespace std;
@@ -49,6 +51,11 @@ int UserProfile::changePassword(
     FUNC_LOGD("BEGIN");
 	
 	string encEmailAddress = mSP->GetSecureData(emailAddress);	
+#if 0
+    EmailSender::sendPasswordRecoveryMail(
+                                    emailAddress,
+                                    "new password");
+#endif
 	return restorePassword(encEmailAddress, phoneNumber);
  }
 
