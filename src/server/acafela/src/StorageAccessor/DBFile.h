@@ -22,7 +22,16 @@ class PasswordFile : public DBFile
 {
 public:
 	PasswordFile(const std::string& filename, const std::string& access_mode) :
-		DBFile("./pw/" + filename, access_mode)
+		DBFile(".storage/password/" + filename, access_mode)
+	{
+	}
+};
+
+class PhoneNumberFile : public DBFile
+{
+public:
+	PhoneNumberFile(const std::string& filename, const std::string& access_mode) :
+		DBFile(".storage/phonenumber/" + filename, access_mode)
 	{
 	}
 };
@@ -31,7 +40,7 @@ class DerectoryServiceFile : public DBFile
 {
 public:
 	DerectoryServiceFile(const std::string& filename, const std::string& access_mode) :
-		DBFile("./ds/" + filename, access_mode)
+		DBFile("./storage/directoryservice/" + filename, access_mode)
 	{
 	}
 };

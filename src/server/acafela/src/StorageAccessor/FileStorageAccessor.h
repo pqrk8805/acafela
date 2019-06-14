@@ -9,31 +9,33 @@ public:
 	FileStorageAccessor();
 	~FileStorageAccessor();
 
-	std::string registerUser(
+	int registerUser(
 		const std::string& emailAddress,
-		const std::string& password) override;
+		const std::string& password,
+		const std::string& phoneNumber) override;
 
 	int changePassword(
 		const std::string& emailAddress,
-		const std::string& oldPassword,
-		const std::string& newPassword) override;
+		const std::string& password) override;
 
-	bool confirmUser(
+	bool confirmPassword(
 		const std::string& emailAddress,
-		const std::string& password);
+		const std::string& password) override;
 
 	int restorePassword(
 		const std::string& emailAddress,
 		const std::string& phoneNumber) override;
 
-	int deleteUser(const std::string& emailAddress);
+	int confirmPhoneNumber(
+		const std::string& emailAddress,
+		const std::string& phoneNumber) override;
 
-	void getTotalUserNumber();
-	void updateUserNumber();	
+	int getUserNumber() override;
+	int updateUserNumber(int userNumber) override;
 
-	std::string generateUserPhoneNumber();
+	bool isExistUser(const std::string& emailAddress) override;
 private:
-	int			mUserNumber = 0;
 	std::mutex	mUserNumberLock;
-	std::mutex	mUserProfileLock;
+	std::mutex	mPasswordLock;
+	std::mutex	mPhoneNumberLock;
 };

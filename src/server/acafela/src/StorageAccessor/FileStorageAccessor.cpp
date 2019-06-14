@@ -8,111 +8,47 @@
 using namespace std;
 FileStorageAccessor::FileStorageAccessor()
 {
-	getTotalUserNumber();
 }
 
 FileStorageAccessor::~FileStorageAccessor()
 {
-	updateUserNumber();
 }
 
-void FileStorageAccessor::getTotalUserNumber()
+int FileStorageAccessor::registerUser(const string& emailAddress, const string& password, const string& phoneNumber)
 {
-	lock_guard<mutex> lock(mUserNumberLock);
-
-	PasswordFile f("UserNumber", "rb");
-
-	if (f.GetPF())
 	{
-		string userNumber;
-		userNumber = f.ReadFile();
-		mUserNumber = stoi(userNumber);
+		lock_guard<mutex> lock(mPasswordLock);
+
+		PasswordFile f(emailAddress, "wb");
+		
+		f.WriteFile(password);		
 	}
-	else
+
 	{
-		mUserNumber = 0;
+		lock_guard<mutex> lock(mPhoneNumberLock);
+
+		PhoneNumberFile f(emailAddress, "wb");
+
+		f.WriteFile(phoneNumber);
 	}
+
+	return 0;
 }
 
-void FileStorageAccessor::updateUserNumber()
+int FileStorageAccessor::changePassword(const string& emailAddress, const string& password)
 {
-	lock_guard<mutex> lock(mUserNumberLock);
-
-	PasswordFile f("UserNumber", "wb");
-
-	string userNumberString = to_string(mUserNumber);
-	
-	f.WriteFile(userNumberString);
-}
-
-string FileStorageAccessor::generateUserPhoneNumber()
-{
-	getTotalUserNumber();
-
-	int totalUserNumber = mUserNumber + 1111;
-
-	string userPhoneNumber = to_string(totalUserNumber);
-
-	string fillZero(4 - userPhoneNumber.size(), '0');
-
-	userPhoneNumber = fillZero + userPhoneNumber;
-
-	mUserNumber += 1;
-
-	updateUserNumber();
-
-	return userPhoneNumber;
-}
-
-string FileStorageAccessor::registerUser(const string& emailAddress, const string& password)
-{
-	lock_guard<mutex> lock(mUserProfileLock);	
+	lock_guard<mutex> lock(mPasswordLock);
 
 	PasswordFile f(emailAddress, "wb");
 
-	if (f.GetSize() > 0)
-	{
-		return "Registered User";
-	}
-	else
-	{
-		f.WriteFile(password);
+	f.WriteFile(password);
 
-		string phoneNumber = generateUserPhoneNumber();
-
-		return phoneNumber;
-	}	
+	return 0;
 }
 
-int FileStorageAccessor::changePassword(const string& emailAddress, const string& oldPassword, const string& newPassword)
+bool FileStorageAccessor::confirmPassword(const std::string& emailAddress, const std::string& password)
 {
-	lock_guard<mutex> lock(mUserProfileLock);
-
-	if (confirmUser(emailAddress, oldPassword) == false)
-	{
-		return -1;
-	}	
-
-	PasswordFile f(emailAddress, "wb");
-
-	f.WriteFile(emailAddress);
-
-	return -1;
-}
-
-int FileStorageAccessor::restorePassword(const string& emailAddress, const string& phoneNumber)
-{
-	return -1;
-}
-
-int FileStorageAccessor::deleteUser(const std::string& emailAddress)
-{
-	return -1;
-}
-
-bool FileStorageAccessor::confirmUser(const std::string& emailAddress, const std::string& password)
-{
-	lock_guard<mutex> lock(mUserProfileLock);
+	lock_guard<mutex> lock(mPasswordLock);
 
 	PasswordFile f(emailAddress, "rb");
 
@@ -121,10 +57,81 @@ bool FileStorageAccessor::confirmUser(const std::string& emailAddress, const std
 		return false;
 	}
 
-	string savedPassword = f.ReadFile();	
+	string savedPassword = f.ReadFile();
 
 	if (password.compare(0, password.length(), savedPassword, 0, password.length()) == 0)
 		return true;
 	else
 		return false;
+}
+
+int FileStorageAccessor::restorePassword(const string& emailAddress, const string& phoneNumber)
+{
+	return -1;
+}
+
+int FileStorageAccessor::confirmPhoneNumber(const string& emailAddress, const string& phoneNumber)
+{
+	lock_guard<mutex> lock(mPhoneNumberLock);
+
+	PhoneNumberFile f(emailAddress, "rb");
+
+	if (f.GetPF() == nullptr)
+	{
+		return false;
+	}
+
+	string savedPhoneNumber = f.ReadFile();
+
+	if (phoneNumber.compare(0, phoneNumber.length(), savedPhoneNumber, 0, phoneNumber.length()) == 0)
+		return true;
+	else
+		return false;
+}
+
+int FileStorageAccessor::getUserNumber()
+{
+	lock_guard<mutex> lock(mUserNumberLock);
+
+	PasswordFile f("UserNumber", "rb");
+
+	if (f.GetPF())
+	{
+		string strUserNumber = f.ReadFile();
+		int nUserNumber = stoi(strUserNumber);
+		return nUserNumber;
+	}
+	else
+	{
+		return 0;
+	}
+}
+
+int FileStorageAccessor::updateUserNumber(int userNumber)
+{
+	lock_guard<mutex> lock(mUserNumberLock);
+
+	PasswordFile f("UserNumber", "wb");
+
+	string userNumberString = to_string(userNumber);
+
+	f.WriteFile(userNumberString);
+
+	return 0;
+}
+
+bool FileStorageAccessor::isExistUser(const std::string& emailAddress)
+{
+	lock_guard<mutex> lock(mPasswordLock);
+
+	PasswordFile f(emailAddress, "wb");
+
+	if (f.GetSize() > 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }

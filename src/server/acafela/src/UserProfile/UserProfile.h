@@ -26,6 +26,9 @@ public:
                 const std::string& phoneNumber) override;
 
 private:
+	std::string generateUserPhoneNumber();
+
+private:
 	std::unique_ptr<IStorageAccessor> mSA;
 	std::unique_ptr<ISecurityProvider> mSP;
 };
