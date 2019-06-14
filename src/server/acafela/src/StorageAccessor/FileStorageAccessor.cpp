@@ -49,11 +49,11 @@ string FileStorageAccessor::generateUserPhoneNumber()
 {
 	getTotalUserNumber();
 
-	int totalUserNumber = mUserNumber;
+	int totalUserNumber = mUserNumber + 1111;
 
 	string userPhoneNumber = to_string(totalUserNumber);
 
-	string fillZero(10 - userPhoneNumber.size(), '0');
+	string fillZero(4 - userPhoneNumber.size(), '0');
 
 	userPhoneNumber = fillZero + userPhoneNumber;
 

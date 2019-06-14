@@ -24,9 +24,6 @@ std::string UserProfile::registerUser(
     FUNC_LOGD("BEGIN");	
 	
 	string encEmailAddress = mSP->GetSecureData(emailAddress);
-	encEmailAddress = mSP->GetSecureData(emailAddress);
-	encEmailAddress = mSP->GetSecureData(emailAddress);
-	encEmailAddress = mSP->GetSecureData(emailAddress);
 	string encPassword = mSP->GetSecureData(password);
     return mSA->registerUser(encEmailAddress, encPassword);
 }
