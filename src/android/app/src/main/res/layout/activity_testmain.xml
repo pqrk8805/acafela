@@ -39,7 +39,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TESTTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonCall" />
 
     <Button
         android:id="@+id/buttonTestEncoding"

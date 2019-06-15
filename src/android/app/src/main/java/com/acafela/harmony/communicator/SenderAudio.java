@@ -23,28 +23,16 @@ public class SenderAudio implements DataCommunicator {
     private int mPort;
     private Thread mSenderThread = null;
     private boolean senderAudioThreadRun = false;
+    private static final String LOG_TAG = "SenderAudio";
+    private boolean isSenderAudioRun=false;
     private ICrypto mCrypto;
-
     // AEC start
     private AcousticEchoCanceler mAudioEchoCanceler;
     private int mAudioRecordSessionId;
     // AEC end
+    private static int mPacketSeq= 0;
 
-    private static final int MILLISECONDS_IN_A_SECOND = 1000;
-    private static final int SAMPLE_RATE = 8000; // Hertz
-    private static final int SAMPLE_INTERVAL = 20;   // Milliseconds
-    private static final int BYTES_PER_SAMPLE = 2;    // Bytes Per Sampl;e
-    private static final int RAW_BUFFER_SIZE = SAMPLE_RATE / (MILLISECONDS_IN_A_SECOND / SAMPLE_INTERVAL) * BYTES_PER_SAMPLE;
-    private static final int GSM_BUFFER_SIZE = 33;
-    private static final String LOG_TAG = "SenderAudio";
-    private boolean isSenderAudioRun=false;
-
-    private static final boolean isTimeStamp = false;
-
-    private int mSimVoice;
-
-
-    public SenderAudio(ICrypto crypto)
+        public SenderAudio(ICrypto crypto)
     {
         mCrypto = crypto;
     }
@@ -97,38 +85,20 @@ public class SenderAudio implements DataCommunicator {
         isSenderAudioRun = false;
         return true;
     }
-    private InputStream OpenSimVoice(int SimVoice) {
-        InputStream VoiceFile = null;
-        switch (SimVoice) {
-            case 0:
-                break;
-           /* case 1:
-                VoiceFile = mContext.getResources().openRawResource(R.raw.t18k16bit);
-                break;
-            case 2:
-                VoiceFile = mContext.getResources().openRawResource(R.raw.t28k16bit);
-                break;
-            case 3:
-                VoiceFile = mContext.getResources().openRawResource(R.raw.t38k16bit);
-                break;
-            case 4:
-                VoiceFile = mContext.getResources().openRawResource(R.raw.t48k16bit);
-                break;*/
-            default:
-                break;
-        }
-        return VoiceFile;
-    }
 
     private void startSenderAudioThread()
     {
+        mPacketSeq = 0;
+
         // Create thread for receiving audio data
         mSenderThread = new Thread(new Runnable() {
             @Override
             public void run() {
+
                 // Create an instance of AudioTrack, used for playing back audio
                 Log.i(LOG_TAG, "Receive Data Thread Started. Thread id: " + Thread.currentThread().getId());
                 InputStream InputPlayFile;
+                byte[] SendBuffer = new byte[AUDIO_HEADER_SIZE + RAW_BUFFER_SIZE + 16];
 
                 AudioRecord Recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLE_RATE,
                         AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT,
@@ -152,9 +122,7 @@ public class SenderAudio implements DataCommunicator {
                 // AEC end
 
                 int BytesRead;
-                byte[] rawbuf = new byte[RAW_BUFFER_SIZE+5];
-                //byte[] gsmbuf = new byte[GSM_BUFFER_SIZE];
-                InputPlayFile = OpenSimVoice(mSimVoice);
+                byte[] rawbuf = new byte[RAW_BUFFER_SIZE];
 
                 try
                 {
@@ -163,36 +131,33 @@ public class SenderAudio implements DataCommunicator {
                     while (senderAudioThreadRun)
                     {
                         // Capture audio from microphone and send
-                        if(isTimeStamp) {
-                            Long tsLong = System.currentTimeMillis() % 10000;
-                            rawbuf[3] = (byte) (tsLong & 0x000000ff);
-                            rawbuf[2] = (byte) ((tsLong >> 8) & 0x000000ff);
-                            rawbuf[1] = (byte) ((tsLong >> 16) & 0x000000ff);
-                            rawbuf[0] = (byte) ((tsLong >> 24) & 0x000000ff);
-                            //Log.i(LOG_TAG, "Packet send time: " + (tsLong));
-                            BytesRead = Recorder.read(rawbuf, 5, RAW_BUFFER_SIZE);
-                        }
-                        else
-                            BytesRead = Recorder.read(rawbuf, 0, RAW_BUFFER_SIZE);
+                        BytesRead = Recorder.read(rawbuf, 0, RAW_BUFFER_SIZE);
 
-                        if (InputPlayFile != null) {
-                            BytesRead = InputPlayFile.read(rawbuf, 0, RAW_BUFFER_SIZE);
-                            if (BytesRead != RAW_BUFFER_SIZE) {
-                                InputPlayFile.close();
-                                InputPlayFile = OpenSimVoice(mSimVoice);
-                                BytesRead = InputPlayFile.read(rawbuf, 0, RAW_BUFFER_SIZE);
-                            }
-                        }
                         if (BytesRead == RAW_BUFFER_SIZE) {
-                            //JniGsmEncodeB(rawbuf, gsmbuf);
-                            //DatagramPacket packet = new DatagramPacket(gsmbuf, GSM_BUFFER_SIZE, RemoteIp, VOIP_DATA_UDP_PORT);
-                            if(isTimeStamp) {
-                                rawbuf[4] = (byte)0;//primary packet
-                                DatagramPacket packet = new DatagramPacket(rawbuf, RAW_BUFFER_SIZE + 5, mIpAddress, mPort);
+                            if(isAudioHeader) {
+                                SendBuffer[2] = (byte) (mPacketSeq & 0x000000ff);
+                                SendBuffer[1] = (byte) ((mPacketSeq>> 8) & 0x000000ff);
+                                SendBuffer[0] = (byte) 0;//primary packet
+                                if(mPacketSeq++ == MAX_AUDIO_SEQNO) mPacketSeq=0;
+
+                                byte[]  encrypted= mCrypto.encrypt(rawbuf, 0, RAW_BUFFER_SIZE);
+                                System.arraycopy(encrypted,0,SendBuffer,AUDIO_HEADER_SIZE,encrypted.length);
+                                //Log.i(LOG_TAG, "Packet send length: " +  SendBuffer.length + " en : " + encrypted.length +" data : "+ SendBuffer[0]   + SendBuffer[1]+ SendBuffer[2]);
+
+                                DatagramPacket packet = new DatagramPacket(
+                                        SendBuffer,
+                                        SendBuffer.length,
+                                        mIpAddress,
+                                        mPort);
                                 socket.send(packet);
-                                rawbuf[4] = (byte)1;//sub packet
-                                DatagramPacket packet2 = new DatagramPacket(rawbuf, RAW_BUFFER_SIZE + 5, mIpAddress, mPort);
-                                socket.send(packet2);
+
+                                SendBuffer[0]=1;
+                                DatagramPacket subPacket = new DatagramPacket(
+                                        SendBuffer,
+                                        SendBuffer.length,
+                                        mIpAddress,
+                                        mPort);
+                                socket.send(subPacket);
                             } else {
                                 byte[] encrypted = mCrypto.encrypt(rawbuf, 0, RAW_BUFFER_SIZE);
                                 DatagramPacket packet = new DatagramPacket(
@@ -206,7 +171,6 @@ public class SenderAudio implements DataCommunicator {
                     }
                     Recorder.stop();
                     Recorder.release();
-                    if (InputPlayFile != null) InputPlayFile.close();
                     socket.disconnect();
 
                     // AEC start

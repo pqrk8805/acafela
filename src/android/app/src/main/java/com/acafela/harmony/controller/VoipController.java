@@ -19,8 +19,8 @@ import com.acafela.harmony.crypto.Crypto;
 import com.acafela.harmony.crypto.CryptoBroker;
 
 public class VoipController {
-    public static final int CONTROL_SEND_PORT = 5000;
-    public static final int CONTROL_RECIEVE_PORT = 5001;
+    public static final int CONTROL_SEND_PORT = 6000;
+    public static final int CONTROL_RECIEVE_PORT = 6001;
     private static final String LOG_TAG = "[AcafelaController]";
     private static final int BUFFER_SIZE = 128;
     private boolean UdpListenerThreadRun = false;

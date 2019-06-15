@@ -26,14 +26,6 @@ import com.acafela.harmony.sip.SipMessage.SIPMessage;
 
 
 public class ReceiverAudio implements DataCommunicator {
-    private static final int MILLISECONDS_IN_A_SECOND = 1000;
-    private static final int SAMPLE_RATE = 8000; // Hertz
-    private static final int SAMPLE_INTERVAL = 20;   // Milliseconds
-    private static final int BYTES_PER_SAMPLE = 2;    // Bytes Per Sampl;e
-    private static final int RAW_BUFFER_SIZE = SAMPLE_RATE / (MILLISECONDS_IN_A_SECOND / SAMPLE_INTERVAL) * BYTES_PER_SAMPLE;
-    private static final int GSM_BUFFER_SIZE = 33;
-    private static final boolean isTimeStamp = false;
-
     private static final String LOG_TAG = "ReceiverAudio";
     private  InetAddress mIpAddress;
     private int mPort;
@@ -131,6 +123,7 @@ public class ReceiverAudio implements DataCommunicator {
     {
         // Create thread for receiving audio data
         mRecieverThread = new Thread(new Runnable() {
+            int currentSeqNum;
             @Override
             public void run() {
                 // Create an instance of AudioTrack, used for playing back audio
@@ -140,44 +133,32 @@ public class ReceiverAudio implements DataCommunicator {
                     RecvUdpSocket = new DatagramSocket(null);
                     RecvUdpSocket.setReuseAddress(true);
                     RecvUdpSocket.bind(new InetSocketAddress(mPort));
-                    boolean prevPrimaryData =false;
+                    //boolean prevPrimaryData =false;
 
                     while (UdpVoipReceiveDataThreadRun) {
-                        if(isTimeStamp) {
-                            byte[] rawbuf = new byte[RAW_BUFFER_SIZE+5];
-                            DatagramPacket packet = new DatagramPacket(rawbuf, RAW_BUFFER_SIZE+5);
+                        if(isAudioHeader) {
+                            byte[] recieveData = new byte[ (((RAW_BUFFER_SIZE) / 16 + 1) * 16) + AUDIO_HEADER_SIZE];
+                            DatagramPacket packet = new DatagramPacket(recieveData, recieveData.length);
 
                             RecvUdpSocket.receive(packet);
-                            Long tsLong = System.currentTimeMillis() % 10000;
+                            int receiveSeqNum =  (recieveData[1]&0xFF)<<8 | (recieveData[2]&0xFF);
+                            //Log.i(LOG_TAG, "Packet received length: " + recieveData.length + " seqNo :" + receiveSeqNum);
 
-                            int timestamp;
-                            timestamp =  (rawbuf[0]&0xFF)<<24;
-                            timestamp += (rawbuf[1]&0xFF)<<16;
-                            timestamp += (rawbuf[2]&0xFF)<<8;
-                            timestamp += rawbuf[3]&0xFF;
-                            Boolean primaryData =false;
-                            if(rawbuf[4]==0)
-                                primaryData = true;
-                            if(!primaryData && prevPrimaryData) {
-                                prevPrimaryData = primaryData;
-                                continue;
+                            if((receiveSeqNum != currentSeqNum) && (receiveSeqNum != currentSeqNum +1) && (receiveSeqNum != 0 || currentSeqNum!=MAX_AUDIO_SEQNO) )//check loss data
+                            {
+                                Log.i(LOG_TAG, "Packet Loss  occured from" + currentSeqNum + " to :" + receiveSeqNum);
                             }
-                            prevPrimaryData = primaryData;
 
-                            //Log.i(LOG_TAG, "Packet received: " + timestamp);
-                            //Log.i(LOG_TAG, "Packet latency: " + (tsLong - timestamp));
-                            //Log.i(LOG_TAG, "Packet received: " + packet.getLength());
-                            IncommingpacketQueue.add(rawbuf);
+                            if(recieveData[0]!=0 && receiveSeqNum == currentSeqNum) // skip sub packet
+                                continue;
+
+                            currentSeqNum = receiveSeqNum;
+                            byte[] plane = mCrypto.decrypt(recieveData, AUDIO_HEADER_SIZE, packet.getLength()- AUDIO_HEADER_SIZE);
+                            if(plane!=null)
+                                IncommingpacketQueue.add(plane);
                         }
                         else {
-                            /*
-                            byte[] rawbuf = new byte[RAW_BUFFER_SIZE];
-                            DatagramPacket packet = new DatagramPacket(rawbuf, RAW_BUFFER_SIZE);
-                            //Log.i(LOG_TAG, "Packet received: " + packet.getLength());
 
-                            RecvUdpSocket.receive(packet);
-                            IncommingpacketQueue.add(rawbuf);
-                            */
                             byte[] encrypted = new byte[(RAW_BUFFER_SIZE / 16 + 1) * 16];
                             DatagramPacket packet = new DatagramPacket(encrypted, encrypted.length);
                             RecvUdpSocket.receive(packet);
@@ -185,18 +166,6 @@ public class ReceiverAudio implements DataCommunicator {
                             byte[] plane = mCrypto.decrypt(encrypted, 0, packet.getLength());
                             IncommingpacketQueue.add(plane);
                         }
-                        /*byte[] rawbuf = new byte[RAW_BUFFER_SIZE];
-                        byte[] gsmbuf = new byte[GSM_BUFFER_SIZE];
-                        DatagramPacket packet = new DatagramPacket(gsmbuf, GSM_BUFFER_SIZE);
-                        Log.i(LOG_TAG, "Packet received: " + packet.getLength());
-                        RecvUdpSocket.receive(packet);
-                        if (packet.getLength() == GSM_BUFFER_SIZE) {
-                            JniGsmDecodeB(packet.getData(), rawbuf);
-                            IncommingpacketQueue.add(rawbuf);
-                            //Log.i(LOG_TAG, "Packet received: " + packet.getLength());
-                        } else
-                            Log.i(LOG_TAG, "Invalid Packet LengthReceived: " + packet.getLength());*/
-
                     }
                     // close socket
                     RecvUdpSocket.disconnect();
@@ -255,8 +224,8 @@ public class ReceiverAudio implements DataCommunicator {
                             byte[] AudioOutputBufferBytes = IncommingpacketQueue.remove();
                             //if (!MainActivity.BoostAudio)
                             if (true) {
-                                if(isTimeStamp)
-                                    OutputTrack.write(AudioOutputBufferBytes, 5, RAW_BUFFER_SIZE);
+                                if(isAudioHeader)
+                                    OutputTrack.write(AudioOutputBufferBytes, 0, RAW_BUFFER_SIZE);
                                 else
                                     OutputTrack.write(AudioOutputBufferBytes, 0, RAW_BUFFER_SIZE);
                             } else {

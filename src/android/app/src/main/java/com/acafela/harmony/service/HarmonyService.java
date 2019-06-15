@@ -128,7 +128,6 @@ public class HarmonyService extends Service {
         senderAudio.endCommunicator();
         receiverAudio.endCommunicator();
 
-        controller.terminateCall();
         Log.i(LOG_TAG, "terminateCall");
         showToastInService("terminateCall");
     }
