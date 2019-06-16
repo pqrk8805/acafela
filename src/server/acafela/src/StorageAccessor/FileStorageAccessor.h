@@ -22,10 +22,6 @@ public:
 		const std::string& emailAddress,
 		const std::string& password) override;
 
-	int restorePassword(
-		const std::string& emailAddress,
-		const std::string& phoneNumber) override;
-
 	int confirmPhoneNumber(
 		const std::string& emailAddress,
 		const std::string& phoneNumber) override;
@@ -34,8 +30,14 @@ public:
 	int updateUserNumber(int userNumber) override;
 
 	bool isExistUser(const std::string& emailAddress) override;
+
+	virtual int saveDSItems(
+		const std::string& phoneNumber, 
+		const std::string& ipAddress) override;
+	virtual std::map<std::string, std::string> getDSItems() override;
 private:
 	std::mutex	mUserNumberLock;
 	std::mutex	mPasswordLock;
 	std::mutex	mPhoneNumberLock;
+	std::mutex	mDSLock;
 };

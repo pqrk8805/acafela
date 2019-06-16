@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <map>
 
 class IStorageAccessor
 {
@@ -24,10 +25,6 @@ public:
 		const std::string& emailAddress,
 		const std::string& password) = 0;
 
-	virtual int restorePassword(
-		const std::string& emailAddress,
-		const std::string& phoneNumber) = 0;	
-
 	virtual int confirmPhoneNumber(
 		const std::string& emailAddress,
 		const std::string& phoneNumber) = 0;
@@ -37,8 +34,8 @@ public:
 
 	virtual bool isExistUser(const std::string& emailAddress) = 0;
 
-	//virtual int saveDSItems(const string& phoneNumber, const string& ipAddress) = 0;
-	//virtual std::map<std::string, std::string> getDSItems() = 0;
+	virtual int saveDSItems(const std::string& phoneNumber, const std::string& ipAddress) = 0;
+	virtual std::map<std::string, std::string> getDSItems() = 0;
 private:
 	static IStorageAccessor* mInst;
 };

@@ -65,11 +65,6 @@ bool FileStorageAccessor::confirmPassword(const std::string& emailAddress, const
 		return false;
 }
 
-int FileStorageAccessor::restorePassword(const string& emailAddress, const string& phoneNumber)
-{
-	return -1;
-}
-
 int FileStorageAccessor::confirmPhoneNumber(const string& emailAddress, const string& phoneNumber)
 {
 	lock_guard<mutex> lock(mPhoneNumberLock);
@@ -134,4 +129,17 @@ bool FileStorageAccessor::isExistUser(const std::string& emailAddress)
 	{
 		return false;
 	}
+}
+
+int FileStorageAccessor::saveDSItems(const string& phoneNumber, const string& ipAddress)
+{
+	lock_guard<mutex> lock(mDSLock);
+
+	DerectoryServiceFile f(phoneNumber, "wb");
+
+	f.WriteFile(ipAddress);
+}
+
+map<string, string> FileStorageAccessor::getDSItems()
+{
 }

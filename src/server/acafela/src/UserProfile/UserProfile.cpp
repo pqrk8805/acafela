@@ -81,12 +81,20 @@ int UserProfile::changePassword(
  {
     FUNC_LOGD("BEGIN");
 	
-	string encEmailAddress = mSP->GetSecureData(emailAddress);	
-#if 0
-    EmailSender::sendPasswordRecoveryMail(
-                                    emailAddress,
-                                    "new password");
-#endif
-	return restorePassword(encEmailAddress, phoneNumber);
+	string encEmailAddress = mSP->GetSecureData(emailAddress);
+
+	bool confirmedPhoneNumber = mSA->confirmPhoneNumber(encEmailAddress, phoneNumber);
+	if (confirmedPhoneNumber == true)
+	{
+		const string tempPassword = "0000";
+		mSA->changePassword(encEmailAddress, tempPassword);
+
+		EmailSender::sendPasswordRecoveryMail(emailAddress, tempPassword);
+		return 0;
+	}
+	else
+	{
+		return -1;
+	}
  }
 
