@@ -41,7 +41,7 @@
     <color name="dusk_dark_gray">#e53f3f3f</color>
 
     <!-- Colors for Black theme - adopted from BP color palette -->
-    <color name="black_background">#ff212121</color>  <!-- BP black -->
+    <color name="black_background">#212121</color>  <!-- BP black -->
     <color name="black_light_gray">#ff787878</color>  <!-- BP light grey -->
     <color name="black_dark_gray">#ff545454</color>   <!-- BP Charcoal -->
     <color name="black_yellow">#ffffd21e</color>      <!-- BP Yellow -->
@@ -87,9 +87,6 @@
     <color name="quickcontact_tab_indicator">#ff33b5e6</color>
 
 
-    <!-- From Android Phone Common -->
-    <!-- Colors for the dialpad -->
-    <color name="dialer_theme_color">#0288d1</color>
 
     <color name="incall_call_banner_subtext_color">#ccffffff</color>
     <color name="incall_call_banner_text_color">#ffffff</color>
@@ -255,72 +252,7 @@
     <color name="feature_discovery_description_text">#ffffff</color>
     <color name="feature_discovery_target_circle">#36373b</color>
 
-    <!-- Authenticator-specific colors (new "next-gen" style) -->
-    <color name="auth_active_headline_text_grey">#f6f3eb</color>
-    <color name="auth_active_body_text_grey">#bdbdbd</color>
-    <color name="auth_inactive_headline_text_grey">#bdbdbd</color>
-    <color name="auth_inactive_body_text_grey">#727377</color>
-    <color name="auth_background_grey">#36373b</color>
-    <!-- pressed and default colors for clickable textviews, buttons -->
-    <color name="auth_textview_default">#f5f3ee</color>
-    <color name="auth_textview_pressed">#727377</color>
-    <color name="auth_login_default">#db1414</color>
-    <color name="auth_login_pressed">#727377</color>
-    <color name="auth_account_default">#454649</color>
-    <color name="auth_account_pressed">#727377</color>
 
-    <!-- colors in conversation (chat) view -->
-    <color name="chat_toolbar_background">@color/sc_ng_background_1</color>
-    <color name="chat_compose_background">@color/translucent_subtle_white</color>
-    <color name="chat_compose_text">@color/sc_ng_text_dark</color>
-    <color name="chat_compose_hint">#ada9a3</color>
-
-    <color name="chat_attachment_grid_color">#43454b</color>
-    <color name="chat_attachment_grid_color_light">@color/sc_ng_text_grey</color>
-
-    <color name="chat_options_drawer_background">@color/sc_ng_background_2</color>
-    <color name="chat_options_text_color">@color/sc_ng_text_grey</color>
-    <color name="chat_options_description_text_color">@color/sc_ng_background_3</color>
-
-    <color name="chat_error_message_text_color">@color/sc_ng_text_grey</color>
-    <color name="chat_outgoing_message_text_color">#ede9e3</color>
-    <color name="chat_outgoing_message_disabled_text_color">#cdcac6</color>
-    <color name="chat_outgoing_message_disabled_text_color_light">#4d4a46</color>
-
-    <color name="chat_outgoing_message_disabled_color">#bb454545</color>
-    <color name="chat_outgoing_retained_message_disabled_color">#bbf35854</color>
-    <color name="chat_outgoing_message_color">#5d5f66</color>
-    <color name="chat_outgoing_retained_message_color">#a0828d</color>
-    <color name="chat_outgoing_message_pressed_color">#7c2525</color>
-    <color name="chat_outgoing_message_checked_color">#7f0e0e</color>
-    <color name="chat_outgoing_message_color_light">#dbdbdb</color>
-    <color name="chat_outgoing_message_color_light_transparent">#00dbdbdb</color>
-
-    <color name="chat_incoming_message_disabled_color">#bb454545</color>
-    <color name="chat_incoming_message_color">#f6f3eb</color>
-    <color name="chat_incoming_retained_message_color">#e1c9d7</color>
-    <color name="chat_incoming_message_received_color">#c4c2bc</color>
-    <color name="chat_incoming_message_pressed_color">#7c2525</color>
-    <color name="chat_incoming_message_checked_color">#7f0e0e</color>
-    <color name="chat_incoming_message_color_light">#F4F4F4</color>
-
-    <color name="chat_incoming_message_text_received_color">#8a4947</color>
-
-    <color name="chat_call_message_disabled_color">#bb454545</color>
-    <color name="chat_call_message_color">#505052</color>
-    <color name="chat_call_message_color_light">#e9eaeb</color>
-
-    <color name="recording_red_color">#f30e17</color>
-    <color name="db_circle_color">#cffa5353</color>
-
-    <!-- for link colour in messages use similar colour as used by BP2 -->
-    <color name="chat_message_text_link_color">#60abc4</color>
-
-    <!-- colour for unread message count indicator -->
-    <color name="chat_message_notification_color">@color/sc_ng_text_red</color>
-
-    <color name="chat_background_color_light">#fefdf9</color>
-    <color name="chat_background_color_dark">#fefdf9</color>
 
     <color name="conversation_call_action_background_color">#7ACA70</color>
     <color name="conversation_delete_action_background_color">@color/sc_ng_text_red</color>
@@ -342,4 +274,16 @@
     <color name="fingerprint_warning_color">#f4511e</color>
     <color name="fingerprint_hint_color">@color/sc_ng_text_grey_6</color>
     <color name="fingerprint_success_color">#009688</color>
+
+
+    <color name="dialer_theme_color">#0288d1</color>
+    <color name="dialer_theme_color_dark">#0277bd</color>
+    <color name="background_dialpad">#fcfcfc</color>
+    <color name="background_dialpad_pressed">#ececec</color>
+    <color name="dialpad_primary_text_color">@color/dialer_theme_color</color>
+    <color name="dialpad_secondary_text_color">#737373</color>
+    <color name="dialpad_digits_text_color">#333</color>
+    <color name="dialpad_separator_line_color">#dadada</color>
+    <color name="dialpad_icon_tint">#b3b3b3</color>
+    <color name="dialpad_voicemail_tint">#919191</color>
 </resources>

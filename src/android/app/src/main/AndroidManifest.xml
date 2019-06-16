@@ -30,7 +30,6 @@
         <activity android:name=".ui.CallActivity" />
         <activity android:name=".ui.TestEncodingActivity" />
         <activity android:name=".ui.TestAsyncEncodingActivity" />
-        <activity android:name=".ui.UserProfileActivity" />
 
         <service
             android:name=".service.HarmonyService"

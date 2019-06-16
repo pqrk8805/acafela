@@ -1,33 +1,41 @@
 package com.acafela.harmony.ui;
 
-import android.app.Dialog;
-import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.view.ViewGroup;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
-import com.acafela.harmony.userprofile.FormatChecker;
 import com.acafela.harmony.R;
+import com.acafela.harmony.ui.main.ChangePwDialog;
 import com.acafela.harmony.ui.main.ContactsFragment;
 import com.acafela.harmony.ui.main.DialpadFragment;
+import com.acafela.harmony.ui.main.RestorePwDialog;
 import com.acafela.harmony.ui.main.SectionsPagerAdapter;
-import com.acafela.harmony.userprofile.UserProfileGrpc;
-import com.acafela.harmony.userprofile.UserProfileRpc;
+import com.acafela.harmony.ui.main.UserRegisterDialog;
+import com.acafela.harmony.userprofile.UserInfo;
 
 public class MainActivity extends AppCompatActivity
         implements DialpadFragment.OnFragmentInteractionListener, ContactsFragment.OnFragmentInteractionListener {
     private static final String TAG = MainActivity.class.getName();
+
+    private static final int MENU_REGISTER = 0;
+    private static final int MENU_CHANGEPASSWORD = 1;
+    private static final int MENU_RESTOREPASSWORD = 2;
 
     private FloatingActionButton mFab;
 
@@ -71,6 +79,14 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(getResources().getString(R.string.app_name));
         setSupportActionBar(toolbar);
+
+        if (UserInfo.getInstance().getPhoneNumber().isEmpty()) {
+            new Handler().post(new Runnable() {
+                public void run() {
+                    showPopup("Please Register");
+                }
+            });
+        }
     }
 
     @Override
@@ -80,18 +96,25 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.getItem(MENU_CHANGEPASSWORD).setEnabled(false);
+        menu.getItem(MENU_RESTOREPASSWORD).setEnabled(false);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         switch (id) {
             case R.id.menu_register:
-                registerDialog();
+                showRegisterDialog();
                 break;
             case R.id.menu_changepassword:
-                Toast.makeText(MainActivity.this, "Change Password Not Implemented", Toast.LENGTH_SHORT).show();
+                showChangePwDialog();
                 break;
             case R.id.menu_restorepassword:
-                Toast.makeText(MainActivity.this, "Restore Password Not Implemented", Toast.LENGTH_SHORT).show();
+                showRestorePwDialog();
                 break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -99,77 +122,50 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void registerDialog()
+
+    private void showRegisterDialog()
     {
-        final Dialog myDialog = new Dialog(this);
-        myDialog.setContentView(R.layout.dialog_register);
-        myDialog.setCancelable(true);
-        myDialog.show();
-
-        final EditText editText_email = myDialog.findViewById(R.id.editText_email);
-        final EditText editText_password = myDialog.findViewById(R.id.editText_password);
-        final EditText editText_repeatPassword = myDialog.findViewById(R.id.editText_repeatPassword);
-        Button buttonRegister = myDialog.findViewById(R.id.btn_register);
-        buttonRegister.setOnClickListener(new View.OnClickListener()
-        {
+        final UserRegisterDialog userRegisterDialog = new UserRegisterDialog(this);
+        userRegisterDialog.show();
+        userRegisterDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
 
             @Override
-            public void onClick(View v)
-            {
-                String email = editText_email.getText().toString();
-                if (!FormatChecker.isValidEmail(email)) {
-                    editText_email.setError("Enter a valid email address");
-                    return;
+            public void onDismiss(DialogInterface dialog) {
+                Log.i(TAG, "UserRegisterDialog onDismiss");
+                if (UserInfo.getInstance().getPhoneNumber().isEmpty()) {
+                    showPopup("Please Register");
                 }
-
-                String password = editText_password.getText().toString();
-                if (!FormatChecker.isValidPassword(password)) {
-                    editText_password.setError("Input 4 digits");
-                    return;
-                }
-
-                String repeatPassword = editText_repeatPassword.getText().toString();
-                if (!FormatChecker.isValidRepeatPassword(password, repeatPassword)) {
-                    editText_repeatPassword.setError("Password should be same");
-                    return;
-                }
-
-                final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this,
-                        R.style.Theme_AppCompat_DayNight_Dialog);
-                progressDialog.setIndeterminate(true);
-                progressDialog.setMessage("Creating Account...");
-                progressDialog.show();
-
-                new android.os.Handler().postDelayed(
-                        new Runnable() {
-                            public void run() {
-                                UserProfileRpc mUserProfileRpc = new UserProfileRpc(
-                                        "10.0.0.1",
-                                        0,
-                                        getResources().openRawResource(R.raw.ca),
-                                        getResources().openRawResource(R.raw.server));
-                                UserProfileGrpc.UserProfileBlockingStub blockingStub
-                                        = mUserProfileRpc.getBlockingStub();
-
-                                progressDialog.dismiss();
-                                myDialog.dismiss();
-                            }
-                        }, 3000);
             }
         });
-
-        Button buttonCancel = myDialog.findViewById(R.id.btn_cancel);
-        buttonCancel.setOnClickListener(new View.OnClickListener()
-        {
-
-            @Override
-            public void onClick(View v)
-            {
-                myDialog.dismiss();
-            }
-        });
-
     }
+
+    private void showChangePwDialog()
+    {
+        final ChangePwDialog changePwDialog = new ChangePwDialog(this);
+        changePwDialog.show();
+    }
+
+    private void showRestorePwDialog()
+    {
+        final RestorePwDialog restorePwDialog = new RestorePwDialog(this);
+        restorePwDialog.show();
+    }
+
+    private void showPopup(String text) {
+        LayoutInflater inflater = (LayoutInflater)
+                getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup, null);
+
+        final PopupWindow popupWindow = new PopupWindow(popupView,
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        TextView textViewPopup = popupView.findViewById(R.id.textview_popup);
+        textViewPopup.setText(text);
+        popupWindow.setAnimationStyle(R.style.popup_window_animation);
+        popupWindow.setTouchable(true);
+        popupWindow.setFocusable(true);
+        popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+    }
+
 
     private void animateFab(int position) {
         switch (position) {

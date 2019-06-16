@@ -64,4 +64,7 @@ dependencies {
     implementation 'javax.annotation:javax.annotation-api:1.2'
 
     implementation 'org.conscrypt:conscrypt-android:2.1.0'
+
+    // UI
+    implementation 'com.android.support:design:28.0.0'
 }

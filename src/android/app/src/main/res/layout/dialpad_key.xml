@@ -11,12 +11,12 @@
         android:orientation="vertical">
         <TextView
             android:id="@+id/dialpad_key_number"
-            style="@style/DialKeyNumberStyle"
+            style="@style/DialpadKeyNumberStyle"
             android:filterTouchesWhenObscured="false"
             tools:text="2"/>
         <TextView
             android:id="@+id/dialpad_key_letters"
-            style="@style/DialKeyLetterStyle"
+            style="@style/DialpadKeyLettersStyle"
             android:filterTouchesWhenObscured="false"
             tools:text="ABC"/>
     </LinearLayout>

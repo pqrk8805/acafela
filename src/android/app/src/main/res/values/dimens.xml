@@ -12,31 +12,17 @@
     <!-- Height of edit text in dialpad fragment -->
     <dimen name="dialpad_horizontal_margin">0dip</dimen>
     <dimen name="dialpad_vertical_margin">2dip</dimen>
-    <dimen name="dialpad_digits_text_size">34dp</dimen>
     <dimen name="dialpad_digits_line_height">52dp</dimen>  <!-- Sum of digits_text_size + padding -->
 
     <dimen name="dialpad_text_button_padding">10dp</dimen>
-
-    <!-- Text dimensions for dialpad keys -->
-    <dimen name="dialpad_key_numbers_size">36dp</dimen>
-    <!-- <dimen name="dialpad_key_numbers_from_top">4dp</dimen>    for round buttons -->
-    <dimen name="dialpad_key_letters_size">11dp</dimen>
-    <!--    <dimen name="dialpad_key_letters_from_top">41dp</dimen>   for round buttons: dialpad_key_numbers_size + dialpad_key_numbers_from_top + 2-->
-    <dimen name="dialpad_key_plus_size">15dp</dimen>
     <dimen name="dialpad_key_letters_width">41dp</dimen>
     <dimen name="dialpad_key_circle_width">65dp</dimen>
     <dimen name="dial_key_letter_margin">-8dp</dimen>      <!-- brings letters near the digit -->
 
 
 
-    <!-- Copied from native dialer to have a similar look-and-feel  -->
-    <dimen name="floating_action_button_height">56dp</dimen>
-    <dimen name="floating_action_button_width">56dp</dimen>
     <dimen name="action_bar_height">56dp</dimen>
     <dimen name="action_bar_height_large">77dp</dimen>
-
-    <dimen name="floating_action_button_margin_right">16dp</dimen>
-    <dimen name="floating_action_button_margin_bottom">16dp</dimen>
 
 
     <!-- Dimensions for messaging widgets -->
@@ -46,5 +32,42 @@
     <dimen name="text_normal">12sp</dimen>
     <dimen name="text_large">14sp</dimen>
     <dimen name="text_small">10sp</dimen>
+
+
+    <!-- Text dimensions for dialpad keys -->
+    <dimen name="dialpad_key_numbers_size">36sp</dimen>
+    <dimen name="dialpad_key_letters_size">12sp</dimen>
+    <dimen name="dialpad_key_pound_size">23sp</dimen>
+    <dimen name="dialpad_key_star_size">36sp</dimen>
+    <dimen name="dialpad_key_height">64dp</dimen>
+    <dimen name="dialpad_key_number_margin_bottom">3dp</dimen>
+    <!-- Zero key should have less space between self and text because "+" is smaller -->
+    <dimen name="dialpad_zero_key_number_margin_bottom">1dp</dimen>
+    <dimen name="dialpad_symbol_margin_bottom">13dp</dimen>
+    <!-- The bottom row of the dialpad is slightly taller to account for the dial button -->
+    <dimen name="dialpad_bottom_key_height">65dp</dimen>
+    <dimen name="dialpad_key_plus_size">18sp</dimen>
+    <dimen name="dialpad_horizontal_padding">5dp</dimen>
+    <dimen name="dialpad_digits_text_size">34sp</dimen>
+    <dimen name="dialpad_digits_text_min_size">24sp</dimen>
+    <dimen name="dialpad_digits_height">64dp</dimen>
+    <dimen name="dialpad_digits_padding">16dp</dimen>
+    <dimen name="dialpad_digits_menu_left_padding">8dp</dimen>
+    <dimen name="dialpad_digits_menu_right_padding">10dp</dimen>
+    <dimen name="dialpad_center_margin">3dp</dimen>
+    <dimen name="dialpad_button_margin">2dp</dimen>
+    <dimen name="dialpad_voicemail_icon_padding_top">2dp</dimen>
+    <dimen name="dialpad_key_button_translate_y">100dp</dimen>
+    <dimen name="dialpad_overflow_margin">8dp</dimen>
+    <dimen name="dialpad_space_above_keys">14dp</dimen>
+    <!-- Corner radius of the floating action button -->
+    <dimen name="floating_action_button_radius">28dp</dimen>
+    <!-- Z translation of the floating action button -->
+    <dimen name="floating_action_button_translation_z">3dp</dimen>
+    <!-- Padding to be applied to the bottom of lists to make space for the floating action
+         button -->
+    <dimen name="floating_action_button_list_bottom_padding">88dp</dimen>
+    <!-- Offset of bottom margin of the floating action button used when dialpad is up -->
+    <dimen name="floating_action_button_dialpad_margin_bottom_offset">4dp</dimen>
 
 </resources>

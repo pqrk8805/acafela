@@ -7,7 +7,6 @@ import android.media.ToneGenerator;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
@@ -15,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.acafela.harmony.R;
@@ -132,10 +130,10 @@ public class DialpadFragment extends Fragment implements View.OnClickListener {
         View roundButton;
 
         for (int i = 0; i < buttonIds.length; i++) {
-            dialpadKey = (FrameLayout) fragmentView.findViewById(buttonIds[i]);
+            dialpadKey = fragmentView.findViewById(buttonIds[i]);
             roundButton = dialpadKey.findViewById(R.id.dialpad_rnd_btn);
-            numberView = (TextView) dialpadKey.findViewById(R.id.dialpad_key_number);
-            lettersView = (TextView) dialpadKey.findViewById(R.id.dialpad_key_letters);
+            numberView = dialpadKey.findViewById(R.id.dialpad_key_number);
+            lettersView = dialpadKey.findViewById(R.id.dialpad_key_letters);
             final String numberString = resources.getString(numberIds[i]);
             numberView.setText(numberString);
             roundButton.setOnClickListener(this);
@@ -334,36 +332,5 @@ public class DialpadFragment extends Fragment implements View.OnClickListener {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
-
-    /**
-     * LinearLayout with getter and setter methods for the translationY property using floats,
-     * for animation purposes.
-     */
-    public static class DialpadSlidingRelativeLayout extends RelativeLayout {
-
-        public DialpadSlidingRelativeLayout(Context context) {
-            super(context);
-        }
-
-        public DialpadSlidingRelativeLayout(Context context, AttributeSet attrs) {
-            super(context, attrs);
-        }
-
-        public DialpadSlidingRelativeLayout(Context context, AttributeSet attrs, int defStyle) {
-            super(context, attrs, defStyle);
-        }
-
-        @SuppressWarnings("unused")
-        public float getYFraction() {
-            final int height = getHeight();
-            if (height == 0) return 0;
-            return getTranslationY() / height;
-        }
-
-        @SuppressWarnings("unused")
-        public void setYFraction(float yFraction) {
-            setTranslationY(yFraction * getHeight());
-        }
     }
 }

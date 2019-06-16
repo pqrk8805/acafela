@@ -31,11 +31,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/editText_password"
+            <EditText android:id="@+id/editText_oldPw"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberPassword"
-                android:hint="Password"/>
+                android:hint="Old Password"/>
         </android.support.design.widget.TextInputLayout>
 
 
@@ -44,22 +44,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/editText_repeatPassword"
+            <EditText android:id="@+id/editText_newPw"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberPassword"
-                android:hint="Repeat Password"/>
+                android:hint="New Password"/>
         </android.support.design.widget.TextInputLayout>
 
         <!-- Signup Button -->
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_register"
+            android:id="@+id/btn_changepw"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:padding="12dp"
-            android:text="Register"/>
+            android:text="Change Password"/>
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_cancel"

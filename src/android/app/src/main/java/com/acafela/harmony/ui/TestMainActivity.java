@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.acafela.harmony.R;
+import com.acafela.harmony.userprofile.UserInfo;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -38,6 +39,7 @@ public class TestMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_testmain);
 
         requestPermissions();
+        UserInfo.getInstance().load(this);
     }
 
     public static boolean hasPermissions(Context context, String... permissions) {
