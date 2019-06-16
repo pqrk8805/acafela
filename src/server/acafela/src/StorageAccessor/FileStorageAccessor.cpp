@@ -2,7 +2,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-#include <filesystem>
+#include <windows.h>
 #include "DBFile.h"
 
 using namespace std;
@@ -138,8 +138,33 @@ int FileStorageAccessor::saveDSItems(const string& phoneNumber, const string& ip
 	DerectoryServiceFile f(phoneNumber, "wb");
 
 	f.WriteFile(ipAddress);
+
+	return 0;
 }
 
 map<string, string> FileStorageAccessor::getDSItems()
 {
+	lock_guard<mutex> lock(mDSLock);
+
+	WIN32_FIND_DATA FindFileData;
+	HANDLE hFind;
+	wstring path = L"./storage/directoryservice/";
+
+	map<string, string> DSMap;
+	hFind = FindFirstFile(path.c_str(), &FindFileData);
+	while (hFind != INVALID_HANDLE_VALUE)
+	{
+		wstring wfilename = FindFileData.cFileName;
+		string phoneNumber(wfilename.begin(), wfilename.end());
+		DerectoryServiceFile f(phoneNumber, "rb");
+		
+		string ipAddress = f.ReadFile();
+		DSMap[phoneNumber] = ipAddress;
+
+		if (!FindNextFile(hFind, &FindFileData))
+			break;
+	}
+	FindClose(hFind);
+	
+	return DSMap;
 }
