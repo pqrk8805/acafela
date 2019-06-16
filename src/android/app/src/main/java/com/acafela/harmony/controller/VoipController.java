@@ -38,11 +38,14 @@ public class VoipController {
     RingController mRingControl = null;
 
     private List<DataCommunicator> mSessionList;
+
+
     public VoipController(Context context)
     {
         mContext = context;
         mRingControl= new RingController(mContext);
     }
+
     public void startListenerController() {
 
 //temp
