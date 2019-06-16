@@ -174,6 +174,16 @@ public class MainActivity extends AppCompatActivity
     {
         final RestorePwDialog restorePwDialog = new RestorePwDialog(this);
         restorePwDialog.show();
+        restorePwDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                Log.i(TAG, "ChangePwDialog onDismiss");
+                if (restorePwDialog.getResponse() == 0) {
+                    showPopup("We`ve sent an email to " + restorePwDialog.getEmail());
+                }
+            }
+        });
     }
 
     private void showPopup(String text) {

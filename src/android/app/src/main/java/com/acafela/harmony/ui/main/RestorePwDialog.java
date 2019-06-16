@@ -3,7 +3,6 @@ package com.acafela.harmony.ui.main;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
@@ -16,15 +15,21 @@ import com.acafela.harmony.Config;
 import com.acafela.harmony.R;
 import com.acafela.harmony.rpc.Common;
 import com.acafela.harmony.userprofile.FormatChecker;
+import com.acafela.harmony.userprofile.UserInfo;
 import com.acafela.harmony.userprofile.UserProfileGrpc;
-import com.acafela.harmony.userprofile.UserProfileOuterClass;
 import com.acafela.harmony.userprofile.UserProfileOuterClass.RestorePasswordParam;
 import com.acafela.harmony.userprofile.UserProfileRpc;
 
 import io.grpc.StatusRuntimeException;
 
+import static com.acafela.harmony.ui.main.ChangePwDialog.RESPONSE_CANCEL;
+
 public class RestorePwDialog extends Dialog {
     private static final String TAG = RestorePwDialog.class.getName();
+
+    private String mEmail;
+
+    private int mResponse;
 
     public RestorePwDialog(@NonNull Activity activity) {
         super(activity);
@@ -36,8 +41,9 @@ public class RestorePwDialog extends Dialog {
         setContentView(R.layout.dialog_restorepw);
         setCancelable(true);
 
+
         final EditText editText_phone = findViewById(R.id.editText_phone);
-        editText_phone.setText("dsf");
+        editText_phone.setText(UserInfo.getInstance().getPhoneNumber());
         editText_phone.setEnabled(false);
         final EditText editText_email = findViewById(R.id.editText_email);
         Button buttonChangePw = findViewById(R.id.btn_restorepw);
@@ -52,6 +58,7 @@ public class RestorePwDialog extends Dialog {
                     editText_email.setError("Enter a valid email address");
                     return;
                 }
+                mEmail = email;
 
                 RestorePwTask userRegisterTask = new RestorePwTask(phoneNumber, email, activity);
                 userRegisterTask.execute();
@@ -68,6 +75,15 @@ public class RestorePwDialog extends Dialog {
                 dismiss();
             }
         });
+        mResponse = RESPONSE_CANCEL;
+    }
+
+    public String getEmail() {
+        return mEmail;
+    }
+
+    public int getResponse() {
+        return mResponse;
     }
 
     private class RestorePwTask extends AsyncTask<Void, Void, Void> {
@@ -109,8 +125,9 @@ public class RestorePwDialog extends Dialog {
                     mActivity.getResources().openRawResource(R.raw.server)).
                     getBlockingStub();
 
+            Common.Error error = null;
             try {
-                Common.Error error = blockingStub.restorePassword(RestorePasswordParam.newBuilder().
+                error = blockingStub.restorePassword(RestorePasswordParam.newBuilder().
                         setPhoneNumber(mPhoneNumber).
                         setEmailAddress(mEmail).
                         build());
@@ -118,6 +135,10 @@ public class RestorePwDialog extends Dialog {
                 Log.e(TAG, error.toString());
             } catch (StatusRuntimeException e) {
                 Log.i(TAG, "UserRegisterTask is Interrupted");
+            }
+
+            if (error != null) {
+                mResponse = error.getErr();
             }
 
             mProgressDialog.dismiss();
