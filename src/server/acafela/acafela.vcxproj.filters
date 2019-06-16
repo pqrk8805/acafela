@@ -114,6 +114,9 @@
     <ClCompile Include="src\CryptoKey\CryptoKey.cpp">
       <Filter>Source Files\CryptoKey</Filter>
     </ClCompile>
+    <ClCompile Include="src\Communicator\ParticipantDirectory.cpp">
+      <Filter>Source Files\Communicator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\UserProfile\UserProfile.grpc.pb.h">

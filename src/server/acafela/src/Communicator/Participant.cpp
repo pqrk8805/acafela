@@ -9,6 +9,10 @@ std::string Participant::getIP() {
 	return clientIP;
 }
 
+void Participant::setIP(std::string ip) {
+	this->clientIP = ip;
+}
+
 void Participant::setDataPath(DataPath * dataPath) {
 	this->dataPath = dataPath;
 }

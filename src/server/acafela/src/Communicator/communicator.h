@@ -2,11 +2,14 @@
 #include <vector>
 #include <thread>
 #include <map>
+#include <mutex>
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include <windows.h>
+#include "../SipMessage/SipMessage.pb.h"
 #define BUFLEN 512
-#define CTRLSERVERPORT 5000
+#define CTRLSERVERRCVPORT 5000
+#define CTRLSERVERSNDPORT 5001
 #pragma comment(lib,"ws2_32.lib")
 
 typedef struct {
@@ -18,22 +21,28 @@ class Conversation;
 class Participant;
 class ConversationManager {
 private:
-	SOCKET ctrlPathServer;
-	std::map<Participant *,Conversation *> conversationMap;
+	static std::thread * rcvThread;
+	static SocketGroup ctrlStreamSocket;
+	static std::map<Participant *,Conversation *> conversationMap;
+	static std::vector<acafela::sip::SIPMessage> ctrlMessageBuffer;
+	static void messageHandler(acafela::sip::SIPMessage msg);
 public:
-	void createControlServer();
-	void createClientCtrlPath();
-	Participant * createParticipant(std::string clientIP);
-	void request_CreateControlPath(Participant *);
-	void request_CreateDataPath(Participant *);
+	static void createSocket();
+	static void createControlServer();
+	static void sendControlMessage(
+		Participant * to, 
+		acafela::sip::SIPMessage msg
+	);
 };
 
-class ControlPath {
+class ParticipantDirectory {
 private:
-	SOCKET ctrlPathClient;
-	std::thread * threadList;
+	static std::mutex mLock;
+	static std::map<std::string, Participant *> participantDirectory;
 public:
-	void initiateClientSocket(std::string clientIP, int port);
+	static void notify_update(std::string phoneNumber, std::string ip);
+	static void notify_remove(std::string phoneNumber);
+	static Participant * get(std::string phoneNumber);
 };
 
 class DataPath {
@@ -65,7 +74,6 @@ class Participant {
 private:
 	std::vector<std::tuple<int, char *>> controlBuffer; // is it needed?
 	DataPath * dataPath;
-	ControlPath * ctrlPath;
 	std::string clientIP;
 	Conversation * conversation;
 public:
@@ -74,6 +82,7 @@ public:
 	}
 	DataPath * getDataPath();
 	std::string getIP();
+	void setIP(std::string ip);
 	void setDataPath(DataPath * dataPath);
 	void joinConversation(Conversation * conversation);
 };

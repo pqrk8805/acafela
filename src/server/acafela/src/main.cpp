@@ -40,7 +40,11 @@ int main(int argc, char** argv)
         FUNC_LOGE("ERROR(%d): fail to start DirectoryServiceRpc server", err);
         return err;
     }
-	
+
+	//Stub it before implement client side directory service.
+	directoryService.update("1111", "????", "10.0.2.41");
+	directoryService.update("1112", "????", "10.0.2.42");
+
 	pingpongCommunicator_init();
 	for(auto * th : additionalThreadList)
 		th->join();

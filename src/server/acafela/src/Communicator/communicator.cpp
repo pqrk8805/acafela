@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "communicator.h"
-int PortHandler::portNo = CTRLSERVERPORT;
+int PortHandler::portNo = CTRLSERVERSNDPORT;
 void pingpongCommunicator_init() {
 	WSADATA wsa;
 	//Initialise winsock
