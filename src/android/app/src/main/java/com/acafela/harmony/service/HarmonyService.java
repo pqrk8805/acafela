@@ -30,7 +30,6 @@ public class HarmonyService extends Service {
     ReceiverAudio receiverAudio;
     SenderVideo senderVideo;
     ReceiverVideo receiverVideo;
-    boolean isFirst=true;
 
     @Override
     public void onCreate() {
@@ -60,6 +59,9 @@ public class HarmonyService extends Service {
         Log.i(LOG_TAG, "onStartCommand");
 
         String control = intent.getStringExtra(CallActivity.INTENT_CONTROL);
+        if (control == null) {
+            return super.onStartCommand(intent, flags, startId);
+        }
         switch (control)  {
             case CallActivity.INTENT_INITIATE_CALL:
                 String serverIp = intent.getStringExtra(CallActivity.INTENT_SERVERIP);
@@ -71,9 +73,7 @@ public class HarmonyService extends Service {
                 terminateCall();
                 break;
             case CallActivity.INTENT_SIP_INVITE_CALL:
-
                 sipinvite(intent.getStringExtra(CallActivity.INTENT_SERVERIP), intent.getIntExtra(CallActivity.INTENT_SERVERSENDPORT, 0), intent.getIntExtra(CallActivity.INTENT_SERVERRCVPORT, 0));
-
                 break;
             case CallActivity.INTENT_SIP_ACCEPT_CALL:
                 sipaccept();
@@ -82,7 +82,6 @@ public class HarmonyService extends Service {
                 sipterminate();
                 break;
         }
-
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -91,9 +90,6 @@ public class HarmonyService extends Service {
         // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
     }
-
-
-
 
     @Override
     public void onDestroy() {
@@ -133,22 +129,19 @@ public class HarmonyService extends Service {
     }
 
     private void sipinvite(String serverIp, int sendPort, int receivePort) {
-        Log.i(LOG_TAG, "initiateCall");
-        showToastInService("initiateCall");
-        if(isFirst)
-            isFirst =false;
-        else
-            controller.inviteCall(serverIp);
+        Log.i(LOG_TAG, "sipinvite");
+        showToastInService("sipinvite");
+        controller.inviteCall(serverIp);
     }
     private void sipaccept() {
         controller.acceptCall();
-        Log.i(LOG_TAG, "acceptCall");
-        showToastInService("acceptCall");
+        Log.i(LOG_TAG, "sipaccept");
+        showToastInService("sipaccept");
     }
     private void sipterminate() {
         controller.terminateCall();
-        Log.i(LOG_TAG, "terminateCall");
-        showToastInService("terminateCall");
+        Log.i(LOG_TAG, "sipterminate");
+        showToastInService("sipterminate");
     }
     private void showToastInService(final String string) {
         Handler handler = new Handler(Looper.getMainLooper());

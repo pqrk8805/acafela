@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.acafela.harmony.R;
 import com.acafela.harmony.userprofile.UserInfo;
+import com.acafela.harmony.service.HarmonyService;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -63,6 +64,9 @@ public class TestMainActivity extends AppCompatActivity {
 
     public void onClickCallBtn(View v) {
         Log.d(LOG_TAG, "onClickCallBtn");
+
+        Intent serviceIntent = new Intent(getApplicationContext(), HarmonyService.class);
+        startService(serviceIntent);
 
         Intent intent = new Intent(this, CallActivity.class);
         startActivity(intent);

@@ -9,6 +9,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.List;
 
 import com.acafela.harmony.crypto.ICrypto;
@@ -18,9 +19,10 @@ import com.acafela.harmony.sip.SipMessage.SIPMessage;
 import com.acafela.harmony.crypto.Crypto;
 import com.acafela.harmony.crypto.CryptoBroker;
 
+
 public class VoipController {
     public static final int CONTROL_SEND_PORT = 6000;
-    public static final int CONTROL_RECIEVE_PORT = 6001;
+    public static final int CONTROL_RECIEVE_PORT = 6000;
     private static final String LOG_TAG = "[AcafelaController]";
     private static final int BUFFER_SIZE = 128;
     private boolean UdpListenerThreadRun = false;
@@ -31,19 +33,21 @@ public class VoipController {
     private int sesssionID=0;
     private int msgSeq =0;
     private ICrypto mCrypto;
-
     private boolean isCaller =false;
+    private boolean isRun =false;
+    RingController mRingControl = null;
 
     private List<DataCommunicator> mSessionList;
-
-
     public VoipController(Context context)
     {
         mContext = context;
+        mRingControl= new RingController(mContext);
     }
-
     public void startListenerController() {
+
 //temp
+        if(isCaller ==true) return;
+
         Crypto.init();
 
         UdpListenerThreadRun = true;
@@ -51,7 +55,7 @@ public class VoipController {
             public void run() {
                 try {
                     // Setup the socket to receive incoming messages
-                    byte[] buffer = new byte[BUFFER_SIZE];
+                    byte[] buffer = new byte[1024];
                     socket = new DatagramSocket(null);
                     socket.setReuseAddress(true);
                     socket.bind(new InetSocketAddress(CONTROL_RECIEVE_PORT));
@@ -59,13 +63,15 @@ public class VoipController {
                     Log.i(LOG_TAG, "Incoming call listener started");
                     while (UdpListenerThreadRun) {
                         // Listen for incoming call requests
-                        Log.i(LOG_TAG, "Listening for incoming calls");
+                        //Log.i(LOG_TAG, "Listening for incoming calls");
                         socket.receive(packet);
                         String senderIP = packet.getAddress().getHostAddress();
-                        SIPMessage sipMessage = SIPMessage.parseFrom(buffer);
+                        byte[] data = new byte[packet.getLength()];
+                        System.arraycopy(packet.getData(), packet.getOffset(),data, 0, packet.getLength());
+                        SIPMessage sipMessage = SIPMessage.parseFrom(data);
 
-                        String message = new String(buffer, 0, packet.getLength());
-                        Log.i(LOG_TAG, "Got UDP message from " + senderIP + ", message: " + message);
+                       // String message = new String(buffer, 0, packet.getLength());
+                        Log.e(LOG_TAG, "Got UDP message from " + senderIP + ", message: " + sipMessage.toString());
                         handle(sipMessage);
                         //broadcastIntent(senderIP, message);
                     }
@@ -75,11 +81,12 @@ public class VoipController {
 
                 } catch (Exception e) {
                     UdpListenerThreadRun = false;
-                    Log.e(LOG_TAG, "no longer listening for UDP messages due to error " + e.getMessage());
+                    e.printStackTrace();
                 }
             }
         });
         UDPListenThread.start();
+        isRun = true;
     }
 
     private void handle( final SIPMessage message) {
@@ -87,9 +94,11 @@ public class VoipController {
             switch (message.getCmd()) {
                 case RINGING:
                     Log.i(LOG_TAG, "Listening for ringing calls");
+                    mRingControl.ringbackTone_start();
                     break;
                 case ACCEPTCALL:
-                    sendMessage(SipMessage.Command.ACCEPTCALL);
+                    Log.i(LOG_TAG, "Listening for accept calls");
+                    mRingControl.ringbackTone_stop();
                     break;
                 case OPENSESSION:
                     mCrypto  = CryptoBroker.getInstance().create("AES");
@@ -101,7 +110,9 @@ public class VoipController {
                     }
                     break;
                 case BYE:
+                    mRingControl.allStop();
                     destroyAllsession();
+                    isCaller = false;
                     break;
                 case STARTVIDEO:
                 case STOPVIDEO:
@@ -115,11 +126,15 @@ public class VoipController {
         else {
             switch (message.getCmd()) {
                 case INVITE:
+/*
+                    String ip ="10.0.1.157";
+                    try {
+                        this.mIpAddress = InetAddress.getByName(ip);
+                    } catch (UnknownHostException e) {
+                        e.printStackTrace();
+                    }*/
+                    mRingControl.ring_start();
                     sendMessage(SipMessage.Command.RINGING);
-                    Log.i(LOG_TAG, "Listening for ringing calls");
-                    break;
-                case ACCEPTCALL:
-                    sendMessage(SipMessage.Command.ACCEPTCALL);
                     break;
                 case OPENSESSION:
                     mCrypto  = CryptoBroker.getInstance().create("AES");
@@ -130,11 +145,13 @@ public class VoipController {
                     }
                     break;
                 case BYE:
+                    mRingControl.allStop();
                     destroyAllsession();
                 case STARTVIDEO:
                 case STOPVIDEO:
                 case TERMINATE:
                 case MAKECALL:
+                case ACCEPTCALL:
                 case UNRECOGNIZED:
                     break;
             }
@@ -179,13 +196,12 @@ public class VoipController {
                     DatagramSocket socket = new DatagramSocket();
                     DatagramPacket packet = new DatagramPacket(buffer, buffer.length, mIpAddress, CONTROL_SEND_PORT);
                     socket.send(packet);
+                    //Log.e(LOG_TAG, "Send Message: "+ mIpAddress);
                     socket.disconnect();
                     socket.close();
                 } catch (SocketException e) {
-
                     Log.e(LOG_TAG, "Failure. SocketException in UdpSend: " + e);
                 } catch (IOException e) {
-
                     Log.e(LOG_TAG, "Failure. IOException in UdpSend: " + e);
                 }
             }
@@ -204,7 +220,7 @@ public class VoipController {
                 setSeq(msgSeq).
                 build().
                 toByteArray();
-
+         //Log.e(LOG_TAG, "Exception Answer Message: " + buffer.length);
          UdpSend(buffer);
     }
 
@@ -224,10 +240,12 @@ public class VoipController {
     public void terminateCall()
     {
         //Add exception state
+        mRingControl.ring_stop();//need delete
         sendMessage(SipMessage.Command.TERMINATE);
     }
     public void acceptCall()
     {
+        mRingControl.ringbackTone_stop();
         sendMessage(SipMessage.Command.ACCEPTCALL);
     }
 }

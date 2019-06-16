@@ -104,8 +104,29 @@ public class CallActivity extends AppCompatActivity {
     public void onClickSipInviteCallBtn(View v) {
         Log.d(LOG_TAG, "onClickTerminateCallBtn");
 
+        String RemoteIP = "";
+        Matcher matcher = IP_ADDRESS.matcher(mRemoteIpText.getText().toString());
+        if (matcher.matches()) {
+            RemoteIP = mRemoteIpText.getText().toString();
+        } else {
+            final AlertDialog alert = new AlertDialog.Builder(CallActivity.this).create();
+            alert.setTitle("Invailid IP");
+            alert.setMessage("The IP Addresss you entered is invalid!");
+            alert.setButton(-1, "Dismiss", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    alert.dismiss();
+                }
+            });
+            alert.show();
+        }
+
+        //int remoteSNDPort = Integer.parseInt(((TextView)findViewById(R.id.editTextRemoteSendPort)).getText().toString());
+        //int remoteRCVPort = Integer.parseInt(((TextView)findViewById(R.id.editTextRemoteRcvPort)).getText().toString());
         Intent intent = new Intent(getApplicationContext(), HarmonyService.class);
         intent.putExtra(INTENT_CONTROL, INTENT_SIP_INVITE_CALL);
+        intent.putExtra(INTENT_SERVERIP, RemoteIP);
+        intent.putExtra(INTENT_SERVERSENDPORT, 0);
+        intent.putExtra(INTENT_SERVERRCVPORT, 0);
         startService(intent);
     }
     public void onClickSipAcceptCallBtn(View v) {
