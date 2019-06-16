@@ -1,5 +1,7 @@
 package com.acafela.harmony.crypto;
 
+import android.util.Log;
+
 import com.acafela.harmony.crypto.CryptoKeyOuterClass.Session;
 import com.acafela.harmony.crypto.CryptoKeyOuterClass.Key;
 import com.acafela.harmony.rpccomm.GrpcCommon;
@@ -25,6 +27,11 @@ public class CryptoKeyRpc
 
     public byte[] getKey(String sessionId)
     {
+        if (mChannel == null) {
+            Log.e(LOG_TAG, "channel is initialized.");
+            return null;
+        }
+
         Session session = Session.newBuilder()
                                  .setId(sessionId)
                                  .build();
@@ -34,6 +41,9 @@ public class CryptoKeyRpc
 
     public void shutdown()
     {
-        mChannel.shutdown();
+        if (mChannel != null) {
+            mChannel.shutdown();
+            mChannel = null;
+        }
     }
 }
