@@ -12,12 +12,17 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.List;
 
+import com.acafela.harmony.Config;
+import com.acafela.harmony.R;
+import com.acafela.harmony.crypto.CryptoKeyRpc;
 import com.acafela.harmony.crypto.ICrypto;
 import com.acafela.harmony.communicator.*;
 import com.acafela.harmony.sip.SipMessage;
 import com.acafela.harmony.sip.SipMessage.SIPMessage;
 import com.acafela.harmony.crypto.Crypto;
 import com.acafela.harmony.crypto.CryptoBroker;
+
+import io.grpc.ManagedChannel;
 
 
 public class VoipController {
@@ -36,6 +41,7 @@ public class VoipController {
     private boolean isCaller =false;
     private boolean isRun =false;
     RingController mRingControl = null;
+    private CryptoKeyRpc mCryptoRpc;
 
     private List<DataCommunicator> mSessionList;
 
@@ -44,6 +50,11 @@ public class VoipController {
     {
         mContext = context;
         mRingControl= new RingController(mContext);
+        mCryptoRpc = new CryptoKeyRpc(
+                        Config.SERVER_IP,
+                        Config.RPC_PORT_CRYPTO_KEY,
+                        context.getResources().openRawResource(R.raw.ca),
+                        context.getResources().openRawResource(R.raw.server));
     }
 
     public void startListenerController() {
@@ -104,8 +115,11 @@ public class VoipController {
                     mRingControl.ringbackTone_stop();
                     break;
                 case OPENSESSION:
+                    // TODO:
+                    // 홍책임님... session id 넣어주면 될꺼예요.
+                    byte[] keyByte = mCryptoRpc.getKey("SESSION_ID");
                     mCrypto  = CryptoBroker.getInstance().create("AES");
-                    mCrypto.init("12345".getBytes());
+                    mCrypto.init(keyByte);
 
                     for(int i=0;i<message.getSessioninfo().getSessionsCount();i++) {
                         SipMessage.Session session = message.getSessioninfo().getSessions(i);
@@ -140,8 +154,11 @@ public class VoipController {
                     sendMessage(SipMessage.Command.RINGING);
                     break;
                 case OPENSESSION:
-                    mCrypto  = CryptoBroker.getInstance().create("AES");
-                    mCrypto.init("12345".getBytes());
+                    // TODO:
+                    // 홍책임님... session id 넣어주면 될꺼예요.
+                    byte[] keyByte = mCryptoRpc.getKey("SESSION_ID");
+                    mCrypto = CryptoBroker.getInstance().create("AES");
+                    mCrypto.init(keyByte);
                     for(int i=0;i<message.getSessioninfo().getSessionsCount();i++) {
                         SipMessage.Session session = message.getSessioninfo().getSessions(i);
                         opensession(session.getSessiontype(), session.getIp(), session.getPort());
