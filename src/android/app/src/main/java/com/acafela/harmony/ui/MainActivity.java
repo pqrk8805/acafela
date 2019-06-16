@@ -29,6 +29,8 @@ import com.acafela.harmony.ui.main.SectionsPagerAdapter;
 import com.acafela.harmony.ui.main.UserRegisterDialog;
 import com.acafela.harmony.userprofile.UserInfo;
 
+import static com.acafela.harmony.ui.main.ChangePwDialog.RESPONSE_CANCEL;
+
 public class MainActivity extends AppCompatActivity
         implements DialpadFragment.OnFragmentInteractionListener, ContactsFragment.OnFragmentInteractionListener {
     private static final String TAG = MainActivity.class.getName();
@@ -80,6 +82,7 @@ public class MainActivity extends AppCompatActivity
         toolbar.setTitle(getResources().getString(R.string.app_name));
         setSupportActionBar(toolbar);
 
+        UserInfo.getInstance().setPhoneNumber("0000");
         if (UserInfo.getInstance().getPhoneNumber().isEmpty()) {
             new Handler().post(new Runnable() {
                 public void run() {
@@ -97,8 +100,17 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.getItem(MENU_CHANGEPASSWORD).setEnabled(false);
-        menu.getItem(MENU_RESTOREPASSWORD).setEnabled(false);
+        if (UserInfo.getInstance().getPhoneNumber().isEmpty()) {
+            menu.getItem(MENU_REGISTER).setEnabled(true);
+            menu.getItem(MENU_CHANGEPASSWORD).setEnabled(false);
+            menu.getItem(MENU_RESTOREPASSWORD).setEnabled(false);
+        }
+        else {
+            menu.getItem(MENU_REGISTER).setEnabled(false);
+            menu.getItem(MENU_CHANGEPASSWORD).setEnabled(true);
+            menu.getItem(MENU_RESTOREPASSWORD).setEnabled(true);
+
+        }
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -143,6 +155,19 @@ public class MainActivity extends AppCompatActivity
     {
         final ChangePwDialog changePwDialog = new ChangePwDialog(this);
         changePwDialog.show();
+        changePwDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                Log.i(TAG, "ChangePwDialog onDismiss");
+                if (changePwDialog.getResponse() == 0) {
+                    showPopup("Password is Changed");
+                }
+                else if (changePwDialog.getResponse() == -1) {
+                    showPopup("Invalid Old Password");
+                }
+            }
+        });
     }
 
     private void showRestorePwDialog()

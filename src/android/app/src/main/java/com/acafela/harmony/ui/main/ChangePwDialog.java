@@ -24,6 +24,10 @@ import io.grpc.StatusRuntimeException;
 public class ChangePwDialog extends Dialog {
     private static final String TAG = ChangePwDialog.class.getName();
 
+    public static final int RESPONSE_CANCEL = -10;
+
+    private int mResponse;
+
     public ChangePwDialog(@NonNull Activity context) {
         super(context);
 
@@ -77,6 +81,11 @@ public class ChangePwDialog extends Dialog {
                 dismiss();
             }
         });
+        mResponse = RESPONSE_CANCEL;
+    }
+
+    public int getResponse() {
+        return mResponse;
     }
 
     private class ChangePwTask extends AsyncTask<Void, Void, Void> {
@@ -100,7 +109,7 @@ public class ChangePwDialog extends Dialog {
             mProgressDialog = new ProgressDialog(mActivity,
                     R.style.Theme_AppCompat_DayNight_Dialog);
             mProgressDialog.setIndeterminate(true);
-            mProgressDialog.setMessage("Change Password");
+            mProgressDialog.setMessage("Changing Password...");
             mProgressDialog.setOnCancelListener(new OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
@@ -120,8 +129,9 @@ public class ChangePwDialog extends Dialog {
                     mActivity.getResources().openRawResource(R.raw.server)).
                     getBlockingStub();
 
+            Common.Error error = null;
             try {
-                Common.Error error = blockingStub.changePassword(UserProfileOuterClass.ChangePasswordParam.newBuilder().
+                error = blockingStub.changePassword(UserProfileOuterClass.ChangePasswordParam.newBuilder().
                         setEmailAddress(mEmail).
                         setOldPassword(mOldPw).
                         setNewPassword(mNewPw).
@@ -130,6 +140,10 @@ public class ChangePwDialog extends Dialog {
                 Log.e(TAG, error.toString());
             } catch (StatusRuntimeException e) {
                 Log.i(TAG, "ChangePwTask is Interrupted");
+            }
+
+            if (error != null) {
+                mResponse = error.getErr();
             }
 
             mProgressDialog.dismiss();

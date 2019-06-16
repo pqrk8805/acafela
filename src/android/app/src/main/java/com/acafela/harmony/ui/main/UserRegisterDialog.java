@@ -99,7 +99,7 @@ public class UserRegisterDialog extends Dialog {
             mProgressDialog = new ProgressDialog(mActivity,
                     R.style.Theme_AppCompat_DayNight_Dialog);
             mProgressDialog.setIndeterminate(true);
-            mProgressDialog.setMessage("Register User");
+            mProgressDialog.setMessage("Registering User...");
             mProgressDialog.setOnCancelListener(new OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
