@@ -5,6 +5,9 @@ extern std::vector<std::thread *> additionalThreadList;
 
 void DataPath::addParticipant(Participant * part, int port) {
 	sendPortDirectory[part] = port;
+	acafela::sip::SIPMessage msg;
+	msg.set_allocated_sessioninfo();
+	ConversationManager().sendControlMessage(ownerPart, msg);
 }
 
 void DataPath::createDataPath() {
@@ -50,9 +53,6 @@ void DataPath::createDataPath() {
 			delete buf;
 		}
 	}));
-	// TBD, 나중에 아래 지워야 함.
-	for (auto * th : threadList)
-		additionalThreadList.push_back(th);
 }
 
 void DataPath::addToSendData(Participant * part, int len, char * data) {

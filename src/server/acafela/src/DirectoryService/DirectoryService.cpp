@@ -1,5 +1,6 @@
 #include "DirectoryService.h"
 #include "Hislog.h"
+#include "Communicator/communicator.h"
 
 #define LOG_TAG "DirService"
 
@@ -18,7 +19,7 @@ int DirectoryService::update(
 {
     std::lock_guard<std::mutex> guard(mLock);
     mBook[phoneNumber] = ipAddress;
-
+	ParticipantDirectory().notify_update(phoneNumber, ipAddress);
     FUNC_LOGI("%s : %s", phoneNumber.c_str(), ipAddress.c_str());
 
     return 0;
@@ -42,6 +43,8 @@ int DirectoryService::remove(
                         const std::string& phoneNumber)
 {
     std::lock_guard<std::mutex> guard(mLock);
+	ParticipantDirectory().notify_remove(phoneNumber);
+
     return mBook.erase(phoneNumber) ? 0 : -1;
 }
 

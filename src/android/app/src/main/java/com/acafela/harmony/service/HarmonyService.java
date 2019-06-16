@@ -39,19 +39,6 @@ public class HarmonyService extends Service {
         Log.i(LOG_TAG, "onCreate");
 
         Crypto.init();
-
-        /* Just Test
-        DirectoryServiceRpc directoryServiceRpc = new DirectoryServiceRpc(
-                                            Config.SERVER_IP,
-                                            Config.RPC_PORT_DIRECTORY_SERVICE);
-        DirInfo info = DirInfo.newBuilder()
-                              .setPhoneNumber("2964-6476")
-                              .setAddress("10.0.1.3")
-                              .build();
-        Common.Error err = directoryServiceRpc.getBlockingStub().update(info);
-        Log.i(LOG_TAG, "Error: " + err.getErr());
-        directoryServiceRpc.shutdown();
-        */
     }
 
     @Override

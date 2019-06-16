@@ -16,6 +16,7 @@
     <ClCompile Include="src\Communicator\ConversationManager.cpp" />
     <ClCompile Include="src\Communicator\DataPath.cpp" />
     <ClCompile Include="src\Communicator\Participant.cpp" />
+    <ClCompile Include="src\Communicator\ParticipantDirectory.cpp" />
     <ClCompile Include="src\CryptoKey\CryptoKey.cpp" />
     <ClCompile Include="src\CryptoKey\CryptoKey.grpc.pb.cc" />
     <ClCompile Include="src\CryptoKey\CryptoKey.pb.cc" />
