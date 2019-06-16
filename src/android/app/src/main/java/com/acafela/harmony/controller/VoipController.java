@@ -21,6 +21,7 @@ import com.acafela.harmony.sip.SipMessage;
 import com.acafela.harmony.sip.SipMessage.SIPMessage;
 import com.acafela.harmony.crypto.Crypto;
 import com.acafela.harmony.crypto.CryptoBroker;
+import com.acafela.harmony.userprofile.UserInfo;
 
 import io.grpc.ManagedChannel;
 
@@ -35,7 +36,8 @@ public class VoipController {
     private  InetAddress mIpAddress;
 
     private Context mContext;
-    private int sesssionID=0;
+    private int sesssionNo=0;
+    private String sesssionID;
     private int msgSeq =0;
     private ICrypto mCrypto;
     private boolean isCaller =false;
@@ -58,12 +60,9 @@ public class VoipController {
     }
 
     public void startListenerController() {
-
-//temp
         if(isCaller ==true) return;
 
         Crypto.init();
-
         UdpListenerThreadRun = true;
         Thread UDPListenThread = new Thread(new Runnable() {
             public void run() {
@@ -115,9 +114,7 @@ public class VoipController {
                     mRingControl.ringbackTone_stop();
                     break;
                 case OPENSESSION:
-                    // TODO:
-                    // 홍책임님... session id 넣어주면 될꺼예요.
-                    byte[] keyByte = mCryptoRpc.getKey("SESSION_ID");
+                    byte[] keyByte = mCryptoRpc.getKey(sesssionID);
                     mCrypto  = CryptoBroker.getInstance().create("AES");
                     mCrypto.init(keyByte);
 
@@ -150,13 +147,12 @@ public class VoipController {
                     } catch (UnknownHostException e) {
                         e.printStackTrace();
                     }*/
+                    sesssionID = message.getSessionid();
                     mRingControl.ring_start();
                     sendMessage(SipMessage.Command.RINGING);
                     break;
                 case OPENSESSION:
-                    // TODO:
-                    // 홍책임님... session id 넣어주면 될꺼예요.
-                    byte[] keyByte = mCryptoRpc.getKey("SESSION_ID");
+                    byte[] keyByte = mCryptoRpc.getKey(sesssionID);
                     mCrypto = CryptoBroker.getInstance().create("AES");
                     mCrypto.init(keyByte);
                     for(int i=0;i<message.getSessioninfo().getSessionsCount();i++) {
@@ -230,13 +226,13 @@ public class VoipController {
     }
     public void  sendMessage(SipMessage.Command cmd)
     {
-        String id = sesssionID + "mw.hong@lge.com";
+
         SIPMessage.Builder builder = SIPMessage.newBuilder();
         byte[] buffer = builder.
                 setCmd(cmd).
-                setFrom("mw.hong@lge.com").
+                setFrom(UserInfo.getInstance().getPhoneNumber()).
                 setTo("tom@lge.com").
-                setSessionid(id).
+                setSessionid(sesssionID).
                 setSeq(msgSeq).
                 build().
                 toByteArray();
@@ -247,7 +243,8 @@ public class VoipController {
     public void inviteCall(String serverIp)
     {
         //Add exception state
-        sesssionID++;
+        //sesssionNo++;
+        sesssionID = UserInfo.getInstance().getPhoneNumber() + sesssionNo++;
         isCaller = true;
         try {
             this.mIpAddress = InetAddress.getByName(serverIp);
