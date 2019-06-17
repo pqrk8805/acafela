@@ -1,5 +1,6 @@
 #include "CryptoKey.h"
-#include "../Hislog.h"
+#include "Hislog.h"
+
 #define LOG_TAG "CRYPTO"
 
  CryptoKey::CryptoKey()
