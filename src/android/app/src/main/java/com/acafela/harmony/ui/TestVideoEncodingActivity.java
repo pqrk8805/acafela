@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 
 import com.acafela.harmony.R;
-import com.acafela.harmony.ui.main.camera.CameraPreview;
+import com.acafela.harmony.ui.camera.CameraPreview;
 
 public class TestVideoEncodingActivity extends AppCompatActivity {
 

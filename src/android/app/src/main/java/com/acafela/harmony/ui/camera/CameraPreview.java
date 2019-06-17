@@ -1,4 +1,4 @@
-package com.acafela.harmony.ui.main.camera;
+package com.acafela.harmony.ui.camera;
 
 import android.content.Context;
 import android.hardware.Camera;

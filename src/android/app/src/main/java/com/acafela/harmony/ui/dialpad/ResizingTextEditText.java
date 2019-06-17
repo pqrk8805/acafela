@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.acafela.harmony.ui.main;
+package com.acafela.harmony.ui.dialpad;
 
 import android.content.Context;
 import android.content.res.TypedArray;

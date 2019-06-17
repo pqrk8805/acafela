@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.acafela.harmony.R;
+import com.acafela.harmony.ui.dialpad.DialpadFragment;
 
 
 /**

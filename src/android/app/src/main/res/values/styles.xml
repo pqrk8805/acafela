@@ -18,85 +18,25 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-
-    <style name="DialpadButtonStyle">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:background">@null</item>
-        <item name="android:soundEffectsEnabled">false</item>
-        <item name="android:paddingLeft">6dp</item>
-        <item name="android:paddingRight">6dp</item>
-        <item name="android:paddingTop">3dp</item>
-        <item name="android:paddingBottom">3dp</item>
-    </style>
-
-    <style name="DialpadTableStyle">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">@dimen/dialpad_vertical_margin</item>
-        <item name="android:paddingLeft">5dip</item>
-        <item name="android:paddingRight">5dip</item>
-        <item name="android:paddingBottom">10dip</item>
-        <item name="android:visibility">visible</item>
-        <item name="android:stretchColumns">0,1,2</item>
-    </style>
-
-    <style name="DialButtonRelative">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
-
-    <style name="DialKeyNumberStyle">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/sc_ng_text_grey</item>
-        <item name="android:textSize">@dimen/dialpad_key_numbers_size</item>
-        <item name="android:layout_centerHorizontal">true</item>
-        <item name="android:gravity">center_horizontal</item>
-    </style>
-    <!-- <item name="android:fontFamily">sans-serif-light</item> -->
-
-    <style name="DialKeyLetterStyle">
-        <item name="android:layout_width">@dimen/dialpad_key_letters_width</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/sc_ng_text_grey_3</item>
-        <item name="android:textSize">@dimen/dialpad_key_letters_size</item>
-        <item name="android:gravity">center_horizontal</item>
-        <item name="android:layout_marginTop">@dimen/dial_key_letter_margin</item>
-    </style>
-
-    <!-- To change table layout (row distribution on screen) change layout_height to
-         wrap_content and remove (comment) the layout_weight, these should got together
-         with changes in dialpad.xml, stretchColumns in TableLayout -->
-    <style name="RowStyle">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>
-    </style>
-    <!--         <item name="android:background">?android:attr/selectableItemBackground</item>-->
-
-    <style name="DialpadDestinationTextAppearance">
-        <item name="android:maxLines">1</item>
-        <item name="android:scrollHorizontally">true</item>
-        <item name="android:textSize">@dimen/dialpad_digits_text_size</item>
-        <item name="android:freezesText">true</item>
-        <item name="android:focusableInTouchMode">true</item>
-        <item name="android:editable">true</item>
-        <item name="android:cursorVisible">false</item>
-    </style>
-
-    <style name="DialpadHorizontalSeparator">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/dialpad_vertical_margin</item>
-        <item name="android:background">@null</item>
-    </style>
     <style name="popup_window_animation">
         <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
         <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
     </style>
 
+    <style name="DialpadSpaceStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">3</item>
+    </style>
+
+    <style name="DialpadNoSpaceStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
     <style name="DialpadKeyNumberStyle">
-        <item name="android:textColor">@color/dialpad_primary_text_color</item>
+        <item name="android:textColor">?attr/dialpad_text_color_primary</item>
         <item name="android:textSize">@dimen/dialpad_key_numbers_size</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:layout_width">wrap_content</item>
@@ -105,8 +45,34 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="DialpadBottomKeyNumberStyle" parent="DialpadKeyNumberStyle">
+        <item name="android:layout_marginBottom">@dimen/dialpad_zero_key_number_margin_bottom</item>
+    </style>
+
+    <style name="DialpadKeyStarStyle">
+        <item name="android:textColor">?attr/dialpad_text_color_secondary</item>
+        <item name="android:textSize">@dimen/dialpad_key_star_size</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:alpha">0.8</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/dialpad_symbol_margin_bottom</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="DialpadKeyPoundStyle">
+        <item name="android:textColor">?attr/dialpad_text_color_secondary</item>
+        <item name="android:textSize">@dimen/dialpad_key_pound_size</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:alpha">0.8</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/dialpad_symbol_margin_bottom</item>
+        <item name="android:gravity">center</item>
+    </style>
+
     <style name="DialpadKeyLettersStyle">
-        <item name="android:textColor">@color/dialpad_secondary_text_color</item>
+        <item name="android:textColor">?attr/dialpad_text_color_secondary</item>
         <item name="android:textSize">@dimen/dialpad_key_letters_size</item>
         <item name="android:fontFamily">sans-serif-regular</item>
         <item name="android:layout_width">wrap_content</item>
@@ -123,5 +89,49 @@
         <item name="android:minHeight">@dimen/dialpad_key_height</item>
         <item name="android:background">@drawable/btn_dialpad_key</item>
         <item name="android:focusable">true</item>
+    </style>
+
+    <style name="DialpadKeyInternalLayoutStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="Dialpad_Light">
+        <item name="dialpad_text_color">@color/dialpad_digits_text_color</item>
+        <item name="dialpad_text_color_primary">@color/dialpad_primary_text_color</item>
+        <item name="dialpad_text_color_secondary">@color/dialpad_secondary_text_color</item>
+        <item name="dialpad_icon_tint">@color/dialpad_icon_tint</item>
+        <item name="dialpad_voicemail_tint">@color/dialpad_voicemail_tint</item>
+        <item name="dialpad_background">@color/background_dialpad</item>
+        <item name="dialpad_separator_color">#e3e3e3</item>
+        <item name="dialpad_margin_style">@style/DialpadSpaceStyle</item>
+        <item name="dialpad_delete_padding">@dimen/dialpad_digits_padding</item>
+    </style>
+
+    <style name="Dialpad_LightTransparent">
+        <item name="dialpad_text_color">?android:textColorPrimaryInverse</item>
+        <item name="dialpad_text_color_primary">?android:textColorPrimaryInverse</item>
+        <item name="dialpad_text_color_secondary">?android:textColorSecondaryInverse</item>
+        <item name="dialpad_icon_tint">@color/dialpad_icon_tint_dark</item>
+        <item name="dialpad_voicemail_tint">@color/dialpad_icon_tint_dark</item>
+        <item name="dialpad_background">@android:color/transparent</item>
+        <item name="dialpad_separator_color">@color/dialpad_icon_tint_dark</item>
+        <item name="dialpad_margin_style">@style/DialpadNoSpaceStyle</item>
+        <item name="dialpad_delete_padding">1dp</item>
+    </style>
+
+    <style name="Dialpad_DarkTransparent">
+        <item name="dialpad_text_color">?android:textColorPrimary</item>
+        <item name="dialpad_text_color_primary">?android:textColorPrimary</item>
+        <item name="dialpad_text_color_secondary">?android:textColorSecondary</item>
+        <item name="dialpad_icon_tint">@android:color/white</item>
+        <item name="dialpad_voicemail_tint">@color/dialpad_icon_tint</item>
+        <item name="dialpad_background">@android:color/transparent</item>
+        <item name="dialpad_separator_color">@color/dialpad_icon_tint</item>
+        <item name="dialpad_margin_style">@style/DialpadNoSpaceStyle</item>
+        <item name="dialpad_delete_padding">1dp</item>
     </style>
 </resources>

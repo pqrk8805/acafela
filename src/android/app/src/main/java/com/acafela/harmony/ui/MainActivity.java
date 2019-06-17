@@ -1,7 +1,6 @@
 package com.acafela.harmony.ui;
 
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -22,17 +21,12 @@ import android.widget.TextView;
 
 import com.acafela.harmony.R;
 import com.acafela.harmony.ui.main.ChangePwDialog;
-import com.acafela.harmony.ui.main.ContactsFragment;
-import com.acafela.harmony.ui.main.DialpadFragment;
 import com.acafela.harmony.ui.main.RestorePwDialog;
 import com.acafela.harmony.ui.main.SectionsPagerAdapter;
 import com.acafela.harmony.ui.main.UserRegisterDialog;
 import com.acafela.harmony.userprofile.UserInfo;
 
-import static com.acafela.harmony.ui.main.ChangePwDialog.RESPONSE_CANCEL;
-
-public class MainActivity extends AppCompatActivity
-        implements DialpadFragment.OnFragmentInteractionListener, ContactsFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getName();
 
     private static final int MENU_REGISTER = 0;
@@ -212,10 +206,5 @@ public class MainActivity extends AppCompatActivity
                 mFab.show();
                 break;
         }
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 }
