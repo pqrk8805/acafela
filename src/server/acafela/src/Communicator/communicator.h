@@ -48,6 +48,7 @@ public:
 class DataPath {
 private:
 	int receivePort;
+	bool isServerPassed;
 	Participant * ownerPart;
 	SocketGroup dataStreamSocket;
 	Conversation * conversation;
@@ -58,14 +59,17 @@ private:
 	std::vector<std::thread *> threadList;
 	void createSocket();
 public:
-	DataPath(Participant * ownerPart, Conversation * conversation, std::string clientIP, int receivePort) {
+	DataPath(Participant * ownerPart, Conversation * conversation, std::string clientIP, int receivePort, bool isServerPassed = false) {
 		this->ownerPart = ownerPart;
 		this->conversation = conversation;
 		this->clientIP = clientIP;
 		this->receivePort = receivePort;
-		createDataPath();
+		this->isServerPassed = isServerPassed;
+		if(isServerPassed)
+			createDataPath();
 	}
 	void createDataPath();
+	void sendOpenDataPathMsg();
 	void addParticipant(Participant * part, int port);
 	void addToSendData(Participant * part, int len, char * data);
 };
@@ -94,7 +98,7 @@ public :
 	void broadcast_Data(Participant * partSend, int len, char * data);
 	void boradcast_Ctrl(std::string msg);
 	void addParticipant(Participant * part, int port);
-	void makeConversation(std::vector<std::tuple<Participant *, int>> partList);
+	void makeConversation(std::vector<std::tuple<Participant *, int>> partList, bool isServerPassed);
 };
 
 class PortHandler {

@@ -80,12 +80,13 @@ enum Command {
   TERMINATE = 7,
   BYE = 8,
   REGISTER = 9,
+  CLOSESESSION = 10,
   Command_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   Command_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool Command_IsValid(int value);
 const Command Command_MIN = INVITE;
-const Command Command_MAX = REGISTER;
+const Command Command_MAX = CLOSESESSION;
 const int Command_ARRAYSIZE = Command_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* Command_descriptor();

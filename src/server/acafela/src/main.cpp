@@ -3,13 +3,15 @@
 #include <vector>
 #include "DirectoryService.h"
 #include "DirectoryServiceRpc.h"
+#include "CryptoKey/CryptoKey.h"
+#include "CryptoKey/CryptoKeyRpc.h"
 #include "UserProfile.h"
 #include "UserProfileRpc.h"
 #include "Hislog.h"
 
 #define LOG_TAG "MAIN"
 
-#define SERVER_IP "10.0.1.4"
+#define SERVER_IP "10.0.1.151"
 #define RPC_PORT_USERVER_PROFILE    "9000"
 #define RPC_PORT_DIRECTORY_SERVICE  "9100"
 #define RPC_PORT_CRYPTO_KEY         "9200"
@@ -41,9 +43,18 @@ int main(int argc, char** argv)
         return err;
     }
 
+	CryptoKey cryptoKey;
+	CryptoKeyRpc cryptoKeyRpc();
+	err = userProfileRpc.start(SERVER_IP ":" RPC_PORT_USERVER_PROFILE);
+	if (err) {
+		FUNC_LOGE("ERROR(%d): fail to start UserProfileRpc server", err);
+		return err;
+	}
+
+
 	//Stub it before implement client side directory service.
-	directoryService.update("1111", "????", "10.0.2.41");
-	directoryService.update("1112", "????", "10.0.2.42");
+	directoryService.update("0000", "????", "10.0.1.157");
+	directoryService.update("0001", "????", "10.0.1.230");
 
 	pingpongCommunicator_init();
 	for(auto * th : additionalThreadList)

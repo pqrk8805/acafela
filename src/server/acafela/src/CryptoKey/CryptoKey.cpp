@@ -1,4 +1,6 @@
 #include "CryptoKey.h"
+#include "../Hislog.h"
+#define LOG_TAG "CRYPTO"
 
  CryptoKey::CryptoKey()
  {
@@ -29,6 +31,7 @@ std::vector<char> CryptoKey::getKey(
                             -108, -110, -109,   -7, -33, 126,  75, 78,
                              110,  -25,  -40, -109, -12, 40,  -40, 96,
     };
+	FUNC_LOGI("Get Crypto Key");
     return aesKey;
 }
 
