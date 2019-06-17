@@ -12,6 +12,8 @@
 #define LOG_TAG "MAIN"
 
 #define SERVER_IP "10.0.1.151"
+#define CLIENT1_IP "10.0.1.157"
+#define CLIENT2_IP "10.0.1.230"
 #define RPC_PORT_USERVER_PROFILE    "9000"
 #define RPC_PORT_DIRECTORY_SERVICE  "9100"
 #define RPC_PORT_CRYPTO_KEY         "9200"
@@ -43,18 +45,9 @@ int main(int argc, char** argv)
         return err;
     }
 
-	CryptoKey cryptoKey;
-	CryptoKeyRpc cryptoKeyRpc();
-	err = userProfileRpc.start(SERVER_IP ":" RPC_PORT_USERVER_PROFILE);
-	if (err) {
-		FUNC_LOGE("ERROR(%d): fail to start UserProfileRpc server", err);
-		return err;
-	}
-
-
 	//Stub it before implement client side directory service.
-	directoryService.update("0000", "????", "10.0.1.157");
-	directoryService.update("0001", "????", "10.0.1.230");
+	directoryService.update("0000", "????", CLIENT1_IP);
+	directoryService.update("0001", "????", CLIENT2_IP);
 
 	pingpongCommunicator_init();
 	for(auto * th : additionalThreadList)
