@@ -47,6 +47,7 @@ std::string UserProfile::registerUser(
 	if (isExistUser == false)
 	{
 		string genPhoneNumber = generateUserPhoneNumber();
+		printf("registerUser email/pw/# = %s/%s/%s\n", emailAddress.c_str(), password.c_str(), genPhoneNumber.c_str());
 		mSA->registerUser(emailAddress, encPassword, genPhoneNumber);
 		return genPhoneNumber;
 	}
@@ -68,7 +69,10 @@ int UserProfile::changePassword(
 
 	string encNewPassword = mSP->GetSecureData(newPassword);
 	if (confirmedPassword == true)
+	{
+		printf("changePassword email/old pw/new pw = %s/%s/%s\n", emailAddress.c_str(), oldPassword.c_str(), newPassword.c_str());
 		return mSA->changePassword(emailAddress, encNewPassword);
+	}
 	else
 		return -1;
 }
@@ -87,6 +91,7 @@ int UserProfile::changePassword(
 		const string encTempPassword = mSP->GetSecureData(tempPassword);
 		mSA->changePassword(emailAddress, encTempPassword);
 
+		printf("restorePassword email/#/pw = %s/%s/%s\n", emailAddress.c_str(), phoneNumber.c_str(), tempPassword.c_str());
 		EmailSender::sendPasswordRecoveryMail(emailAddress, tempPassword);
 		return 0;
 	}
