@@ -6,7 +6,7 @@ extern std::vector<std::thread *> additionalThreadList;
 void DataPath::addParticipant(Participant * part, int port) {
 	sendPortDirectory[part] = port;
 	acafela::sip::SIPMessage msg;
-	msg.set_allocated_sessioninfo();
+	//msg.set_allocated_sessioninfo();
 	ConversationManager().sendControlMessage(ownerPart, msg);
 }
 
