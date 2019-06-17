@@ -84,6 +84,18 @@ int FileStorageAccessor::confirmPhoneNumber(const string& emailAddress, const st
 		return false;
 }
 
+#include <regex>
+string extractIntegerWords(string str)
+{
+	string output;
+	for (int i = 0; i < str.length(); i++)
+	{
+		if (isdigit(str[i]))
+			output += str[i];
+	}
+	return output;
+}
+
 string FileStorageAccessor::getTempPassword(const string& emailAddress)
 {
 	lock_guard<mutex> lock(mPasswordLock);
@@ -97,7 +109,9 @@ string FileStorageAccessor::getTempPassword(const string& emailAddress)
 
 	string savedPassword = f.ReadFile();
 
-	return savedPassword.substr(0, 4);
+	string numPassword = extractIntegerWords(savedPassword);
+
+	return numPassword.substr(0, 4);
 }
 
 int FileStorageAccessor::getUserNumber()
