@@ -41,7 +41,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.acafela.harmony.R;
-import com.acafela.harmony.ui.animation.AnimUtils;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
