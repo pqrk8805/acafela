@@ -53,6 +53,7 @@ void CryptoKeyRpc::shutdown()
     char* keyBytes = new char[key.size()];
     std::copy(key.begin(), key.end(), keyBytes);
 
-    response->set_key(keyBytes);
+    response->set_key(keyBytes, key.size());
+	delete[] keyBytes;
     return ::grpc::Status::OK;
 }
