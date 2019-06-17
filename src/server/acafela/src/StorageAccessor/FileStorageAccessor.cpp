@@ -84,6 +84,22 @@ int FileStorageAccessor::confirmPhoneNumber(const string& emailAddress, const st
 		return false;
 }
 
+string FileStorageAccessor::getTempPassword(const string& emailAddress)
+{
+	lock_guard<mutex> lock(mPasswordLock);
+
+	PasswordFile f(emailAddress, "rb");
+
+	if (f.GetPF() == nullptr)
+	{
+		return "0000";
+	}
+
+	string savedPassword = f.ReadFile();
+
+	return savedPassword.substr(0, 4);
+}
+
 int FileStorageAccessor::getUserNumber()
 {
 	lock_guard<mutex> lock(mUserNumberLock);
@@ -119,7 +135,7 @@ bool FileStorageAccessor::isExistUser(const std::string& emailAddress)
 {
 	lock_guard<mutex> lock(mPasswordLock);
 
-	PasswordFile f(emailAddress, "wb");
+	PasswordFile f(emailAddress, "rb");
 
 	if (f.GetSize() > 0)
 	{

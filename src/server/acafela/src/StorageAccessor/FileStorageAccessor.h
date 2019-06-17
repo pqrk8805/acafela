@@ -26,6 +26,9 @@ public:
 		const std::string& emailAddress,
 		const std::string& phoneNumber) override;
 
+	std::string getTempPassword(
+		const std::string& emailAddress) override;
+
 	int getUserNumber() override;
 	int updateUserNumber(int userNumber) override;
 

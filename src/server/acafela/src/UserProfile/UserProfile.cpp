@@ -83,8 +83,9 @@ int UserProfile::changePassword(
 	bool confirmedPhoneNumber = mSA->confirmPhoneNumber(emailAddress, phoneNumber);
 	if (confirmedPhoneNumber == true)
 	{
-		const string tempPassword = "0000";
-		mSA->changePassword(emailAddress, tempPassword);
+		const string tempPassword = mSA->getTempPassword(emailAddress);
+		const string encTempPassword = mSP->GetSecureData(tempPassword);
+		mSA->changePassword(emailAddress, encTempPassword);
 
 		EmailSender::sendPasswordRecoveryMail(emailAddress, tempPassword);
 		return 0;
