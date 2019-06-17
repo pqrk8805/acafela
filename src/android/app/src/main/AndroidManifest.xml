@@ -26,10 +26,13 @@
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/Dialpad_DarkTransparent">
+
+        </activity>
         <activity android:name=".ui.CallActivity" />
         <activity android:name=".ui.TestEncodingActivity" />
         <activity android:name=".ui.TestAsyncEncodingActivity" />
+        <activity android:name=".ui.TestVideoEncodingActivity" />
 
         <service
             android:name=".service.HarmonyService"

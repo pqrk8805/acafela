@@ -6,15 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.TestMainActivity">
 
-    <TextView
-        android:id="@+id/TESTTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:text="RCVData"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Button
         android:id="@+id/buttonCall"
         android:layout_width="wrap_content"
@@ -26,15 +17,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TESTTextView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/buttonTestSend"
+        android:id="@+id/buttonTestVideoEncoding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:onClick="onClickSendBtn"
-        android:text="TESTSEND"
+        android:onClick="onClickTestVideoEncodingBtn"
+        android:text="Test Video Encoding"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.50"
@@ -52,7 +43,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonTestSend" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonTestVideoEncoding" />
 
     <Button
         android:id="@+id/buttonTestAsyncEncoding"
