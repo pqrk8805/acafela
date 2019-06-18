@@ -2,13 +2,16 @@ package com.acafela.harmony.ui.dialpad;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.acafela.harmony.R;
+import com.acafela.harmony.userprofile.UserInfo;
 import com.google.i18n.phonenumbers.AsYouTypeFormatter;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 
@@ -53,8 +56,16 @@ public class DialpadFragment extends Fragment {
         }
 
         View view = inflater.inflate(R.layout.fragment_dialpad, container, false);
-        DialpadView dialpadView = (DialpadView) view.findViewById(R.id.dialpad_view);
+        DialpadView dialpadView = view.findViewById(R.id.dialpad_view);
         dialpadView.setShowVoicemailButton(false);
+
+        FloatingActionButton floatingActionButton = view.findViewById(R.id.fab_ok);
+        if (UserInfo.getInstance().getPhoneNumber().isEmpty()) {
+            floatingActionButton.hide();
+        }
+        else {
+            floatingActionButton.show();
+        }
 
         digits = (DigitsEditText) dialpadView.getDigits();
         digits.setCursorVisible(cursorVisible);
