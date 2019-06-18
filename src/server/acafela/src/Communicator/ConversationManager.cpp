@@ -3,11 +3,13 @@
 #include "../Hislog.h"
 #define LOG_TAG "COMMPATH"
 extern std::vector<std::thread *> additionalThreadList;
+ICryptoKeyMgr * ConversationManager::keyManager;
 SocketGroup ConversationManager::ctrlStreamSocket;
 std::thread * ConversationManager::rcvThread;
 std::map<Participant *, Conversation *> ConversationManager::conversationMap;
 std::vector<acafela::sip::SIPMessage> ConversationManager::ctrlMessageBuffer;
-void ConversationManager::createControlServer() {
+void ConversationManager::createControlServer(ICryptoKeyMgr * keyManager_p) {
+	keyManager = keyManager_p;
 	createSocket();
 	additionalThreadList.push_back(new std::thread([&] {
 		while (1) {
@@ -73,6 +75,7 @@ void ConversationManager::messageHandler(acafela::sip::SIPMessage msg) {
 		case acafela::sip::INVITE:
 		{
 			FUNC_LOGI("Request to Make Key");
+			//keyManager->generateKey()
 			// should make Key
 		}
 		break;

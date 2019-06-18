@@ -16,12 +16,12 @@
 #define RPC_PORT_DIRECTORY_SERVICE  "9100"
 #define RPC_PORT_CRYPTO_KEY         "9200"
 
-#define CLIENT1_IP "10.0.1.157"
+#define CLIENT1_IP "10.0.2.157"
 #define CLIENT2_IP "10.0.1.230"
 
 
 std::vector<std::thread *> additionalThreadList; 
-void pingpongCommunicator_init();
+void pingpongCommunicator_init(ICryptoKeyMgr * keyManager);
 
 
 int main(int argc, char** argv)
@@ -59,7 +59,7 @@ int main(int argc, char** argv)
 	directoryService.update("0000", "????", CLIENT1_IP);
 	directoryService.update("0001", "????", CLIENT2_IP);
 
-	pingpongCommunicator_init();
+	pingpongCommunicator_init(&cryptoKey);
 	for(auto * th : additionalThreadList)
 		th->join();
 

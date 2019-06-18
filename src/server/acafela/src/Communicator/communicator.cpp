@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include "communicator.h"
 #include "../Hislog.h"
+#include "../CryptoKey/ICryptoKeyMgr.h"
 #define LOG_TAG "COMMINIT"
 
 int PortHandler::portNo = CTRLSERVERSNDPORT; 
-void pingpongCommunicator_init() {
+void pingpongCommunicator_init(ICryptoKeyMgr * keyManager) {
 	WSADATA wsa;
 	FUNC_LOGI("Initialising Winsock...");
 
@@ -14,7 +15,7 @@ void pingpongCommunicator_init() {
 		exit(EXIT_FAILURE);
 	}
 	ConversationManager *convManager = new ConversationManager();
-	convManager->createControlServer();
+	convManager->createControlServer(keyManager);
 }
 
 

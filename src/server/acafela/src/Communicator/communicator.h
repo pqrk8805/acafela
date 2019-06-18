@@ -7,6 +7,7 @@
 #include <ws2tcpip.h>
 #include <windows.h>
 #include "../SipMessage/SipMessage.pb.h"
+#include "../CryptoKey/ICryptoKeyMgr.h"
 #define BUFLEN 512
 #define CTRLSERVERRCVPORT 5000
 #define CTRLSERVERSNDPORT 5001
@@ -26,9 +27,10 @@ private:
 	static std::map<Participant *,Conversation *> conversationMap;
 	static std::vector<acafela::sip::SIPMessage> ctrlMessageBuffer;
 	static void messageHandler(acafela::sip::SIPMessage msg);
+	static ICryptoKeyMgr * keyManager;
 public:
 	static void createSocket();
-	static void createControlServer();
+	static void createControlServer(ICryptoKeyMgr * keyManager);
 	static void sendControlMessage(
 		Participant * to, 
 		acafela::sip::SIPMessage msg
