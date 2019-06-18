@@ -1,5 +1,6 @@
 package com.acafela.harmony.communicator;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.acafela.harmony.sip.SipMessage;
@@ -14,10 +15,16 @@ public class ReceiverVideo implements DataCommunicator {
     static final String LOG_TAG = "ReceiverVideo";
     private  String mIpAddress;
     private int mPort;
+    private Context mContext;
 
     public SipMessage.SessionType getType()
     {
         return SipMessage.SessionType.RECIEVEVIDEO;
+    }
+
+    public ReceiverVideo (Context context)
+    {
+        mContext = context;
     }
     public boolean setSession(String ip,int port)
     {
