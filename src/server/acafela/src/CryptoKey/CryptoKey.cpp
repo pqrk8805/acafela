@@ -1,38 +1,61 @@
 #include "CryptoKey.h"
 #include "Hislog.h"
+#include "MD5Hash.h"
+#include <chrono>
+#include <sstream>
 
 #define LOG_TAG "CRYPTO"
 
- CryptoKey::CryptoKey()
- {
- }
+using namespace std;
+CryptoKey::CryptoKey()
+{
+	mKeyMaker = make_unique<MD5>();
+}
 
 CryptoKey::~CryptoKey()
 {
 }
 
 int CryptoKey::generateKey(
-                    const std::string& sessionId,
-                    const std::string& algorithm)
+                    const string& sessionId,
+                    const string& algorithm)
 {
     return -1;
 }
 
 void CryptoKey::removeKey(
-                    const std::string& sessionId)
+                    const string& sessionId)
 {
 }
 
-std::vector<char> CryptoKey::getKey(
-                                const std::string sessionId)
+vector<char> CryptoKey::getKey(
+                                const string sessionId)
 {
+	time_t initValue = chrono::system_clock::to_time_t(chrono::system_clock::now());
+	string strInitValue = to_string(initValue);
+	string hashKey = mKeyMaker->GetSecureData(strInitValue);
     // temp
     //
-    static const std::vector<char> aesKey {
+
+    vector<char> aesKey {
                             -108, -110, -109,   -7, -33, 126,  75, 78,
                              110,  -25,  -40, -109, -12, 40,  -40, 96,
     };
 	FUNC_LOGI("Get Crypto Key");
-    return aesKey;
+
+	if(hashKey.length() >= 32)
+	{
+		for (int i = 0; i < 16; i++)
+		{
+			stringstream ss;
+			string num = hashKey.substr(2 * i, 2);
+			ss << hex << num;
+			int x;
+			ss >> x;
+			aesKey[i] = x;
+		}
+	}
+
+	return aesKey;
 }
 

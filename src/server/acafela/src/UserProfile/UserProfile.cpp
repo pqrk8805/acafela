@@ -2,7 +2,7 @@
 #include "EmailSender.h"
 #include "Hislog.h"
 #include "StorageAccessor/FileStorageAccessor.h"
-#include "MD5Hash.h"
+#include "CryptoKey/MD5Hash.h"
 
 #define LOG_TAG "UserProfile"
 

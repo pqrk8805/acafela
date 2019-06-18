@@ -20,6 +20,7 @@
     <ClCompile Include="src\CryptoKey\CryptoKey.grpc.pb.cc" />
     <ClCompile Include="src\CryptoKey\CryptoKey.pb.cc" />
     <ClCompile Include="src\CryptoKey\CryptoKeyRpc.cpp" />
+    <ClCompile Include="src\CryptoKey\MD5Hash.cpp" />
     <ClCompile Include="src\DirectoryService\DirectoryService.cpp" />
     <ClCompile Include="src\DirectoryService\DirectoryService.grpc.pb.cc" />
     <ClCompile Include="src\DirectoryService\DirectoryService.pb.cc" />
@@ -37,7 +38,6 @@
     <ClCompile Include="src\RpcCommon\Common.pb.cc" />
     <ClCompile Include="src\StorageAccessor\FileStorageAccessor.cpp" />
     <ClCompile Include="src\UserProfile\EmailSender.cpp" />
-    <ClCompile Include="src\UserProfile\MD5Hash.cpp" />
     <ClCompile Include="src\UserProfile\UserProfile.cpp" />
     <ClCompile Include="src\UserProfile\UserProfile.grpc.pb.cc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -66,6 +66,7 @@
     <ClInclude Include="src\CryptoKey\CryptoKeyRpc.h" />
     <ClInclude Include="src\CryptoKey\ICryptoKeyMgr.h" />
     <ClInclude Include="src\CryptoKey\ICryptoKeyRepo.h" />
+    <ClInclude Include="src\CryptoKey\MD5Hash.h" />
     <ClInclude Include="src\DirectoryService\DirectoryService.grpc.pb.h" />
     <ClInclude Include="src\DirectoryService\DirectoryService.h" />
     <ClInclude Include="src\DirectoryService\DirectoryService.pb.h" />
@@ -81,7 +82,6 @@
     <ClInclude Include="src\UserProfile\EmailSender.h" />
     <ClInclude Include="src\UserProfile\ISecurityProvider.h" />
     <ClInclude Include="src\UserProfile\IUserProfile.h" />
-    <ClInclude Include="src\UserProfile\MD5Hash.h" />
     <ClInclude Include="src\UserProfile\UserProfile.grpc.pb.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </ExcludedFromBuild>

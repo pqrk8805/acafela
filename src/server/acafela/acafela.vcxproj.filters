@@ -69,9 +69,6 @@
     <ClCompile Include="src\Communicator\DataPath.cpp">
       <Filter>Source Files\Communicator</Filter>
     </ClCompile>
-    <ClCompile Include="src\UserProfile\MD5Hash.cpp">
-      <Filter>Source Files\UserProfile</Filter>
-    </ClCompile>
     <ClCompile Include="src\StorageAccessor\DBFile.cpp">
       <Filter>Source Files\StorageAccessor</Filter>
     </ClCompile>
@@ -114,6 +111,9 @@
     <ClCompile Include="src\Communicator\ParticipantDirectory.cpp">
       <Filter>Source Files\Communicator</Filter>
     </ClCompile>
+    <ClCompile Include="src\CryptoKey\MD5Hash.cpp">
+      <Filter>Source Files\CryptoKey</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\UserProfile\UserProfile.grpc.pb.h">
@@ -144,9 +144,6 @@
       <Filter>Source Files\StorageAccessor</Filter>
     </ClInclude>
     <ClInclude Include="src\UserProfile\ISecurityProvider.h">
-      <Filter>Source Files\UserProfile</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UserProfile\MD5Hash.h">
       <Filter>Source Files\UserProfile</Filter>
     </ClInclude>
     <ClInclude Include="src\StorageAccessor\DBFile.h">
@@ -195,6 +192,9 @@
       <Filter>Source Files\RpcCommon</Filter>
     </ClInclude>
     <ClInclude Include="src\CryptoKey\CryptoKey.h">
+      <Filter>Source Files\CryptoKey</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CryptoKey\MD5Hash.h">
       <Filter>Source Files\CryptoKey</Filter>
     </ClInclude>
   </ItemGroup>

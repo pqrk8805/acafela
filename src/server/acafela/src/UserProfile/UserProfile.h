@@ -1,10 +1,10 @@
 #pragma once
 
 #include "IUserProfile.h"
-#include "ISecurityProvider.h"
 #include <memory>
 
 class IStorageAccessor;
+class ISecurityProvider;
 class UserProfile : public IUserProfile
 {
 public:
