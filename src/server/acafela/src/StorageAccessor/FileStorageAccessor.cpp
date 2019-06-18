@@ -84,6 +84,36 @@ int FileStorageAccessor::confirmPhoneNumber(const string& emailAddress, const st
 		return false;
 }
 
+#include <regex>
+string extractIntegerWords(string str)
+{
+	string output;
+	for (int i = 0; i < str.length(); i++)
+	{
+		if (isdigit(str[i]))
+			output += str[i];
+	}
+	return output;
+}
+
+string FileStorageAccessor::getTempPassword(const string& emailAddress)
+{
+	lock_guard<mutex> lock(mPasswordLock);
+
+	PasswordFile f(emailAddress, "rb");
+
+	if (f.GetPF() == nullptr)
+	{
+		return "0000";
+	}
+
+	string savedPassword = f.ReadFile();
+
+	string numPassword = extractIntegerWords(savedPassword);
+
+	return numPassword.substr(0, 4);
+}
+
 int FileStorageAccessor::getUserNumber()
 {
 	lock_guard<mutex> lock(mUserNumberLock);
@@ -119,7 +149,7 @@ bool FileStorageAccessor::isExistUser(const std::string& emailAddress)
 {
 	lock_guard<mutex> lock(mPasswordLock);
 
-	PasswordFile f(emailAddress, "wb");
+	PasswordFile f(emailAddress, "rb");
 
 	if (f.GetSize() > 0)
 	{

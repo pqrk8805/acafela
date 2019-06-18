@@ -126,7 +126,7 @@ public class UserRegisterDialog extends Dialog {
 
                 Log.i(TAG, registerResp.toString());
             } catch (StatusRuntimeException e) {
-                Log.i(TAG, "UserRegisterTask is Interrupted");
+                e.printStackTrace();
             }
 
             if (registerResp != null) {

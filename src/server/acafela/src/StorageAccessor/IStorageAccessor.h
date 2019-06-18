@@ -29,6 +29,9 @@ public:
 		const std::string& emailAddress,
 		const std::string& phoneNumber) = 0;
 
+	virtual std::string getTempPassword(
+		const std::string& emailAddress) = 0;
+
 	virtual int getUserNumber() = 0;
 	virtual int updateUserNumber(int userNumber) = 0;
 

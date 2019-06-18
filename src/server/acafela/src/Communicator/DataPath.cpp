@@ -1,12 +1,40 @@
 #include <stdio.h>
 #include "communicator.h"
-extern std::vector<std::thread *> additionalThreadList;
-
+#include "../Hislog.h"
+#define LOG_TAG "DATAPATH"
 
 void DataPath::addParticipant(Participant * part, int port) {
 	sendPortDirectory[part] = port;
+}
+
+void DataPath::sendOpenDataPathMsg() {
 	acafela::sip::SIPMessage msg;
-	msg.set_allocated_sessioninfo();
+	FUNC_LOGI("OPENSESSION to %s", ownerPart->getIP().c_str());
+	msg.set_cmd(acafela::sip::OPENSESSION);
+	msg.set_from("SERVER");
+	msg.set_to(ownerPart->getIP()); 
+	acafela::sip::SessionInfo* sessionInfo = new acafela::sip::SessionInfo;
+	msg.set_allocated_sessioninfo(sessionInfo);
+	acafela::sip::Session* session = sessionInfo->add_sessions();
+	FUNC_LOGI("OPENSESSION SEND to %s, %d", ownerPart->getIP().c_str(), receivePort);
+	session->set_sessiontype(acafela::sip::SENDAUDIO);
+	session->set_port(receivePort);
+	session->set_ip(
+		isServerPassed
+		? "SERVER"
+		: sendPortDirectory.begin()->first->getIP()
+	);
+	for (auto partAndPort : sendPortDirectory) {
+		FUNC_LOGI("OPENSESSION RCV to %s, %d", ownerPart->getIP().c_str(), std::get<1>(partAndPort));
+		session = sessionInfo->add_sessions();
+		session->set_sessiontype(acafela::sip::RECIEVEAUDIO);
+		session->set_ip(
+			isServerPassed
+			? "SERVER"
+			: std::get<0>(partAndPort)->getIP()
+		);
+		session->set_port(std::get<1>(partAndPort));
+	}
 	ConversationManager().sendControlMessage(ownerPart, msg);
 }
 

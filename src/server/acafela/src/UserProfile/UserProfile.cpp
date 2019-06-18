@@ -40,15 +40,15 @@ std::string UserProfile::registerUser(
 {
     FUNC_LOGD("BEGIN");	
 	
-	string encEmailAddress = mSP->GetSecureData(emailAddress);
 	string encPassword = mSP->GetSecureData(password);
 
-	bool isExistUser = mSA->isExistUser(encEmailAddress);    
+	bool isExistUser = mSA->isExistUser(emailAddress);
 
 	if (isExistUser == false)
 	{
 		string genPhoneNumber = generateUserPhoneNumber();
-		mSA->registerUser(encEmailAddress, encPassword, genPhoneNumber);
+		printf("registerUser email/pw/# = %s/%s/%s\n", emailAddress.c_str(), password.c_str(), genPhoneNumber.c_str());
+		mSA->registerUser(emailAddress, encPassword, genPhoneNumber);
 		return genPhoneNumber;
 	}
 	else
@@ -64,13 +64,15 @@ int UserProfile::changePassword(
 {
     FUNC_LOGD("BEGIN");	
 	
-	string encEmailAddress = mSP->GetSecureData(emailAddress);
 	string encOldPassword = mSP->GetSecureData(oldPassword);
-	bool confirmedPassword = mSA->confirmPassword(encEmailAddress, encOldPassword);
+	bool confirmedPassword = mSA->confirmPassword(emailAddress, encOldPassword);
 
 	string encNewPassword = mSP->GetSecureData(newPassword);
 	if (confirmedPassword == true)
-		return mSA->changePassword(encEmailAddress, encNewPassword);
+	{
+		printf("changePassword email/old pw/new pw = %s/%s/%s\n", emailAddress.c_str(), oldPassword.c_str(), newPassword.c_str());
+		return mSA->changePassword(emailAddress, encNewPassword);
+	}
 	else
 		return -1;
 }
@@ -81,14 +83,15 @@ int UserProfile::changePassword(
  {
     FUNC_LOGD("BEGIN");
 	
-	string encEmailAddress = mSP->GetSecureData(emailAddress);
 
-	bool confirmedPhoneNumber = mSA->confirmPhoneNumber(encEmailAddress, phoneNumber);
+	bool confirmedPhoneNumber = mSA->confirmPhoneNumber(emailAddress, phoneNumber);
 	if (confirmedPhoneNumber == true)
 	{
-		const string tempPassword = "0000";
-		mSA->changePassword(encEmailAddress, tempPassword);
+		const string tempPassword = mSA->getTempPassword(emailAddress);
+		const string encTempPassword = mSP->GetSecureData(tempPassword);
+		mSA->changePassword(emailAddress, encTempPassword);
 
+		printf("restorePassword email/#/pw = %s/%s/%s\n", emailAddress.c_str(), phoneNumber.c_str(), tempPassword.c_str());
 		EmailSender::sendPasswordRecoveryMail(emailAddress, tempPassword);
 		return 0;
 	}
