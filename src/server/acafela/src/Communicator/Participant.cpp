@@ -16,7 +16,3 @@ void Participant::setIP(std::string ip) {
 void Participant::setDataPath(DataPath * dataPath) {
 	this->dataPath = dataPath;
 }
-
-void Participant::joinConversation(Conversation * conversation) {
-	this->conversation = conversation;
-}

@@ -51,6 +51,7 @@ class DataPath {
 private:
 	int receivePort;
 	bool isServerPassed;
+	bool isWorking;
 	Participant * ownerPart;
 	SocketGroup dataStreamSocket;
 	Conversation * conversation;
@@ -60,6 +61,9 @@ private:
 	std::string clientIP;
 	std::vector<std::thread *> threadList;
 	void createSocket();
+	void createServerDataPath();
+	void broadcastSessionControlMsg(acafela::sip::Command cmd);
+	void sendSessionControlMsg(Participant * part, acafela::sip::Command cmd);
 public:
 	DataPath(Participant * ownerPart, Conversation * conversation, std::string clientIP, int receivePort, bool isServerPassed = false) {
 		this->ownerPart = ownerPart;
@@ -67,12 +71,15 @@ public:
 		this->clientIP = clientIP;
 		this->receivePort = receivePort;
 		this->isServerPassed = isServerPassed;
+		this->isWorking = true;
 		if(isServerPassed)
-			createDataPath();
+			createServerDataPath();
 	}
-	void createDataPath();
-	void sendOpenDataPathMsg();
+	void openDataPath();
+	void terminateDataPath();
+	void initParticipant(Participant * part, int port);
 	void addParticipant(Participant * part, int port);
+	void removeParticipant(Participant * part);
 	void addToSendData(Participant * part, int len, char * data);
 };
 
@@ -81,26 +88,34 @@ private:
 	std::vector<std::tuple<int, char *>> controlBuffer; // is it needed?
 	DataPath * dataPath;
 	std::string clientIP;
-	Conversation * conversation;
 public:
 	Participant(std::string clientIP) {
 		this->clientIP = clientIP;
+		dataPath = nullptr;
+	}
+	void clearDataPath() {
+		dataPath = nullptr;
 	}
 	DataPath * getDataPath();
 	std::string getIP();
 	void setIP(std::string ip);
 	void setDataPath(DataPath * dataPath);
-	void joinConversation(Conversation * conversation);
 };
 
 class Conversation {
 private :
 	std::vector<std::tuple<Participant *, int>> conversationRoom;
+	bool isServerPassed;
 public :
+	Conversation(std::vector<std::tuple<Participant *, int>> partList, bool isServerPassed);
+	bool isP2P() {
+		return !isServerPassed;
+	}
 	void broadcast_Data(Participant * partSend, int len, char * data);
 	void boradcast_Ctrl(std::string msg);
 	void addParticipant(Participant * part, int port);
-	void makeConversation(std::vector<std::tuple<Participant *, int>> partList, bool isServerPassed);
+	void removeParticipant(Participant * part);
+	void terminateConversation();
 };
 
 class PortHandler {

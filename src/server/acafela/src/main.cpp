@@ -5,6 +5,7 @@
 #include "DirectoryServiceRpc.h"
 #include "CryptoKey/CryptoKey.h"
 #include "CryptoKey/CryptoKeyRpc.h"
+#include "Communicator/communicator.h"
 #include "UserProfile.h"
 #include "UserProfileRpc.h"
 #include "Hislog.h"
@@ -18,12 +19,8 @@
 
 #define CLIENT1_IP "10.0.2.157"
 #define CLIENT2_IP "10.0.1.230"
-
-
+int PortHandler::portNo = CTRLSERVERSNDPORT;
 std::vector<std::thread *> additionalThreadList; 
-void pingpongCommunicator_init(ICryptoKeyMgr * keyManager);
-
-
 int main(int argc, char** argv)
 {
     FUNC_LOGI("Acafela Server started");
@@ -59,7 +56,14 @@ int main(int argc, char** argv)
 	directoryService.update("0000", "????", CLIENT1_IP);
 	directoryService.update("0001", "????", CLIENT2_IP);
 
-	pingpongCommunicator_init(&cryptoKey);
+	WSADATA wsa;
+	FUNC_LOGI("Initialising Winsock...");
+	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0){
+		FUNC_LOGE("Failed.Error Code : %d", WSAGetLastError());
+		exit(EXIT_FAILURE);
+	}
+	ConversationManager *convManager = new ConversationManager();
+	convManager->createControlServer(&cryptoKey);
 	for(auto * th : additionalThreadList)
 		th->join();
 

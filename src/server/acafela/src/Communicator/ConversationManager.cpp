@@ -65,8 +65,7 @@ void ConversationManager::messageHandler(acafela::sip::SIPMessage msg) {
 		case acafela::sip::ACCEPTCALL:
 		{
 			FUNC_LOGI("Request to Make Call");
-			Conversation * conversation = new Conversation();
-			conversation->makeConversation({
+			Conversation * conversation = new Conversation({
 				std::make_tuple(from,PortHandler().getPortNumber()),
 				std::make_tuple(to,PortHandler().getPortNumber())
 				}, false);
@@ -75,19 +74,35 @@ void ConversationManager::messageHandler(acafela::sip::SIPMessage msg) {
 		case acafela::sip::INVITE:
 		{
 			FUNC_LOGI("Request to Make Key");
-			//keyManager->generateKey()
-			// should make Key
+			keyManager->generateKey(msg.sessionid());
 		}
 		break;
 		case acafela::sip::TERMINATE:
 		{
 			FUNC_LOGI("Request to Terminate");
-			// should send bye and destruct conversation
+			Conversation * conversation = conversationMap[from];
+			conversation->terminateConversation();
+			for (auto iter = conversationMap.begin(); iter != conversationMap.end();) {
+				if (std::get<1>(*iter) != conversation)
+					iter++;
+				else
+					iter = conversationMap.erase(iter);
+			}
+			delete conversation;
 		}
 		break;
+		//case acafela::sip::LEAVE: 
+		//{
+		//	Conversation * conversation = conversationMap[from];
+		//	conversation->removeParticipant(from);
+		//	conversationMap.erase(from);
+		//	return;
+		//}
+		break;
 	}
-	FUNC_LOGI("Send msg %d to %s", msg.cmd(), to->getIP().c_str());
-	sendControlMessage(to, msg);
+	FUNC_LOGI("Send msg %s to %s", msg.DebugString().c_str(), to->getIP().c_str());
+	if(conversationMap[from]->isP2P())
+		sendControlMessage(to, msg);
 }
 void ConversationManager::sendControlMessage(
 	Participant * to,
@@ -97,7 +112,7 @@ void ConversationManager::sendControlMessage(
 	server.sin_port = htons(CTRLSERVERSNDPORT);
 	inet_pton(AF_INET, to->getIP().c_str(), &(server.sin_addr));
 	size_t size = msg.ByteSizeLong();
-	void *buffer = malloc(size);
+	void *buffer = new char[size];
 	msg.SerializeToArray(buffer, size);
 	if (sendto(ctrlStreamSocket.client, (char *)buffer, size, 0, (struct sockaddr*) &server, sizeof(struct sockaddr_in)) == SOCKET_ERROR)
 		FUNC_LOGE("sendto() failed with error code : %d", WSAGetLastError());

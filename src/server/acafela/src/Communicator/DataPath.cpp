@@ -3,20 +3,44 @@
 #include "../Hislog.h"
 #define LOG_TAG "DATAPATH"
 
-void DataPath::addParticipant(Participant * part, int port) {
+void DataPath::initParticipant(Participant * part, int port) {
 	sendPortDirectory[part] = port;
 }
 
-void DataPath::sendOpenDataPathMsg() {
+void DataPath::addParticipant(Participant * part, int port) {
+	FUNC_LOGI("ADD OPENSESSION to %s", ownerPart->getIP().c_str()); 
+	sendPortDirectory[part] = port;
+	sendSessionControlMsg(part, acafela::sip::OPENSESSION);
+}
+
+void DataPath::removeParticipant(Participant * leavePart) {
+	FUNC_LOGI("CLOSESESSION to %s", ownerPart->getIP().c_str());
+	sendSessionControlMsg(leavePart, acafela::sip::CLOSESESSION);
+	sendPortDirectory.erase(leavePart);
+}
+
+void DataPath::sendSessionControlMsg(Participant * part, acafela::sip::Command cmd) {
 	acafela::sip::SIPMessage msg;
-	FUNC_LOGI("OPENSESSION to %s", ownerPart->getIP().c_str());
-	msg.set_cmd(acafela::sip::OPENSESSION);
+	msg.set_cmd(cmd);
+	msg.set_from("SERVER");
+	msg.set_to(ownerPart->getIP());
+	acafela::sip::SessionInfo* sessionInfo = new acafela::sip::SessionInfo;
+	msg.set_allocated_sessioninfo(sessionInfo);
+	acafela::sip::Session* session = sessionInfo->add_sessions();
+	session->set_sessiontype(acafela::sip::RECIEVEAUDIO);
+	session->set_port(sendPortDirectory[part]);
+	session->set_ip(isServerPassed ? "SERVER" : part->getIP());
+	ConversationManager().sendControlMessage(ownerPart, msg);
+}
+
+void DataPath::broadcastSessionControlMsg(acafela::sip::Command cmd) {
+	acafela::sip::SIPMessage msg;
+	msg.set_cmd(cmd);
 	msg.set_from("SERVER");
 	msg.set_to(ownerPart->getIP()); 
 	acafela::sip::SessionInfo* sessionInfo = new acafela::sip::SessionInfo;
 	msg.set_allocated_sessioninfo(sessionInfo);
 	acafela::sip::Session* session = sessionInfo->add_sessions();
-	FUNC_LOGI("OPENSESSION SEND to %s, %d", ownerPart->getIP().c_str(), receivePort);
 	session->set_sessiontype(acafela::sip::SENDAUDIO);
 	session->set_port(receivePort);
 	session->set_ip(
@@ -25,7 +49,6 @@ void DataPath::sendOpenDataPathMsg() {
 		: sendPortDirectory.begin()->first->getIP()
 	);
 	for (auto partAndPort : sendPortDirectory) {
-		FUNC_LOGI("OPENSESSION RCV to %s, %d", ownerPart->getIP().c_str(), std::get<1>(partAndPort));
 		session = sessionInfo->add_sessions();
 		session->set_sessiontype(acafela::sip::RECIEVEAUDIO);
 		session->set_ip(
@@ -38,12 +61,28 @@ void DataPath::sendOpenDataPathMsg() {
 	ConversationManager().sendControlMessage(ownerPart, msg);
 }
 
-void DataPath::createDataPath() {
+void DataPath::openDataPath() {
+	FUNC_LOGI("OPENSESSION to %s", ownerPart->getIP().c_str());
+	broadcastSessionControlMsg(acafela::sip::OPENSESSION);
+}
+
+void DataPath::terminateDataPath() {
+	//server close ½Ã ÀüÃ¼ Close Session ÇÒ °ÍÀÎ°¡? ¾Æ´Ô °Á Bye?
+	FUNC_LOGI("TERMINATESESSION to %s", ownerPart->getIP().c_str());
+	broadcastSessionControlMsg(acafela::sip::CLOSESESSION);
+	isWorking = false;
+	if (isServerPassed) {
+		closesocket(dataStreamSocket.client);
+		closesocket(dataStreamSocket.server);
+	}
+}
+
+void DataPath::createServerDataPath() {
 	InitializeCriticalSection(&crit);
 	createSocket();
 
 	threadList.push_back(new std::thread([&] {
-		while (1) {
+		while (isWorking) {
 			EnterCriticalSection(&crit);
 			if (dataBuffer.size() == 0) {
 				LeaveCriticalSection(&crit);
@@ -65,7 +104,7 @@ void DataPath::createDataPath() {
 		}
 	}));
 	threadList.push_back(new std::thread([&] {
-		while (1) {
+		while (isWorking) {
 			fflush(stdout);
 			int recv_len;
 			char * buf = new char[BUFLEN];
@@ -73,10 +112,7 @@ void DataPath::createDataPath() {
 			struct sockaddr_in si_other;
 			int slen = sizeof(si_other);
 			if ((recv_len = recvfrom(dataStreamSocket.server, buf, BUFLEN, 0, (struct sockaddr *) &si_other, &slen)) == SOCKET_ERROR)
-			{
 				printf("DATAPATH : recvfrom() failed with error code : %d, %s\n", WSAGetLastError(), clientIP.c_str());
-				//exit(EXIT_FAILURE);
-			}
 			conversation->broadcast_Data(ownerPart, recv_len, buf);
 			delete buf;
 		}
@@ -95,12 +131,12 @@ void DataPath::addToSendData(Participant * part, int len, char * data) {
 void DataPath::createSocket() {
 	dataStreamSocket.client = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 	if (dataStreamSocket.client == INVALID_SOCKET)
-		printf("Could not create socket : %d", WSAGetLastError());
-	printf("DATAPATH : Client Socket created : %s.\n", clientIP.c_str());
+		FUNC_LOGE("Could not create socket : %d", WSAGetLastError());
+	FUNC_LOGI("DATAPATH : Client Socket created : %s.", clientIP.c_str());
 
 	if ((dataStreamSocket.server = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == INVALID_SOCKET)
-		printf("Could not create socket : %d", WSAGetLastError());
-	printf("DATAPATH : Server Socket created.\n");
+		FUNC_LOGE("Could not create socket : %d", WSAGetLastError());
+	FUNC_LOGI("DATAPATH : Server Socket created.");
 
 	struct sockaddr_in server;
 	server.sin_family = AF_INET;
@@ -108,8 +144,5 @@ void DataPath::createSocket() {
 	server.sin_port = htons(receivePort);
 
 	if (bind(dataStreamSocket.server, (struct sockaddr *)&server, sizeof(server)) == SOCKET_ERROR)
-	{
-		printf("Bind failed with error code : %d", WSAGetLastError());
-		exit(EXIT_FAILURE);
-	}
+		FUNC_LOGE("Bind failed with error code : %d", WSAGetLastError());
 }

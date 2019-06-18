@@ -51,9 +51,6 @@
     <ClCompile Include="src\Hislog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Communicator\communicator.cpp">
-      <Filter>Source Files\Communicator</Filter>
-    </ClCompile>
     <ClCompile Include="src\UserProfile\UserProfile.cpp">
       <Filter>Source Files\UserProfile</Filter>
     </ClCompile>
