@@ -1,70 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/top"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="bottom"
-    android:orientation="vertical"
-    android:background="@color/background_dialpad"
-    android:clickable="true">
+    android:weightSum="5">
 
-    <LinearLayout
-        android:id="@+id/digits_container"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dialpad_digits_height"
-        android:orientation="horizontal">
-        <view class="com.acafela.harmony.ui.main.DigitsEditText"
-            xmlns:ex="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/digits"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:scrollHorizontally="true"
-            android:singleLine="true"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:background="@android:color/transparent"
-            android:maxLines="1"
-            android:textSize="@dimen/dialpad_digits_text_size"
-            android:freezesText="true"
-            android:focusableInTouchMode="true"
-            android:cursorVisible="false"
-            android:textColor="@color/dialpad_digits_text_color"
-            android:textCursorDrawable="@null"
-            android:fontFamily="sans-serif-light"
-            android:textStyle="normal"
-            ex:resizing_text_min_size="@dimen/dialpad_digits_text_min_size" />
-        <ImageButton
-            android:id="@+id/deleteButton"
-            android:background="@drawable/btn_dialpad_key"
-            android:tint="@color/dialpad_icon_tint"
-            android:paddingLeft="@dimen/dialpad_digits_padding"
-            android:paddingRight="@dimen/dialpad_digits_padding"
+        android:layout_height="0dp"
+        android:layout_weight="4">
+
+        <include layout="@layout/dialpad_view" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_ok"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:state_enabled="false"
-            android:contentDescription="@string/description_delete_button"
-            android:src="@mipmap/ic_dialpad_delete" />
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#e3e3e3" />
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dialpad_space_above_keys" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:backgroundTint="@android:color/holo_blue_dark"
+            android:src="@drawable/quantum_ic_call_white_24" />
 
-    <!-- Keypad section -->
-    <include
-        layout="@layout/dialpad"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="visible" />
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="8dp" />
+    </FrameLayout>
 
 </LinearLayout>

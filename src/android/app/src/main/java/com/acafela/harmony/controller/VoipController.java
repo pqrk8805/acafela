@@ -9,7 +9,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
-import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.acafela.harmony.Config;
@@ -22,13 +22,11 @@ import com.acafela.harmony.sip.SipMessage.SIPMessage;
 import com.acafela.harmony.crypto.Crypto;
 import com.acafela.harmony.crypto.CryptoBroker;
 import com.acafela.harmony.userprofile.UserInfo;
-
 import io.grpc.ManagedChannel;
 
-
 public class VoipController {
-    public static final int CONTROL_SEND_PORT = 6000;
-    public static final int CONTROL_RECIEVE_PORT = 6000;
+    public static final int CONTROL_SEND_PORT = 5000;
+    public static final int CONTROL_RECIEVE_PORT = 5001;
     private static final String LOG_TAG = "[AcafelaController]";
     private static final int BUFFER_SIZE = 128;
     private boolean UdpListenerThreadRun = false;
@@ -44,12 +42,11 @@ public class VoipController {
     private boolean isRun =false;
     RingController mRingControl = null;
     private CryptoKeyRpc mCryptoRpc;
-
     private List<DataCommunicator> mSessionList;
-
 
     public VoipController(Context context)
     {
+        mSessionList = new ArrayList<DataCommunicator>();
         mContext = context;
         mRingControl= new RingController(mContext);
         mCryptoRpc = new CryptoKeyRpc(
@@ -57,6 +54,12 @@ public class VoipController {
                         Config.RPC_PORT_CRYPTO_KEY,
                         context.getResources().openRawResource(R.raw.ca),
                         context.getResources().openRawResource(R.raw.server));
+        try {
+            this.mIpAddress = InetAddress.getByName(Config.SERVER_IP);
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "Exception Answer Message: " + e);
+            return ;
+        }
     }
 
     public void startListenerController() {
@@ -140,20 +143,15 @@ public class VoipController {
         else {
             switch (message.getCmd()) {
                 case INVITE:
-/*
-                    String ip ="10.0.1.157";
-                    try {
-                        this.mIpAddress = InetAddress.getByName(ip);
-                    } catch (UnknownHostException e) {
-                        e.printStackTrace();
-                    }*/
                     sesssionID = message.getSessionid();
                     mRingControl.ring_start();
                     sendMessage(SipMessage.Command.RINGING);
                     break;
                 case OPENSESSION:
+
                     byte[] keyByte = mCryptoRpc.getKey(sesssionID);
                     mCrypto = CryptoBroker.getInstance().create("AES");
+                    Log.e(LOG_TAG, "Send Message: " +"keyByte" + keyByte.length);
                     mCrypto.init(keyByte);
                     for(int i=0;i<message.getSessioninfo().getSessionsCount();i++) {
                         SipMessage.Session session = message.getSessioninfo().getSessions(i);
@@ -175,6 +173,7 @@ public class VoipController {
     }
     void opensession(SipMessage.SessionType type, String ip, int port)
     {
+        Log.e(LOG_TAG, "Send Message: "+ type +"ip" +ip +"port"+ port);
         DataCommunicator communicator = null;
         switch(type)
         {
@@ -188,7 +187,7 @@ public class VoipController {
                 communicator = new ReceiverAudio(mContext, mCrypto);
                 break;
             case RECIEVEVIDEO:
-                communicator = new ReceiverVideo();
+                communicator = new ReceiverVideo(mContext);
                 break;
             case UNRECOGNIZED:
                 return;
@@ -231,7 +230,7 @@ public class VoipController {
         byte[] buffer = builder.
                 setCmd(cmd).
                 setFrom(UserInfo.getInstance().getPhoneNumber()).
-                setTo("tom@lge.com").
+                setTo("0001").
                 setSessionid(sesssionID).
                 setSeq(msgSeq).
                 build().
@@ -243,15 +242,9 @@ public class VoipController {
     public void inviteCall(String serverIp)
     {
         //Add exception state
-        //sesssionNo++;
         sesssionID = UserInfo.getInstance().getPhoneNumber() + sesssionNo++;
         isCaller = true;
-        try {
-            this.mIpAddress = InetAddress.getByName(serverIp);
-        } catch (Exception e) {
-            Log.e(LOG_TAG, "Exception Answer Message: " + e);
-            return ;
-        }
+
         sendMessage(SipMessage.Command.INVITE);
     }
     public void terminateCall()
@@ -262,7 +255,8 @@ public class VoipController {
     }
     public void acceptCall()
     {
-        mRingControl.ringbackTone_stop();
+        if(isCaller) return;
+        mRingControl.ring_stop();
         sendMessage(SipMessage.Command.ACCEPTCALL);
     }
 }

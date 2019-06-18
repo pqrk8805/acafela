@@ -31,13 +31,13 @@ namespace Acafela.Sip {
             "c3NhZ2USIQoDY21kGAEgASgOMhQuYWNhZmVsYS5zaXAuQ29tbWFuZBIMCgRm",
             "cm9tGAIgASgJEgoKAnRvGAMgASgJEhEKCXNlc3Npb25pZBgEIAEoCRILCgNz",
             "ZXEYBSABKAUSLQoLc2Vzc2lvbmluZm8YBiABKAsyGC5hY2FmZWxhLnNpcC5T",
-            "ZXNzaW9uSW5mbyqWAQoHQ29tbWFuZBIKCgZJTlZJVEUQABILCgdSSU5HSU5H",
+            "ZXNzaW9uSW5mbyqoAQoHQ29tbWFuZBIKCgZJTlZJVEUQABILCgdSSU5HSU5H",
             "EAESDgoKQUNDRVBUQ0FMTBACEgwKCE1BS0VDQUxMEAMSDwoLT1BFTlNFU1NJ",
             "T04QBBIOCgpTVEFSVFZJREVPEAUSDQoJU1RPUFZJREVPEAYSDQoJVEVSTUlO",
-            "QVRFEAcSBwoDQllFEAgSDAoIUkVHSVNURVIQCSpPCgtTZXNzaW9uVHlwZRIN",
-            "CglTRU5EQVVESU8QABIQCgxSRUNJRVZFQVVESU8QARINCglTRU5EVklERU8Q",
-            "AhIQCgxSRUNJRVZFVklERU8QA0IZChdjb20uYWNhZmVsYS5oYXJtb255LnNp",
-            "cGIGcHJvdG8z"));
+            "QVRFEAcSBwoDQllFEAgSDAoIUkVHSVNURVIQCRIQCgxDTE9TRVNFU1NJT04Q",
+            "CipPCgtTZXNzaW9uVHlwZRINCglTRU5EQVVESU8QABIQCgxSRUNJRVZFQVVE",
+            "SU8QARINCglTRU5EVklERU8QAhIQCgxSRUNJRVZFVklERU8QA0IZChdjb20u",
+            "YWNhZmVsYS5oYXJtb255LnNpcGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Acafela.Sip.Command), typeof(global::Acafela.Sip.SessionType), }, new pbr::GeneratedClrTypeInfo[] {
@@ -61,6 +61,7 @@ namespace Acafela.Sip {
     [pbr::OriginalName("TERMINATE")] Terminate = 7,
     [pbr::OriginalName("BYE")] Bye = 8,
     [pbr::OriginalName("REGISTER")] Register = 9,
+    [pbr::OriginalName("CLOSESESSION")] Closesession = 10,
   }
 
   public enum SessionType {

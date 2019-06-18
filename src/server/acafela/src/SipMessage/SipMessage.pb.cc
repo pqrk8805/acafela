@@ -164,16 +164,17 @@ void AddDescriptorsImpl() {
       ".acafela.sip.Command\022\014\n\004from\030\002 \001(\t\022\n\n\002to"
       "\030\003 \001(\t\022\021\n\tsessionid\030\004 \001(\t\022\013\n\003seq\030\005 \001(\005\022-"
       "\n\013sessioninfo\030\006 \001(\0132\030.acafela.sip.Sessio"
-      "nInfo*\226\001\n\007Command\022\n\n\006INVITE\020\000\022\013\n\007RINGING"
+      "nInfo*\250\001\n\007Command\022\n\n\006INVITE\020\000\022\013\n\007RINGING"
       "\020\001\022\016\n\nACCEPTCALL\020\002\022\014\n\010MAKECALL\020\003\022\017\n\013OPEN"
       "SESSION\020\004\022\016\n\nSTARTVIDEO\020\005\022\r\n\tSTOPVIDEO\020\006"
-      "\022\r\n\tTERMINATE\020\007\022\007\n\003BYE\020\010\022\014\n\010REGISTER\020\t*O"
-      "\n\013SessionType\022\r\n\tSENDAUDIO\020\000\022\020\n\014RECIEVEA"
-      "UDIO\020\001\022\r\n\tSENDVIDEO\020\002\022\020\n\014RECIEVEVIDEO\020\003B"
-      "\031\n\027com.acafela.harmony.sipb\006proto3"
+      "\022\r\n\tTERMINATE\020\007\022\007\n\003BYE\020\010\022\014\n\010REGISTER\020\t\022\020"
+      "\n\014CLOSESESSION\020\n*O\n\013SessionType\022\r\n\tSENDA"
+      "UDIO\020\000\022\020\n\014RECIEVEAUDIO\020\001\022\r\n\tSENDVIDEO\020\002\022"
+      "\020\n\014RECIEVEVIDEO\020\003B\031\n\027com.acafela.harmony"
+      ".sipb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 594);
+      descriptor, 612);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "SipMessage.proto", &protobuf_RegisterTypes);
 }
@@ -207,6 +208,7 @@ bool Command_IsValid(int value) {
     case 7:
     case 8:
     case 9:
+    case 10:
       return true;
     default:
       return false;

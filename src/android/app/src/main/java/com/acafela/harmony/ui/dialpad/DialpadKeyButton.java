@@ -1,4 +1,4 @@
-package com.acafela.harmony.ui.main;
+package com.acafela.harmony.ui.dialpad;
 
 import android.content.Context;
 import android.graphics.RectF;
