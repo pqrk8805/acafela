@@ -17,13 +17,15 @@ void ConversationManager::createControlServer(ICryptoKeyMgr * keyManager_p) {
 			int recv_len;
 			char * buf = new char[BUFLEN];
 			memset(buf, NULL, BUFLEN);
-			struct sockaddr_in si_other;
-			int slen = sizeof(si_other);
-			if ((recv_len = recvfrom(ctrlStreamSocket.server, buf, BUFLEN, 0, (struct sockaddr *) &si_other, &slen)) == SOCKET_ERROR)
+			struct sockaddr_in si;
+			int slen = sizeof(si);
+			if ((recv_len = recvfrom(ctrlStreamSocket.server, buf, BUFLEN, 0, (struct sockaddr *) &si, &slen)) == SOCKET_ERROR)
 				FUNC_LOGI("recvfrom() failed with error code : %d", WSAGetLastError());
 			acafela::sip::SIPMessage msg;
 			msg.ParseFromArray(buf, recv_len);
-			messageHandler(msg);
+			char ipStr[INET_ADDRSTRLEN];
+			inet_ntop(AF_INET, &(si.sin_addr), ipStr, INET_ADDRSTRLEN);
+			messageHandler(std::string(ipStr), msg);
 			delete buf;
 		}
 	}));
@@ -50,21 +52,30 @@ void ConversationManager::createSocket() {
 	}
 }
 
-void ConversationManager::messageHandler(acafela::sip::SIPMessage msg) {
-	Participant * from = ParticipantDirectory().get(msg.from());
-	Participant * to = ParticipantDirectory().get(msg.to());
-	if (to == nullptr) {
+void ConversationManager::messageHandler(std::string IP, acafela::sip::SIPMessage msg) {
+	Participant * from = ParticipantDirectory().getFromNumber(msg.from());
+	Participant * to = ParticipantDirectory().getFromNumber(msg.to());
+	Participant * sender = ParticipantDirectory().getFromIP(IP);
+	if (to == nullptr || from == nullptr) {
 		acafela::sip::SIPMessage returnMessage;
 		returnMessage.set_cmd(acafela::sip::BYE);
 		returnMessage.set_from("SERVER");
-		returnMessage.set_to(from->getIP());
-		sendControlMessage(from, msg);
+		returnMessage.set_to(sender->getIP());
+		sendControlMessage(sender, msg);
 		return;
 	}
 	switch (msg.cmd()) {
 		case acafela::sip::ACCEPTCALL:
 		{
 			FUNC_LOGI("Request to Make Call");
+			Conversation * conversation = conversationMap[sender];
+			conversation->makeConversation();
+		}
+		break;
+		case acafela::sip::INVITE:
+		{
+			FUNC_LOGI("Request to Make Key");
+			keyManager->generateKey(msg.sessionid());
 			Conversation * conversation = new Conversation({
 				std::make_tuple(from,PortHandler().getPortNumber()),
 				std::make_tuple(to,PortHandler().getPortNumber())
@@ -73,16 +84,10 @@ void ConversationManager::messageHandler(acafela::sip::SIPMessage msg) {
 			conversationMap[to] = conversation;
 		}
 		break;
-		case acafela::sip::INVITE:
-		{
-			FUNC_LOGI("Request to Make Key");
-			keyManager->generateKey(msg.sessionid());
-		}
-		break;
 		case acafela::sip::TERMINATE:
 		{
 			FUNC_LOGI("Request to Terminate");
-			Conversation * conversation = conversationMap[from];
+			Conversation * conversation = conversationMap[sender];
 			conversation->terminateConversation();
 			for (auto iter = conversationMap.begin(); iter != conversationMap.end();) {
 				if (std::get<1>(*iter) != conversation)
@@ -103,9 +108,11 @@ void ConversationManager::messageHandler(acafela::sip::SIPMessage msg) {
 		//}
 		break;
 	}
-	FUNC_LOGI("Send msg %s to %s", to->getIP().c_str(), msg.DebugString().c_str());
-	if(conversationMap[from] == NULL || conversationMap[from]->isP2P())
+	FUNC_LOGI("Send msg %s : \n%s", sender->getIP().c_str(), msg.DebugString().c_str());
+	if (conversationMap[sender] == NULL)
 		sendControlMessage(to, msg);
+	else if (conversationMap[sender]->isP2P())
+		conversationMap[sender]->boradcast_CtrlExceptMe(sender, msg);
 }
 void ConversationManager::sendControlMessage(
 	Participant * to,

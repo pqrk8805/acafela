@@ -26,7 +26,7 @@ private:
 	static SocketGroup ctrlStreamSocket;
 	static std::map<Participant *,Conversation *> conversationMap;
 	static std::vector<acafela::sip::SIPMessage> ctrlMessageBuffer;
-	static void messageHandler(acafela::sip::SIPMessage msg);
+	static void messageHandler(std::string IP, acafela::sip::SIPMessage msg);
 	static ICryptoKeyMgr * keyManager;
 public:
 	static void createSocket();
@@ -44,7 +44,8 @@ private:
 public:
 	static void notify_update(std::string phoneNumber, std::string ip);
 	static void notify_remove(std::string phoneNumber);
-	static Participant * get(std::string phoneNumber);
+	static Participant * getFromNumber(std::string phoneNumber);
+	static Participant * getFromIP(std::string IP);
 };
 
 class DataPath {
@@ -106,15 +107,20 @@ class Conversation {
 private :
 	std::vector<std::tuple<Participant *, int>> conversationRoom;
 	bool isServerPassed;
+	int sessionId;
 public :
 	Conversation(std::vector<std::tuple<Participant *, int>> partList, bool isServerPassed);
 	bool isP2P() {
 		return !isServerPassed;
 	}
+	void setSessionId(int sessionId) {
+		this->sessionId = sessionId;
+	}
 	void broadcast_Data(Participant * partSend, int len, char * data);
-	void boradcast_Ctrl(std::string msg);
+	void boradcast_CtrlExceptMe(Participant * from, acafela::sip::SIPMessage msg);
 	void addParticipant(Participant * part, int port);
 	void removeParticipant(Participant * part);
+	void makeConversation();
 	void terminateConversation();
 };
 

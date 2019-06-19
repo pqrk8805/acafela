@@ -11,15 +11,26 @@ void ParticipantDirectory::notify_update(std::string phoneNumber, std::string ip
 	}
 	participantDirectory[phoneNumber]->setIP(ip);
 }
+
 void ParticipantDirectory::notify_remove(std::string phoneNumber) {
 	std::lock_guard<std::mutex> guard(mLock);
 	participantDirectory[phoneNumber] = nullptr;
 }
 
-Participant * ParticipantDirectory::get(std::string phoneNumber) {
+Participant * ParticipantDirectory::getFromNumber(std::string phoneNumber) {
 	std::lock_guard<std::mutex> guard(mLock);
 	const auto iter = participantDirectory.find(phoneNumber);
 	if (iter == participantDirectory.cend() || iter->second == nullptr)
 		return nullptr;
 	return participantDirectory[phoneNumber];
+}
+
+Participant * ParticipantDirectory::getFromIP(std::string IP) {
+	std::lock_guard<std::mutex> guard(mLock);
+	for (auto numAndPart : participantDirectory) {
+		Participant * part = std::get<1>(numAndPart);
+		if (!strcmp(IP.c_str(), part->getIP().c_str()))
+			return part;
+	}
+	return nullptr;
 }

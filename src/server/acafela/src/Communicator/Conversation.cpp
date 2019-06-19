@@ -9,11 +9,14 @@ Conversation::Conversation(std::vector<std::tuple<Participant *, int>> partList,
 		FUNC_LOGI("%s join room", std::get<0>(partAndPort)->getIP().c_str());
 		conversationRoom.push_back(partAndPort);
 	}
-	for (auto partAndPort : partList) {
+}
+
+void Conversation::makeConversation() {
+	for (auto partAndPort : conversationRoom) {
 		Participant * part = std::get<0>(partAndPort);
 		FUNC_LOGI("Create %s data path, RCVPort : %d", std::get<0>(partAndPort)->getIP().c_str(), std::get<1>(partAndPort));
 		DataPath * dPath = new DataPath(part, this, part->getIP().c_str(), std::get<1>(partAndPort), isServerPassed);
-		for (auto partAndPort_temp : partList) {
+		for (auto partAndPort_temp : conversationRoom) {
 			Participant * part_temp = std::get<0>(partAndPort_temp);
 			if (part == part_temp)
 				continue;
@@ -48,9 +51,13 @@ void Conversation::broadcast_Data(Participant * partSend, int len, char * data) 
 	}
 }
 
-void Conversation::boradcast_Ctrl(std::string msg) {
-	//tbd
-	;
+void Conversation::boradcast_CtrlExceptMe(Participant * from, acafela::sip::SIPMessage msg) {
+	for (auto partAndPort : conversationRoom) {
+		Participant * part = std::get<0>(partAndPort);
+		if (part == from)
+			continue;
+		ConversationManager().sendControlMessage(part, msg);
+	}
 }
 
 void Conversation::addParticipant(Participant * part, int port) {
