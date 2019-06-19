@@ -125,9 +125,7 @@ public class CallActivity extends AppCompatActivity {
         //int remoteRCVPort = Integer.parseInt(((TextView)findViewById(R.id.editTextRemoteRcvPort)).getText().toString());
         Intent intent = new Intent(getApplicationContext(), HarmonyService.class);
         intent.putExtra(INTENT_CONTROL, INTENT_SIP_INVITE_CALL);
-        intent.putExtra(INTENT_SERVERIP, RemoteIP);
-        intent.putExtra(INTENT_SERVERSENDPORT, 0);
-        intent.putExtra(INTENT_SERVERRCVPORT, 0);
+        intent.putExtra(INTEMT_CALLEE_PHONENUMBER, "0000");
         startService(intent);
     }
     public void onClickSipAcceptCallBtn(View v) {
