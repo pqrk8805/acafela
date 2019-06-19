@@ -28,7 +28,8 @@
             android:name=".ui.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".ui.CallActivity" />
+        <activity android:name=".ui.CallActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity android:name=".ui.TestEncodingActivity" />
         <activity android:name=".ui.TestAsyncEncodingActivity" />
         <activity android:name=".ui.TestVideoEncodingActivity" />

@@ -19,6 +19,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.acafela.harmony.R;
+import com.acafela.harmony.service.HarmonyService;
 import com.acafela.harmony.ui.dialpad.DialpadFragment;
 import com.acafela.harmony.ui.main.ChangePwDialog;
 import com.acafela.harmony.ui.main.RestorePwDialog;
@@ -27,6 +28,9 @@ import com.acafela.harmony.ui.main.UserRegisterDialog;
 import com.acafela.harmony.userprofile.UserInfo;
 
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_PHONENUMBER;
+import static com.acafela.harmony.ui.CallActivity.INTEMT_CALLEE_PHONENUMBER;
+import static com.acafela.harmony.ui.CallActivity.INTENT_CONTROL;
+import static com.acafela.harmony.ui.CallActivity.INTENT_SIP_INVITE_CALL;
 
 public class MainActivity extends AppCompatActivity implements DialpadFragment.Callback {
     private static final String TAG = MainActivity.class.getName();
@@ -65,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
         toolbar.setTitle(getResources().getString(R.string.app_name));
         setSupportActionBar(toolbar);
 
+//        UserInfo.getInstance().setPhoneNumber("2222");
         if (UserInfo.getInstance().getPhoneNumber().isEmpty()) {
             new Handler().post(new Runnable() {
                 public void run() {
@@ -185,9 +190,15 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
 
     @Override
     public void initiateCall(String formatted, String raw) {
-        Log.i(TAG, "initiateCall: " + formatted);
-        Intent intent = new Intent(this, AudioCallActivity.class);
-        intent.putExtra(INTENT_PHONENUMBER, formatted);
-        startActivity(intent);
+        Log.i(TAG, "initiateCall: " + raw);
+
+        Intent serviceIntent = new Intent(getApplicationContext(), HarmonyService.class);
+        serviceIntent.putExtra(INTENT_CONTROL, INTENT_SIP_INVITE_CALL);
+        serviceIntent.putExtra(INTEMT_CALLEE_PHONENUMBER, raw);
+        startService(serviceIntent);
+
+        Intent activityIntent = new Intent(this, AudioCallActivity.class);
+        activityIntent.putExtra(INTENT_PHONENUMBER, raw);
+        startActivity(activityIntent);
     }
 }
