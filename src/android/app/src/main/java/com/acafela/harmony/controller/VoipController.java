@@ -24,7 +24,7 @@ import com.acafela.harmony.crypto.Crypto;
 import com.acafela.harmony.crypto.CryptoBroker;
 import com.acafela.harmony.ui.AudioCallActivity;
 import com.acafela.harmony.userprofile.UserInfo;
-import io.grpc.ManagedChannel;
+
 
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_PHONENUMBER;
 
@@ -50,9 +50,17 @@ public class VoipController {
     private String mCalleeNumber;
     private String mCallerNumber;
 
+    private  enum STATE {
+        IDLE_STATE,
+        RINGING_STATE,
+        CONNECTING_STATE,
+        DISCONNECTING_STATE,
+    }
+    private STATE mState;
 
     public VoipController(Context context)
     {
+        mState = STATE.IDLE_STATE;
         mSessionList = new ArrayList<DataCommunicator>();
         mContext = context;
         mRingControl= new RingController(mContext);
@@ -68,6 +76,7 @@ public class VoipController {
             return ;
         }
     }
+
 
     public void startListenerController() {
         if(isCaller ==true) return;
@@ -117,13 +126,16 @@ public class VoipController {
             switch (message.getCmd()) {
                 case RINGING:
                     Log.i(LOG_TAG, "Listening for ringing calls");
+                    mState = STATE.RINGING_STATE;
                     mRingControl.ringbackTone_start();
                     break;
                 case ACCEPTCALL:
+                    mState = STATE.CONNECTING_STATE;
                     Log.i(LOG_TAG, "Listening for accept calls");
                     mRingControl.ringbackTone_stop();
                     break;
                 case OPENSESSION:
+                    mState = STATE.CONNECTING_STATE;
                     byte[] keyByte = mCryptoRpc.getKey(sesssionID);
                     mCrypto  = CryptoBroker.getInstance().create("AES");
                     mCrypto.init(keyByte);
@@ -134,6 +146,7 @@ public class VoipController {
                     }
                     break;
                 case BYE:
+                    mState = STATE.IDLE_STATE;
                     mRingControl.allStop();
                     destroyAllsession();
                     isCaller = false;
@@ -150,7 +163,7 @@ public class VoipController {
         else {
             switch (message.getCmd()) {
                 case INVITE:
-
+                    mState = STATE.RINGING_STATE;
                     sesssionID = message.getSessionid();
                     mCallerNumber = message.getFrom();
                     mCalleeNumber = message.getTo();
@@ -162,7 +175,7 @@ public class VoipController {
                     mContext.startActivity(intent);
                     break;
                 case OPENSESSION:
-
+                    mState = STATE.CONNECTING_STATE;
                     byte[] keyByte = mCryptoRpc.getKey(sesssionID);
                     mCrypto = CryptoBroker.getInstance().create("AES");
                     Log.e(LOG_TAG, "Send Message: " +"keyByte" + keyByte.length);
@@ -173,6 +186,7 @@ public class VoipController {
                     }
                     break;
                 case BYE:
+                    mState = STATE.IDLE_STATE;
                     mRingControl.allStop();
                     destroyAllsession();
                 case STARTVIDEO:
@@ -255,6 +269,7 @@ public class VoipController {
 
     public void inviteCall(String calleeNumber)
     {
+        if(mState != STATE.IDLE_STATE) return;
         //Add exception state
         mCalleeNumber = calleeNumber;
         mCallerNumber = UserInfo.getInstance().getPhoneNumber();
@@ -266,10 +281,13 @@ public class VoipController {
     public void terminateCall()
     {
         //Add exception state
+        if(mState == STATE.IDLE_STATE) return;
+        mState = STATE.DISCONNECTING_STATE;
         sendMessage(SipMessage.Command.TERMINATE);
     }
     public void acceptCall()
     {
+        if(mState != STATE.RINGING_STATE) return;
         if(isCaller) return;
         mRingControl.ring_stop();
         sendMessage(SipMessage.Command.ACCEPTCALL);
