@@ -12,13 +12,13 @@
 
 #define LOG_TAG "MAIN"
 
-#define SERVER_IP "10.0.1.151"
+#define SERVER_IP "10.0.1.218"
 #define RPC_PORT_USERVER_PROFILE    "9000"
 #define RPC_PORT_DIRECTORY_SERVICE  "9100"
 #define RPC_PORT_CRYPTO_KEY         "9200"
 
-#define CLIENT1_IP "10.0.2.157"
-#define CLIENT2_IP "10.0.1.230"
+#define CLIENT2_IP "10.0.2.157"
+#define CLIENT1_IP "10.0.1.230"
 int PortHandler::portNo = CTRLSERVERSNDPORT;
 std::vector<std::thread *> additionalThreadList; 
 int main(int argc, char** argv)

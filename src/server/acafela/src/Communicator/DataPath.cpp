@@ -69,7 +69,7 @@ void DataPath::openDataPath() {
 void DataPath::terminateDataPath() {
 	//server close ½Ã ÀüÃ¼ Close Session ÇÒ °ÍÀÎ°¡? ¾Æ´Ô °Á Bye?
 	FUNC_LOGI("TERMINATESESSION to %s", ownerPart->getIP().c_str());
-	broadcastSessionControlMsg(acafela::sip::CLOSESESSION);
+	//broadcastSessionControlMsg(acafela::sip::CLOSESESSION);
 	isWorking = false;
 	if (isServerPassed) {
 		closesocket(dataStreamSocket.client);

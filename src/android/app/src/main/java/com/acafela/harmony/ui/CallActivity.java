@@ -20,6 +20,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CallActivity extends AppCompatActivity {
+    public static final String INTEMT_CALLEE_PHONENUMBER = "CALLEE_PHONENUMBER";
     private static final String LOG_TAG = CallActivity.class.getName();
 
     public static final String INTENT_CONTROL = "CONTROL";

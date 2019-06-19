@@ -60,7 +60,7 @@ public class HarmonyService extends Service {
                 terminateCall();
                 break;
             case CallActivity.INTENT_SIP_INVITE_CALL:
-                sipinvite(intent.getStringExtra(CallActivity.INTENT_SERVERIP), intent.getIntExtra(CallActivity.INTENT_SERVERSENDPORT, 0), intent.getIntExtra(CallActivity.INTENT_SERVERRCVPORT, 0));
+                sipinvite(intent.getStringExtra(CallActivity.INTEMT_CALLEE_PHONENUMBER));
                 break;
             case CallActivity.INTENT_SIP_ACCEPT_CALL:
                 sipaccept();
@@ -115,10 +115,10 @@ public class HarmonyService extends Service {
         showToastInService("terminateCall");
     }
 
-    private void sipinvite(String serverIp, int sendPort, int receivePort) {
+    private void sipinvite(String calleeNumber) {
         Log.i(LOG_TAG, "sipinvite");
         showToastInService("sipinvite");
-        controller.inviteCall(serverIp);
+        controller.inviteCall(calleeNumber);
     }
     private void sipaccept() {
         controller.acceptCall();

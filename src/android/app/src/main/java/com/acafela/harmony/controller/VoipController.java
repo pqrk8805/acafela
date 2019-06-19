@@ -43,6 +43,9 @@ public class VoipController {
     RingController mRingControl = null;
     private CryptoKeyRpc mCryptoRpc;
     private List<DataCommunicator> mSessionList;
+    private String mCalleeNumber;
+    private String mCallerNumber;
+
 
     public VoipController(Context context)
     {
@@ -144,6 +147,8 @@ public class VoipController {
             switch (message.getCmd()) {
                 case INVITE:
                     sesssionID = message.getSessionid();
+                    mCallerNumber = message.getFrom();
+                    mCalleeNumber = message.getTo();
                     mRingControl.ring_start();
                     sendMessage(SipMessage.Command.RINGING);
                     break;
@@ -229,8 +234,8 @@ public class VoipController {
         SIPMessage.Builder builder = SIPMessage.newBuilder();
         byte[] buffer = builder.
                 setCmd(cmd).
-                setFrom(UserInfo.getInstance().getPhoneNumber()).
-                setTo("0001").
+                setFrom(mCallerNumber).
+                setTo(mCalleeNumber).
                 setSessionid(sesssionID).
                 setSeq(msgSeq).
                 build().
@@ -239,9 +244,11 @@ public class VoipController {
          UdpSend(buffer);
     }
 
-    public void inviteCall(String serverIp)
+    public void inviteCall(String calleeNumber)
     {
         //Add exception state
+        mCalleeNumber = calleeNumber;
+        mCallerNumber = UserInfo.getInstance().getPhoneNumber();
         sesssionID = UserInfo.getInstance().getPhoneNumber() + sesssionNo++;
         isCaller = true;
 
