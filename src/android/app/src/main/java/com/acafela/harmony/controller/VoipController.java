@@ -26,6 +26,7 @@ import com.acafela.harmony.ui.AudioCallActivity;
 import com.acafela.harmony.userprofile.UserInfo;
 
 
+import static com.acafela.harmony.ui.AudioCallActivity.INTENT_ISRINGING;
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_PHONENUMBER;
 
 public class VoipController {
@@ -172,6 +173,7 @@ public class VoipController {
 
                     Intent intent = new Intent(mContext, AudioCallActivity.class);
                     intent.putExtra(INTENT_PHONENUMBER, mCallerNumber);
+                    intent.putExtra(INTENT_ISRINGING, true);
                     mContext.startActivity(intent);
                     break;
                 case OPENSESSION:

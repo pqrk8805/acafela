@@ -28,6 +28,7 @@ import com.acafela.harmony.ui.main.SectionsPagerAdapter;
 import com.acafela.harmony.ui.main.UserRegisterDialog;
 import com.acafela.harmony.userprofile.UserInfo;
 
+import static com.acafela.harmony.ui.AudioCallActivity.INTENT_ISRINGING;
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_PHONENUMBER;
 import static com.acafela.harmony.ui.CallActivity.INTEMT_CALLEE_PHONENUMBER;
 import static com.acafela.harmony.ui.CallActivity.INTENT_CONTROL;
@@ -214,6 +215,7 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
 
         Intent activityIntent = new Intent(this, AudioCallActivity.class);
         activityIntent.putExtra(INTENT_PHONENUMBER, raw);
+        activityIntent.putExtra(INTENT_ISRINGING, false);
         startActivity(activityIntent);
     }
 }

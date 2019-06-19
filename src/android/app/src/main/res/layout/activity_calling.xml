@@ -137,5 +137,39 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/fourth_container_ringing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:layout_marginBottom="70dp"
+        android:animateLayoutChanges="true"
+        android:elevation="8dp"
+        android:orientation="horizontal">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_acceptcall_callee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="onClickAcceptCallBtn"
+            android:src="@drawable/quantum_ic_call_white_24"
+            app:backgroundTint="@android:color/holo_blue_dark"
+            app:fabSize="normal" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_endcall_callee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="onClickEndCallBtn"
+            android:layout_marginLeft="100dp"
+            app:fabSize="normal"
+            app:backgroundTint="@android:color/holo_red_dark"
+            android:src="@drawable/fab_ic_end_call" />
+
+    </LinearLayout>
+
 
 </RelativeLayout>
