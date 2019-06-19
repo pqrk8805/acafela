@@ -69,6 +69,8 @@ void ConversationManager::messageHandler(acafela::sip::SIPMessage msg) {
 				std::make_tuple(from,PortHandler().getPortNumber()),
 				std::make_tuple(to,PortHandler().getPortNumber())
 				}, false);
+			conversationMap[from] = conversation;
+			conversationMap[to] = conversation;
 		}
 		break;
 		case acafela::sip::INVITE:
@@ -89,6 +91,7 @@ void ConversationManager::messageHandler(acafela::sip::SIPMessage msg) {
 					iter = conversationMap.erase(iter);
 			}
 			delete conversation;
+			return;
 		}
 		break;
 		//case acafela::sip::LEAVE: 
@@ -100,8 +103,8 @@ void ConversationManager::messageHandler(acafela::sip::SIPMessage msg) {
 		//}
 		break;
 	}
-	FUNC_LOGI("Send msg %s to %s", msg.DebugString().c_str(), to->getIP().c_str());
-	if(conversationMap[from]->isP2P())
+	FUNC_LOGI("Send msg %s to %s", to->getIP().c_str(), msg.DebugString().c_str());
+	if(conversationMap[from] == NULL || conversationMap[from]->isP2P())
 		sendControlMessage(to, msg);
 }
 void ConversationManager::sendControlMessage(

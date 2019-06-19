@@ -29,6 +29,7 @@ void Conversation::terminateConversation() {
 		Participant * part = std::get<0>(partAndPort);
 		acafela::sip::SIPMessage msg;
 		msg.set_cmd(acafela::sip::BYE);
+		FUNC_LOGI("Send Bye to %s", part->getIP().c_str());
 		msg.set_from("SERVER");
 		msg.set_to(part->getIP());
 		ConversationManager().sendControlMessage(part, msg); 
