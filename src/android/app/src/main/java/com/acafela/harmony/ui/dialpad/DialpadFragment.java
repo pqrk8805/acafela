@@ -2,7 +2,6 @@ package com.acafela.harmony.ui.dialpad;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -59,7 +58,7 @@ public class DialpadFragment extends Fragment {
         DialpadView dialpadView = view.findViewById(R.id.dialpad_view);
         dialpadView.setShowVoicemailButton(false);
 
-        FloatingActionButton floatingActionButton = view.findViewById(R.id.fab_ok);
+        FloatingActionButton floatingActionButton = view.findViewById(R.id.fab_endcall);
         if (UserInfo.getInstance().getPhoneNumber().isEmpty()) {
             floatingActionButton.hide();
         }
@@ -182,11 +181,11 @@ public class DialpadFragment extends Fragment {
         formatter = PhoneNumberUtil.getInstance()
                 .getAsYouTypeFormatter(formatAsYouType ? regionCode : "");
 
-        view.findViewById(R.id.fab_ok).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.fab_endcall).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (callback != null) {
-                    callback.ok(digits.getText().toString(), input);
+                    callback.initiateCall(digits.getText().toString(), input);
                 }
             }
         });
@@ -256,6 +255,6 @@ public class DialpadFragment extends Fragment {
     }
 
     public interface Callback {
-        void ok(String formatted, String raw);
+        void initiateCall(String formatted, String raw);
     }
 }

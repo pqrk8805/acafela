@@ -1,10 +1,9 @@
 package com.acafela.harmony.ui;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +25,8 @@ import com.acafela.harmony.ui.main.RestorePwDialog;
 import com.acafela.harmony.ui.main.SectionsPagerAdapter;
 import com.acafela.harmony.ui.main.UserRegisterDialog;
 import com.acafela.harmony.userprofile.UserInfo;
+
+import static com.acafela.harmony.ui.AudioCallActivity.INTENT_PHONENUMBER;
 
 public class MainActivity extends AppCompatActivity implements DialpadFragment.Callback {
     private static final String TAG = MainActivity.class.getName();
@@ -64,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
         toolbar.setTitle(getResources().getString(R.string.app_name));
         setSupportActionBar(toolbar);
 
-        UserInfo.getInstance().setPhoneNumber("0000");
         if (UserInfo.getInstance().getPhoneNumber().isEmpty()) {
             new Handler().post(new Runnable() {
                 public void run() {
@@ -184,7 +184,10 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
     }
 
     @Override
-    public void ok(String formatted, String raw) {
-        Log.i(TAG, formatted);
+    public void initiateCall(String formatted, String raw) {
+        Log.i(TAG, "initiateCall: " + formatted);
+        Intent intent = new Intent(this, AudioCallActivity.class);
+        intent.putExtra(INTENT_PHONENUMBER, formatted);
+        startActivity(intent);
     }
 }

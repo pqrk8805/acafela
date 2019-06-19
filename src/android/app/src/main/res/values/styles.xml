@@ -134,4 +134,19 @@
         <item name="dialpad_margin_style">@style/DialpadNoSpaceStyle</item>
         <item name="dialpad_delete_padding">1dp</item>
     </style>
+
+    <style name="InCallButton">
+        <item name="android:layout_width">@dimen/in_call_button_dimension</item>
+        <item name="android:layout_height">@dimen/in_call_button_dimension</item>
+        <item name="android:layout_marginBottom">@dimen/call_button_margin_vertical</item>
+        <item name="android:layout_marginLeft">@dimen/call_button_margin_horizontal</item>
+        <item name="android:layout_marginRight">@dimen/call_button_margin_horizontal</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+    </style>
+
+    <style name="InCallCompoundButton" parent="InCallButton">
+        <item name="android:background">@null</item>
+        <item name="android:textOn">@null</item>
+        <item name="android:textOff">@null</item>
+    </style>
 </resources>

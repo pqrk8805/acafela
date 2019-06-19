@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentStart="true"
+    android:background="@drawable/gradient">
+
+    <LinearLayout
+        android:id="@+id/first_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_uhd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner"
+            android:fontFamily="@font/roboto_black"
+            android:text="UHD"
+            android:textSize="13dp"
+            android:textColor="#171237" />
+
+        <TextView
+            android:id="@+id/tv_voicecall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Voice Call"
+            android:fontFamily="@font/roboto_bold"
+            android:textColor="@color/incall_dialpad_background"
+            android:textSize="16dp"
+            android:layout_marginLeft="5dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/second_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/first_container"
+        android:layout_marginTop="100dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_phonenumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
+            android:text="1111"
+            android:textColor="@color/incall_dialpad_background"
+            android:textSize="23dp" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jaeho Lee"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/incall_dialpad_background"
+            android:textSize="20dp"
+            android:layout_marginTop="15dp" />
+
+        <TextView
+            android:id="@+id/tv_callstate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dialing"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/incall_dialpad_background"
+            android:textSize="18dp"
+            android:layout_marginTop="35dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/third_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/second_container"
+        android:layout_marginTop="100dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:animateLayoutChanges="true" >
+
+        <ToggleButton
+            android:id="@+id/button_speaker"
+            style="@style/InCallCompoundButton"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignBottom="@+id/third_container"
+            android:background="@drawable/btn_speaker" />
+
+        <ToggleButton
+            android:id="@+id/button_earphone"
+            style="@style/InCallCompoundButton"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:gravity="bottom"
+            android:background="@drawable/btn_earpiece" />
+
+        <ToggleButton
+            android:id="@+id/button_bluetooth"
+            style="@style/InCallCompoundButton"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:gravity="bottom"
+            android:background="@drawable/btn_bluetooth" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/fourth_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:layout_marginBottom="70dp"
+        android:animateLayoutChanges="true"
+        android:elevation="8dp">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_endcall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="onClickEndCallBtn"
+            app:fabSize="normal"
+            app:backgroundTint="@android:color/holo_red_dark"
+            android:src="@drawable/fab_ic_end_call" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>
