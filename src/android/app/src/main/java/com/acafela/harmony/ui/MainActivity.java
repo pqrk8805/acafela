@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.MenuCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
     private static final int MENU_REGISTER = 0;
     private static final int MENU_CHANGEPASSWORD = 1;
     private static final int MENU_RESTOREPASSWORD = 2;
+    private static final int MENU_PHONENUMBER = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuCompat.setGroupDividerEnabled(menu, true);
         return true;
     }
 
@@ -101,12 +104,14 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
             menu.getItem(MENU_REGISTER).setEnabled(true);
             menu.getItem(MENU_CHANGEPASSWORD).setEnabled(false);
             menu.getItem(MENU_RESTOREPASSWORD).setEnabled(false);
+            menu.getItem(MENU_PHONENUMBER).setVisible(false);
         }
         else {
             menu.getItem(MENU_REGISTER).setEnabled(false);
             menu.getItem(MENU_CHANGEPASSWORD).setEnabled(true);
             menu.getItem(MENU_RESTOREPASSWORD).setEnabled(true);
-
+            menu.getItem(MENU_PHONENUMBER).setVisible(true);
+            menu.getItem(MENU_PHONENUMBER).setTitle(UserInfo.getInstance().getPhoneNumber());
         }
         return super.onPrepareOptionsMenu(menu);
     }
