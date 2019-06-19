@@ -36,9 +36,11 @@ void Conversation::terminateConversation() {
 		msg.set_from("SERVER");
 		msg.set_to(part->getIP());
 		ConversationManager().sendControlMessage(part, msg); 
-		part->getDataPath()->terminateDataPath();
-		delete part->getDataPath();
-		part->clearDataPath();
+		if (part->getDataPath() != nullptr) {
+			part->getDataPath()->terminateDataPath();
+			delete part->getDataPath();
+			part->clearDataPath();
+		}
 	}
 }
 

@@ -53,8 +53,9 @@ int main(int argc, char** argv)
 
 
 	//Stub it before implement client side directory service.
-	directoryService.update("2222", "????", CLIENT1_IP);
-	directoryService.update("1111", "????", CLIENT2_IP);
+	directoryService.update("1111", "????", "10.0.1.230");
+	directoryService.update("1112", "????", "10.0.2.157");
+	directoryService.update("2222", "????", "10.0.1.100");
 
 	WSADATA wsa;
 	FUNC_LOGI("Initialising Winsock...");
