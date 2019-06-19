@@ -1,10 +1,19 @@
 #include "DBFile.h"
+#include <windows.h>
 #include <fstream>
 
 using namespace std;
 
 DBFile::DBFile(const std::string& filename, const std::string& access_mode)
 {
+	wstring rootPath = L"./storage/";	
+	CreateDirectory(rootPath.c_str(), NULL);
+
+	wstring wfilename = wstring(filename.begin(), filename.end());
+	int filenameOffset = filename.find_last_of('/');	
+	wstring subPath = wfilename.substr(0, filenameOffset);
+	CreateDirectory(subPath.c_str(), NULL);
+
 	OpenFile(filename, access_mode);
 }
 

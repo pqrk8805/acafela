@@ -257,7 +257,6 @@ public class VoipController {
     public void terminateCall()
     {
         //Add exception state
-        mRingControl.ring_stop();//need delete
         sendMessage(SipMessage.Command.TERMINATE);
     }
     public void acceptCall()
