@@ -90,27 +90,21 @@
         android:animateLayoutChanges="true" >
 
         <ToggleButton
-            android:id="@+id/button_speaker"
+            android:id="@+id/toggle_speaker"
             style="@style/InCallCompoundButton"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_alignBottom="@+id/third_container"
+            android:onClick="onClickSpeakerToggleBtn"
             android:background="@drawable/btn_speaker" />
 
         <ToggleButton
-            android:id="@+id/button_earphone"
+            android:id="@+id/toggle_bluetooth"
             style="@style/InCallCompoundButton"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:gravity="bottom"
-            android:background="@drawable/btn_earpiece" />
-
-        <ToggleButton
-            android:id="@+id/button_bluetooth"
-            style="@style/InCallCompoundButton"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:gravity="bottom"
+            android:layout_marginLeft="100dp"
+            android:onClick="onClickBluetoothToggleBtn"
             android:background="@drawable/btn_bluetooth" />
     </LinearLayout>
 
@@ -126,11 +120,11 @@
         android:elevation="8dp">
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_endcall"
+            android:id="@+id/fab_terminatecall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:onClick="onClickEndCallBtn"
+            android:onClick="onClickTerminateCallBtn"
             app:fabSize="normal"
             app:backgroundTint="@android:color/holo_red_dark"
             android:src="@drawable/fab_ic_end_call" />
@@ -159,11 +153,11 @@
             app:fabSize="normal" />
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_endcall_callee"
+            android:id="@+id/fab_terminatecall_callee"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:onClick="onClickEndCallBtn"
+            android:onClick="onClickTerminateCallBtn"
             android:layout_marginLeft="100dp"
             app:fabSize="normal"
             app:backgroundTint="@android:color/holo_red_dark"

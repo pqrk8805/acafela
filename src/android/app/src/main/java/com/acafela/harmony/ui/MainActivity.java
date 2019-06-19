@@ -208,14 +208,21 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
     public void initiateCall(String formatted, String raw) {
         Log.i(TAG, "initiateCall: " + raw);
 
-        Intent serviceIntent = new Intent(getApplicationContext(), HarmonyService.class);
-        serviceIntent.putExtra(INTENT_CONTROL, INTENT_SIP_INVITE_CALL);
-        serviceIntent.putExtra(INTEMT_CALLEE_PHONENUMBER, raw);
-        startService(serviceIntent);
+        if (raw.length() == 4 ||
+                (raw.length() == 5 && raw.charAt(0) == '#')) {
+            Intent serviceIntent = new Intent(getApplicationContext(), HarmonyService.class);
+            serviceIntent.putExtra(INTENT_CONTROL, INTENT_SIP_INVITE_CALL);
+            serviceIntent.putExtra(INTEMT_CALLEE_PHONENUMBER, raw);
+            startService(serviceIntent);
 
-        Intent activityIntent = new Intent(this, AudioCallActivity.class);
-        activityIntent.putExtra(INTENT_PHONENUMBER, raw);
-        activityIntent.putExtra(INTENT_ISRINGING, false);
-        startActivity(activityIntent);
+            Intent activityIntent = new Intent(this, AudioCallActivity.class);
+            activityIntent.putExtra(INTENT_PHONENUMBER, raw);
+            activityIntent.putExtra(INTENT_ISRINGING, false);
+            startActivity(activityIntent);
+            return;
+        }
+
+        showPopup("Please Dial Valid PhoneNumber.");
+
     }
 }

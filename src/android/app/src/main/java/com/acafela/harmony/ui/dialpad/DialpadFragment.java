@@ -58,7 +58,7 @@ public class DialpadFragment extends Fragment {
         DialpadView dialpadView = view.findViewById(R.id.dialpad_view);
         dialpadView.setShowVoicemailButton(false);
 
-        FloatingActionButton floatingActionButton = view.findViewById(R.id.fab_endcall);
+        FloatingActionButton floatingActionButton = view.findViewById(R.id.fab_terminatecall);
         if (UserInfo.getInstance().getPhoneNumber().isEmpty()) {
             floatingActionButton.hide();
         }
@@ -181,7 +181,7 @@ public class DialpadFragment extends Fragment {
         formatter = PhoneNumberUtil.getInstance()
                 .getAsYouTypeFormatter(formatAsYouType ? regionCode : "");
 
-        view.findViewById(R.id.fab_endcall).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.fab_terminatecall).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (callback != null) {
