@@ -26,6 +26,8 @@ import com.acafela.harmony.ui.AudioCallActivity;
 import com.acafela.harmony.userprofile.UserInfo;
 import io.grpc.ManagedChannel;
 
+import static com.acafela.harmony.ui.AudioCallActivity.INTENT_PHONENUMBER;
+
 public class VoipController {
     public static final int CONTROL_SEND_PORT = 5000;
     public static final int CONTROL_RECIEVE_PORT = 5001;
@@ -148,14 +150,16 @@ public class VoipController {
         else {
             switch (message.getCmd()) {
                 case INVITE:
-                    Intent intent = new Intent(mContext, AudioCallActivity.class);
-                    mContext.startActivity(intent);
-                    
+
                     sesssionID = message.getSessionid();
                     mCallerNumber = message.getFrom();
                     mCalleeNumber = message.getTo();
                     mRingControl.ring_start();
                     sendMessage(SipMessage.Command.RINGING);
+
+                    Intent intent = new Intent(mContext, AudioCallActivity.class);
+                    intent.putExtra(INTENT_PHONENUMBER, mCallerNumber);
+                    mContext.startActivity(intent);
                     break;
                 case OPENSESSION:
 
