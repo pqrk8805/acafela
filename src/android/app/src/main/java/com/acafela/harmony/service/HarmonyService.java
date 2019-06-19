@@ -8,17 +8,13 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.acafela.harmony.ui.CallActivity;
 import com.acafela.harmony.communicator.ReceiverAudio;
-import com.acafela.harmony.communicator.ReceiverVideo;
 import com.acafela.harmony.communicator.SenderAudio;
-import com.acafela.harmony.communicator.SenderVideo;
-
+import com.acafela.harmony.controller.VoipController;
 import com.acafela.harmony.crypto.Crypto;
 import com.acafela.harmony.crypto.CryptoBroker;
 import com.acafela.harmony.crypto.ICrypto;
-
-import com.acafela.harmony.controller.VoipController;
+import com.acafela.harmony.ui.CallActivity;
 
 public class HarmonyService extends Service {
     private static final String LOG_TAG = HarmonyService.class.getName();
@@ -28,8 +24,6 @@ public class HarmonyService extends Service {
     VoipController controller;
     SenderAudio senderAudio;
     ReceiverAudio receiverAudio;
-    SenderVideo senderVideo;
-    ReceiverVideo receiverVideo;
 
     @Override
     public void onCreate() {
@@ -46,6 +40,7 @@ public class HarmonyService extends Service {
         Log.i(LOG_TAG, "onStartCommand");
 
         String control = intent.getStringExtra(CallActivity.INTENT_CONTROL);
+        Log.i(LOG_TAG, "INTENT_CONTROL: " + control);
         if (control == null) {
             return super.onStartCommand(intent, flags, startId);
         }
@@ -126,8 +121,8 @@ public class HarmonyService extends Service {
         showToastInService("sipaccept");
     }
     private void sipterminate() {
-        controller.terminateCall();
         Log.i(LOG_TAG, "sipterminate");
+        controller.terminateCall();
         showToastInService("sipterminate");
     }
     private void showToastInService(final String string) {

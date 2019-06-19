@@ -1,6 +1,7 @@
 package com.acafela.harmony.controller;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import java.io.IOException;
@@ -21,6 +22,7 @@ import com.acafela.harmony.sip.SipMessage;
 import com.acafela.harmony.sip.SipMessage.SIPMessage;
 import com.acafela.harmony.crypto.Crypto;
 import com.acafela.harmony.crypto.CryptoBroker;
+import com.acafela.harmony.ui.AudioCallActivity;
 import com.acafela.harmony.userprofile.UserInfo;
 import io.grpc.ManagedChannel;
 
@@ -146,6 +148,9 @@ public class VoipController {
         else {
             switch (message.getCmd()) {
                 case INVITE:
+                    Intent intent = new Intent(mContext, AudioCallActivity.class);
+                    mContext.startActivity(intent);
+                    
                     sesssionID = message.getSessionid();
                     mCallerNumber = message.getFrom();
                     mCalleeNumber = message.getTo();

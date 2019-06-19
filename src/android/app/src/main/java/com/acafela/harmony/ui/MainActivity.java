@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG, "onCreate");
         setContentView(R.layout.activity_main);
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = findViewById(R.id.view_pager);
@@ -77,6 +78,15 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
                 }
             });
         }
+
+        Intent serviceIntent = new Intent(getApplicationContext(), HarmonyService.class);
+        startService(serviceIntent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "onDestroy");
     }
 
     @Override
