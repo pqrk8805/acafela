@@ -33,6 +33,8 @@ public:
 	std::string getTempPassword(
 		const std::string& emailAddress) override;
 
+	int deleteUser(const std::string& emailAddress) override;
+
 	int getUserNumber() override;
 	int updateUserNumber(int userNumber) override;
 

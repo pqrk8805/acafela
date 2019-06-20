@@ -173,6 +173,25 @@ string FileStorageAccessor::getTempPassword(const string& emailAddress)
 	return numPassword.substr(0, 4);
 }
 
+int FileStorageAccessor::deleteUser(const std::string& emailAddress)
+{
+	wstring wEmailAddress(emailAddress.begin(), emailAddress.end());
+	{
+		lock_guard<mutex> lock(mPasswordLock);
+
+		wstring wPath = L"./Storage/password/" + wEmailAddress + L".bin";
+		DeleteFile(wPath.c_str());
+	}
+	{
+		lock_guard<mutex> lock(mUserNumberLock);
+
+		wstring wPath = L"./Storage/phonenumber/" + wEmailAddress + L".bin";
+		DeleteFile(wPath.c_str());
+	}
+
+	return 0;
+}
+
 int FileStorageAccessor::getUserNumber()
 {
 	lock_guard<mutex> lock(mUserNumberLock);

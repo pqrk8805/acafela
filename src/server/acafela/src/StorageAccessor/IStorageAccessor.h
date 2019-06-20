@@ -36,7 +36,7 @@ public:
 	virtual std::string getTempPassword(
 		const std::string& emailAddress) = 0;
 
-	//virtual int deleteUser(const std::string& emailAddress) = 0;
+	virtual int deleteUser(const std::string& emailAddress) = 0;
 	//virtual int disableUser(const std::string& emailAddress) = 0;
 	//virtual int enableUser(const std::string& emailAddress) = 0;
 
