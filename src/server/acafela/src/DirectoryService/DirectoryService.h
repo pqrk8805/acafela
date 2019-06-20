@@ -3,15 +3,17 @@
 #include <map>
 #include <mutex>
 #include "IDirectoryService.h"
+#include "IStorageAccessor.h"
 
 class DirectoryService : public IDirectoryService
 {
 private:
     std::map<std::string, std::string> mBook;
     std::mutex mLock;
+	IStorageAccessor& mStorageAccessor;
 
 public:
-    DirectoryService();
+    DirectoryService(IStorageAccessor& sa);
     ~DirectoryService();
 
     int update(

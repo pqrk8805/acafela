@@ -8,6 +8,7 @@
 #include "Communicator/communicator.h"
 #include "UserProfile.h"
 #include "UserProfileRpc.h"
+#include "FileStorageAccessor.h"
 #include "Hislog.h"
 
 #define LOG_TAG "MAIN"
@@ -21,13 +22,16 @@
 #define CLIENT2_IP "10.0.1.230"
 int PortHandler::portNo = CTRLSERVERSNDPORT;
 std::vector<std::thread *> additionalThreadList; 
+
 int main(int argc, char** argv)
 {
     FUNC_LOGI("Acafela Server started");
 
     int err = 0;
 
-    UserProfile userProfile;
+	FileStorageAccessor storageAccessor;
+
+    UserProfile userProfile(storageAccessor);
     UserProfileRpc userProfileRpc(userProfile);
     err = userProfileRpc.start(SERVER_IP ":" RPC_PORT_USERVER_PROFILE);
     if (err) {
@@ -35,7 +39,7 @@ int main(int argc, char** argv)
         return err;
     }
 
-    DirectoryService directoryService;
+    DirectoryService directoryService(storageAccessor);
     DirectoryServiceRpc directoryServiceRpc(directoryService);
     err = directoryServiceRpc.start(SERVER_IP ":" RPC_PORT_DIRECTORY_SERVICE);
     if (err) {

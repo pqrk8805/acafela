@@ -4,7 +4,8 @@
 
 #define LOG_TAG "DirService"
 
-DirectoryService::DirectoryService()
+DirectoryService::DirectoryService(IStorageAccessor& sa)
+  : mStorageAccessor(sa)
 {
 }
 

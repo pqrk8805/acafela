@@ -5,10 +5,11 @@
 
 class IStorageAccessor;
 class ISecurityProvider;
+
 class UserProfile : public IUserProfile
 {
 public:
-    UserProfile();
+    UserProfile(IStorageAccessor& sa);
     ~UserProfile();
 
 
@@ -29,6 +30,6 @@ private:
 	std::string generateUserPhoneNumber();
 
 private:
-	std::unique_ptr<IStorageAccessor> mSA;
+	IStorageAccessor& mSA;
 	std::unique_ptr<ISecurityProvider> mSP;
 };
