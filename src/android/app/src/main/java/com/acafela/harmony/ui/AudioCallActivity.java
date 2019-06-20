@@ -3,7 +3,6 @@ package com.acafela.harmony.ui;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothHeadset;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -67,9 +66,7 @@ public class AudioCallActivity extends AppCompatActivity {
         }
 
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        mAudioManager.setBluetoothScoOn(false);
-        mAudioManager.stopBluetoothSco();
-        mAudioManager.setSpeakerphoneOn(false);
+        setEarPieceAudio();
     }
 
     @Override
@@ -100,13 +97,9 @@ public class AudioCallActivity extends AppCompatActivity {
     public void onClickSpeakerToggleBtn(View v) {
         if(((ToggleButton) v).isChecked()) {
             ((ToggleButton)findViewById(R.id.toggle_bluetooth)).setChecked(false);
-            mAudioManager.setBluetoothScoOn(false);
-            mAudioManager.stopBluetoothSco();
-            mAudioManager.setSpeakerphoneOn(true);
+            setSpeakerAudio();
         } else {
-            mAudioManager.setBluetoothScoOn(false);
-            mAudioManager.stopBluetoothSco();
-            mAudioManager.setSpeakerphoneOn(false);
+            setEarPieceAudio();
         }
     }
 
@@ -114,9 +107,7 @@ public class AudioCallActivity extends AppCompatActivity {
         if(((ToggleButton) v).isChecked()) {
             if (isBluetoothConnected()) {
                 ((ToggleButton) findViewById(R.id.toggle_speaker)).setChecked(false);
-                mAudioManager.setSpeakerphoneOn(false);
-                mAudioManager.setBluetoothScoOn(true);
-                mAudioManager.startBluetoothSco();
+                setBluetoothAudio();
             }
             else {
                 ((ToggleButton)findViewById(R.id.toggle_bluetooth)).setChecked(false);
@@ -125,10 +116,26 @@ public class AudioCallActivity extends AppCompatActivity {
                 startActivity(intentOpenBluetoothSettings);
             }
         } else {
-            mAudioManager.setBluetoothScoOn(false);
-            mAudioManager.stopBluetoothSco();
-            mAudioManager.setSpeakerphoneOn(false);
+            setEarPieceAudio();
         }
+    }
+
+    private void setSpeakerAudio() {
+        mAudioManager.setBluetoothScoOn(false);
+        mAudioManager.stopBluetoothSco();
+        mAudioManager.setSpeakerphoneOn(true);
+    }
+
+    private void setEarPieceAudio() {
+        mAudioManager.setBluetoothScoOn(false);
+        mAudioManager.stopBluetoothSco();
+        mAudioManager.setSpeakerphoneOn(false);
+    }
+
+    private void setBluetoothAudio() {
+        mAudioManager.setSpeakerphoneOn(false);
+        mAudioManager.setBluetoothScoOn(true);
+        mAudioManager.startBluetoothSco();
     }
 
     private void terminateCall() {

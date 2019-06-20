@@ -24,28 +24,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.AudioCallActivity"></activity>
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".ui.CallActivity" />
-        <activity android:name=".ui.TestEncodingActivity" />
-        <activity android:name=".ui.TestAsyncEncodingActivity" />
-        <activity android:name=".ui.TestVideoEncodingActivity" />
-
-        <service
-            android:name=".service.HarmonyService"
-            android:enabled="true"
-            android:exported="false" />
-
-        <activity android:name=".ui.TestMainActivity">
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.AudioCallActivity"></activity>
+        <activity android:name=".ui.CallActivity" />
+        <activity android:name=".ui.TestEncodingActivity" />
+        <activity android:name=".ui.TestAsyncEncodingActivity" />
+        <activity android:name=".ui.TestVideoEncodingActivity" />
+        <activity android:name=".ui.TestMainActivity" />
+
+        <service
+            android:name=".service.HarmonyService"
+            android:enabled="true"
+            android:exported="false" />
+
 
         <receiver
             android:name=".BroadcastReceiverOnBootComplete"

@@ -1,10 +1,13 @@
 package com.acafela.harmony.ui;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.MenuCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -37,15 +40,25 @@ import static com.acafela.harmony.ui.CallActivity.INTENT_SIP_INVITE_CALL;
 public class MainActivity extends AppCompatActivity implements DialpadFragment.Callback {
     private static final String TAG = MainActivity.class.getName();
 
+    private static final int PERMISSION_ALL_ID = 1;
+    private static final String[] PERMISSIONS = {
+            android.Manifest.permission.RECORD_AUDIO,
+            android.Manifest.permission.CAMERA
+    };
+
     private static final int MENU_REGISTER = 0;
     private static final int MENU_CHANGEPASSWORD = 1;
     private static final int MENU_RESTOREPASSWORD = 2;
     private static final int MENU_PHONENUMBER = 3;
+    private static final String HIDE_TEST_MAIN = "9999";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "onCreate");
+
+        requestPermissions();
+
         setContentView(R.layout.activity_main);
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = findViewById(R.id.view_pager);
@@ -73,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
         toolbar.setTitle(getResources().getString(R.string.app_name));
         setSupportActionBar(toolbar);
 
+        UserInfo.getInstance().load(this);
 //        UserInfo.getInstance().setPhoneNumber("2222");
         if (UserInfo.getInstance().getPhoneNumber().isEmpty()) {
             new Handler().post(new Runnable() {
@@ -208,6 +222,12 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
     public void initiateCall(String formatted, String raw) {
         Log.i(TAG, "initiateCall: " + raw);
 
+        if (raw.equals(HIDE_TEST_MAIN)) {
+            Intent activityIntent = new Intent(this, TestMainActivity.class);
+            startActivity(activityIntent);
+            return;
+        }
+
         if (raw.length() == 4 ||
                 (raw.length() == 5 && raw.charAt(0) == '#')) {
             Intent serviceIntent = new Intent(getApplicationContext(), HarmonyService.class);
@@ -224,5 +244,24 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
 
         showPopup("Please Dial Valid PhoneNumber.");
 
+    }
+
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private void requestPermissions() {
+        if(!hasPermissions(this, PERMISSIONS)) {
+            ActivityCompat.requestPermissions(this,
+                    PERMISSIONS,
+                    PERMISSION_ALL_ID);
+        }
     }
 }
