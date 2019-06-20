@@ -97,19 +97,20 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
         toolbar.setTitle(getResources().getString(R.string.app_name));
         setSupportActionBar(toolbar);
 
+        Intent serviceIntent = new Intent(getApplicationContext(), HarmonyService.class);
+        startService(serviceIntent);
+
         UserInfo.getInstance().load(this);
 //        UserInfo.getInstance().setPhoneNumber("2222");
         if (UserInfo.getInstance().getPhoneNumber().isEmpty()) {
-            new Handler().post(new Runnable() {
+            new Handler().postDelayed(new Runnable() {
                 public void run() {
                     showPopup("Please Register");
                 }
-            });
+            }, 1000);
         }else {
             //directoryServiceUpdate();
         }
-        Intent serviceIntent = new Intent(getApplicationContext(), HarmonyService.class);
-        startService(serviceIntent);
     }
 
     @Override
