@@ -20,7 +20,32 @@ int CryptoKey::generateKey(
                     const string& sessionId,
                     const string& algorithm)
 {
-    return -1;
+	time_t initValue = chrono::system_clock::to_time_t(chrono::system_clock::now());
+	string strInitValue = to_string(initValue);
+	string hashKey = mKeyMaker->GetSecureData(strInitValue);
+
+	mAESKey = {	-108, -110, -109,   -7, -33, 126,  75, 78,
+				 110,  -25,  -40, -109, -12, 40,  -40, 96,
+	};
+	FUNC_LOGI("Get Crypto Key");
+
+	if (hashKey.length() >= 32)
+	{
+		for (int i = 0; i < 16; i++)
+		{
+			stringstream ss;
+			string num = hashKey.substr(2 * i, 2);
+			ss << hex << num;
+			int x;
+			ss >> x;
+			mAESKey[i] = x;
+		}
+		return 0;
+	}
+	else
+	{
+		return -1;
+	}    
 }
 
 void CryptoKey::removeKey(
@@ -31,31 +56,6 @@ void CryptoKey::removeKey(
 vector<char> CryptoKey::getKey(
                                 const string sessionId)
 {
-	time_t initValue = chrono::system_clock::to_time_t(chrono::system_clock::now());
-	string strInitValue = to_string(initValue);
-	string hashKey = mKeyMaker->GetSecureData(strInitValue);
-    // temp
-    //
-
-    vector<char> aesKey {
-                            -108, -110, -109,   -7, -33, 126,  75, 78,
-                             110,  -25,  -40, -109, -12, 40,  -40, 96,
-    };
-	FUNC_LOGI("Get Crypto Key");
-
-	if(hashKey.length() >= 32)
-	{
-		for (int i = 0; i < 16; i++)
-		{
-			stringstream ss;
-			string num = hashKey.substr(2 * i, 2);
-			ss << hex << num;
-			int x;
-			ss >> x;
-			aesKey[i] = x;
-		}
-	}
-
-	return aesKey;
+	return mAESKey;
 }
 
