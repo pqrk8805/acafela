@@ -99,6 +99,21 @@ void ConversationManager::messageHandler(std::string IP, acafela::sip::SIPMessag
 			return;
 		}
 		break;
+		case acafela::sip::STARTVIDEO:
+		{
+			FUNC_LOGI("Request to StartVideo");
+			Conversation * conversation = conversationMap[sender];
+			conversation->startVideoConversation();
+			break;
+		}
+		case acafela::sip::STOPVIDEO:
+		{
+			FUNC_LOGI("Request to StartVideo");
+			Conversation * conversation = conversationMap[sender];
+			conversation->stopVideoConversation();
+			break;
+		}
+		break;
 		//case acafela::sip::LEAVE: 
 		//{
 		//	Conversation * conversation = conversationMap[from];

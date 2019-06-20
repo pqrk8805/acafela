@@ -53,18 +53,22 @@ private:
 	int receivePort;
 	bool isServerPassed;
 	bool isWorking;
+	bool isVideoWorking;
 	Participant * ownerPart;
 	SocketGroup dataStreamSocket;
+	SocketGroup dataVideoStreamSocket;
 	Conversation * conversation;
 	std::map<Participant *, int> sendPortDirectory;
 	std::vector<std::tuple<Participant *, int, char *>> dataBuffer;
+	std::vector<std::tuple<Participant *, int, char *>> dataVideoBuffer;
 	CRITICAL_SECTION crit;
 	std::string clientIP;
 	std::vector<std::thread *> threadList;
-	void createSocket();
+	void createSocket(SocketGroup& streamSocket, bool isVideo);
 	void createServerDataPath();
-	void broadcastSessionControlMsg(acafela::sip::Command cmd);
-	void sendSessionControlMsg(Participant * part, acafela::sip::Command cmd);
+	void createVideoServerDataPath();
+	void broadcastSessionControlMsg(acafela::sip::Command cmd, acafela::sip::SessionType sessionType);
+	void sendSessionControlMsg(Participant * part, acafela::sip::Command cmd, acafela::sip::SessionType sessionType);
 public:
 	DataPath(Participant * ownerPart, Conversation * conversation, std::string clientIP, int receivePort, bool isServerPassed = false) {
 		this->ownerPart = ownerPart;
@@ -73,15 +77,20 @@ public:
 		this->receivePort = receivePort;
 		this->isServerPassed = isServerPassed;
 		this->isWorking = true;
+		this->isVideoWorking = false;
 		if(isServerPassed)
 			createServerDataPath();
-	}
+	};
 	void openDataPath();
+	void startVideoDataPath();
 	void terminateDataPath();
+	void stopVideoDataPath();
+	void listener(SocketGroup socket, bool isVideo);
+	void sender(SocketGroup socket, bool isVideo);
 	void initParticipant(Participant * part, int port);
 	void addParticipant(Participant * part, int port);
 	void removeParticipant(Participant * part);
-	void addToSendData(Participant * part, int len, char * data);
+	void addToSendData(Participant * part, int len, char * data, bool isVideo);
 };
 
 class Participant {
@@ -106,8 +115,9 @@ public:
 class Conversation {
 private :
 	std::vector<std::tuple<Participant *, int>> conversationRoom;
-	bool isServerPassed;
 	int sessionId;
+	bool isServerPassed;
+	bool isVideoEnabled;
 public :
 	Conversation(std::vector<std::tuple<Participant *, int>> partList, bool isServerPassed);
 	bool isP2P() {
@@ -116,7 +126,12 @@ public :
 	void setSessionId(int sessionId) {
 		this->sessionId = sessionId;
 	}
-	void broadcast_Data(Participant * partSend, int len, char * data);
+	bool isVideoComm() {
+		return isVideoEnabled;
+	}
+	void startVideoConversation();
+	void stopVideoConversation();
+	void broadcast_Data(Participant * partSend, int len, char * data, bool isVideo);
 	void boradcast_CtrlExceptMe(Participant * from, acafela::sip::SIPMessage msg);
 	void addParticipant(Participant * part, int port);
 	void removeParticipant(Participant * part);
@@ -129,6 +144,16 @@ private:
 	static int portNo;
 public:
 	static int getPortNumber() {
-		return ++portNo;
+		portNo += 2;
+		return portNo;
+	}
+};
+
+class RoomNoHandler {
+private:
+	static int roomNo;
+public:
+	static int getRoomNumber() {
+		return ++roomNo;
 	}
 };

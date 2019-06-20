@@ -21,6 +21,7 @@
 #define CLIENT1_IP "10.0.2.157"
 #define CLIENT2_IP "10.0.1.230"
 int PortHandler::portNo = CTRLSERVERSNDPORT;
+int RoomNoHandler::roomNo = 100;
 std::vector<std::thread *> additionalThreadList; 
 
 int main(int argc, char** argv)

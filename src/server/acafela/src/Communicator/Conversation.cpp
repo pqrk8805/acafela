@@ -44,12 +44,12 @@ void Conversation::terminateConversation() {
 	}
 }
 
-void Conversation::broadcast_Data(Participant * partSend, int len, char * data) {
+void Conversation::broadcast_Data(Participant * partSend, int len, char * data, bool isVideo) {
 	for (auto partAndPort : conversationRoom) {
 		Participant * part = std::get<0>(partAndPort);
 		if (part == partSend)
 			continue;
-		part->getDataPath()->addToSendData(partSend, len, data);
+		part->getDataPath()->addToSendData(partSend, len, data, isVideo);
 	}
 }
 
@@ -59,6 +59,20 @@ void Conversation::boradcast_CtrlExceptMe(Participant * from, acafela::sip::SIPM
 		if (part == from)
 			continue;
 		ConversationManager().sendControlMessage(part, msg);
+	}
+}
+
+void Conversation::startVideoConversation() {
+	for (auto partAndPort : conversationRoom) {
+		Participant * part = std::get<0>(partAndPort);
+		part->getDataPath()->startVideoDataPath();
+	}
+}
+
+void Conversation::stopVideoConversation() {
+	for (auto partAndPort : conversationRoom) {
+		Participant * part = std::get<0>(partAndPort);
+		part->getDataPath()->stopVideoDataPath();
 	}
 }
 
