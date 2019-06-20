@@ -65,7 +65,7 @@ bool FileStorageAccessor::confirmPassword(const std::string& emailAddress, const
 		return false;
 }
 
-int FileStorageAccessor::confirmPhoneNumber(const string& emailAddress, const string& phoneNumber)
+bool FileStorageAccessor::confirmPhoneNumber(const string& emailAddress, const string& phoneNumber)
 {
 	lock_guard<mutex> lock(mPhoneNumberLock);
 
@@ -82,6 +82,65 @@ int FileStorageAccessor::confirmPhoneNumber(const string& emailAddress, const st
 		return true;
 	else
 		return false;
+}
+
+string FileStorageAccessor::FindEmailAddress(const string& phoneNumber)
+{	
+	lock_guard<mutex> lock(mPhoneNumberLock);
+
+	WIN32_FIND_DATA FindFileData;
+	HANDLE hFind;
+	wstring path = L"./storage/phonenumber/";
+
+	string emailAddress;
+	bool bFind = false;
+	hFind = FindFirstFile(path.c_str(), &FindFileData);
+	while (hFind != INVALID_HANDLE_VALUE)
+	{
+		wstring wEmailAddress = FindFileData.cFileName;
+		string emailAddress(wEmailAddress.begin(), wEmailAddress.end());
+		PhoneNumberFile f(emailAddress, "rb");
+		string savedPhoneNumber = f.ReadFile();
+
+		if (phoneNumber.compare(0, phoneNumber.length(), savedPhoneNumber, 0, phoneNumber.length()) == 0)
+		{
+			bFind = true;
+			break;
+		}
+
+		if (!FindNextFile(hFind, &FindFileData))
+			break;
+	}
+	FindClose(hFind);
+	
+	if (bFind == true)
+	{
+		return emailAddress;
+	}
+	else
+	{
+		return "";
+	}
+}
+
+int FileStorageAccessor::confirmPhoneNumberPassword(const string& phoneNumber, const string& password)
+{
+	string emailAddress = FindEmailAddress(phoneNumber);
+
+	if (emailAddress.compare("") == 0)
+	{
+		return -1;
+	}
+
+	bool bConfirm = confirmPassword(emailAddress, password);
+	if (bConfirm == true)
+	{
+		return 0;
+	}
+	else
+	{
+		return -1;
+	}
 }
 
 #include <regex>
