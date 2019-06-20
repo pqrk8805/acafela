@@ -67,6 +67,9 @@ public class AudioCallActivity extends AppCompatActivity {
         }
 
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        mAudioManager.setBluetoothScoOn(false);
+        mAudioManager.stopBluetoothSco();
+        mAudioManager.setSpeakerphoneOn(false);
     }
 
     @Override
