@@ -26,6 +26,7 @@ import com.acafela.harmony.ui.AudioCallActivity;
 import com.acafela.harmony.userprofile.UserInfo;
 
 
+import static com.acafela.harmony.ui.AudioCallActivity.BROADCAST_BYE;
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_ISRINGING;
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_PHONENUMBER;
 
@@ -151,6 +152,8 @@ public class VoipController {
                     mRingControl.allStop();
                     destroyAllsession();
                     isCaller = false;
+
+                    finishCallActivity();
                     break;
                 case STARTVIDEO:
                 case STOPVIDEO:
@@ -201,6 +204,13 @@ public class VoipController {
             }
         }
     }
+
+    private void finishCallActivity() {
+        Intent intent = new Intent();
+        intent.setAction(BROADCAST_BYE);
+        mContext.sendBroadcast(intent);
+    }
+
     void opensession(SipMessage.SessionType type, String ip, int port)
     {
         Log.e(LOG_TAG, "Send Message: "+ type +"ip" +ip +"port"+ port);

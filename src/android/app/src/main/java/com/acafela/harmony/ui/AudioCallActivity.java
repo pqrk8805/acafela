@@ -2,12 +2,16 @@ package com.acafela.harmony.ui;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothHeadset;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -25,8 +29,19 @@ public class AudioCallActivity extends AppCompatActivity {
 
     public static final String INTENT_PHONENUMBER = "INTENT_PHONENUMBER";
     public static final String INTENT_ISRINGING = "INTENT_ISCALEE";
+    public static final String BROADCAST_BYE = "com.acafela.action.bye";
 
     private AudioManager mAudioManager;
+    LocalBroadcastManager mLocalBroadcastManager;
+    BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals(BROADCAST_BYE)){
+                Log.i(TAG, "onReceive BYE");
+                finish();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +50,8 @@ public class AudioCallActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_audiocall);
+
+        RegisterBroadCastReceiver();
 
         Intent intent = getIntent();
 
@@ -55,12 +72,12 @@ public class AudioCallActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        terminateCall();
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        terminateCall();
         finish();
     }
 
@@ -123,5 +140,12 @@ public class AudioCallActivity extends AppCompatActivity {
         BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         return mBluetoothAdapter != null && mBluetoothAdapter.isEnabled()
                 && mBluetoothAdapter.getProfileConnectionState(BluetoothHeadset.HEADSET) == BluetoothHeadset.STATE_CONNECTED;
+    }
+
+    private void RegisterBroadCastReceiver() {
+        mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
+        IntentFilter mIntentFilter = new IntentFilter();
+        mIntentFilter.addAction(BROADCAST_BYE);
+        mLocalBroadcastManager.registerReceiver(mBroadcastReceiver, mIntentFilter);
     }
 }
