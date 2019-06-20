@@ -21,11 +21,11 @@ int CryptoKey::generateKey(
                     const string& algorithm)
 {
 	time_t initValue = chrono::system_clock::to_time_t(chrono::system_clock::now());
-	string strInitValue = to_string(initValue);
+	string strInitValue = sessionId + to_string(initValue);
 	string hashKey = mKeyMaker->GetSecureData(strInitValue);
 
-	mAESKey = {	-108, -110, -109,   -7, -33, 126,  75, 78,
-				 110,  -25,  -40, -109, -12, 40,  -40, 96,
+	vector<char> aesKey = {	-108, -110, -109,   -7, -33, 126,  75, 78,
+							 110,  -25,  -40, -109, -12, 40,  -40, 96,
 	};
 	FUNC_LOGI("Get Crypto Key");
 
@@ -38,8 +38,9 @@ int CryptoKey::generateKey(
 			ss << hex << num;
 			int x;
 			ss >> x;
-			mAESKey[i] = x;
+			aesKey[i] = x;
 		}
+		mAESKeyMap.insert({ sessionId, aesKey});
 		return 0;
 	}
 	else
@@ -51,11 +52,12 @@ int CryptoKey::generateKey(
 void CryptoKey::removeKey(
                     const string& sessionId)
 {
+	mAESKeyMap.erase(sessionId);
 }
 
 vector<char> CryptoKey::getKey(
                                 const string sessionId)
 {
-	return mAESKey;
+	return mAESKeyMap[sessionId];
 }
 

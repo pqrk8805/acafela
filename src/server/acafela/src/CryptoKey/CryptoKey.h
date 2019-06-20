@@ -3,6 +3,7 @@
 #include "ICryptoKeyMgr.h"
 #include "ICryptoKeyRepo.h"
 #include <memory>
+#include <map>
 #include <vector>
 
 class ISecurityProvider;
@@ -22,6 +23,6 @@ public:
     virtual std::vector<char> getKey(
                                 const std::string sessionId) override;
 private:
-	std::unique_ptr<ISecurityProvider>	mKeyMaker;
-	std::vector<char>					mAESKey;
+	std::unique_ptr<ISecurityProvider>			mKeyMaker;
+	std::map<std::string, std::vector<char>>	mAESKeyMap;
 };
