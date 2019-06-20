@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
                 }
             }, 1000);
         }else {
-            //directoryServiceUpdate();
+            directoryServiceUpdate();
         }
     }
 

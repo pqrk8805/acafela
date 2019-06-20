@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "communicator.h"
 #include "../Hislog.h"
+#include "../SipMessage/SipMessage.pb.h"
 #define LOG_TAG "COMMPATH"
 extern std::vector<std::thread *> additionalThreadList;
 ICryptoKeyMgr * ConversationManager::keyManager;
@@ -56,12 +57,15 @@ void ConversationManager::messageHandler(std::string IP, acafela::sip::SIPMessag
 	Participant * from = ParticipantDirectory().getFromNumber(msg.from());
 	Participant * to = ParticipantDirectory().getFromNumber(msg.to());
 	Participant * sender = ParticipantDirectory().getFromIP(IP);
-	if (to == nullptr || from == nullptr) {
+	if (to == nullptr) {
 		acafela::sip::SIPMessage returnMessage;
+		FUNC_LOGI("Cannot find user from directory : Say Good Bye~");
 		returnMessage.set_cmd(acafela::sip::BYE);
 		returnMessage.set_from("SERVER");
-		returnMessage.set_to(sender->getIP());
-		sendControlMessage(sender, msg);
+		returnMessage.set_to(IP);
+		Participant * tmpPart = new Participant(IP);
+		sendControlMessage(tmpPart, returnMessage);
+		delete tmpPart;
 		return;
 	}
 	switch (msg.cmd()) {
@@ -123,7 +127,6 @@ void ConversationManager::messageHandler(std::string IP, acafela::sip::SIPMessag
 		//}
 		break;
 	}
-	FUNC_LOGI("Send msg %s : \n%s", sender->getIP().c_str(), msg.DebugString().c_str());
 	if (conversationMap[sender] == NULL)
 		sendControlMessage(to, msg);
 	else if (conversationMap[sender]->isP2P())
@@ -136,6 +139,11 @@ void ConversationManager::sendControlMessage(
 	server.sin_family = AF_INET;
 	server.sin_port = htons(CTRLSERVERSNDPORT);
 	inet_pton(AF_INET, to->getIP().c_str(), &(server.sin_addr));
+	FUNC_LOGI("Send msg %s : \n----%s----\n%s", 
+		to->getIP().c_str(), 
+		acafela::sip::Command_descriptor()->FindValueByNumber(msg.cmd())->name().c_str(), 
+		msg.DebugString().c_str()
+	);
 	size_t size = msg.ByteSizeLong();
 	void *buffer = new char[size];
 	msg.SerializeToArray(buffer, size);
