@@ -54,15 +54,15 @@ private:
 	bool isServerPassed;
 	bool isWorking;
 	bool isVideoWorking;
+	std::string clientIP;
+	CRITICAL_SECTION crit;
 	Participant * ownerPart;
+	Conversation * conversation;
 	SocketGroup dataStreamSocket;
 	SocketGroup dataVideoStreamSocket;
-	Conversation * conversation;
 	std::map<Participant *, int> sendPortDirectory;
 	std::vector<std::tuple<Participant *, int, char *>> dataBuffer;
 	std::vector<std::tuple<Participant *, int, char *>> dataVideoBuffer;
-	CRITICAL_SECTION crit;
-	std::string clientIP;
 	std::vector<std::thread *> threadList;
 	void createSocket(SocketGroup& streamSocket, bool isVideo);
 	void createServerDataPath();

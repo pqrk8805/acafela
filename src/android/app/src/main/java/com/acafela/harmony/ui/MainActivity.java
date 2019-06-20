@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
@@ -22,7 +24,12 @@ import android.view.ViewGroup;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.acafela.harmony.Config;
 import com.acafela.harmony.R;
+import com.acafela.harmony.directoryservice.DirectoryServiceRpc;
+import com.acafela.harmony.dirserv.DirectoryServiceGrpc;
+import com.acafela.harmony.dirserv.DirectoryServiceOuterClass;
+import com.acafela.harmony.rpc.Common;
 import com.acafela.harmony.service.HarmonyService;
 import com.acafela.harmony.ui.dialpad.DialpadFragment;
 import com.acafela.harmony.ui.main.ChangePwDialog;
@@ -30,6 +37,10 @@ import com.acafela.harmony.ui.main.RestorePwDialog;
 import com.acafela.harmony.ui.main.SectionsPagerAdapter;
 import com.acafela.harmony.ui.main.UserRegisterDialog;
 import com.acafela.harmony.userprofile.UserInfo;
+
+import java.util.Locale;
+
+import io.grpc.StatusRuntimeException;
 
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_ISRINGING;
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_PHONENUMBER;
@@ -94,8 +105,9 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
                     showPopup("Please Register");
                 }
             });
+        }else {
+            //directoryServiceUpdate();
         }
-
         Intent serviceIntent = new Intent(getApplicationContext(), HarmonyService.class);
         startService(serviceIntent);
     }
@@ -262,6 +274,37 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
             ActivityCompat.requestPermissions(this,
                     PERMISSIONS,
                     PERMISSION_ALL_ID);
+        }
+    }
+
+    private void directoryServiceUpdate() {
+        String LocalIP = "";
+        int LocalIpAddressBin = 0;
+        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+        if (wifiManager != null) {
+            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+            LocalIpAddressBin = wifiInfo.getIpAddress();
+            LocalIP = String.format(Locale.US, "%d.%d.%d.%d", (LocalIpAddressBin & 0xff), (LocalIpAddressBin >> 8 & 0xff), (LocalIpAddressBin >> 16 & 0xff), (LocalIpAddressBin >> 24 & 0xff));
+        }
+        DirectoryServiceGrpc.DirectoryServiceBlockingStub blockingStub =
+                new DirectoryServiceRpc(
+                    Config.SERVER_IP,
+                    Config.RPC_PORT_DIRECTORY_SERVICE,
+                    getResources().openRawResource(R.raw.ca),
+                    getResources().openRawResource(R.raw.server)
+                ).getBlockingStub();
+
+        Common.Error error = null;
+        try {
+            error = blockingStub.update(DirectoryServiceOuterClass.DirInfo.newBuilder().
+                    //setPassword(UserInfo.getInstance()).
+                            setAddress(LocalIP).
+                            setPhoneNumber(UserInfo.getInstance().getPhoneNumber()).
+                            build());
+
+            Log.e(TAG, error.toString());
+        } catch (StatusRuntimeException e) {
+            Log.i(TAG, "DirectoryService Update is Interrupted");
         }
     }
 }
