@@ -57,7 +57,7 @@ void ConversationManager::messageHandler(std::string IP, acafela::sip::SIPMessag
 	Participant * from = ParticipantDirectory().getFromNumber(msg.from());
 	Participant * to = ParticipantDirectory().getFromNumber(msg.to());
 	Participant * sender = ParticipantDirectory().getFromIP(IP);
-	if (to == nullptr) {
+	if (to == nullptr || from == nullptr) {
 		acafela::sip::SIPMessage returnMessage;
 		FUNC_LOGI("Cannot find user from directory : Say Good Bye~");
 		returnMessage.set_cmd(acafela::sip::BYE);
