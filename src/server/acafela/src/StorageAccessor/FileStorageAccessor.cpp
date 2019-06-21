@@ -90,7 +90,7 @@ string FileStorageAccessor::FindEmailAddress(const string& phoneNumber)
 
 	WIN32_FIND_DATA FindFileData;
 	HANDLE hFind;
-	wstring path = L"./storage/phonenumber/";
+	wstring path = L"./storage/phonenumber";	
 
 	string emailAddress;
 	bool bFind = false;
@@ -262,7 +262,7 @@ vector<UserInfo> FileStorageAccessor::getDSItems()
 
 	WIN32_FIND_DATA FindFileData;
 	HANDLE hFind;
-	wstring path = L"./storage/directoryservice/";
+	wstring path = L"./storage/directoryservice";
 
 	vector<UserInfo> ds;
 	hFind = FindFirstFile(path.c_str(), &FindFileData);
