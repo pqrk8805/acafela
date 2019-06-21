@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
     private static final int MENU_CHANGEPASSWORD = 1;
     private static final int MENU_RESTOREPASSWORD = 2;
     private static final int MENU_PHONENUMBER = 3;
-    private static final String HIDE_TEST_MAIN = "9999";
+    private static final String HIDDEN_TEST_MAIN = "9999";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -235,9 +235,14 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
     public void initiateCall(String formatted, String raw) {
         Log.i(TAG, "initiateCall: " + raw);
 
-        if (raw.equals(HIDE_TEST_MAIN)) {
+        if (raw.equals(HIDDEN_TEST_MAIN)) {
             Intent activityIntent = new Intent(this, TestMainActivity.class);
             startActivity(activityIntent);
+            return;
+        }
+
+        if (UserInfo.getInstance().getPhoneNumber().isEmpty()) {
+            showPopup("Please Register");
             return;
         }
 
@@ -289,10 +294,10 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
         }
         DirectoryServiceGrpc.DirectoryServiceBlockingStub blockingStub =
                 new DirectoryServiceRpc(
-                    Config.SERVER_IP,
-                    Config.RPC_PORT_DIRECTORY_SERVICE,
-                    getResources().openRawResource(R.raw.ca),
-                    getResources().openRawResource(R.raw.server)
+                        Config.SERVER_IP,
+                        Config.RPC_PORT_DIRECTORY_SERVICE,
+                        getResources().openRawResource(R.raw.ca),
+                        getResources().openRawResource(R.raw.server)
                 ).getBlockingStub();
 
         Common.Error error = null;

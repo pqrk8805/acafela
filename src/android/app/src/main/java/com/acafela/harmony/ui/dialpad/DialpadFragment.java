@@ -58,14 +58,6 @@ public class DialpadFragment extends Fragment {
         DialpadView dialpadView = view.findViewById(R.id.dialpad_view);
         dialpadView.setShowVoicemailButton(false);
 
-        FloatingActionButton floatingActionButton = view.findViewById(R.id.fab_terminatecall);
-        if (UserInfo.getInstance().getPhoneNumber().isEmpty()) {
-            floatingActionButton.hide();
-        }
-        else {
-            floatingActionButton.show();
-        }
-
         digits = (DigitsEditText) dialpadView.getDigits();
         digits.setCursorVisible(cursorVisible);
         dialpadView.findViewById(R.id.zero).setOnClickListener(new View.OnClickListener() {
