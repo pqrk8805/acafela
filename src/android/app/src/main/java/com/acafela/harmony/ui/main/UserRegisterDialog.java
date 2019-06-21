@@ -6,7 +6,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +13,7 @@ import android.widget.EditText;
 
 import com.acafela.harmony.Config;
 import com.acafela.harmony.R;
+import com.acafela.harmony.directoryservice.DirectoryService;
 import com.acafela.harmony.userprofile.FormatChecker;
 import com.acafela.harmony.userprofile.UserInfo;
 import com.acafela.harmony.userprofile.UserProfileGrpc;
@@ -81,15 +81,17 @@ public class UserRegisterDialog extends Dialog {
     }
 
     private class UserRegisterTask extends AsyncTask<Void, Void, Void> {
-        String mEmail;
-        String mPw;
-        Activity mActivity;
-        ProgressDialog mProgressDialog;
+        private String mEmail;
+        private String mPw;
+        private Activity mActivity;
+        private ProgressDialog mProgressDialog;
+        private DirectoryService mDirectoryService;
 
         public UserRegisterTask(String email, String pw, Activity activity) {
             mEmail = email;
             mPw = pw;
             mActivity = activity;
+            mDirectoryService = new DirectoryService(mActivity);
         }
 
         @Override
@@ -132,6 +134,7 @@ public class UserRegisterDialog extends Dialog {
             if (registerResp != null) {
                 if (0 == registerResp.getError().getErr()) {
                     UserInfo.getInstance().setPhoneNumber(registerResp.getPhoneNumber());
+                    mDirectoryService.update();
                 }
             }
 

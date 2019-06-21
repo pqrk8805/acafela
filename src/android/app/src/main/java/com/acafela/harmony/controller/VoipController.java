@@ -152,7 +152,6 @@ public class VoipController {
                     mRingControl.allStop();
                     destroyAllsession();
                     isCaller = false;
-
                     finishCallActivity();
                     break;
                 case STARTVIDEO:
@@ -192,8 +191,7 @@ public class VoipController {
                     break;
                 case BYE:
                     mState = STATE.IDLE_STATE;
-                    mRingControl.allStop();
-                    destroyAllsession();
+                    endCommunication();
                 case STARTVIDEO:
                 case STOPVIDEO:
                 case TERMINATE:
@@ -203,6 +201,12 @@ public class VoipController {
                     break;
             }
         }
+    }
+
+    private void endCommunication() {
+        mRingControl.allStop();
+        destroyAllsession();
+        finishCallActivity();
     }
 
     private void finishCallActivity() {
@@ -281,7 +285,7 @@ public class VoipController {
 
     public void inviteCall(String calleeNumber)
     {
-        if(mState != STATE.IDLE_STATE) return;
+        //if(mState != STATE.IDLE_STATE) return;
         //Add exception state
         mCalleeNumber = calleeNumber;
         mCallerNumber = UserInfo.getInstance().getPhoneNumber();
@@ -295,6 +299,7 @@ public class VoipController {
         //Add exception state
         if(mState == STATE.IDLE_STATE) return;
         mState = STATE.DISCONNECTING_STATE;
+        endCommunication();
         sendMessage(SipMessage.Command.TERMINATE);
     }
     public void acceptCall()
