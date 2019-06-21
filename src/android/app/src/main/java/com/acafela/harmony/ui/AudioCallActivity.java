@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -19,9 +20,9 @@ import android.widget.ToggleButton;
 import com.acafela.harmony.R;
 import com.acafela.harmony.service.HarmonyService;
 
-import static com.acafela.harmony.ui.CallActivity.INTENT_CONTROL;
-import static com.acafela.harmony.ui.CallActivity.INTENT_SIP_ACCEPT_CALL;
-import static com.acafela.harmony.ui.CallActivity.INTENT_SIP_TERMINATE_CALL;
+import static com.acafela.harmony.ui.TestCallActivity.INTENT_CONTROL;
+import static com.acafela.harmony.ui.TestCallActivity.INTENT_SIP_ACCEPT_CALL;
+import static com.acafela.harmony.ui.TestCallActivity.INTENT_SIP_TERMINATE_CALL;
 
 public class AudioCallActivity extends AppCompatActivity {
     private static final String TAG = AudioCallActivity.class.getName();
@@ -31,16 +32,7 @@ public class AudioCallActivity extends AppCompatActivity {
     public static final String BROADCAST_BYE = "com.acafela.action.bye";
 
     private AudioManager mAudioManager;
-    LocalBroadcastManager mLocalBroadcastManager;
-    BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if(intent.getAction().equals(BROADCAST_BYE)){
-                Log.i(TAG, "onReceive BYE");
-                finish();
-            }
-        }
-    };
+    BroadcastReceiver mBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +42,6 @@ public class AudioCallActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_audiocall);
 
-        RegisterBroadCastReceiver();
-
         Intent intent = getIntent();
 
         TextView phoneNumberTextView = findViewById(R.id.tv_phonenumber);
@@ -60,8 +50,7 @@ public class AudioCallActivity extends AppCompatActivity {
         boolean isRinging = intent.getBooleanExtra(INTENT_ISRINGING, false);
         if (isRinging) {
             findViewById(R.id.fourth_container).setVisibility(View.GONE);
-        }
-        else {
+        } else {
             findViewById(R.id.fourth_container_ringing).setVisibility(View.GONE);
         }
 
@@ -72,6 +61,18 @@ public class AudioCallActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        RegisterReceiver();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        UnregisterReceiver();
     }
 
     @Override
@@ -95,8 +96,8 @@ public class AudioCallActivity extends AppCompatActivity {
     }
 
     public void onClickSpeakerToggleBtn(View v) {
-        if(((ToggleButton) v).isChecked()) {
-            ((ToggleButton)findViewById(R.id.toggle_bluetooth)).setChecked(false);
+        if (((ToggleButton) v).isChecked()) {
+            ((ToggleButton) findViewById(R.id.toggle_bluetooth)).setChecked(false);
             setSpeakerAudio();
         } else {
             setEarPieceAudio();
@@ -104,13 +105,12 @@ public class AudioCallActivity extends AppCompatActivity {
     }
 
     public void onClickBluetoothToggleBtn(View v) {
-        if(((ToggleButton) v).isChecked()) {
+        if (((ToggleButton) v).isChecked()) {
             if (isBluetoothConnected()) {
                 ((ToggleButton) findViewById(R.id.toggle_speaker)).setChecked(false);
                 setBluetoothAudio();
-            }
-            else {
-                ((ToggleButton)findViewById(R.id.toggle_bluetooth)).setChecked(false);
+            } else {
+                ((ToggleButton) findViewById(R.id.toggle_bluetooth)).setChecked(false);
                 Intent intentOpenBluetoothSettings = new Intent();
                 intentOpenBluetoothSettings.setAction(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS);
                 startActivity(intentOpenBluetoothSettings);
@@ -152,10 +152,26 @@ public class AudioCallActivity extends AppCompatActivity {
                 && mBluetoothAdapter.getProfileConnectionState(BluetoothHeadset.HEADSET) == BluetoothHeadset.STATE_CONNECTED;
     }
 
-    private void RegisterBroadCastReceiver() {
-        mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
-        IntentFilter mIntentFilter = new IntentFilter();
-        mIntentFilter.addAction(BROADCAST_BYE);
-        mLocalBroadcastManager.registerReceiver(mBroadcastReceiver, mIntentFilter);
+    private void RegisterReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BROADCAST_BYE);
+
+        mBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals(BROADCAST_BYE)) {
+                    Log.i(TAG, "onReceive BYE");
+                    finish();
+                }
+            }
+        };
+        registerReceiver(mBroadcastReceiver, intentFilter);
+    }
+
+    private void UnregisterReceiver() {
+        if (mBroadcastReceiver != null) {
+            unregisterReceiver(mBroadcastReceiver);
+            mBroadcastReceiver = null;
+        }
     }
 }

@@ -19,9 +19,9 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CallActivity extends AppCompatActivity {
+public class TestCallActivity extends AppCompatActivity {
     public static final String INTEMT_CALLEE_PHONENUMBER = "CALLEE_PHONENUMBER";
-    private static final String LOG_TAG = CallActivity.class.getName();
+    private static final String LOG_TAG = TestCallActivity.class.getName();
 
     public static final String INTENT_CONTROL = "CONTROL";
     public static final String INTENT_SERVERIP = "SERVER";
@@ -45,7 +45,7 @@ public class CallActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_call);
+        setContentView(R.layout.activity_testcall);
 
         mTextViewLocalIP = findViewById(R.id.textViewLocalIp);
         mRemoteIpText = findViewById(R.id.editTextRemoteIp);
@@ -74,7 +74,7 @@ public class CallActivity extends AppCompatActivity {
         if (matcher.matches()) {
             RemoteIP = mRemoteIpText.getText().toString();
         } else {
-            final AlertDialog alert = new AlertDialog.Builder(CallActivity.this).create();
+            final AlertDialog alert = new AlertDialog.Builder(TestCallActivity.this).create();
             alert.setTitle("Invailid IP");
             alert.setMessage("The IP Addresss you entered is invalid!");
             alert.setButton(-1, "Dismiss", new DialogInterface.OnClickListener() {
@@ -110,7 +110,7 @@ public class CallActivity extends AppCompatActivity {
         if (matcher.matches()) {
             RemoteIP = mRemoteIpText.getText().toString();
         } else {
-            final AlertDialog alert = new AlertDialog.Builder(CallActivity.this).create();
+            final AlertDialog alert = new AlertDialog.Builder(TestCallActivity.this).create();
             alert.setTitle("Invailid IP");
             alert.setMessage("The IP Addresss you entered is invalid!");
             alert.setButton(-1, "Dismiss", new DialogInterface.OnClickListener() {

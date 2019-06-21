@@ -26,6 +26,7 @@ import com.acafela.harmony.ui.AudioCallActivity;
 import com.acafela.harmony.userprofile.UserInfo;
 
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.acafela.harmony.ui.AudioCallActivity.BROADCAST_BYE;
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_ISRINGING;
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_PHONENUMBER;
@@ -149,10 +150,7 @@ public class VoipController {
                     break;
                 case BYE:
                     mState = STATE.IDLE_STATE;
-                    mRingControl.allStop();
-                    destroyAllsession();
-                    isCaller = false;
-                    finishCallActivity();
+                    endCommunication();
                     break;
                 case STARTVIDEO:
                 case STOPVIDEO:
@@ -176,6 +174,7 @@ public class VoipController {
                     Intent intent = new Intent(mContext, AudioCallActivity.class);
                     intent.putExtra(INTENT_PHONENUMBER, mCallerNumber);
                     intent.putExtra(INTENT_ISRINGING, true);
+                    intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(intent);
                     break;
                 case OPENSESSION:
@@ -207,11 +206,12 @@ public class VoipController {
         mRingControl.allStop();
         destroyAllsession();
         finishCallActivity();
+        isCaller = false;
     }
 
     private void finishCallActivity() {
-        Intent intent = new Intent();
-        intent.setAction(BROADCAST_BYE);
+        Log.i(LOG_TAG, "finishCallActivity");
+        Intent intent = new Intent(BROADCAST_BYE);
         mContext.sendBroadcast(intent);
     }
 

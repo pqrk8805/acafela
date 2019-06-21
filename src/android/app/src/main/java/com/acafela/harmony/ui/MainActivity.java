@@ -34,9 +34,9 @@ import com.acafela.harmony.userprofile.UserInfo;
 
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_ISRINGING;
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_PHONENUMBER;
-import static com.acafela.harmony.ui.CallActivity.INTEMT_CALLEE_PHONENUMBER;
-import static com.acafela.harmony.ui.CallActivity.INTENT_CONTROL;
-import static com.acafela.harmony.ui.CallActivity.INTENT_SIP_INVITE_CALL;
+import static com.acafela.harmony.ui.TestCallActivity.INTEMT_CALLEE_PHONENUMBER;
+import static com.acafela.harmony.ui.TestCallActivity.INTENT_CONTROL;
+import static com.acafela.harmony.ui.TestCallActivity.INTENT_SIP_INVITE_CALL;
 
 public class MainActivity extends AppCompatActivity implements DialpadFragment.Callback {
     private static final String TAG = MainActivity.class.getName();

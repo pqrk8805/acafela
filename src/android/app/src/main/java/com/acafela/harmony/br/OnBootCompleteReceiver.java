@@ -1,4 +1,4 @@
-package com.acafela.harmony;
+package com.acafela.harmony.br;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,8 +7,8 @@ import android.util.Log;
 
 import com.acafela.harmony.service.HarmonyService;
 
-public class BroadcastReceiverOnBootComplete extends BroadcastReceiver {
-    private static final String LOG_TAG = BroadcastReceiverOnBootComplete.class.getName();
+public class OnBootCompleteReceiver extends BroadcastReceiver {
+    private static final String LOG_TAG = OnBootCompleteReceiver.class.getName();
 
     @Override
     public void onReceive(Context context, Intent intent) {

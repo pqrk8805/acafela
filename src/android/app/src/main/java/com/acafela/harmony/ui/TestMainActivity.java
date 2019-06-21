@@ -24,7 +24,7 @@ public class TestMainActivity extends AppCompatActivity {
         Intent serviceIntent = new Intent(getApplicationContext(), HarmonyService.class);
         startService(serviceIntent);
 
-        Intent intent = new Intent(this, CallActivity.class);
+        Intent intent = new Intent(this, TestCallActivity.class);
         startActivity(intent);
     }
 

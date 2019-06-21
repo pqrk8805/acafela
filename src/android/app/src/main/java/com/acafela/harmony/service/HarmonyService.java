@@ -14,7 +14,7 @@ import com.acafela.harmony.controller.VoipController;
 import com.acafela.harmony.crypto.Crypto;
 import com.acafela.harmony.crypto.CryptoBroker;
 import com.acafela.harmony.crypto.ICrypto;
-import com.acafela.harmony.ui.CallActivity;
+import com.acafela.harmony.ui.TestCallActivity;
 
 public class HarmonyService extends Service {
     private static final String LOG_TAG = HarmonyService.class.getName();
@@ -39,28 +39,28 @@ public class HarmonyService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i(LOG_TAG, "onStartCommand");
 
-        String control = intent.getStringExtra(CallActivity.INTENT_CONTROL);
+        String control = intent.getStringExtra(TestCallActivity.INTENT_CONTROL);
         Log.i(LOG_TAG, "INTENT_CONTROL: " + control);
         if (control == null) {
             return super.onStartCommand(intent, flags, startId);
         }
         switch (control)  {
-            case CallActivity.INTENT_INITIATE_CALL:
-                String serverIp = intent.getStringExtra(CallActivity.INTENT_SERVERIP);
-                int serverSndPort = intent.getIntExtra(CallActivity.INTENT_SERVERSENDPORT, 0);
-                int serverRcvPort = intent.getIntExtra(CallActivity.INTENT_SERVERRCVPORT, 0);
+            case TestCallActivity.INTENT_INITIATE_CALL:
+                String serverIp = intent.getStringExtra(TestCallActivity.INTENT_SERVERIP);
+                int serverSndPort = intent.getIntExtra(TestCallActivity.INTENT_SERVERSENDPORT, 0);
+                int serverRcvPort = intent.getIntExtra(TestCallActivity.INTENT_SERVERRCVPORT, 0);
                 initiateCall(serverIp, serverSndPort, serverRcvPort);
                 break;
-            case CallActivity.INTENT_TERMINATE_CALL:
+            case TestCallActivity.INTENT_TERMINATE_CALL:
                 terminateCall();
                 break;
-            case CallActivity.INTENT_SIP_INVITE_CALL:
-                sipinvite(intent.getStringExtra(CallActivity.INTEMT_CALLEE_PHONENUMBER));
+            case TestCallActivity.INTENT_SIP_INVITE_CALL:
+                sipinvite(intent.getStringExtra(TestCallActivity.INTEMT_CALLEE_PHONENUMBER));
                 break;
-            case CallActivity.INTENT_SIP_ACCEPT_CALL:
+            case TestCallActivity.INTENT_SIP_ACCEPT_CALL:
                 sipaccept();
                 break;
-            case CallActivity.INTENT_SIP_TERMINATE_CALL:
+            case TestCallActivity.INTENT_SIP_TERMINATE_CALL:
                 sipterminate();
                 break;
         }

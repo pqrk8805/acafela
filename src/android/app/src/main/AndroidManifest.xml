@@ -35,7 +35,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.AudioCallActivity"></activity>
-        <activity android:name=".ui.CallActivity" />
+        <activity android:name=".ui.TestCallActivity" />
         <activity android:name=".ui.TestEncodingActivity" />
         <activity android:name=".ui.TestAsyncEncodingActivity" />
         <activity android:name=".ui.TestVideoEncodingActivity" />
@@ -46,9 +46,8 @@
             android:enabled="true"
             android:exported="false" />
 
-
         <receiver
-            android:name=".BroadcastReceiverOnBootComplete"
+            android:name=".br.OnBootCompleteReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
