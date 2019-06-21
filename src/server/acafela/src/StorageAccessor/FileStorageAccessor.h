@@ -40,10 +40,8 @@ public:
 
 	bool isExistUser(const std::string& emailAddress) override;
 
-	virtual int saveDSItems(
-		const std::string& phoneNumber, 
-		const std::string& ipAddress) override;
-	virtual std::map<std::string, std::string> getDSItems() override;
+	int saveDSItem(UserInfo& userInfo) override;
+	std::vector<UserInfo> getDSItems() override;
 private:
 	std::string FindEmailAddress(const std::string& phoneNumber);
 private:

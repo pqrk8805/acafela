@@ -1,7 +1,15 @@
 #pragma once
 
 #include <string>
-#include <map>
+#include <vector>
+
+struct UserInfo 
+{
+	std::string emailAddress;
+	std::string phoneNumber;
+	std::string ipAddress;
+	bool enabled;
+};
 
 class IStorageAccessor
 {
@@ -45,16 +53,11 @@ public:
 
 	virtual bool isExistUser(const std::string& emailAddress) = 0;
 
-	virtual int saveDSItems(const std::string& phoneNumber, const std::string& ipAddress) = 0;
-	virtual std::map<std::string, std::string> getDSItems() = 0;
+	//virtual int saveDSItems(const std::string& phoneNumber, const std::string& ipAddress) = 0;
+	//virtual std::map<std::string, std::string> getDSItems() = 0;
 
-	//struct UserInfo {
-	//	std::string emailAddress;
-	//	std::string ipAddress;
-	//	bool enabled;
-	//};
-
-	//std::vector<UserInfo> getDSItems();
+	virtual int saveDSItem(UserInfo& userInfo) = 0;
+	virtual std::vector<UserInfo> getDSItems() = 0;
 private:
 	static IStorageAccessor* mInst;
 };

@@ -239,18 +239,24 @@ bool FileStorageAccessor::isExistUser(const std::string& emailAddress)
 	}
 }
 
-int FileStorageAccessor::saveDSItems(const string& phoneNumber, const string& ipAddress)
+int FileStorageAccessor::saveDSItem(UserInfo& userInfo)
 {
 	lock_guard<mutex> lock(mDSLock);
 
-	DerectoryServiceFile f(phoneNumber, "wb");
+	if( userInfo.emailAddress.length() == 0 )
+		userInfo.emailAddress = FindEmailAddress(userInfo.phoneNumber);
 
-	f.WriteFile(ipAddress);
+	DerectoryServiceFile f(userInfo.emailAddress, "wb");
+
+	string enable = userInfo.enabled ? "T" : "F";
+	string data = userInfo.phoneNumber + "-" + userInfo.ipAddress + "-" + enable;
+
+	f.WriteFile(data);
 
 	return 0;
 }
 
-map<string, string> FileStorageAccessor::getDSItems()
+vector<UserInfo> FileStorageAccessor::getDSItems()
 {
 	lock_guard<mutex> lock(mDSLock);
 
@@ -258,21 +264,66 @@ map<string, string> FileStorageAccessor::getDSItems()
 	HANDLE hFind;
 	wstring path = L"./storage/directoryservice/";
 
-	map<string, string> DSMap;
+	vector<UserInfo> ds;
 	hFind = FindFirstFile(path.c_str(), &FindFileData);
 	while (hFind != INVALID_HANDLE_VALUE)
 	{
 		wstring wfilename = FindFileData.cFileName;
-		string phoneNumber(wfilename.begin(), wfilename.end());
-		DerectoryServiceFile f(phoneNumber, "rb");
+		string emailAddress(wfilename.begin(), wfilename.end());
+		DerectoryServiceFile f(emailAddress, "rb");
 		
-		string ipAddress = f.ReadFile();
-		DSMap[phoneNumber] = ipAddress;
+		string data = f.ReadFile();
+
+		size_t offset1 = data.find_first_of('-');
+		size_t offset2 = data.find_last_of('-');
+		string phoneNumber = data.substr(0, offset1);
+		string ipAddress = data.substr(offset1, offset2-offset1);
+		bool enabled = data.substr(data.length() - 2, 1).compare("T") == 0 ? true : false;
+		
+		ds.push_back({ emailAddress, phoneNumber, ipAddress, enabled });
 
 		if (!FindNextFile(hFind, &FindFileData))
 			break;
 	}
 	FindClose(hFind);
 	
-	return DSMap;
+	return ds;
 }
+
+//int FileStorageAccessor::saveDSItems(const string& phoneNumber, const string& ipAddress)
+//{
+//	lock_guard<mutex> lock(mDSLock);
+//
+//	DerectoryServiceFile f(phoneNumber, "wb");
+//
+//	f.WriteFile(ipAddress);
+//
+//	return 0;
+//}
+//
+//map<string, string> FileStorageAccessor::getDSItems()
+//{
+//	lock_guard<mutex> lock(mDSLock);
+//
+//	WIN32_FIND_DATA FindFileData;
+//	HANDLE hFind;
+//	wstring path = L"./storage/directoryservice/";
+//
+//	map<string, string> DSMap;
+//	hFind = FindFirstFile(path.c_str(), &FindFileData);
+//	while (hFind != INVALID_HANDLE_VALUE)
+//	{
+//		wstring wfilename = FindFileData.cFileName;
+//		string phoneNumber(wfilename.begin(), wfilename.end());
+//		DerectoryServiceFile f(phoneNumber, "rb");
+//		
+//		string ipAddress = f.ReadFile();
+//		DSMap[phoneNumber] = ipAddress;
+//
+//		if (!FindNextFile(hFind, &FindFileData))
+//			break;
+//	}
+//	FindClose(hFind);
+//	
+//	return DSMap;
+//}

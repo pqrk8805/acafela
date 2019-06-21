@@ -1,6 +1,7 @@
 #include "DirectoryService.h"
 #include "Hislog.h"
 #include "Communicator/communicator.h"
+#include "IStorageAccessor.h"
 
 #define LOG_TAG "DirService"
 
@@ -22,6 +23,9 @@ int DirectoryService::update(
     mBook[phoneNumber] = ipAddress;
 	ParticipantDirectory().notify_update(phoneNumber, ipAddress);
     FUNC_LOGI("%s : %s", phoneNumber.c_str(), ipAddress.c_str());
+
+	UserInfo userInfo = { "", phoneNumber, ipAddress, true };
+	mStorageAccessor.saveDSItem(userInfo);
 
     return 0;
 }

@@ -2,9 +2,10 @@
 
 #include <map>
 #include <mutex>
+#include <memory>
 #include "IDirectoryService.h"
-#include "IStorageAccessor.h"
 
+class IStorageAccessor;
 class DirectoryService : public IDirectoryService
 {
 private:
