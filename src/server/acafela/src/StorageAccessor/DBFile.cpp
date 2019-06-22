@@ -24,7 +24,11 @@ DBFile::~DBFile()
 
 void DBFile::OpenFile(const std::string& filename, const std::string& access_mode)
 {
-	std::string binfile = filename + ".bin";
+	std::string binfile;
+	if (filename.substr(filename.length() - 4, 4).compare(".bin") != 0)
+		binfile = filename + ".bin";
+	else
+		binfile = filename;
 
 	ifstream file;
 	file.open(binfile.c_str(), ios::in | ios::binary);
@@ -46,12 +50,21 @@ void DBFile::CloseFile()
 
 void DBFile::WriteFile(const std::string& data)
 {
-	fwrite(data.c_str(), data.length(), 1, GetPF());
+	if(mFile != nullptr)
+		fwrite(data.c_str(), data.length(), 1, GetPF());
 }
 
 std::string DBFile::ReadFile() const
 {
 	std::string data(256, '\0');
-	fread(&data[0], GetSize(), 1, GetPF());
-	return data;
+
+	if (mFile != nullptr)
+	{
+		fread(&data[0], GetSize(), 1, GetPF());
+		return data;
+	}
+	else
+	{
+		return "nullptr";
+	}
 }

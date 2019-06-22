@@ -24,7 +24,7 @@ int DirectoryService::update(
 	ParticipantDirectory().notify_update(phoneNumber, ipAddress);
     FUNC_LOGI("%s : %s", phoneNumber.c_str(), ipAddress.c_str());
 
-	UserInfo userInfo = { "", phoneNumber, ipAddress, true };
+	UserInfo userInfo = { "", phoneNumber, ipAddress, false };
 	mStorageAccessor.saveDSItem(userInfo);
 
     return 0;

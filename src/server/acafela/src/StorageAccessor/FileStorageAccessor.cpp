@@ -90,7 +90,7 @@ string FileStorageAccessor::FindEmailAddress(const string& phoneNumber)
 
 	WIN32_FIND_DATA FindFileData;
 	HANDLE hFind;
-	wstring path = L"./storage/phonenumber";	
+	wstring path = L"./storage/phonenumber/*";	
 
 	string emailAddress;
 	bool bFind = false;
@@ -98,17 +98,21 @@ string FileStorageAccessor::FindEmailAddress(const string& phoneNumber)
 	while (hFind != INVALID_HANDLE_VALUE)
 	{
 		wstring wEmailAddress = FindFileData.cFileName;
-		string emailAddress(wEmailAddress.begin(), wEmailAddress.end());
-		PhoneNumberFile f(emailAddress, "rb");
-		string savedPhoneNumber = f.ReadFile();
-
-		if (phoneNumber.compare(0, phoneNumber.length(), savedPhoneNumber, 0, phoneNumber.length()) == 0)
+		if (FindFileData.dwFileAttributes != FILE_ATTRIBUTE_DIRECTORY)
 		{
-			bFind = true;
-			break;
-		}
+			string emailAddressBuf(wEmailAddress.begin(), wEmailAddress.end());			
+			emailAddress = emailAddressBuf;
+			PhoneNumberFile f(emailAddress, "rb");
+			string savedPhoneNumber = f.ReadFile();
 
-		if (!FindNextFile(hFind, &FindFileData))
+			if (phoneNumber.compare(0, phoneNumber.length(), savedPhoneNumber, 0, phoneNumber.length()) == 0)
+			{
+				bFind = true;
+				break;
+			}
+		}	
+
+		if (FindNextFile(hFind, &FindFileData) == FALSE)
 			break;
 	}
 	FindClose(hFind);
@@ -262,25 +266,29 @@ vector<UserInfo> FileStorageAccessor::getDSItems()
 
 	WIN32_FIND_DATA FindFileData;
 	HANDLE hFind;
-	wstring path = L"./storage/directoryservice";
+	wstring path = L"./storage/directoryservice/*";
 
 	vector<UserInfo> ds;
 	hFind = FindFirstFile(path.c_str(), &FindFileData);
 	while (hFind != INVALID_HANDLE_VALUE)
 	{
-		wstring wfilename = FindFileData.cFileName;
-		string emailAddress(wfilename.begin(), wfilename.end());
-		DerectoryServiceFile f(emailAddress, "rb");
+		if (FindFileData.dwFileAttributes != FILE_ATTRIBUTE_DIRECTORY)
+		{
+			wstring wfilename = FindFileData.cFileName;
+			string emailAddress(wfilename.begin(), wfilename.end());
+			DerectoryServiceFile f(emailAddress, "rb");
 		
-		string data = f.ReadFile();
+			string data = f.ReadFile();
 
-		size_t offset1 = data.find_first_of('-');
-		size_t offset2 = data.find_last_of('-');
-		string phoneNumber = data.substr(0, offset1);
-		string ipAddress = data.substr(offset1, offset2-offset1);
-		bool enabled = data.substr(data.length() - 2, 1).compare("T") == 0 ? true : false;
+			size_t offset1 = data.find_first_of('-');
+			size_t offset2 = data.find_last_of('-');
+			string phoneNumber = data.substr(0, offset1);
+			string ipAddress = data.substr(offset1+1, offset2-offset1-1);
+			string strEnabled = data.substr(offset2+1, 1);
+			bool enabled = strEnabled.compare("T") == 0 ? true : false;
 		
-		ds.push_back({ emailAddress, phoneNumber, ipAddress, enabled });
+			ds.push_back({ emailAddress, phoneNumber, ipAddress, enabled });
+		}
 
 		if (!FindNextFile(hFind, &FindFileData))
 			break;
