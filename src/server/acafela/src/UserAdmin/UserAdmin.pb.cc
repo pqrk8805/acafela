@@ -107,7 +107,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::rpc::UserInfoList, info_list_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::rpc::UserInfoList, user_info_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::rpc::Email, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -151,7 +151,7 @@ void AddDescriptorsImpl() {
       "\n\017UserAdmin.proto\022\013acafela.rpc\032\014Common.p"
       "roto\"@\n\010UserInfo\022\r\n\005email\030\001 \001(\t\022\024\n\014phone"
       "_number\030\002 \001(\t\022\017\n\007enabled\030\003 \001(\010\"8\n\014UserIn"
-      "foList\022(\n\tinfo_list\030\001 \003(\0132\025.acafela.rpc."
+      "foList\022(\n\tuser_info\030\001 \003(\0132\025.acafela.rpc."
       "UserInfo\"\026\n\005Email\022\r\n\005email\030\001 \001(\t2\360\001\n\tUse"
       "rAdmin\022@\n\017getUserInfoList\022\022.acafela.rpc."
       "Empty\032\031.acafela.rpc.UserInfoList\0224\n\ndele"
@@ -524,7 +524,7 @@ void UserInfo::InternalSwap(UserInfo* other) {
 void UserInfoList::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int UserInfoList::kInfoListFieldNumber;
+const int UserInfoList::kUserInfoFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 UserInfoList::UserInfoList()
@@ -537,7 +537,7 @@ UserInfoList::UserInfoList()
 UserInfoList::UserInfoList(const UserInfoList& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
-      info_list_(from.info_list_) {
+      user_info_(from.user_info_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:acafela.rpc.UserInfoList)
 }
@@ -573,7 +573,7 @@ void UserInfoList::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  info_list_.Clear();
+  user_info_.Clear();
   _internal_metadata_.Clear();
 }
 
@@ -587,12 +587,12 @@ bool UserInfoList::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // repeated .acafela.rpc.UserInfo info_list = 1;
+      // repeated .acafela.rpc.UserInfo user_info = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
-                input, add_info_list()));
+                input, add_user_info()));
         } else {
           goto handle_unusual;
         }
@@ -625,12 +625,12 @@ void UserInfoList::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated .acafela.rpc.UserInfo info_list = 1;
+  // repeated .acafela.rpc.UserInfo user_info = 1;
   for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->info_list_size()); i < n; i++) {
+      n = static_cast<unsigned int>(this->user_info_size()); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       1,
-      this->info_list(static_cast<int>(i)),
+      this->user_info(static_cast<int>(i)),
       output);
   }
 
@@ -648,12 +648,12 @@ void UserInfoList::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated .acafela.rpc.UserInfo info_list = 1;
+  // repeated .acafela.rpc.UserInfo user_info = 1;
   for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->info_list_size()); i < n; i++) {
+      n = static_cast<unsigned int>(this->user_info_size()); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        1, this->info_list(static_cast<int>(i)), deterministic, target);
+        1, this->user_info(static_cast<int>(i)), deterministic, target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -673,14 +673,14 @@ size_t UserInfoList::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // repeated .acafela.rpc.UserInfo info_list = 1;
+  // repeated .acafela.rpc.UserInfo user_info = 1;
   {
-    unsigned int count = static_cast<unsigned int>(this->info_list_size());
+    unsigned int count = static_cast<unsigned int>(this->user_info_size());
     total_size += 1UL * count;
     for (unsigned int i = 0; i < count; i++) {
       total_size +=
         ::google::protobuf::internal::WireFormatLite::MessageSize(
-          this->info_list(static_cast<int>(i)));
+          this->user_info(static_cast<int>(i)));
     }
   }
 
@@ -711,7 +711,7 @@ void UserInfoList::MergeFrom(const UserInfoList& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  info_list_.MergeFrom(from.info_list_);
+  user_info_.MergeFrom(from.user_info_);
 }
 
 void UserInfoList::CopyFrom(const ::google::protobuf::Message& from) {
@@ -738,7 +738,7 @@ void UserInfoList::Swap(UserInfoList* other) {
 }
 void UserInfoList::InternalSwap(UserInfoList* other) {
   using std::swap;
-  CastToBase(&info_list_)->InternalSwap(CastToBase(&other->info_list_));
+  CastToBase(&user_info_)->InternalSwap(CastToBase(&other->user_info_));
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 

@@ -22,7 +22,7 @@ message UserInfo {
 }
 
 message UserInfoList {
-    repeated UserInfo info_list = 1;
+    repeated UserInfo user_info = 1;
 }
 
 message Email {

@@ -291,23 +291,23 @@ class UserInfoList : public ::google::protobuf::Message /* @@protoc_insertion_po
 
   // accessors -------------------------------------------------------
 
-  // repeated .acafela.rpc.UserInfo info_list = 1;
-  int info_list_size() const;
-  void clear_info_list();
-  static const int kInfoListFieldNumber = 1;
-  ::acafela::rpc::UserInfo* mutable_info_list(int index);
+  // repeated .acafela.rpc.UserInfo user_info = 1;
+  int user_info_size() const;
+  void clear_user_info();
+  static const int kUserInfoFieldNumber = 1;
+  ::acafela::rpc::UserInfo* mutable_user_info(int index);
   ::google::protobuf::RepeatedPtrField< ::acafela::rpc::UserInfo >*
-      mutable_info_list();
-  const ::acafela::rpc::UserInfo& info_list(int index) const;
-  ::acafela::rpc::UserInfo* add_info_list();
+      mutable_user_info();
+  const ::acafela::rpc::UserInfo& user_info(int index) const;
+  ::acafela::rpc::UserInfo* add_user_info();
   const ::google::protobuf::RepeatedPtrField< ::acafela::rpc::UserInfo >&
-      info_list() const;
+      user_info() const;
 
   // @@protoc_insertion_point(class_scope:acafela.rpc.UserInfoList)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::acafela::rpc::UserInfo > info_list_;
+  ::google::protobuf::RepeatedPtrField< ::acafela::rpc::UserInfo > user_info_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_UserAdmin_2eproto::TableStruct;
 };
@@ -557,34 +557,34 @@ inline void UserInfo::set_enabled(bool value) {
 
 // UserInfoList
 
-// repeated .acafela.rpc.UserInfo info_list = 1;
-inline int UserInfoList::info_list_size() const {
-  return info_list_.size();
+// repeated .acafela.rpc.UserInfo user_info = 1;
+inline int UserInfoList::user_info_size() const {
+  return user_info_.size();
 }
-inline void UserInfoList::clear_info_list() {
-  info_list_.Clear();
+inline void UserInfoList::clear_user_info() {
+  user_info_.Clear();
 }
-inline ::acafela::rpc::UserInfo* UserInfoList::mutable_info_list(int index) {
-  // @@protoc_insertion_point(field_mutable:acafela.rpc.UserInfoList.info_list)
-  return info_list_.Mutable(index);
+inline ::acafela::rpc::UserInfo* UserInfoList::mutable_user_info(int index) {
+  // @@protoc_insertion_point(field_mutable:acafela.rpc.UserInfoList.user_info)
+  return user_info_.Mutable(index);
 }
 inline ::google::protobuf::RepeatedPtrField< ::acafela::rpc::UserInfo >*
-UserInfoList::mutable_info_list() {
-  // @@protoc_insertion_point(field_mutable_list:acafela.rpc.UserInfoList.info_list)
-  return &info_list_;
+UserInfoList::mutable_user_info() {
+  // @@protoc_insertion_point(field_mutable_list:acafela.rpc.UserInfoList.user_info)
+  return &user_info_;
 }
-inline const ::acafela::rpc::UserInfo& UserInfoList::info_list(int index) const {
-  // @@protoc_insertion_point(field_get:acafela.rpc.UserInfoList.info_list)
-  return info_list_.Get(index);
+inline const ::acafela::rpc::UserInfo& UserInfoList::user_info(int index) const {
+  // @@protoc_insertion_point(field_get:acafela.rpc.UserInfoList.user_info)
+  return user_info_.Get(index);
 }
-inline ::acafela::rpc::UserInfo* UserInfoList::add_info_list() {
-  // @@protoc_insertion_point(field_add:acafela.rpc.UserInfoList.info_list)
-  return info_list_.Add();
+inline ::acafela::rpc::UserInfo* UserInfoList::add_user_info() {
+  // @@protoc_insertion_point(field_add:acafela.rpc.UserInfoList.user_info)
+  return user_info_.Add();
 }
 inline const ::google::protobuf::RepeatedPtrField< ::acafela::rpc::UserInfo >&
-UserInfoList::info_list() const {
-  // @@protoc_insertion_point(field_list:acafela.rpc.UserInfoList.info_list)
-  return info_list_;
+UserInfoList::user_info() const {
+  // @@protoc_insertion_point(field_list:acafela.rpc.UserInfoList.user_info)
+  return user_info_;
 }
 
 // -------------------------------------------------------------------

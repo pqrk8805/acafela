@@ -42,3 +42,18 @@ std::string read(const std::string& filename)
 
     return server.release();
 }
+
+::grpc::Server* RpcUtils::initInsecureServer(
+                                    const std::string& addressUri,
+                                    ::grpc::Service* service)
+{
+	::grpc::ServerBuilder builder;
+    builder.AddListeningPort(
+                        addressUri,
+                        ::grpc::InsecureServerCredentials());
+    builder.RegisterService(service);
+    std::unique_ptr<::grpc::Server> server(builder.BuildAndStart());
+
+	return server.release();
+}
+

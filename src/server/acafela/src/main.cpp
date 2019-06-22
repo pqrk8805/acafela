@@ -3,11 +3,13 @@
 #include <vector>
 #include "DirectoryService.h"
 #include "DirectoryServiceRpc.h"
-#include "CryptoKey/CryptoKey.h"
-#include "CryptoKey/CryptoKeyRpc.h"
+#include "CryptoKey.h"
+#include "CryptoKeyRpc.h"
 #include "Communicator/communicator.h"
 #include "UserProfile.h"
 #include "UserProfileRpc.h"
+#include "UserAdmin.h"
+#include "UserAdminRpc.h"
 #include "FileStorageAccessor.h"
 #include "Hislog.h"
 
@@ -17,6 +19,7 @@
 #define RPC_PORT_USERVER_PROFILE    "9000"
 #define RPC_PORT_DIRECTORY_SERVICE  "9100"
 #define RPC_PORT_CRYPTO_KEY         "9200"
+#define RPC_PORT_USER_ADMIN         "9300"
 
 #define CLIENT1_IP "10.0.2.157"
 #define CLIENT2_IP "10.0.1.230"
@@ -55,6 +58,15 @@ int main(int argc, char** argv)
 		FUNC_LOGE("ERROR(%d): fail to start CryptoKeyRpc server", err);
 		return err;
 	}
+
+	UserAdmin userAdmin(storageAccessor);
+	UserAdminRpc userAdminRpc(userAdmin);
+	err = userAdminRpc.start(SERVER_IP ":" RPC_PORT_USER_ADMIN);
+	if (err) {
+		FUNC_LOGE("ERROR(%d): fail to start UserAdminRpc server", err);
+		return err;
+	}
+
 	//
 	////Stub it before implement client side directory service.
 	//directoryService.update("1111", "????", "10.0.1.230");
