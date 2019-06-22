@@ -4,9 +4,10 @@ chcp 437
 set CMD_PROTOC=..\..\..\external\gRPC\bin\protoc.exe
 set INC_PROTO=..\..\..\external\gRPC\include\third_party\protobuf\src
 set GRPC_PLUGIN_CPP=..\..\..\external\gRPC\bin\grpc_cpp_plugin.exe
+set GRPC_PLUGIN_CSHARP=..\..\..\external\gRPC\bin\grpc_csharp_plugin.exe
 
-set PROTO_FILES=Common.proto UserProfile.proto DirectoryService.proto CryptoKey.proto
-set PROTO_RPC_FILES=UserProfile.proto DirectoryService.proto CryptoKey.proto
+set PROTO_FILES=Common.proto UserProfile.proto DirectoryService.proto CryptoKey.proto UserAdmin.proto
+set PROTO_RPC_FILES=UserProfile.proto DirectoryService.proto CryptoKey.proto UserAdmin.proto
 
 
 %CMD_PROTOC% ^
@@ -22,6 +23,13 @@ set PROTO_RPC_FILES=UserProfile.proto DirectoryService.proto CryptoKey.proto
         --grpc_out=.\ ^
         --plugin=protoc-gen-grpc=%GRPC_PLUGIN_CPP% ^
         %PROTO_RPC_FILES%
+
+%CMD_PROTOC% ^
+        -I%INC_PROTO% ^
+        -I.\ ^
+        --grpc_out=.\ ^
+        --plugin=protoc-gen-grpc=%GRPC_PLUGIN_CSHARP% ^
+        UserAdmin.proto
 
 
 copy Common.proto ..\..\android\app\src\main\proto\
@@ -40,3 +48,8 @@ move DirectoryService*.cc ..\..\server\acafela\src\DirectoryService\
 
 move CryptoKey*.h ..\..\server\acafela\src\CryptoKey\
 move CryptoKey*.cc ..\..\server\acafela\src\CryptoKey\
+
+move UserAdmin*.h ..\..\server\acafela\src\UserAdmin\
+move UserAdmin*.cc ..\..\server\acafela\src\UserAdmin\
+
+del *.cs

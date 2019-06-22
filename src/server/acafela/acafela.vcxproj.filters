@@ -34,6 +34,9 @@
     <Filter Include="Source Files\CryptoKey">
       <UniqueIdentifier>{6ad49459-a8b4-41ec-bbdb-44d0903b43a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\UserAdmin">
+      <UniqueIdentifier>{b3b49e2b-ea20-4d9a-989d-f54144097f65}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -113,6 +116,18 @@
     </ClCompile>
     <ClCompile Include="src\CryptoKey\MD5Hash.cpp">
       <Filter>Source Files\CryptoKey</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UserAdmin\UserAdmin.grpc.pb.cc">
+      <Filter>Source Files\UserAdmin</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UserAdmin\UserAdmin.pb.cc">
+      <Filter>Source Files\UserAdmin</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UserAdmin\UserAdmin.cpp">
+      <Filter>Source Files\UserAdmin</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UserAdmin\UserAdminRpc.cpp">
+      <Filter>Source Files\UserAdmin</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +211,21 @@
     </ClInclude>
     <ClInclude Include="src\UserProfile\UserProfile.h">
       <Filter>Source Files\UserProfile</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UserAdmin\UserAdmin.grpc.pb.h">
+      <Filter>Source Files\UserAdmin</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UserAdmin\UserAdmin.pb.h">
+      <Filter>Source Files\UserAdmin</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UserAdmin\IUserAdmin.h">
+      <Filter>Source Files\UserAdmin</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UserAdmin\UserAdmin.h">
+      <Filter>Source Files\UserAdmin</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UserAdmin\UserAdminRpc.h">
+      <Filter>Source Files\UserAdmin</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package acafela.rpc;
+
+option csharp_namespace = "harmony.usradmin.rpc";
+
+import "Common.proto";
+
+service UserAdmin {
+    rpc getUserInfoList(Empty) returns (UserInfoList);
+    
+    rpc deleteUser(Email) returns (Error);
+	rpc disableUser(Email) returns (Error);
+	rpc enableUser(Email) returns (Error);
+
+}
+
+message UserInfo {
+    string email = 1;
+    string phone_number = 2;
+    bool enabled = 3;
+}
+
+message UserInfoList {
+    repeated UserInfo info_list = 1;
+}
+
+message Email {
+    string email = 1;
+}
