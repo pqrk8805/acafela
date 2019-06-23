@@ -22,5 +22,20 @@ namespace AcafelaUserAdmin
             Console.WriteLine("UserAdminView()");
             InitializeComponent();
         }
+
+        private void OnRefreshButtonClick(object sender, RoutedEventArgs e)
+        {
+            UserAdminViewModel viewModel
+                            = FindResource("viewModel") as UserAdminViewModel;
+            viewModel.RefreshEntry();
+        }
+
+        private void OnDeleteButtonClick(object sender, RoutedEventArgs e)
+        {
+            UserAdminViewModel viewModel
+                            = FindResource("viewModel") as UserAdminViewModel;
+            DataGrid entry = FindName("entry") as DataGrid;
+            viewModel.DeleteUser(entry.SelectedItems);
+        }
     }
 }

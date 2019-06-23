@@ -17,7 +17,8 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <DataGrid ItemsSource="{Binding UserInfos, Source={StaticResource viewModel}}"
+        <DataGrid x:Name="entry"
+                  ItemsSource="{Binding UserInfos, Source={StaticResource viewModel}}"
                   AutoGenerateColumns="False"
                   HorizontalAlignment="Stretch"
                   CanUserAddRows="false"
@@ -79,8 +80,16 @@
                    LastChildFill="False"
                    Margin="10"
                    Grid.Row="1">
-            <Button Width="100" DockPanel.Dock="Left">Refresh</Button>
-            <Button Width="100" DockPanel.Dock="Right">Delete</Button>
+            <Button Width="100"
+                    DockPanel.Dock="Left"
+                    Click="OnRefreshButtonClick">
+                Refresh
+            </Button>
+            <Button Width="100"
+                    DockPanel.Dock="Right"
+                    Click="OnDeleteButtonClick">
+                Delete
+            </Button>
         </DockPanel>
     </Grid>
 </UserControl>

@@ -70,7 +70,7 @@ void UserAdminRpc::shutdown()
 	const std::string& email = request->email();
 	FUNC_LOGD("%s", email.c_str());
 
-	int err = mUserAdmin.disableUser(email);
+	int err = mUserAdmin.deleteUser(email);
 	response->set_err(err);
     return grpc::Status::OK;
 }
