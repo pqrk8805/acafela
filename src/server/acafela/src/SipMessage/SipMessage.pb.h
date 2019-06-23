@@ -445,9 +445,9 @@ class SIPMessage : public ::google::protobuf::Message /* @@protoc_insertion_poin
 
   // accessors -------------------------------------------------------
 
-  // string from = 2;
+  // string from = 3;
   void clear_from();
-  static const int kFromFieldNumber = 2;
+  static const int kFromFieldNumber = 3;
   const ::std::string& from() const;
   void set_from(const ::std::string& value);
   #if LANG_CXX11
@@ -459,9 +459,9 @@ class SIPMessage : public ::google::protobuf::Message /* @@protoc_insertion_poin
   ::std::string* release_from();
   void set_allocated_from(::std::string* from);
 
-  // string to = 3;
+  // string to = 4;
   void clear_to();
-  static const int kToFieldNumber = 3;
+  static const int kToFieldNumber = 4;
   const ::std::string& to() const;
   void set_to(const ::std::string& value);
   #if LANG_CXX11
@@ -473,9 +473,9 @@ class SIPMessage : public ::google::protobuf::Message /* @@protoc_insertion_poin
   ::std::string* release_to();
   void set_allocated_to(::std::string* to);
 
-  // string sessionid = 4;
+  // string sessionid = 5;
   void clear_sessionid();
-  static const int kSessionidFieldNumber = 4;
+  static const int kSessionidFieldNumber = 5;
   const ::std::string& sessionid() const;
   void set_sessionid(const ::std::string& value);
   #if LANG_CXX11
@@ -487,10 +487,10 @@ class SIPMessage : public ::google::protobuf::Message /* @@protoc_insertion_poin
   ::std::string* release_sessionid();
   void set_allocated_sessionid(::std::string* sessionid);
 
-  // .acafela.sip.SessionInfo sessioninfo = 6;
+  // .acafela.sip.SessionInfo sessioninfo = 7;
   bool has_sessioninfo() const;
   void clear_sessioninfo();
-  static const int kSessioninfoFieldNumber = 6;
+  static const int kSessioninfoFieldNumber = 7;
   private:
   const ::acafela::sip::SessionInfo& _internal_sessioninfo() const;
   public:
@@ -505,9 +505,15 @@ class SIPMessage : public ::google::protobuf::Message /* @@protoc_insertion_poin
   ::acafela::sip::Command cmd() const;
   void set_cmd(::acafela::sip::Command value);
 
-  // int32 seq = 5;
+  // bool isACK = 2;
+  void clear_isack();
+  static const int kIsACKFieldNumber = 2;
+  bool isack() const;
+  void set_isack(bool value);
+
+  // int32 seq = 6;
   void clear_seq();
-  static const int kSeqFieldNumber = 5;
+  static const int kSeqFieldNumber = 6;
   ::google::protobuf::int32 seq() const;
   void set_seq(::google::protobuf::int32 value);
 
@@ -520,6 +526,7 @@ class SIPMessage : public ::google::protobuf::Message /* @@protoc_insertion_poin
   ::google::protobuf::internal::ArenaStringPtr sessionid_;
   ::acafela::sip::SessionInfo* sessioninfo_;
   int cmd_;
+  bool isack_;
   ::google::protobuf::int32 seq_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_SipMessage_2eproto::TableStruct;
@@ -668,7 +675,21 @@ inline void SIPMessage::set_cmd(::acafela::sip::Command value) {
   // @@protoc_insertion_point(field_set:acafela.sip.SIPMessage.cmd)
 }
 
-// string from = 2;
+// bool isACK = 2;
+inline void SIPMessage::clear_isack() {
+  isack_ = false;
+}
+inline bool SIPMessage::isack() const {
+  // @@protoc_insertion_point(field_get:acafela.sip.SIPMessage.isACK)
+  return isack_;
+}
+inline void SIPMessage::set_isack(bool value) {
+  
+  isack_ = value;
+  // @@protoc_insertion_point(field_set:acafela.sip.SIPMessage.isACK)
+}
+
+// string from = 3;
 inline void SIPMessage::clear_from() {
   from_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -721,7 +742,7 @@ inline void SIPMessage::set_allocated_from(::std::string* from) {
   // @@protoc_insertion_point(field_set_allocated:acafela.sip.SIPMessage.from)
 }
 
-// string to = 3;
+// string to = 4;
 inline void SIPMessage::clear_to() {
   to_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -774,7 +795,7 @@ inline void SIPMessage::set_allocated_to(::std::string* to) {
   // @@protoc_insertion_point(field_set_allocated:acafela.sip.SIPMessage.to)
 }
 
-// string sessionid = 4;
+// string sessionid = 5;
 inline void SIPMessage::clear_sessionid() {
   sessionid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -827,7 +848,7 @@ inline void SIPMessage::set_allocated_sessionid(::std::string* sessionid) {
   // @@protoc_insertion_point(field_set_allocated:acafela.sip.SIPMessage.sessionid)
 }
 
-// int32 seq = 5;
+// int32 seq = 6;
 inline void SIPMessage::clear_seq() {
   seq_ = 0;
 }
@@ -841,7 +862,7 @@ inline void SIPMessage::set_seq(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:acafela.sip.SIPMessage.seq)
 }
 
-// .acafela.sip.SessionInfo sessioninfo = 6;
+// .acafela.sip.SessionInfo sessioninfo = 7;
 inline bool SIPMessage::has_sessioninfo() const {
   return this != internal_default_instance() && sessioninfo_ != NULL;
 }

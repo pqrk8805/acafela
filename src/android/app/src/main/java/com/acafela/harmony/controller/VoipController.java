@@ -11,7 +11,10 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.acafela.harmony.Config;
 import com.acafela.harmony.R;
@@ -27,6 +30,7 @@ import com.acafela.harmony.userprofile.UserInfo;
 
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.acafela.harmony.sip.SipMessage.Command.INVITE;
 import static com.acafela.harmony.ui.AudioCallActivity.BROADCAST_BYE;
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_ISRINGING;
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_PHONENUMBER;
@@ -53,8 +57,13 @@ public class VoipController {
     private String mCalleeNumber;
     private String mCallerNumber;
 
+    private byte[]mSenderMsg;
+    private int mRetryCnt;
+    private Timer mTimer;
+
     private  enum STATE {
         IDLE_STATE,
+        INVITE_STATE,
         RINGING_STATE,
         CONNECTING_STATE,
         DISCONNECTING_STATE,
@@ -82,7 +91,6 @@ public class VoipController {
 
 
     public void startListenerController() {
-        if(isCaller ==true) return;
 
         Crypto.init();
         UdpListenerThreadRun = true;
@@ -96,19 +104,31 @@ public class VoipController {
                     socket.bind(new InetSocketAddress(CONTROL_RECIEVE_PORT));
                     DatagramPacket packet = new DatagramPacket(buffer, BUFFER_SIZE);
                     Log.i(LOG_TAG, "Incoming call listener started");
+
                     while (UdpListenerThreadRun) {
-                        // Listen for incoming call requests
-                        //Log.i(LOG_TAG, "Listening for incoming calls");
                         socket.receive(packet);
                         String senderIP = packet.getAddress().getHostAddress();
                         byte[] data = new byte[packet.getLength()];
                         System.arraycopy(packet.getData(), packet.getOffset(),data, 0, packet.getLength());
                         SIPMessage sipMessage = SIPMessage.parseFrom(data);
 
-                       // String message = new String(buffer, 0, packet.getLength());
+                        if(sipMessage.getIsACK()) {
+                            Log.e(LOG_TAG, "message get ACK [" + sipMessage.getCmd().toString() + "]");
+                            mTimer.cancel();
+                            continue;
+                        } else {
+                            Log.e(LOG_TAG, "Send  ACK answer by message[" + sipMessage.getCmd().toString() + "]");
+                            if(sipMessage.getCmd()==INVITE)
+                            {
+                                sesssionID = sipMessage.getSessionid();
+                                mCallerNumber = sipMessage.getFrom();
+                                mCalleeNumber = sipMessage.getTo();
+                            }
+                            replyMessage(sipMessage.getCmd());
+                        }
+
                         Log.e(LOG_TAG, "Got UDP message from " + senderIP + ", message: " + sipMessage.toString());
                         handle(sipMessage);
-                        //broadcastIntent(senderIP, message);
                     }
                     Log.e(LOG_TAG, "Call Listener ending");
                     socket.disconnect();
@@ -128,17 +148,15 @@ public class VoipController {
         if(isCaller) {
             switch (message.getCmd()) {
                 case RINGING:
-                    Log.i(LOG_TAG, "Listening for ringing calls");
+                    if(mState!=STATE.RINGING_STATE)
+                        mRingControl.ringbackTone_start();
                     mState = STATE.RINGING_STATE;
-                    mRingControl.ringbackTone_start();
                     break;
                 case ACCEPTCALL:
-                    mState = STATE.CONNECTING_STATE;
-                    Log.i(LOG_TAG, "Listening for accept calls");
-                    mRingControl.ringbackTone_stop();
+                    if(mState==STATE.RINGING_STATE)
+                        mRingControl.ringbackTone_stop();
                     break;
                 case OPENSESSION:
-                    mState = STATE.CONNECTING_STATE;
                     byte[] keyByte = mCryptoRpc.getKey(sesssionID);
                     mCrypto  = CryptoBroker.getInstance().create("AES");
                     mCrypto.init(keyByte);
@@ -147,10 +165,11 @@ public class VoipController {
                         SipMessage.Session session = message.getSessioninfo().getSessions(i);
                         opensession(session.getSessiontype(), session.getIp(), session.getPort());
                     }
+                    mState = STATE.CONNECTING_STATE;
                     break;
                 case BYE:
-                    mState = STATE.IDLE_STATE;
                     endCommunication();
+                    mState = STATE.IDLE_STATE;
                     break;
                 case STARTVIDEO:
                 case STOPVIDEO:
@@ -164,21 +183,18 @@ public class VoipController {
         else {
             switch (message.getCmd()) {
                 case INVITE:
+                    if(mState==STATE.IDLE_STATE) {
+                        mRingControl.ring_start();
+                        sendMessage(SipMessage.Command.RINGING);
+                        Intent intent = new Intent(mContext, AudioCallActivity.class);
+                        intent.putExtra(INTENT_PHONENUMBER, mCallerNumber);
+                        intent.putExtra(INTENT_ISRINGING, true);
+                        intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                        mContext.startActivity(intent);
+                    }
                     mState = STATE.RINGING_STATE;
-                    sesssionID = message.getSessionid();
-                    mCallerNumber = message.getFrom();
-                    mCalleeNumber = message.getTo();
-                    mRingControl.ring_start();
-                    sendMessage(SipMessage.Command.RINGING);
-
-                    Intent intent = new Intent(mContext, AudioCallActivity.class);
-                    intent.putExtra(INTENT_PHONENUMBER, mCallerNumber);
-                    intent.putExtra(INTENT_ISRINGING, true);
-                    intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(intent);
                     break;
                 case OPENSESSION:
-                    mState = STATE.CONNECTING_STATE;
                     byte[] keyByte = mCryptoRpc.getKey(sesssionID);
                     mCrypto = CryptoBroker.getInstance().create("AES");
                     Log.e(LOG_TAG, "Send Message: " +"keyByte" + keyByte.length);
@@ -187,10 +203,11 @@ public class VoipController {
                         SipMessage.Session session = message.getSessioninfo().getSessions(i);
                         opensession(session.getSessiontype(), session.getIp(), session.getPort());
                     }
+                    mState = STATE.CONNECTING_STATE;
                     break;
                 case BYE:
-                    mState = STATE.IDLE_STATE;
                     endCommunication();
+                    mState = STATE.IDLE_STATE;
                 case STARTVIDEO:
                 case STOPVIDEO:
                 case TERMINATE:
@@ -207,6 +224,8 @@ public class VoipController {
         destroyAllsession();
         finishCallActivity();
         isCaller = false;
+        mState = STATE.IDLE_STATE;
+        msgSeq = 0;
     }
 
     private void finishCallActivity() {
@@ -267,11 +286,25 @@ public class VoipController {
         });
         replyThread.start();
     }
+    public void  replyMessage(SipMessage.Command cmd)
+    {
+        SIPMessage.Builder builder = SIPMessage.newBuilder();
+        final byte[] mSenderMsg = builder.
+                setCmd(cmd).
+                setIsACK(true).
+                setFrom(mCallerNumber).
+                setTo(mCalleeNumber).
+                setSessionid(sesssionID).
+                setSeq(msgSeq).
+                build().
+                toByteArray();
+        //Log.e(LOG_TAG, "Exception Answer Message: " + buffer.length);
+        UdpSend(mSenderMsg);
+    }
     public void  sendMessage(SipMessage.Command cmd)
     {
-
         SIPMessage.Builder builder = SIPMessage.newBuilder();
-        byte[] buffer = builder.
+        final byte[] mSenderMsg = builder.
                 setCmd(cmd).
                 setFrom(mCallerNumber).
                 setTo(mCalleeNumber).
@@ -279,26 +312,46 @@ public class VoipController {
                 setSeq(msgSeq).
                 build().
                 toByteArray();
-         //Log.e(LOG_TAG, "Exception Answer Message: " + buffer.length);
-         UdpSend(buffer);
+        UdpSend(mSenderMsg);
+        Log.e(LOG_TAG, "Send Message : "  +  cmd.toString());
+
+        mRetryCnt = 3;
+        mTimer.cancel();
+        mTimer = new Timer();
+        mTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                // call method
+                Log.e(LOG_TAG, "mRetryCnt: "  +  mRetryCnt);
+                if(--mRetryCnt==0)
+                {
+                    mTimer.cancel();
+                    Log.e(LOG_TAG, "Timeout Control Message");
+                    //showToastInService("sipinvite");
+                    terminateCall();
+                }
+                else
+                    UdpSend(mSenderMsg);
+            }
+        }, 300,300);
+        msgSeq++;
     }
 
     public void inviteCall(String calleeNumber)
     {
-        //if(mState != STATE.IDLE_STATE) return;
-        //Add exception state
+        if(mState != STATE.IDLE_STATE) return;
+        mState = STATE.INVITE_STATE;
         mCalleeNumber = calleeNumber;
         mCallerNumber = UserInfo.getInstance().getPhoneNumber();
         sesssionID = UserInfo.getInstance().getPhoneNumber() + sesssionNo++;
         isCaller = true;
 
-        sendMessage(SipMessage.Command.INVITE);
+        sendMessage(INVITE);
     }
+
     public void terminateCall()
     {
-        //Add exception state
         if(mState == STATE.IDLE_STATE) return;
-        mState = STATE.DISCONNECTING_STATE;
         endCommunication();
         sendMessage(SipMessage.Command.TERMINATE);
     }
