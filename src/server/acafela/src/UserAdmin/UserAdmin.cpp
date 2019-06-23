@@ -19,11 +19,17 @@ std::vector<UserInfo> UserAdmin::getUserInfoList()
 int UserAdmin::disableUser(
 						const std::string& emailAddress)
 {
-	return 0;
+	return mStorageAccessor.disableUser(emailAddress);
 }
 
 int UserAdmin::enableUser(
 						const std::string& emailAddress)
 {
-	return 0;
+	return mStorageAccessor.enableUser(emailAddress);
+}
+
+int UserAdmin::deleteUser(
+						const std::string& emailAddress)
+{
+	return mStorageAccessor.deleteUser(emailAddress);
 }

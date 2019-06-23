@@ -5,7 +5,7 @@ using System.Windows;
 
 namespace AcafelaUserAdmin
 {
-    public class UserAdminViewModel : INotifyPropertyChanged
+    public class UserAdminViewModel : IUserEnableHandler
     {
         private UserAdminModel mModel;
 
@@ -13,10 +13,8 @@ namespace AcafelaUserAdmin
         public ObservableCollection<UserInfo> UserInfos
         {
             get { return mUserInfos; }
-            set { mUserInfos = value; } // OnPropertyChanged("UserInfos"); }
+            set { mUserInfos = value; }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public UserAdminViewModel()
         {
@@ -24,28 +22,27 @@ namespace AcafelaUserAdmin
 
             mModel = (Application.Current as App)?.UserAdminModel;
 
-            var userInfos = new ObservableCollection<UserInfo>();
+            UserInfos = new ObservableCollection<UserInfo>();
             var infos = mModel.GetUserInfo();
             foreach (var info in infos)
             {
-                Console.WriteLine($"{info.Email} {info.PhoneNumber} {info.Enabled}");
-                userInfos.Add(new UserInfo {
-                                        Selected = false,
-                                        Email = info.Email,
-                                        Phone = info.PhoneNumber,
-                                        Enabled = info.Enabled,
-                                    });
+                Console.WriteLine($"{info.Email} {info.PhoneNumber} {info.IpAddress} {info.Enabled}");
+                var item = new UserInfo(
+                                    info.Email,
+                                    info.PhoneNumber,
+                                    info.IpAddress,
+                                    info.Enabled);
+                item.SetUserEnableHandler(this);
+                UserInfos.Add(item);
             }
-            UserInfos = userInfos;
         }
 
-        private void OnPropertyChanged(string propertyName)
+        public int HandleUserEnable(String email, bool enable)
         {
-            if (string.IsNullOrEmpty(propertyName) || PropertyChanged == null)
-                return;
-            PropertyChanged?.Invoke(
-                                this,
-                                new PropertyChangedEventArgs(propertyName));
+            Console.WriteLine($"UserAdminViewModel.OnPropertyChanged() {email} {enable}");
+            return enable
+                    ? mModel.EnableUser(email)
+                    : mModel.DisableUser(email);
         }
     }
 }

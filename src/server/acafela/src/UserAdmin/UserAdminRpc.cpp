@@ -56,6 +56,7 @@ void UserAdminRpc::shutdown()
 		::acafela::rpc::UserInfo* info = response->add_user_info();
 		info->set_email(userInfo.emailAddress);
 		info->set_phone_number(userInfo.phoneNumber);
+		info->set_ip_address(userInfo.ipAddress);
 		info->set_enabled(userInfo.enabled);
 	}
     return grpc::Status::OK;

@@ -18,4 +18,6 @@ public:
 				const std::string& emailAddress) override;
 	int enableUser(
 				const std::string& emailAddress) override;
+	int deleteUser(
+				const std::string& emailAddress) override;
 };

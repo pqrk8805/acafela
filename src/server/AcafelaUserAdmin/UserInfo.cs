@@ -3,40 +3,71 @@ using System.ComponentModel;
 
 namespace AcafelaUserAdmin
 {
+    public interface IUserEnableHandler
+    {
+        int HandleUserEnable(String email, bool enable);
+    }
+
     public class UserInfo : INotifyPropertyChanged
     {
-        private bool mSelected;
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private IUserEnableHandler mUserEnableHandler;
+
         private String mEmail;
         private String mPhone;
+        private String mIpAddress;
         private bool mEnabled;
-
-        public bool Selected
-        {
-            get { return mSelected; }
-            set { mSelected = value; OnPropertyChanged("Selected"); }
-        }
 
         public String Email
         {
             get { return mEmail; }
-            set { mEmail = value; OnPropertyChanged("Email"); }
+            set { mEmail = value; NotifyPropertyChanged("Email"); }
         }
 
         public String Phone
         {
             get { return mPhone; }
-            set { mPhone = value; OnPropertyChanged("Phone"); }
+            set { mPhone = value; NotifyPropertyChanged("Phone"); }
+        }
+
+        public String IpAddress
+        {
+            get { return mIpAddress; }
+            set { mIpAddress = value; NotifyPropertyChanged("IpAddress"); }
         }
 
         public bool Enabled
         {
             get { return mEnabled; }
-            set { mEnabled = value; OnPropertyChanged("Enabled"); }
+            set
+            {
+                int err = mUserEnableHandler?.HandleUserEnable(Email, value) ?? -1;
+                if (err == 0)
+                {
+                    mEnabled = value;
+                    NotifyPropertyChanged("Enabled");
+                }
+            }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public UserInfo(
+                    String email,
+                    String phone,
+                    String ipAddress,
+                    bool enabled)
+        {
+            mEmail = email;
+            mPhone = phone;
+            mIpAddress = ipAddress;
+            mEnabled = enabled;
+        }
 
-        private void OnPropertyChanged(string propertyName)
+        public void SetUserEnableHandler(IUserEnableHandler handler)
+            => mUserEnableHandler = handler;
+
+
+        private void NotifyPropertyChanged(string propertyName)
         {
             if (string.IsNullOrEmpty(propertyName) || PropertyChanged == null)
                 return;

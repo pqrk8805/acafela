@@ -18,7 +18,8 @@ service UserAdmin {
 message UserInfo {
     string email = 1;
     string phone_number = 2;
-    bool enabled = 3;
+    string ip_address = 3;
+    bool enabled = 4;
 }
 
 message UserInfoList {

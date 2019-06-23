@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AcafelaUserAdmin"
         mc:Ignorable="d"
-        Title="Acafela - User Administration" Height="450" Width="500">
+        Title="Acafela - User Administration" Height="450" Width="700">
     <Grid>
         <local:UserAdminView x:Name="view"/>
     </Grid>

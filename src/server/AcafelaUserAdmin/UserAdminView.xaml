@@ -5,9 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AcafelaUserAdmin"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="500">
+             d:DesignHeight="450" d:DesignWidth="700">
     <UserControl.Resources>
         <local:UserAdminViewModel x:Key="viewModel"/>
+        <Style x:Key="styleGridColumnHeader" TargetType="DataGridColumnHeader">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -17,38 +20,53 @@
         <DataGrid ItemsSource="{Binding UserInfos, Source={StaticResource viewModel}}"
                   AutoGenerateColumns="False"
                   HorizontalAlignment="Stretch"
+                  CanUserAddRows="false"
+                  ColumnHeaderStyle="{StaticResource styleGridColumnHeader}"
+                  FontSize="16"
                   Grid.Row="0">
             <DataGrid.Columns>
-                <DataGridCheckBoxColumn 
-                                Header="Selected"
-                                IsReadOnly="False"
-                                Binding="{Binding Selected}">
-                </DataGridCheckBoxColumn>
+                <DataGridTemplateColumn
+                            Header="Enabled"
+                            IsReadOnly="False"
+                            Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox
+                                IsChecked="{Binding Path=Enabled,
+                                                    UpdateSourceTrigger=PropertyChanged}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn
-                                Header="Email"
-                                IsReadOnly="False"
-                                Binding="{Binding Email}"
-                                Width="*">
+                            Header="Email"
+                            IsReadOnly="True"
+                            Binding="{Binding Email}"
+                            Width="*">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="TextAlignment" Value="Right"/>
+                            <Setter Property="Padding" Value="10,0"/>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Phone Number"
-                                    IsReadOnly="False"
-                                    Binding="{Binding Phone}"
-                                    Width="120">
+                <DataGridTextColumn
+                            Header="Phone Number"
+                            IsReadOnly="True"
+                            Binding="{Binding Phone}"
+                            Width="150">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="TextAlignment" Value="Center"/>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Enabled"
-                                    IsReadOnly="False"
-                                    Binding="{Binding Enabled}"
-                                    Width="100">
+                <DataGridTextColumn
+                            Header="IP Address"
+                            IsReadOnly="True"
+                            Binding="{Binding IpAddress}"
+                            Width="150">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="TextAlignment" Value="Center"/>
@@ -63,8 +81,6 @@
                    Grid.Row="1">
             <Button Width="100" DockPanel.Dock="Left">Refresh</Button>
             <Button Width="100" DockPanel.Dock="Right">Delete</Button>
-            <Button Width="100" DockPanel.Dock="Right">Enable</Button>
-            <Button Width="100" DockPanel.Dock="Right">Disable</Button>
         </DockPanel>
     </Grid>
 </UserControl>

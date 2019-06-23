@@ -186,9 +186,23 @@ class UserInfo : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::std::string* release_phone_number();
   void set_allocated_phone_number(::std::string* phone_number);
 
-  // bool enabled = 3;
+  // string ip_address = 3;
+  void clear_ip_address();
+  static const int kIpAddressFieldNumber = 3;
+  const ::std::string& ip_address() const;
+  void set_ip_address(const ::std::string& value);
+  #if LANG_CXX11
+  void set_ip_address(::std::string&& value);
+  #endif
+  void set_ip_address(const char* value);
+  void set_ip_address(const char* value, size_t size);
+  ::std::string* mutable_ip_address();
+  ::std::string* release_ip_address();
+  void set_allocated_ip_address(::std::string* ip_address);
+
+  // bool enabled = 4;
   void clear_enabled();
-  static const int kEnabledFieldNumber = 3;
+  static const int kEnabledFieldNumber = 4;
   bool enabled() const;
   void set_enabled(bool value);
 
@@ -198,6 +212,7 @@ class UserInfo : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr email_;
   ::google::protobuf::internal::ArenaStringPtr phone_number_;
+  ::google::protobuf::internal::ArenaStringPtr ip_address_;
   bool enabled_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_UserAdmin_2eproto::TableStruct;
@@ -539,7 +554,60 @@ inline void UserInfo::set_allocated_phone_number(::std::string* phone_number) {
   // @@protoc_insertion_point(field_set_allocated:acafela.rpc.UserInfo.phone_number)
 }
 
-// bool enabled = 3;
+// string ip_address = 3;
+inline void UserInfo::clear_ip_address() {
+  ip_address_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& UserInfo::ip_address() const {
+  // @@protoc_insertion_point(field_get:acafela.rpc.UserInfo.ip_address)
+  return ip_address_.GetNoArena();
+}
+inline void UserInfo::set_ip_address(const ::std::string& value) {
+  
+  ip_address_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:acafela.rpc.UserInfo.ip_address)
+}
+#if LANG_CXX11
+inline void UserInfo::set_ip_address(::std::string&& value) {
+  
+  ip_address_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:acafela.rpc.UserInfo.ip_address)
+}
+#endif
+inline void UserInfo::set_ip_address(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  ip_address_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:acafela.rpc.UserInfo.ip_address)
+}
+inline void UserInfo::set_ip_address(const char* value, size_t size) {
+  
+  ip_address_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:acafela.rpc.UserInfo.ip_address)
+}
+inline ::std::string* UserInfo::mutable_ip_address() {
+  
+  // @@protoc_insertion_point(field_mutable:acafela.rpc.UserInfo.ip_address)
+  return ip_address_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* UserInfo::release_ip_address() {
+  // @@protoc_insertion_point(field_release:acafela.rpc.UserInfo.ip_address)
+  
+  return ip_address_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void UserInfo::set_allocated_ip_address(::std::string* ip_address) {
+  if (ip_address != NULL) {
+    
+  } else {
+    
+  }
+  ip_address_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ip_address);
+  // @@protoc_insertion_point(field_set_allocated:acafela.rpc.UserInfo.ip_address)
+}
+
+// bool enabled = 4;
 inline void UserInfo::clear_enabled() {
   enabled_ = false;
 }
