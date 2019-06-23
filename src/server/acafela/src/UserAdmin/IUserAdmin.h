@@ -21,4 +21,6 @@ public:
 	virtual int enableUser(
 						const std::string& emailAddress) = 0;
 
+	virtual int deleteUser(
+						const std::string& emailAddress) = 0;
 };

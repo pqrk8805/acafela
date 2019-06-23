@@ -27,3 +27,9 @@ int UserAdmin::enableUser(
 {
 	return mStorageAccessor.enableUser(emailAddress);
 }
+
+int UserAdmin::deleteUser(
+						const std::string& emailAddress)
+{
+	return mStorageAccessor.deleteUser(emailAddress);
+}

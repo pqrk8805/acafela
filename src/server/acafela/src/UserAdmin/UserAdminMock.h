@@ -59,4 +59,10 @@ public:
 	{
 		return setEnable(mEntry, emailAddress, true);
 	}
+
+	int deleteUser(
+				const std::string& emailAddress) override
+	{
+		return mEntry.erase(emailAddress);
+	}
 };
