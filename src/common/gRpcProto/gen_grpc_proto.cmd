@@ -52,4 +52,7 @@ move CryptoKey*.cc ..\..\server\acafela\src\CryptoKey\
 move UserAdmin*.h ..\..\server\acafela\src\UserAdmin\
 move UserAdmin*.cc ..\..\server\acafela\src\UserAdmin\
 
+move Common.cs ..\..\server\AcafelaUserAdmin\
+move UserAdmin*.cs ..\..\server\AcafelaUserAdmin\
+
 del *.cs

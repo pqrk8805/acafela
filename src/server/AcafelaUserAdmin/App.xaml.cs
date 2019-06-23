@@ -8,10 +8,19 @@ using System.Windows;
 
 namespace AcafelaUserAdmin
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
+        public UserAdminModel UserAdminModel
+        {
+            get;
+            private set;
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            UserAdminModel = new UserAdminModel();
+        }
     }
 }
