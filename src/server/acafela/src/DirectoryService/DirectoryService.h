@@ -4,12 +4,13 @@
 #include <mutex>
 #include <memory>
 #include "IDirectoryService.h"
+#include "IStorageAccessor.h"
 
-class IStorageAccessor;
+
 class DirectoryService : public IDirectoryService
 {
 private:
-    std::map<std::string, std::string> mBook;
+    std::map<std::string, UserInfo> mBook;
     std::mutex mLock;
 	IStorageAccessor& mStorageAccessor;
 
@@ -26,4 +27,7 @@ public:
             std::string* ipAddress) override;
     int remove(
             const std::string& phoneNumber) override;
+    int setEnable(
+            const std::string& phoneNumber,
+            bool enable) override;
 };

@@ -14,7 +14,7 @@ namespace harmony.usradmin.rpc {
 
     static readonly grpc::Marshaller<global::Acafela.Rpc.Empty> __Marshaller_acafela_rpc_Empty = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Acafela.Rpc.Empty.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::harmony.usradmin.rpc.UserInfoList> __Marshaller_acafela_rpc_UserInfoList = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::harmony.usradmin.rpc.UserInfoList.Parser.ParseFrom);
-    static readonly grpc::Marshaller<global::harmony.usradmin.rpc.Email> __Marshaller_acafela_rpc_Email = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::harmony.usradmin.rpc.Email.Parser.ParseFrom);
+    static readonly grpc::Marshaller<global::harmony.usradmin.rpc.UserInfo> __Marshaller_acafela_rpc_UserInfo = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::harmony.usradmin.rpc.UserInfo.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::Acafela.Rpc.Error> __Marshaller_acafela_rpc_Error = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Acafela.Rpc.Error.Parser.ParseFrom);
 
     static readonly grpc::Method<global::Acafela.Rpc.Empty, global::harmony.usradmin.rpc.UserInfoList> __Method_getUserInfoList = new grpc::Method<global::Acafela.Rpc.Empty, global::harmony.usradmin.rpc.UserInfoList>(
@@ -24,25 +24,25 @@ namespace harmony.usradmin.rpc {
         __Marshaller_acafela_rpc_Empty,
         __Marshaller_acafela_rpc_UserInfoList);
 
-    static readonly grpc::Method<global::harmony.usradmin.rpc.Email, global::Acafela.Rpc.Error> __Method_deleteUser = new grpc::Method<global::harmony.usradmin.rpc.Email, global::Acafela.Rpc.Error>(
+    static readonly grpc::Method<global::harmony.usradmin.rpc.UserInfo, global::Acafela.Rpc.Error> __Method_deleteUser = new grpc::Method<global::harmony.usradmin.rpc.UserInfo, global::Acafela.Rpc.Error>(
         grpc::MethodType.Unary,
         __ServiceName,
         "deleteUser",
-        __Marshaller_acafela_rpc_Email,
+        __Marshaller_acafela_rpc_UserInfo,
         __Marshaller_acafela_rpc_Error);
 
-    static readonly grpc::Method<global::harmony.usradmin.rpc.Email, global::Acafela.Rpc.Error> __Method_disableUser = new grpc::Method<global::harmony.usradmin.rpc.Email, global::Acafela.Rpc.Error>(
+    static readonly grpc::Method<global::harmony.usradmin.rpc.UserInfo, global::Acafela.Rpc.Error> __Method_disableUser = new grpc::Method<global::harmony.usradmin.rpc.UserInfo, global::Acafela.Rpc.Error>(
         grpc::MethodType.Unary,
         __ServiceName,
         "disableUser",
-        __Marshaller_acafela_rpc_Email,
+        __Marshaller_acafela_rpc_UserInfo,
         __Marshaller_acafela_rpc_Error);
 
-    static readonly grpc::Method<global::harmony.usradmin.rpc.Email, global::Acafela.Rpc.Error> __Method_enableUser = new grpc::Method<global::harmony.usradmin.rpc.Email, global::Acafela.Rpc.Error>(
+    static readonly grpc::Method<global::harmony.usradmin.rpc.UserInfo, global::Acafela.Rpc.Error> __Method_enableUser = new grpc::Method<global::harmony.usradmin.rpc.UserInfo, global::Acafela.Rpc.Error>(
         grpc::MethodType.Unary,
         __ServiceName,
         "enableUser",
-        __Marshaller_acafela_rpc_Email,
+        __Marshaller_acafela_rpc_UserInfo,
         __Marshaller_acafela_rpc_Error);
 
     /// <summary>Service descriptor</summary>
@@ -59,17 +59,17 @@ namespace harmony.usradmin.rpc {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
 
-      public virtual global::System.Threading.Tasks.Task<global::Acafela.Rpc.Error> deleteUser(global::harmony.usradmin.rpc.Email request, grpc::ServerCallContext context)
+      public virtual global::System.Threading.Tasks.Task<global::Acafela.Rpc.Error> deleteUser(global::harmony.usradmin.rpc.UserInfo request, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
 
-      public virtual global::System.Threading.Tasks.Task<global::Acafela.Rpc.Error> disableUser(global::harmony.usradmin.rpc.Email request, grpc::ServerCallContext context)
+      public virtual global::System.Threading.Tasks.Task<global::Acafela.Rpc.Error> disableUser(global::harmony.usradmin.rpc.UserInfo request, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
 
-      public virtual global::System.Threading.Tasks.Task<global::Acafela.Rpc.Error> enableUser(global::harmony.usradmin.rpc.Email request, grpc::ServerCallContext context)
+      public virtual global::System.Threading.Tasks.Task<global::Acafela.Rpc.Error> enableUser(global::harmony.usradmin.rpc.UserInfo request, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
@@ -115,51 +115,51 @@ namespace harmony.usradmin.rpc {
       {
         return CallInvoker.AsyncUnaryCall(__Method_getUserInfoList, null, options, request);
       }
-      public virtual global::Acafela.Rpc.Error deleteUser(global::harmony.usradmin.rpc.Email request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual global::Acafela.Rpc.Error deleteUser(global::harmony.usradmin.rpc.UserInfo request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return deleteUser(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
-      public virtual global::Acafela.Rpc.Error deleteUser(global::harmony.usradmin.rpc.Email request, grpc::CallOptions options)
+      public virtual global::Acafela.Rpc.Error deleteUser(global::harmony.usradmin.rpc.UserInfo request, grpc::CallOptions options)
       {
         return CallInvoker.BlockingUnaryCall(__Method_deleteUser, null, options, request);
       }
-      public virtual grpc::AsyncUnaryCall<global::Acafela.Rpc.Error> deleteUserAsync(global::harmony.usradmin.rpc.Email request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual grpc::AsyncUnaryCall<global::Acafela.Rpc.Error> deleteUserAsync(global::harmony.usradmin.rpc.UserInfo request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return deleteUserAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
-      public virtual grpc::AsyncUnaryCall<global::Acafela.Rpc.Error> deleteUserAsync(global::harmony.usradmin.rpc.Email request, grpc::CallOptions options)
+      public virtual grpc::AsyncUnaryCall<global::Acafela.Rpc.Error> deleteUserAsync(global::harmony.usradmin.rpc.UserInfo request, grpc::CallOptions options)
       {
         return CallInvoker.AsyncUnaryCall(__Method_deleteUser, null, options, request);
       }
-      public virtual global::Acafela.Rpc.Error disableUser(global::harmony.usradmin.rpc.Email request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual global::Acafela.Rpc.Error disableUser(global::harmony.usradmin.rpc.UserInfo request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return disableUser(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
-      public virtual global::Acafela.Rpc.Error disableUser(global::harmony.usradmin.rpc.Email request, grpc::CallOptions options)
+      public virtual global::Acafela.Rpc.Error disableUser(global::harmony.usradmin.rpc.UserInfo request, grpc::CallOptions options)
       {
         return CallInvoker.BlockingUnaryCall(__Method_disableUser, null, options, request);
       }
-      public virtual grpc::AsyncUnaryCall<global::Acafela.Rpc.Error> disableUserAsync(global::harmony.usradmin.rpc.Email request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual grpc::AsyncUnaryCall<global::Acafela.Rpc.Error> disableUserAsync(global::harmony.usradmin.rpc.UserInfo request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return disableUserAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
-      public virtual grpc::AsyncUnaryCall<global::Acafela.Rpc.Error> disableUserAsync(global::harmony.usradmin.rpc.Email request, grpc::CallOptions options)
+      public virtual grpc::AsyncUnaryCall<global::Acafela.Rpc.Error> disableUserAsync(global::harmony.usradmin.rpc.UserInfo request, grpc::CallOptions options)
       {
         return CallInvoker.AsyncUnaryCall(__Method_disableUser, null, options, request);
       }
-      public virtual global::Acafela.Rpc.Error enableUser(global::harmony.usradmin.rpc.Email request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual global::Acafela.Rpc.Error enableUser(global::harmony.usradmin.rpc.UserInfo request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return enableUser(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
-      public virtual global::Acafela.Rpc.Error enableUser(global::harmony.usradmin.rpc.Email request, grpc::CallOptions options)
+      public virtual global::Acafela.Rpc.Error enableUser(global::harmony.usradmin.rpc.UserInfo request, grpc::CallOptions options)
       {
         return CallInvoker.BlockingUnaryCall(__Method_enableUser, null, options, request);
       }
-      public virtual grpc::AsyncUnaryCall<global::Acafela.Rpc.Error> enableUserAsync(global::harmony.usradmin.rpc.Email request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual grpc::AsyncUnaryCall<global::Acafela.Rpc.Error> enableUserAsync(global::harmony.usradmin.rpc.UserInfo request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return enableUserAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
-      public virtual grpc::AsyncUnaryCall<global::Acafela.Rpc.Error> enableUserAsync(global::harmony.usradmin.rpc.Email request, grpc::CallOptions options)
+      public virtual grpc::AsyncUnaryCall<global::Acafela.Rpc.Error> enableUserAsync(global::harmony.usradmin.rpc.UserInfo request, grpc::CallOptions options)
       {
         return CallInvoker.AsyncUnaryCall(__Method_enableUser, null, options, request);
       }

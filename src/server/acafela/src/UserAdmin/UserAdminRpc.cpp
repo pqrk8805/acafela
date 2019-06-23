@@ -64,39 +64,39 @@ void UserAdminRpc::shutdown()
 
 ::grpc::Status UserAdminRpc::deleteUser(
 									::grpc::ServerContext* context,
-									const ::acafela::rpc::Email* request,
+									const ::acafela::rpc::UserInfo* request,
 									::acafela::rpc::Error* response)
 {
 	const std::string& email = request->email();
 	FUNC_LOGD("%s", email.c_str());
 
-	int err = mUserAdmin.deleteUser(email);
+	int err = mUserAdmin.deleteUser(email, request->phone_number());
 	response->set_err(err);
     return grpc::Status::OK;
 }
 
 ::grpc::Status UserAdminRpc::disableUser(
 									::grpc::ServerContext* context,
-									const ::acafela::rpc::Email* request,
+									const ::acafela::rpc::UserInfo* request,
 									::acafela::rpc::Error* response)
 {
 	const std::string& email = request->email();
 	FUNC_LOGD("%s", email.c_str());
 
-	int err = mUserAdmin.disableUser(email);
+	int err = mUserAdmin.disableUser(email, request->phone_number());
 	response->set_err(err);
     return grpc::Status::OK;
 }
 
 ::grpc::Status UserAdminRpc::enableUser(
 									::grpc::ServerContext* context,
-									const ::acafela::rpc::Email* request,
+									const ::acafela::rpc::UserInfo* request,
 									::acafela::rpc::Error* response)
 {
 	const std::string& email = request->email();
 	FUNC_LOGD("%s", email.c_str());
 
-	int err = mUserAdmin.enableUser(email);
+	int err = mUserAdmin.enableUser(email, request->phone_number());
 	response->set_err(err);
     return grpc::Status::OK;
 }

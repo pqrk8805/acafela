@@ -49,20 +49,23 @@ public:
 	}
 
 	int disableUser(
-				const std::string& emailAddress) override
+				const std::string& emailAddress,
+				const std::string& phoneNumber) override
 	{
 		return setEnable(mEntry, emailAddress, false);
 	}
 
 	int enableUser(
-				const std::string& emailAddress) override
+				const std::string& emailAddress,
+				const std::string& phoneNumber) override
 	{
 		return setEnable(mEntry, emailAddress, true);
 	}
 
 	int deleteUser(
-				const std::string& emailAddress) override
+				const std::string& emailAddress,
+				const std::string& phoneNumber) override
 	{
-		return mEntry.erase(emailAddress);
+		return mEntry.erase(emailAddress) ? 0 : -1;
 	}
 };

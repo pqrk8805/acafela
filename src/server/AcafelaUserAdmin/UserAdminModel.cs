@@ -19,7 +19,7 @@ namespace AcafelaUserAdmin
         private void Connect()
         {
             Channel channel = new Channel(
-                                        "localhost:9300",
+                                        Config.RPC_SERVER_URL,
                                         ChannelCredentials.Insecure);
 
             mClient = new UserAdmin.UserAdminClient(channel);
@@ -28,13 +28,22 @@ namespace AcafelaUserAdmin
         public IList<harmony.usradmin.rpc.UserInfo> GetUserInfo()
             => mClient.getUserInfoList(new Empty { }).UserInfo;
 
-        public int EnableUser(String email)
-            => mClient.enableUser(new Email { Email_ = email }).Err;
+        public int EnableUser(String email, String phone)
+            => mClient.enableUser(
+                            new harmony.usradmin.rpc.UserInfo {
+                                                    Email = email,
+                                                    PhoneNumber = phone}).Err;
 
-        public int DisableUser(String email)
-            => mClient.disableUser(new Email { Email_ = email }).Err;
+        public int DisableUser(String email, String phone)
+            => mClient.disableUser(
+                            new harmony.usradmin.rpc.UserInfo {
+                                                    Email = email,
+                                                    PhoneNumber = phone}).Err;
 
-        public int DeleteUser(String email)
-            => mClient.deleteUser(new Email { Email_ = email }).Err;
+        public int DeleteUser(String email, String phone)
+            => mClient.deleteUser(
+                            new harmony.usradmin.rpc.UserInfo {
+                                                    Email = email,
+                                                    PhoneNumber = phone}).Err;
     }
 }

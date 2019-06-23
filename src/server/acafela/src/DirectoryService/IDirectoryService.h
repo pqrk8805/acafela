@@ -20,4 +20,7 @@ public:
                     std::string* ipAddrss) = 0;
     virtual int remove(
                     const std::string& phoneNumber) = 0;
+    virtual int setEnable(
+                    const std::string& phoneNumber,
+                    bool enable) = 0;
 };

@@ -29,14 +29,14 @@ public:
 						::acafela::rpc::UserInfoList* response);
     ::grpc::Status deleteUser(
 						::grpc::ServerContext* context,
-						const ::acafela::rpc::Email* request,
+						const ::acafela::rpc::UserInfo* request,
 						::acafela::rpc::Error* response);
     ::grpc::Status disableUser(
 						::grpc::ServerContext* context,
-						const ::acafela::rpc::Email* request,
+						const ::acafela::rpc::UserInfo* request,
 						::acafela::rpc::Error* response);
     ::grpc::Status enableUser(
 						::grpc::ServerContext* context,
-						const ::acafela::rpc::Email* request,
+						const ::acafela::rpc::UserInfo* request,
 						::acafela::rpc::Error* response);
 };

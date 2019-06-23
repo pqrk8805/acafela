@@ -16,11 +16,14 @@ public:
     virtual std::vector<UserInfo> getUserInfoList() = 0;
 
 	virtual int disableUser(
-						const std::string& emailAddress) = 0;
+						const std::string& emailAddress,
+                        const std::string& phoneNumber) = 0;
 
 	virtual int enableUser(
-						const std::string& emailAddress) = 0;
+						const std::string& emailAddress,
+                        const std::string& phoneNumber) = 0;
 
 	virtual int deleteUser(
-						const std::string& emailAddress) = 0;
+						const std::string& emailAddress,
+                        const std::string& phoneNumber) = 0;
 };

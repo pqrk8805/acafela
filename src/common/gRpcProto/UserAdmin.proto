@@ -9,9 +9,9 @@ import "Common.proto";
 service UserAdmin {
     rpc getUserInfoList(Empty) returns (UserInfoList);
     
-    rpc deleteUser(Email) returns (Error);
-	rpc disableUser(Email) returns (Error);
-	rpc enableUser(Email) returns (Error);
+    rpc deleteUser(UserInfo) returns (Error);
+	rpc disableUser(UserInfo) returns (Error);
+	rpc enableUser(UserInfo) returns (Error);
 
 }
 
@@ -24,8 +24,4 @@ message UserInfo {
 
 message UserInfoList {
     repeated UserInfo user_info = 1;
-}
-
-message Email {
-    string email = 1;
 }

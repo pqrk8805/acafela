@@ -1,8 +1,11 @@
 #include "UserAdmin.h"
 
 
-UserAdmin::UserAdmin(IStorageAccessor& sa)
-  : mStorageAccessor(sa)
+UserAdmin::UserAdmin(
+                IStorageAccessor& sa,
+                IDirectoryService& ds)
+  : mStorageAccessor(sa),
+    mDirectoryService(ds)
 {
 }
 
@@ -17,19 +20,26 @@ std::vector<UserInfo> UserAdmin::getUserInfoList()
 }
 
 int UserAdmin::disableUser(
-						const std::string& emailAddress)
+						const std::string& emailAddress,
+						const std::string& phoneNumber)
 {
-	return mStorageAccessor.disableUser(emailAddress);
+	int err = mStorageAccessor.disableUser(emailAddress);
+    if (!err) mDirectoryService.setEnable(phoneNumber, false);
+    return err;
 }
 
 int UserAdmin::enableUser(
-						const std::string& emailAddress)
+						const std::string& emailAddress,
+						const std::string& phoneNumber)
 {
-	return mStorageAccessor.enableUser(emailAddress);
+	int err = mStorageAccessor.enableUser(emailAddress);
+    if (!err) mDirectoryService.setEnable(phoneNumber, true);
+    return err;
 }
 
 int UserAdmin::deleteUser(
-						const std::string& emailAddress)
+						const std::string& emailAddress,
+						const std::string& phoneNumber)
 {
 	return mStorageAccessor.deleteUser(emailAddress);
 }

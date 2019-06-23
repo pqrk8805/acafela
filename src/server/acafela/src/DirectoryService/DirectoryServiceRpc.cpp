@@ -55,7 +55,11 @@ void DirectoryServiceRpc::shutdown()
                                     request->password(),
                                     request->address());
     response->set_err(err);
-    response->set_message(err ? "Fail" : "OK");
+    response->set_message(
+                        err == 0 ? "OK"
+                      : err == -998 ? "There is no entry"
+                      : err == -999 ? "Password mismatch"
+                                    : "Fail - Unknown");
 
     return grpc::Status::OK;
 }

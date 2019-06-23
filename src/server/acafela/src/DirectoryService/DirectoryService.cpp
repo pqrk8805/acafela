@@ -1,13 +1,18 @@
 #include "DirectoryService.h"
 #include "Hislog.h"
 #include "Communicator/communicator.h"
-#include "IStorageAccessor.h"
 
 #define LOG_TAG "DirService"
 
 DirectoryService::DirectoryService(IStorageAccessor& sa)
   : mStorageAccessor(sa)
 {
+	for (const auto& item : sa.getDSItems()) {
+		mBook.emplace(item.phoneNumber, item);
+        ParticipantDirectory().notify_update(
+                                        item.phoneNumber,
+                                        item.enabled ? item.ipAddress : "");
+	}
 }
 
 DirectoryService::~DirectoryService()
@@ -19,14 +24,30 @@ int DirectoryService::update(
                         const std::string& password,
                         const std::string& ipAddress)
 {
-    std::lock_guard<std::mutex> guard(mLock);
-    mBook[phoneNumber] = ipAddress;
-	ParticipantDirectory().notify_update(phoneNumber, ipAddress);
     FUNC_LOGI("%s : %s", phoneNumber.c_str(), ipAddress.c_str());
 
-	UserInfo userInfo = { "", phoneNumber, ipAddress, false };
-	mStorageAccessor.saveDSItem(userInfo);
+    int err = mStorageAccessor.confirmPhoneNumberPassword(
+                                                    phoneNumber,
+                                                    password);
+    if (err) {
+        FUNC_LOGE("ERROR: Password mismatched.");
+        return -999;
+    }
 
+    std::lock_guard<std::mutex> guard(mLock);
+    auto iter = mBook.find(phoneNumber);
+    if (iter == mBook.end()) {
+        FUNC_LOGE("ERROR: There is no entry: %s", phoneNumber.c_str());
+        return -998;
+    } else {
+        UserInfo& info = iter->second;
+        info.ipAddress = ipAddress;
+
+        mStorageAccessor.saveDSItem(info);
+        ParticipantDirectory().notify_update(
+                                        phoneNumber,
+                                        info.enabled ? ipAddress : "");
+    }
     return 0;
 }
 
@@ -38,9 +59,11 @@ int DirectoryService::query(
     const auto iter = mBook.find(phoneNumber);
     if (iter == mBook.cend())
         return -1;
-    if (iter->second.empty())
+    if (!iter->second.enabled)
         return -2;
-    *ipAddress = iter->second;
+    if (iter->second.ipAddress.empty())
+        return -3;
+    *ipAddress = iter->second.ipAddress;
     return 0;
 }
 
@@ -51,5 +74,21 @@ int DirectoryService::remove(
 	ParticipantDirectory().notify_remove(phoneNumber);
 
     return mBook.erase(phoneNumber) ? 0 : -1;
+}
+
+int DirectoryService::setEnable(
+                        const std::string& phoneNumber,
+                        bool enable)
+{
+    std::lock_guard<std::mutex> guard(mLock);
+    auto iter = mBook.find(phoneNumber);
+    if (iter != mBook.end()) {
+        UserInfo& info = iter->second;
+        info.enabled = enable;
+        ParticipantDirectory().notify_update(
+                                        phoneNumber,
+                                        enable ? info.ipAddress : "");
+    }
+    return 0;
 }
 

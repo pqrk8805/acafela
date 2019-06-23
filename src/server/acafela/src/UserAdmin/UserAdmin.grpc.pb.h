@@ -43,45 +43,45 @@ class UserAdmin final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::UserInfoList>> PrepareAsyncgetUserInfoList(::grpc::ClientContext* context, const ::acafela::rpc::Empty& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::UserInfoList>>(PrepareAsyncgetUserInfoListRaw(context, request, cq));
     }
-    virtual ::grpc::Status deleteUser(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::acafela::rpc::Error* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>> AsyncdeleteUser(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) {
+    virtual ::grpc::Status deleteUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::acafela::rpc::Error* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>> AsyncdeleteUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>>(AsyncdeleteUserRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>> PrepareAsyncdeleteUser(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) {
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>> PrepareAsyncdeleteUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>>(PrepareAsyncdeleteUserRaw(context, request, cq));
     }
-    virtual ::grpc::Status disableUser(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::acafela::rpc::Error* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>> AsyncdisableUser(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) {
+    virtual ::grpc::Status disableUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::acafela::rpc::Error* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>> AsyncdisableUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>>(AsyncdisableUserRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>> PrepareAsyncdisableUser(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) {
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>> PrepareAsyncdisableUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>>(PrepareAsyncdisableUserRaw(context, request, cq));
     }
-    virtual ::grpc::Status enableUser(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::acafela::rpc::Error* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>> AsyncenableUser(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) {
+    virtual ::grpc::Status enableUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::acafela::rpc::Error* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>> AsyncenableUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>>(AsyncenableUserRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>> PrepareAsyncenableUser(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) {
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>> PrepareAsyncenableUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>>(PrepareAsyncenableUserRaw(context, request, cq));
     }
     class experimental_async_interface {
      public:
       virtual ~experimental_async_interface() {}
       virtual void getUserInfoList(::grpc::ClientContext* context, const ::acafela::rpc::Empty* request, ::acafela::rpc::UserInfoList* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void deleteUser(::grpc::ClientContext* context, const ::acafela::rpc::Email* request, ::acafela::rpc::Error* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void disableUser(::grpc::ClientContext* context, const ::acafela::rpc::Email* request, ::acafela::rpc::Error* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void enableUser(::grpc::ClientContext* context, const ::acafela::rpc::Email* request, ::acafela::rpc::Error* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void deleteUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo* request, ::acafela::rpc::Error* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void disableUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo* request, ::acafela::rpc::Error* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void enableUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo* request, ::acafela::rpc::Error* response, std::function<void(::grpc::Status)>) = 0;
     };
     virtual class experimental_async_interface* experimental_async() { return nullptr; }
   private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::UserInfoList>* AsyncgetUserInfoListRaw(::grpc::ClientContext* context, const ::acafela::rpc::Empty& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::UserInfoList>* PrepareAsyncgetUserInfoListRaw(::grpc::ClientContext* context, const ::acafela::rpc::Empty& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>* AsyncdeleteUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>* PrepareAsyncdeleteUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>* AsyncdisableUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>* PrepareAsyncdisableUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>* AsyncenableUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>* PrepareAsyncenableUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>* AsyncdeleteUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>* PrepareAsyncdeleteUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>* AsyncdisableUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>* PrepareAsyncdisableUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>* AsyncenableUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::acafela::rpc::Error>* PrepareAsyncenableUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -93,34 +93,34 @@ class UserAdmin final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::UserInfoList>> PrepareAsyncgetUserInfoList(::grpc::ClientContext* context, const ::acafela::rpc::Empty& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::UserInfoList>>(PrepareAsyncgetUserInfoListRaw(context, request, cq));
     }
-    ::grpc::Status deleteUser(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::acafela::rpc::Error* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>> AsyncdeleteUser(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) {
+    ::grpc::Status deleteUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::acafela::rpc::Error* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>> AsyncdeleteUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>>(AsyncdeleteUserRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>> PrepareAsyncdeleteUser(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) {
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>> PrepareAsyncdeleteUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>>(PrepareAsyncdeleteUserRaw(context, request, cq));
     }
-    ::grpc::Status disableUser(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::acafela::rpc::Error* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>> AsyncdisableUser(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) {
+    ::grpc::Status disableUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::acafela::rpc::Error* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>> AsyncdisableUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>>(AsyncdisableUserRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>> PrepareAsyncdisableUser(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) {
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>> PrepareAsyncdisableUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>>(PrepareAsyncdisableUserRaw(context, request, cq));
     }
-    ::grpc::Status enableUser(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::acafela::rpc::Error* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>> AsyncenableUser(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) {
+    ::grpc::Status enableUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::acafela::rpc::Error* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>> AsyncenableUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>>(AsyncenableUserRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>> PrepareAsyncenableUser(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) {
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>> PrepareAsyncenableUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>>(PrepareAsyncenableUserRaw(context, request, cq));
     }
     class experimental_async final :
       public StubInterface::experimental_async_interface {
      public:
       void getUserInfoList(::grpc::ClientContext* context, const ::acafela::rpc::Empty* request, ::acafela::rpc::UserInfoList* response, std::function<void(::grpc::Status)>) override;
-      void deleteUser(::grpc::ClientContext* context, const ::acafela::rpc::Email* request, ::acafela::rpc::Error* response, std::function<void(::grpc::Status)>) override;
-      void disableUser(::grpc::ClientContext* context, const ::acafela::rpc::Email* request, ::acafela::rpc::Error* response, std::function<void(::grpc::Status)>) override;
-      void enableUser(::grpc::ClientContext* context, const ::acafela::rpc::Email* request, ::acafela::rpc::Error* response, std::function<void(::grpc::Status)>) override;
+      void deleteUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo* request, ::acafela::rpc::Error* response, std::function<void(::grpc::Status)>) override;
+      void disableUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo* request, ::acafela::rpc::Error* response, std::function<void(::grpc::Status)>) override;
+      void enableUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo* request, ::acafela::rpc::Error* response, std::function<void(::grpc::Status)>) override;
      private:
       friend class Stub;
       explicit experimental_async(Stub* stub): stub_(stub) { }
@@ -134,12 +134,12 @@ class UserAdmin final {
     class experimental_async async_stub_{this};
     ::grpc::ClientAsyncResponseReader< ::acafela::rpc::UserInfoList>* AsyncgetUserInfoListRaw(::grpc::ClientContext* context, const ::acafela::rpc::Empty& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::acafela::rpc::UserInfoList>* PrepareAsyncgetUserInfoListRaw(::grpc::ClientContext* context, const ::acafela::rpc::Empty& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* AsyncdeleteUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* PrepareAsyncdeleteUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* AsyncdisableUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* PrepareAsyncdisableUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* AsyncenableUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* PrepareAsyncenableUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* AsyncdeleteUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* PrepareAsyncdeleteUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* AsyncdisableUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* PrepareAsyncdisableUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* AsyncenableUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* PrepareAsyncenableUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_getUserInfoList_;
     const ::grpc::internal::RpcMethod rpcmethod_deleteUser_;
     const ::grpc::internal::RpcMethod rpcmethod_disableUser_;
@@ -152,9 +152,9 @@ class UserAdmin final {
     Service();
     virtual ~Service();
     virtual ::grpc::Status getUserInfoList(::grpc::ServerContext* context, const ::acafela::rpc::Empty* request, ::acafela::rpc::UserInfoList* response);
-    virtual ::grpc::Status deleteUser(::grpc::ServerContext* context, const ::acafela::rpc::Email* request, ::acafela::rpc::Error* response);
-    virtual ::grpc::Status disableUser(::grpc::ServerContext* context, const ::acafela::rpc::Email* request, ::acafela::rpc::Error* response);
-    virtual ::grpc::Status enableUser(::grpc::ServerContext* context, const ::acafela::rpc::Email* request, ::acafela::rpc::Error* response);
+    virtual ::grpc::Status deleteUser(::grpc::ServerContext* context, const ::acafela::rpc::UserInfo* request, ::acafela::rpc::Error* response);
+    virtual ::grpc::Status disableUser(::grpc::ServerContext* context, const ::acafela::rpc::UserInfo* request, ::acafela::rpc::Error* response);
+    virtual ::grpc::Status enableUser(::grpc::ServerContext* context, const ::acafela::rpc::UserInfo* request, ::acafela::rpc::Error* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_getUserInfoList : public BaseClass {
@@ -188,11 +188,11 @@ class UserAdmin final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status deleteUser(::grpc::ServerContext* context, const ::acafela::rpc::Email* request, ::acafela::rpc::Error* response) override {
+    ::grpc::Status deleteUser(::grpc::ServerContext* context, const ::acafela::rpc::UserInfo* request, ::acafela::rpc::Error* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestdeleteUser(::grpc::ServerContext* context, ::acafela::rpc::Email* request, ::grpc::ServerAsyncResponseWriter< ::acafela::rpc::Error>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestdeleteUser(::grpc::ServerContext* context, ::acafela::rpc::UserInfo* request, ::grpc::ServerAsyncResponseWriter< ::acafela::rpc::Error>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -208,11 +208,11 @@ class UserAdmin final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status disableUser(::grpc::ServerContext* context, const ::acafela::rpc::Email* request, ::acafela::rpc::Error* response) override {
+    ::grpc::Status disableUser(::grpc::ServerContext* context, const ::acafela::rpc::UserInfo* request, ::acafela::rpc::Error* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestdisableUser(::grpc::ServerContext* context, ::acafela::rpc::Email* request, ::grpc::ServerAsyncResponseWriter< ::acafela::rpc::Error>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestdisableUser(::grpc::ServerContext* context, ::acafela::rpc::UserInfo* request, ::grpc::ServerAsyncResponseWriter< ::acafela::rpc::Error>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -228,11 +228,11 @@ class UserAdmin final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status enableUser(::grpc::ServerContext* context, const ::acafela::rpc::Email* request, ::acafela::rpc::Error* response) override {
+    ::grpc::Status enableUser(::grpc::ServerContext* context, const ::acafela::rpc::UserInfo* request, ::acafela::rpc::Error* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestenableUser(::grpc::ServerContext* context, ::acafela::rpc::Email* request, ::grpc::ServerAsyncResponseWriter< ::acafela::rpc::Error>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestenableUser(::grpc::ServerContext* context, ::acafela::rpc::UserInfo* request, ::grpc::ServerAsyncResponseWriter< ::acafela::rpc::Error>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -266,7 +266,7 @@ class UserAdmin final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status deleteUser(::grpc::ServerContext* context, const ::acafela::rpc::Email* request, ::acafela::rpc::Error* response) override {
+    ::grpc::Status deleteUser(::grpc::ServerContext* context, const ::acafela::rpc::UserInfo* request, ::acafela::rpc::Error* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -283,7 +283,7 @@ class UserAdmin final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status disableUser(::grpc::ServerContext* context, const ::acafela::rpc::Email* request, ::acafela::rpc::Error* response) override {
+    ::grpc::Status disableUser(::grpc::ServerContext* context, const ::acafela::rpc::UserInfo* request, ::acafela::rpc::Error* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -300,7 +300,7 @@ class UserAdmin final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status enableUser(::grpc::ServerContext* context, const ::acafela::rpc::Email* request, ::acafela::rpc::Error* response) override {
+    ::grpc::Status enableUser(::grpc::ServerContext* context, const ::acafela::rpc::UserInfo* request, ::acafela::rpc::Error* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -337,7 +337,7 @@ class UserAdmin final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status deleteUser(::grpc::ServerContext* context, const ::acafela::rpc::Email* request, ::acafela::rpc::Error* response) override {
+    ::grpc::Status deleteUser(::grpc::ServerContext* context, const ::acafela::rpc::UserInfo* request, ::acafela::rpc::Error* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -357,7 +357,7 @@ class UserAdmin final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status disableUser(::grpc::ServerContext* context, const ::acafela::rpc::Email* request, ::acafela::rpc::Error* response) override {
+    ::grpc::Status disableUser(::grpc::ServerContext* context, const ::acafela::rpc::UserInfo* request, ::acafela::rpc::Error* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -377,7 +377,7 @@ class UserAdmin final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status enableUser(::grpc::ServerContext* context, const ::acafela::rpc::Email* request, ::acafela::rpc::Error* response) override {
+    ::grpc::Status enableUser(::grpc::ServerContext* context, const ::acafela::rpc::UserInfo* request, ::acafela::rpc::Error* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -412,18 +412,18 @@ class UserAdmin final {
    public:
     WithStreamedUnaryMethod_deleteUser() {
       ::grpc::Service::MarkMethodStreamed(1,
-        new ::grpc::internal::StreamedUnaryHandler< ::acafela::rpc::Email, ::acafela::rpc::Error>(std::bind(&WithStreamedUnaryMethod_deleteUser<BaseClass>::StreameddeleteUser, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler< ::acafela::rpc::UserInfo, ::acafela::rpc::Error>(std::bind(&WithStreamedUnaryMethod_deleteUser<BaseClass>::StreameddeleteUser, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_deleteUser() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status deleteUser(::grpc::ServerContext* context, const ::acafela::rpc::Email* request, ::acafela::rpc::Error* response) override {
+    ::grpc::Status deleteUser(::grpc::ServerContext* context, const ::acafela::rpc::UserInfo* request, ::acafela::rpc::Error* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreameddeleteUser(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::acafela::rpc::Email,::acafela::rpc::Error>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreameddeleteUser(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::acafela::rpc::UserInfo,::acafela::rpc::Error>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_disableUser : public BaseClass {
@@ -432,18 +432,18 @@ class UserAdmin final {
    public:
     WithStreamedUnaryMethod_disableUser() {
       ::grpc::Service::MarkMethodStreamed(2,
-        new ::grpc::internal::StreamedUnaryHandler< ::acafela::rpc::Email, ::acafela::rpc::Error>(std::bind(&WithStreamedUnaryMethod_disableUser<BaseClass>::StreameddisableUser, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler< ::acafela::rpc::UserInfo, ::acafela::rpc::Error>(std::bind(&WithStreamedUnaryMethod_disableUser<BaseClass>::StreameddisableUser, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_disableUser() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status disableUser(::grpc::ServerContext* context, const ::acafela::rpc::Email* request, ::acafela::rpc::Error* response) override {
+    ::grpc::Status disableUser(::grpc::ServerContext* context, const ::acafela::rpc::UserInfo* request, ::acafela::rpc::Error* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreameddisableUser(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::acafela::rpc::Email,::acafela::rpc::Error>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreameddisableUser(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::acafela::rpc::UserInfo,::acafela::rpc::Error>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_enableUser : public BaseClass {
@@ -452,18 +452,18 @@ class UserAdmin final {
    public:
     WithStreamedUnaryMethod_enableUser() {
       ::grpc::Service::MarkMethodStreamed(3,
-        new ::grpc::internal::StreamedUnaryHandler< ::acafela::rpc::Email, ::acafela::rpc::Error>(std::bind(&WithStreamedUnaryMethod_enableUser<BaseClass>::StreamedenableUser, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler< ::acafela::rpc::UserInfo, ::acafela::rpc::Error>(std::bind(&WithStreamedUnaryMethod_enableUser<BaseClass>::StreamedenableUser, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_enableUser() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status enableUser(::grpc::ServerContext* context, const ::acafela::rpc::Email* request, ::acafela::rpc::Error* response) override {
+    ::grpc::Status enableUser(::grpc::ServerContext* context, const ::acafela::rpc::UserInfo* request, ::acafela::rpc::Error* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedenableUser(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::acafela::rpc::Email,::acafela::rpc::Error>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedenableUser(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::acafela::rpc::UserInfo,::acafela::rpc::Error>* server_unary_streamer) = 0;
   };
   typedef WithStreamedUnaryMethod_getUserInfoList<WithStreamedUnaryMethod_deleteUser<WithStreamedUnaryMethod_disableUser<WithStreamedUnaryMethod_enableUser<Service > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;

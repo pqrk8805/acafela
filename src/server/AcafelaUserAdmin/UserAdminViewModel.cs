@@ -19,12 +19,12 @@ namespace AcafelaUserAdmin
             RefreshEntry();
         }
 
-        public int HandleUserEnable(String email, bool enable)
+        public int HandleUserEnable(String email, String phone, bool enable)
         {
             Console.WriteLine($"UserAdminViewModel.OnPropertyChanged() {email} {enable}");
             return enable
-                    ? mModel.EnableUser(email)
-                    : mModel.DisableUser(email);
+                    ? mModel.EnableUser(email, phone)
+                    : mModel.DisableUser(email, phone);
         }
 
         public void RefreshEntry()
@@ -53,7 +53,7 @@ namespace AcafelaUserAdmin
             foreach (UserInfo info in userInfos)
             {
                 Console.WriteLine($"  {info.Email}");
-                mModel.DeleteUser(info.Email);
+                mModel.DeleteUser(info.Email, info.Phone);
             }
             RefreshEntry();
         }

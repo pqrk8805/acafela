@@ -54,51 +54,51 @@ void UserAdmin::Stub::experimental_async::getUserInfoList(::grpc::ClientContext*
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::acafela::rpc::UserInfoList>::Create(channel_.get(), cq, rpcmethod_getUserInfoList_, context, request, false);
 }
 
-::grpc::Status UserAdmin::Stub::deleteUser(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::acafela::rpc::Error* response) {
+::grpc::Status UserAdmin::Stub::deleteUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::acafela::rpc::Error* response) {
   return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_deleteUser_, context, request, response);
 }
 
-void UserAdmin::Stub::experimental_async::deleteUser(::grpc::ClientContext* context, const ::acafela::rpc::Email* request, ::acafela::rpc::Error* response, std::function<void(::grpc::Status)> f) {
+void UserAdmin::Stub::experimental_async::deleteUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo* request, ::acafela::rpc::Error* response, std::function<void(::grpc::Status)> f) {
   return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_deleteUser_, context, request, response, std::move(f));
 }
 
-::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* UserAdmin::Stub::AsyncdeleteUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* UserAdmin::Stub::AsyncdeleteUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) {
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::acafela::rpc::Error>::Create(channel_.get(), cq, rpcmethod_deleteUser_, context, request, true);
 }
 
-::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* UserAdmin::Stub::PrepareAsyncdeleteUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* UserAdmin::Stub::PrepareAsyncdeleteUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) {
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::acafela::rpc::Error>::Create(channel_.get(), cq, rpcmethod_deleteUser_, context, request, false);
 }
 
-::grpc::Status UserAdmin::Stub::disableUser(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::acafela::rpc::Error* response) {
+::grpc::Status UserAdmin::Stub::disableUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::acafela::rpc::Error* response) {
   return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_disableUser_, context, request, response);
 }
 
-void UserAdmin::Stub::experimental_async::disableUser(::grpc::ClientContext* context, const ::acafela::rpc::Email* request, ::acafela::rpc::Error* response, std::function<void(::grpc::Status)> f) {
+void UserAdmin::Stub::experimental_async::disableUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo* request, ::acafela::rpc::Error* response, std::function<void(::grpc::Status)> f) {
   return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_disableUser_, context, request, response, std::move(f));
 }
 
-::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* UserAdmin::Stub::AsyncdisableUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* UserAdmin::Stub::AsyncdisableUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) {
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::acafela::rpc::Error>::Create(channel_.get(), cq, rpcmethod_disableUser_, context, request, true);
 }
 
-::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* UserAdmin::Stub::PrepareAsyncdisableUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* UserAdmin::Stub::PrepareAsyncdisableUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) {
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::acafela::rpc::Error>::Create(channel_.get(), cq, rpcmethod_disableUser_, context, request, false);
 }
 
-::grpc::Status UserAdmin::Stub::enableUser(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::acafela::rpc::Error* response) {
+::grpc::Status UserAdmin::Stub::enableUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::acafela::rpc::Error* response) {
   return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_enableUser_, context, request, response);
 }
 
-void UserAdmin::Stub::experimental_async::enableUser(::grpc::ClientContext* context, const ::acafela::rpc::Email* request, ::acafela::rpc::Error* response, std::function<void(::grpc::Status)> f) {
+void UserAdmin::Stub::experimental_async::enableUser(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo* request, ::acafela::rpc::Error* response, std::function<void(::grpc::Status)> f) {
   return ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_enableUser_, context, request, response, std::move(f));
 }
 
-::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* UserAdmin::Stub::AsyncenableUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* UserAdmin::Stub::AsyncenableUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) {
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::acafela::rpc::Error>::Create(channel_.get(), cq, rpcmethod_enableUser_, context, request, true);
 }
 
-::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* UserAdmin::Stub::PrepareAsyncenableUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::Email& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::acafela::rpc::Error>* UserAdmin::Stub::PrepareAsyncenableUserRaw(::grpc::ClientContext* context, const ::acafela::rpc::UserInfo& request, ::grpc::CompletionQueue* cq) {
   return ::grpc::internal::ClientAsyncResponseReaderFactory< ::acafela::rpc::Error>::Create(channel_.get(), cq, rpcmethod_enableUser_, context, request, false);
 }
 
@@ -111,17 +111,17 @@ UserAdmin::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       UserAdmin_method_names[1],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< UserAdmin::Service, ::acafela::rpc::Email, ::acafela::rpc::Error>(
+      new ::grpc::internal::RpcMethodHandler< UserAdmin::Service, ::acafela::rpc::UserInfo, ::acafela::rpc::Error>(
           std::mem_fn(&UserAdmin::Service::deleteUser), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       UserAdmin_method_names[2],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< UserAdmin::Service, ::acafela::rpc::Email, ::acafela::rpc::Error>(
+      new ::grpc::internal::RpcMethodHandler< UserAdmin::Service, ::acafela::rpc::UserInfo, ::acafela::rpc::Error>(
           std::mem_fn(&UserAdmin::Service::disableUser), this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       UserAdmin_method_names[3],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< UserAdmin::Service, ::acafela::rpc::Email, ::acafela::rpc::Error>(
+      new ::grpc::internal::RpcMethodHandler< UserAdmin::Service, ::acafela::rpc::UserInfo, ::acafela::rpc::Error>(
           std::mem_fn(&UserAdmin::Service::enableUser), this)));
 }
 
@@ -135,21 +135,21 @@ UserAdmin::Service::~Service() {
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status UserAdmin::Service::deleteUser(::grpc::ServerContext* context, const ::acafela::rpc::Email* request, ::acafela::rpc::Error* response) {
+::grpc::Status UserAdmin::Service::deleteUser(::grpc::ServerContext* context, const ::acafela::rpc::UserInfo* request, ::acafela::rpc::Error* response) {
   (void) context;
   (void) request;
   (void) response;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status UserAdmin::Service::disableUser(::grpc::ServerContext* context, const ::acafela::rpc::Email* request, ::acafela::rpc::Error* response) {
+::grpc::Status UserAdmin::Service::disableUser(::grpc::ServerContext* context, const ::acafela::rpc::UserInfo* request, ::acafela::rpc::Error* response) {
   (void) context;
   (void) request;
   (void) response;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status UserAdmin::Service::enableUser(::grpc::ServerContext* context, const ::acafela::rpc::Email* request, ::acafela::rpc::Error* response) {
+::grpc::Status UserAdmin::Service::enableUser(::grpc::ServerContext* context, const ::acafela::rpc::UserInfo* request, ::acafela::rpc::Error* response) {
   (void) context;
   (void) request;
   (void) response;

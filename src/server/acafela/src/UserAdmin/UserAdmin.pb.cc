@@ -34,11 +34,6 @@ class UserInfoListDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<UserInfoList>
       _instance;
 } _UserInfoList_default_instance_;
-class EmailDefaultTypeInternal {
- public:
-  ::google::protobuf::internal::ExplicitlyConstructed<Email>
-      _instance;
-} _Email_default_instance_;
 }  // namespace rpc
 }  // namespace acafela
 namespace protobuf_UserAdmin_2eproto {
@@ -71,27 +66,12 @@ static void InitDefaultsUserInfoList() {
     {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsUserInfoList}, {
       &protobuf_UserAdmin_2eproto::scc_info_UserInfo.base,}};
 
-static void InitDefaultsEmail() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::acafela::rpc::_Email_default_instance_;
-    new (ptr) ::acafela::rpc::Email();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::acafela::rpc::Email::InitAsDefaultInstance();
-}
-
-::google::protobuf::internal::SCCInfo<0> scc_info_Email =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsEmail}, {}};
-
 void InitDefaults() {
   ::google::protobuf::internal::InitSCC(&scc_info_UserInfo.base);
   ::google::protobuf::internal::InitSCC(&scc_info_UserInfoList.base);
-  ::google::protobuf::internal::InitSCC(&scc_info_Email.base);
 }
 
-::google::protobuf::Metadata file_level_metadata[3];
+::google::protobuf::Metadata file_level_metadata[2];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
@@ -109,23 +89,15 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::rpc::UserInfoList, user_info_),
-  ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::rpc::Email, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::rpc::Email, email_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::acafela::rpc::UserInfo)},
   { 9, -1, sizeof(::acafela::rpc::UserInfoList)},
-  { 15, -1, sizeof(::acafela::rpc::Email)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::acafela::rpc::_UserInfo_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::acafela::rpc::_UserInfoList_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::acafela::rpc::_Email_default_instance_),
 };
 
 void protobuf_AssignDescriptors() {
@@ -143,7 +115,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 3);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 2);
 }
 
 void AddDescriptorsImpl() {
@@ -153,18 +125,17 @@ void AddDescriptorsImpl() {
       "roto\"T\n\010UserInfo\022\r\n\005email\030\001 \001(\t\022\024\n\014phone"
       "_number\030\002 \001(\t\022\022\n\nip_address\030\003 \001(\t\022\017\n\007ena"
       "bled\030\004 \001(\010\"8\n\014UserInfoList\022(\n\tuser_info\030"
-      "\001 \003(\0132\025.acafela.rpc.UserInfo\"\026\n\005Email\022\r\n"
-      "\005email\030\001 \001(\t2\360\001\n\tUserAdmin\022@\n\017getUserInf"
-      "oList\022\022.acafela.rpc.Empty\032\031.acafela.rpc."
-      "UserInfoList\0224\n\ndeleteUser\022\022.acafela.rpc"
-      ".Email\032\022.acafela.rpc.Error\0225\n\013disableUse"
-      "r\022\022.acafela.rpc.Email\032\022.acafela.rpc.Erro"
-      "r\0224\n\nenableUser\022\022.acafela.rpc.Email\032\022.ac"
-      "afela.rpc.ErrorB\027\252\002\024harmony.usradmin.rpc"
-      "b\006proto3"
+      "\001 \003(\0132\025.acafela.rpc.UserInfo2\371\001\n\tUserAdm"
+      "in\022@\n\017getUserInfoList\022\022.acafela.rpc.Empt"
+      "y\032\031.acafela.rpc.UserInfoList\0227\n\ndeleteUs"
+      "er\022\025.acafela.rpc.UserInfo\032\022.acafela.rpc."
+      "Error\0228\n\013disableUser\022\025.acafela.rpc.UserI"
+      "nfo\032\022.acafela.rpc.Error\0227\n\nenableUser\022\025."
+      "acafela.rpc.UserInfo\032\022.acafela.rpc.Error"
+      "B\027\252\002\024harmony.usradmin.rpcb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 488);
+      descriptor, 473);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "UserAdmin.proto", &protobuf_RegisterTypes);
   ::protobuf_Common_2eproto::AddDescriptors();
@@ -808,248 +779,6 @@ void UserInfoList::InternalSwap(UserInfoList* other) {
 }
 
 
-// ===================================================================
-
-void Email::InitAsDefaultInstance() {
-}
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int Email::kEmailFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
-Email::Email()
-  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
-  ::google::protobuf::internal::InitSCC(
-      &protobuf_UserAdmin_2eproto::scc_info_Email.base);
-  SharedCtor();
-  // @@protoc_insertion_point(constructor:acafela.rpc.Email)
-}
-Email::Email(const Email& from)
-  : ::google::protobuf::Message(),
-      _internal_metadata_(NULL) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  email_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.email().size() > 0) {
-    email_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.email_);
-  }
-  // @@protoc_insertion_point(copy_constructor:acafela.rpc.Email)
-}
-
-void Email::SharedCtor() {
-  email_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-
-Email::~Email() {
-  // @@protoc_insertion_point(destructor:acafela.rpc.Email)
-  SharedDtor();
-}
-
-void Email::SharedDtor() {
-  email_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-
-void Email::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
-}
-const ::google::protobuf::Descriptor* Email::descriptor() {
-  ::protobuf_UserAdmin_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_UserAdmin_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
-}
-
-const Email& Email::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_UserAdmin_2eproto::scc_info_Email.base);
-  return *internal_default_instance();
-}
-
-
-void Email::Clear() {
-// @@protoc_insertion_point(message_clear_start:acafela.rpc.Email)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  email_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  _internal_metadata_.Clear();
-}
-
-bool Email::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:acafela.rpc.Email)
-  for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // string email = 1;
-      case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_email()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->email().data(), static_cast<int>(this->email().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "acafela.rpc.Email.email"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:acafela.rpc.Email)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:acafela.rpc.Email)
-  return false;
-#undef DO_
-}
-
-void Email::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:acafela.rpc.Email)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // string email = 1;
-  if (this->email().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->email().data(), static_cast<int>(this->email().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "acafela.rpc.Email.email");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      1, this->email(), output);
-  }
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
-  }
-  // @@protoc_insertion_point(serialize_end:acafela.rpc.Email)
-}
-
-::google::protobuf::uint8* Email::InternalSerializeWithCachedSizesToArray(
-    bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:acafela.rpc.Email)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // string email = 1;
-  if (this->email().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->email().data(), static_cast<int>(this->email().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "acafela.rpc.Email.email");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->email(), target);
-  }
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:acafela.rpc.Email)
-  return target;
-}
-
-size_t Email::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:acafela.rpc.Email)
-  size_t total_size = 0;
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
-  }
-  // string email = 1;
-  if (this->email().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->email());
-  }
-
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
-}
-
-void Email::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:acafela.rpc.Email)
-  GOOGLE_DCHECK_NE(&from, this);
-  const Email* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const Email>(
-          &from);
-  if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:acafela.rpc.Email)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:acafela.rpc.Email)
-    MergeFrom(*source);
-  }
-}
-
-void Email::MergeFrom(const Email& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:acafela.rpc.Email)
-  GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (from.email().size() > 0) {
-
-    email_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.email_);
-  }
-}
-
-void Email::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:acafela.rpc.Email)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void Email::CopyFrom(const Email& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:acafela.rpc.Email)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool Email::IsInitialized() const {
-  return true;
-}
-
-void Email::Swap(Email* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
-void Email::InternalSwap(Email* other) {
-  using std::swap;
-  email_.Swap(&other->email_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-}
-
-::google::protobuf::Metadata Email::GetMetadata() const {
-  protobuf_UserAdmin_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_UserAdmin_2eproto::file_level_metadata[kIndexInFileMessages];
-}
-
-
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace rpc
 }  // namespace acafela
@@ -1060,9 +789,6 @@ template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::acafela::rpc::UserInfo* Arena::C
 }
 template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::acafela::rpc::UserInfoList* Arena::CreateMaybeMessage< ::acafela::rpc::UserInfoList >(Arena* arena) {
   return Arena::CreateInternal< ::acafela::rpc::UserInfoList >(arena);
-}
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::acafela::rpc::Email* Arena::CreateMaybeMessage< ::acafela::rpc::Email >(Arena* arena) {
-  return Arena::CreateInternal< ::acafela::rpc::Email >(arena);
 }
 }  // namespace protobuf
 }  // namespace google

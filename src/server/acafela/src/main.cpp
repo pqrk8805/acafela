@@ -16,8 +16,7 @@
 
 #define LOG_TAG "MAIN"
 
-//#define SERVER_IP "192.168.1.9"
-#define SERVER_IP "localhost"
+#define SERVER_IP "192.168.1.9"
 #define RPC_PORT_USERVER_PROFILE    "9000"
 #define RPC_PORT_DIRECTORY_SERVICE  "9100"
 #define RPC_PORT_CRYPTO_KEY         "9200"
@@ -61,9 +60,9 @@ int main(int argc, char** argv)
 		return err;
 	}
 
-	UserAdmin userAdmin(storageAccessor);
+	UserAdmin userAdmin(storageAccessor, directoryService);
 	UserAdminMock userAdminMock;
-	UserAdminRpc userAdminRpc(userAdminMock);
+	UserAdminRpc userAdminRpc(userAdmin);
 	err = userAdminRpc.start(SERVER_IP ":" RPC_PORT_USER_ADMIN);
 	if (err) {
 		FUNC_LOGE("ERROR(%d): fail to start UserAdminRpc server", err);

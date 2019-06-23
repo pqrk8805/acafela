@@ -28,19 +28,18 @@ namespace harmony.usradmin.rpc {
             "VAoIVXNlckluZm8SDQoFZW1haWwYASABKAkSFAoMcGhvbmVfbnVtYmVyGAIg",
             "ASgJEhIKCmlwX2FkZHJlc3MYAyABKAkSDwoHZW5hYmxlZBgEIAEoCCI4CgxV",
             "c2VySW5mb0xpc3QSKAoJdXNlcl9pbmZvGAEgAygLMhUuYWNhZmVsYS5ycGMu",
-            "VXNlckluZm8iFgoFRW1haWwSDQoFZW1haWwYASABKAky8AEKCVVzZXJBZG1p",
-            "bhJACg9nZXRVc2VySW5mb0xpc3QSEi5hY2FmZWxhLnJwYy5FbXB0eRoZLmFj",
-            "YWZlbGEucnBjLlVzZXJJbmZvTGlzdBI0CgpkZWxldGVVc2VyEhIuYWNhZmVs",
-            "YS5ycGMuRW1haWwaEi5hY2FmZWxhLnJwYy5FcnJvchI1CgtkaXNhYmxlVXNl",
-            "chISLmFjYWZlbGEucnBjLkVtYWlsGhIuYWNhZmVsYS5ycGMuRXJyb3ISNAoK",
-            "ZW5hYmxlVXNlchISLmFjYWZlbGEucnBjLkVtYWlsGhIuYWNhZmVsYS5ycGMu",
-            "RXJyb3JCF6oCFGhhcm1vbnkudXNyYWRtaW4ucnBjYgZwcm90bzM="));
+            "VXNlckluZm8y+QEKCVVzZXJBZG1pbhJACg9nZXRVc2VySW5mb0xpc3QSEi5h",
+            "Y2FmZWxhLnJwYy5FbXB0eRoZLmFjYWZlbGEucnBjLlVzZXJJbmZvTGlzdBI3",
+            "CgpkZWxldGVVc2VyEhUuYWNhZmVsYS5ycGMuVXNlckluZm8aEi5hY2FmZWxh",
+            "LnJwYy5FcnJvchI4CgtkaXNhYmxlVXNlchIVLmFjYWZlbGEucnBjLlVzZXJJ",
+            "bmZvGhIuYWNhZmVsYS5ycGMuRXJyb3ISNwoKZW5hYmxlVXNlchIVLmFjYWZl",
+            "bGEucnBjLlVzZXJJbmZvGhIuYWNhZmVsYS5ycGMuRXJyb3JCF6oCFGhhcm1v",
+            "bnkudXNyYWRtaW4ucnBjYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Acafela.Rpc.CommonReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::harmony.usradmin.rpc.UserInfo), global::harmony.usradmin.rpc.UserInfo.Parser, new[]{ "Email", "PhoneNumber", "IpAddress", "Enabled" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::harmony.usradmin.rpc.UserInfoList), global::harmony.usradmin.rpc.UserInfoList.Parser, new[]{ "UserInfo" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::harmony.usradmin.rpc.Email), global::harmony.usradmin.rpc.Email.Parser, new[]{ "Email_" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::harmony.usradmin.rpc.UserInfoList), global::harmony.usradmin.rpc.UserInfoList.Parser, new[]{ "UserInfo" }, null, null, null)
           }));
     }
     #endregion
@@ -373,135 +372,6 @@ namespace harmony.usradmin.rpc {
             break;
           case 10: {
             userInfo_.AddEntriesFrom(input, _repeated_userInfo_codec);
-            break;
-          }
-        }
-      }
-    }
-
-  }
-
-  public sealed partial class Email : pb::IMessage<Email> {
-    private static readonly pb::MessageParser<Email> _parser = new pb::MessageParser<Email>(() => new Email());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<Email> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::harmony.usradmin.rpc.UserAdminReflection.Descriptor.MessageTypes[2]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Email() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Email(Email other) : this() {
-      email_ = other.email_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Email Clone() {
-      return new Email(this);
-    }
-
-    /// <summary>Field number for the "email" field.</summary>
-    public const int Email_FieldNumber = 1;
-    private string email_ = "";
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Email_ {
-      get { return email_; }
-      set {
-        email_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override bool Equals(object other) {
-      return Equals(other as Email);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(Email other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (Email_ != other.Email_) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (Email_.Length != 0) hash ^= Email_.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void WriteTo(pb::CodedOutputStream output) {
-      if (Email_.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(Email_);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int CalculateSize() {
-      int size = 0;
-      if (Email_.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Email_);
-      }
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(Email other) {
-      if (other == null) {
-        return;
-      }
-      if (other.Email_.Length != 0) {
-        Email_ = other.Email_;
-      }
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(pb::CodedInputStream input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 10: {
-            Email_ = input.ReadString();
             break;
           }
         }

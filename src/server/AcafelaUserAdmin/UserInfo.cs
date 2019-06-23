@@ -5,7 +5,7 @@ namespace AcafelaUserAdmin
 {
     public interface IUserEnableHandler
     {
-        int HandleUserEnable(String email, bool enable);
+        int HandleUserEnable(String email, String phone, bool enable);
     }
 
     public class UserInfo : INotifyPropertyChanged
@@ -42,7 +42,8 @@ namespace AcafelaUserAdmin
             get { return mEnabled; }
             set
             {
-                int err = mUserEnableHandler?.HandleUserEnable(Email, value) ?? -1;
+                int err = mUserEnableHandler?.HandleUserEnable(
+                                                mEmail, mPhone, value) ?? -1;
                 if (err == 0)
                 {
                     mEnabled = value;
