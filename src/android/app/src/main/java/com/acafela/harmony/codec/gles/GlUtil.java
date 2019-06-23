@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.grafika.gles;
+package com.acafela.harmony.codec.gles;
 
 import android.opengl.GLES20;
 import android.opengl.GLES30;

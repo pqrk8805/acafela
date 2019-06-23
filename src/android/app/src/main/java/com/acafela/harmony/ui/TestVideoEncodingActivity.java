@@ -13,6 +13,8 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.acafela.harmony.codec.gles.*;
+
 import com.acafela.harmony.R;
 import com.acafela.harmony.ui.camera.CameraPreview;
 
@@ -20,6 +22,7 @@ public class TestVideoEncodingActivity extends AppCompatActivity {
 
     private Camera mCamera;
     private CameraPreview mPreview;
+    private WindowSurface mDisplaySurface;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
