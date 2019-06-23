@@ -66,6 +66,7 @@ ipch/
 intermediate*/
 _intermediate/
 _out/
+packages/
 
 src/server/acafela/storage/password/
 src/server/acafela/storage/phonenumber/
