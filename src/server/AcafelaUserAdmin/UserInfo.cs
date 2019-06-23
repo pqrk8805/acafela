@@ -5,9 +5,16 @@ namespace AcafelaUserAdmin
 {
     public class UserInfo : INotifyPropertyChanged
     {
+        private bool mSelected;
         private String mEmail;
         private String mPhone;
         private bool mEnabled;
+
+        public bool Selected
+        {
+            get { return mSelected; }
+            set { mSelected = value; OnPropertyChanged("Selected"); }
+        }
 
         public String Email
         {

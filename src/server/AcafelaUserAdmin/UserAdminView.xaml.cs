@@ -15,13 +15,11 @@ using System.Windows.Shapes;
 
 namespace AcafelaUserAdmin
 {
-    /// <summary>
-    /// Interaction logic for UserAdminView.xaml
-    /// </summary>
     public partial class UserAdminView : UserControl
     {
         public UserAdminView()
         {
+            Console.WriteLine("UserAdminView()");
             InitializeComponent();
         }
     }
