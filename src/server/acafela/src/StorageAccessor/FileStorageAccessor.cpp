@@ -260,34 +260,45 @@ int FileStorageAccessor::saveDSItem(UserInfo& userInfo)
 	return 0;
 }
 
-vector<UserInfo> FileStorageAccessor::getDSItems()
+int FileStorageAccessor::getDSItem(const std::string& emailAddress, UserInfo& ui)
 {
 	lock_guard<mutex> lock(mDSLock);
 
+	DerectoryServiceFile f(emailAddress, "rb");
+
+	if (f.GetPF() == nullptr)
+		return -1;
+
+	string data = f.ReadFile();
+
+	size_t offset1 = data.find_first_of('-');
+	size_t offset2 = data.find_last_of('-');
+	string phoneNumber = data.substr(0, offset1);
+	string ipAddress = data.substr(offset1 + 1, offset2 - offset1 - 1);
+	string strEnabled = data.substr(offset2 + 1, 1);
+	bool enabled = strEnabled.compare("T") == 0 ? true : false;
+	ui = { emailAddress, phoneNumber, ipAddress, enabled };
+
+	return 0;
+}
+
+vector<UserInfo> FileStorageAccessor::getDSItems()
+{
 	WIN32_FIND_DATA FindFileData;
-	HANDLE hFind;
 	wstring path = L"./storage/directoryservice/*";
 
 	vector<UserInfo> ds;
-	hFind = FindFirstFile(path.c_str(), &FindFileData);
+	HANDLE hFind = FindFirstFile(path.c_str(), &FindFileData);
 	while (hFind != INVALID_HANDLE_VALUE)
 	{
 		if (FindFileData.dwFileAttributes != FILE_ATTRIBUTE_DIRECTORY)
 		{
 			wstring wfilename = FindFileData.cFileName;
 			string emailAddress(wfilename.begin(), wfilename.end());
-			DerectoryServiceFile f(emailAddress, "rb");
-		
-			string data = f.ReadFile();
-
-			size_t offset1 = data.find_first_of('-');
-			size_t offset2 = data.find_last_of('-');
-			string phoneNumber = data.substr(0, offset1);
-			string ipAddress = data.substr(offset1+1, offset2-offset1-1);
-			string strEnabled = data.substr(offset2+1, 1);
-			bool enabled = strEnabled.compare("T") == 0 ? true : false;
-		
-			ds.push_back({ emailAddress, phoneNumber, ipAddress, enabled });
+			UserInfo ui;
+			int err = getDSItem(emailAddress, ui);
+			if( err == 0 )
+				ds.push_back(ui);
 		}
 
 		if (!FindNextFile(hFind, &FindFileData))
@@ -296,6 +307,38 @@ vector<UserInfo> FileStorageAccessor::getDSItems()
 	FindClose(hFind);
 	
 	return ds;
+}
+
+int FileStorageAccessor::disableUser(const std::string& emailAddress)
+{
+	UserInfo ui;
+	int err = getDSItem(emailAddress, ui);
+	if (err == 0)
+	{
+		ui.enabled = false;
+		saveDSItem(ui);
+		return 0;
+	}
+	else
+	{
+		return -1;
+	}	
+}
+
+int FileStorageAccessor::enableUser(const std::string& emailAddress)
+{
+	UserInfo ui;
+	int err = getDSItem(emailAddress, ui);
+	if (err == 0)
+	{
+		ui.enabled = true;
+		saveDSItem(ui);
+		return 0;
+	}
+	else
+	{
+		return -1;
+	}
 }
 
 //int FileStorageAccessor::saveDSItems(const string& phoneNumber, const string& ipAddress)

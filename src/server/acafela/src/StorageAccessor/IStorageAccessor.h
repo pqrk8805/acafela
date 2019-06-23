@@ -44,20 +44,17 @@ public:
 	virtual std::string getTempPassword(
 		const std::string& emailAddress) = 0;
 
-	virtual int deleteUser(const std::string& emailAddress) = 0;
-	//virtual int disableUser(const std::string& emailAddress) = 0;
-	//virtual int enableUser(const std::string& emailAddress) = 0;
+	virtual int deleteUser(const std::string& emailAddress) = 0;	
 
 	virtual int getUserNumber() = 0;
 	virtual int updateUserNumber(int userNumber) = 0;
 
 	virtual bool isExistUser(const std::string& emailAddress) = 0;
-
-	//virtual int saveDSItems(const std::string& phoneNumber, const std::string& ipAddress) = 0;
-	//virtual std::map<std::string, std::string> getDSItems() = 0;
-
+		
 	virtual int saveDSItem(UserInfo& userInfo) = 0;
 	virtual std::vector<UserInfo> getDSItems() = 0;
+	virtual int disableUser(const std::string& emailAddress) = 0;
+	virtual int enableUser(const std::string& emailAddress) = 0;
 private:
 	static IStorageAccessor* mInst;
 };

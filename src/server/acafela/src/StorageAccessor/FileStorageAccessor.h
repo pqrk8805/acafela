@@ -34,7 +34,7 @@ public:
 		const std::string& emailAddress) override;
 
 	int deleteUser(const std::string& emailAddress) override;
-
+	
 	int getUserNumber() override;
 	int updateUserNumber(int userNumber) override;
 
@@ -42,8 +42,12 @@ public:
 
 	int saveDSItem(UserInfo& userInfo) override;
 	std::vector<UserInfo> getDSItems() override;
+	int disableUser(const std::string& emailAddress) override;
+	int enableUser(const std::string& emailAddress) override;
 private:
 	std::string FindEmailAddress(const std::string& phoneNumber);
+
+	int getDSItem(const std::string& emailAddress, UserInfo& ui);
 private:
 	std::mutex	mUserNumberLock;
 	std::mutex	mPasswordLock;
