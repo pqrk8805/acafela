@@ -13,6 +13,7 @@ import com.acafela.harmony.rpc.Common;
 import com.acafela.harmony.userprofile.UserInfo;
 
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import io.grpc.StatusRuntimeException;
 
@@ -46,7 +47,7 @@ public class DirectoryService {
 
         Common.Error error = null;
         try {
-            error = blockingStub.update(DirectoryServiceOuterClass.DirInfo.newBuilder().
+            error = blockingStub.withDeadlineAfter(2, TimeUnit.SECONDS).update(DirectoryServiceOuterClass.DirInfo.newBuilder().
                     setAddress(LocalIP).
                     setPhoneNumber(UserInfo.getInstance().getPhoneNumber()).
                     build());
