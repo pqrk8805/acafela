@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.Arrays;
 import java.net.InetSocketAddress;
 
 import android.content.Context;
@@ -21,9 +19,6 @@ import com.acafela.harmony.crypto.ICrypto;
 import com.acafela.harmony.sip.SipMessage;
 
 import java.net.SocketException;
-import com.acafela.harmony.sip.SipMessage;
-import com.acafela.harmony.sip.SipMessage.SIPMessage;
-
 
 public class ReceiverAudio implements DataCommunicator {
     private static final String LOG_TAG = "ReceiverAudio";
@@ -34,16 +29,18 @@ public class ReceiverAudio implements DataCommunicator {
     private Thread mRecieverThread = null;
     private Thread mPlayerThread = null;
     private DatagramSocket RecvUdpSocket;
-    private ConcurrentLinkedQueue<byte[]> IncommingpacketQueue;
+
     private boolean isReceverAudioRun=false;
 
     private Context mContext;
     private ICrypto mCrypto;
+    private AudioBufferControl mAudioControl;
 
     public ReceiverAudio (Context context, ICrypto crypto)
     {
         mContext = context;
         mCrypto = crypto;
+        mAudioControl = new AudioBufferControl(mCrypto,MAX_AUDIO_SEQNO);
     }
     public boolean setSession(String ip,int port)
     {
@@ -74,8 +71,6 @@ public class ReceiverAudio implements DataCommunicator {
             Log.i(LOG_TAG, "UdpReceiveDataThread Thread already Started started");
             return false;
         }
-        IncommingpacketQueue = new ConcurrentLinkedQueue<>();
-
         UdpVoipReceiveDataThreadRun = true;
         AudioIoPlayerThreadRun = true;
         startReceiveDataThread();
@@ -109,9 +104,9 @@ public class ReceiverAudio implements DataCommunicator {
             Log.i(LOG_TAG, "Audio Thread Join successs");
         }
 
+        mAudioControl.clear();
         mPlayerThread = null;
         mRecieverThread = null;
-        IncommingpacketQueue = null;
         RecvUdpSocket = null;
         AudioIoPlayerThreadRun = false;
         UdpVoipReceiveDataThreadRun = false;
@@ -123,7 +118,6 @@ public class ReceiverAudio implements DataCommunicator {
     {
         // Create thread for receiving audio data
         mRecieverThread = new Thread(new Runnable() {
-            int currentSeqNum;
             @Override
             public void run() {
                 // Create an instance of AudioTrack, used for playing back audio
@@ -133,7 +127,6 @@ public class ReceiverAudio implements DataCommunicator {
                     RecvUdpSocket = new DatagramSocket(null);
                     RecvUdpSocket.setReuseAddress(true);
                     RecvUdpSocket.bind(new InetSocketAddress(mPort));
-                    //boolean prevPrimaryData =false;
 
                     while (UdpVoipReceiveDataThreadRun) {
                         if(isAudioHeader) {
@@ -141,30 +134,16 @@ public class ReceiverAudio implements DataCommunicator {
                             DatagramPacket packet = new DatagramPacket(recieveData, recieveData.length);
 
                             RecvUdpSocket.receive(packet);
-                            int receiveSeqNum =  (recieveData[1]&0xFF)<<8 | (recieveData[2]&0xFF);
-                            //Log.i(LOG_TAG, "Packet received length: " + recieveData.length + " seqNo :" + receiveSeqNum);
-
-                            if((receiveSeqNum != currentSeqNum) && (receiveSeqNum != currentSeqNum +1) && (receiveSeqNum != 0 || currentSeqNum!=MAX_AUDIO_SEQNO) )//check loss data
                             {
-                                Log.i(LOG_TAG, "Packet Loss  occured from" + currentSeqNum + " to :" + receiveSeqNum);
+                                AudioData data = new AudioData();
+                                data.seqNo = (recieveData[1]&0xFF)<<8 | (recieveData[2]&0xFF);
+                                if(recieveData[0] == 0)
+                                    data.isPrimary = true;
+                                data.length = packet.getLength() - AUDIO_HEADER_SIZE;
+                                data.data = Arrays.copyOfRange(recieveData, AUDIO_HEADER_SIZE, packet.getLength());
+                                Log.i(LOG_TAG, "Packet received length: " + recieveData.length + " seqNo :" + data.length);
+                                mAudioControl.pushData(data);
                             }
-
-                            if(recieveData[0]!=0 && receiveSeqNum == currentSeqNum) // skip sub packet
-                                continue;
-
-                            currentSeqNum = receiveSeqNum;
-                            byte[] plane = mCrypto.decrypt(recieveData, AUDIO_HEADER_SIZE, packet.getLength()- AUDIO_HEADER_SIZE);
-                            if(plane!=null)
-                                IncommingpacketQueue.add(plane);
-                        }
-                        else {
-
-                            byte[] encrypted = new byte[(RAW_BUFFER_SIZE / 16 + 1) * 16];
-                            DatagramPacket packet = new DatagramPacket(encrypted, encrypted.length);
-                            RecvUdpSocket.receive(packet);
-
-                            byte[] plane = mCrypto.decrypt(encrypted, 0, packet.getLength());
-                            IncommingpacketQueue.add(plane);
                         }
                     }
                     // close socket
@@ -220,18 +199,19 @@ public class ReceiverAudio implements DataCommunicator {
                     OutputTrack.play();
                     while (AudioIoPlayerThreadRun)
                     {
-                        if (IncommingpacketQueue.size() > 0) {
-                            byte[] AudioOutputBufferBytes = IncommingpacketQueue.remove();
+                        if(mAudioControl.size()>0) {
+                            AudioData audioData = mAudioControl.getData();
+                            byte[] outStream = mCrypto.decrypt(audioData.data, 0, audioData.data.length);
+
                             //if (!MainActivity.BoostAudio)
                             if (true) {
                                 if(isAudioHeader)
-                                    OutputTrack.write(AudioOutputBufferBytes, 0, RAW_BUFFER_SIZE);
+                                    OutputTrack.write(outStream, 0, RAW_BUFFER_SIZE);
                                 else
-                                    OutputTrack.write(AudioOutputBufferBytes, 0, RAW_BUFFER_SIZE);
+                                    OutputTrack.write(outStream, 0, RAW_BUFFER_SIZE);
                             } else {
-                                short[] AudioOutputBufferShorts = new short[AudioOutputBufferBytes.length / 2];
+                                short[] AudioOutputBufferShorts = new short[audioData.data.length / 2];
                                 // to turn bytes to shorts as either big endian or little endian.
-                                ByteBuffer.wrap(AudioOutputBufferBytes).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(AudioOutputBufferShorts);
                                 for (int i = 0; i < AudioOutputBufferShorts.length; i++) { // 16bit sample size
                                     int value = AudioOutputBufferShorts[i] * 10; //increase level by gain=20dB: Math.pow(10., dB/20.);  dB to gain factor
                                     if (value > 32767) {
@@ -241,10 +221,6 @@ public class ReceiverAudio implements DataCommunicator {
                                     }
                                     AudioOutputBufferShorts[i] = (short) value;
                                 }
-                                // to turn shorts back to bytes.
-                                //byte[] AudioOutputBufferBytes2 = new byte[AudioOutputBufferShorts.length * 2];
-                                //ByteBuffer.wrap(AudioOutputBufferBytes2).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().put(AudioOutputBufferShorts);
-                                //OutputTrack.write(AudioOutputBufferBytes2, 0, RAW_BUFFER_SIZE);
                                 OutputTrack.write(AudioOutputBufferShorts, 0, AudioOutputBufferShorts.length);
                             }
                         }

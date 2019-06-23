@@ -11,7 +11,6 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -30,7 +29,7 @@ import com.acafela.harmony.userprofile.UserInfo;
 
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static com.acafela.harmony.sip.SipMessage.Command.INVITE;
+import static com.acafela.harmony.sip.SipMessage.Command.*;
 import static com.acafela.harmony.ui.AudioCallActivity.BROADCAST_BYE;
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_ISRINGING;
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_PHONENUMBER;
@@ -40,6 +39,8 @@ public class VoipController {
     public static final int CONTROL_RECIEVE_PORT = 5001;
     private static final String LOG_TAG = "[AcafelaController]";
     private static final int BUFFER_SIZE = 128;
+    public static final int CONTROL_TIMEOUT = 300;
+    public static final int RETRY_COUNT = 3;
     private boolean UdpListenerThreadRun = false;
     private DatagramSocket socket;
     private  InetAddress mIpAddress;
@@ -66,7 +67,6 @@ public class VoipController {
         INVITE_STATE,
         RINGING_STATE,
         CONNECTING_STATE,
-        DISCONNECTING_STATE,
     }
     private STATE mState;
 
@@ -114,7 +114,10 @@ public class VoipController {
 
                         if(sipMessage.getIsACK()) {
                             Log.e(LOG_TAG, "message get ACK [" + sipMessage.getCmd().toString() + "]");
-                            mTimer.cancel();
+                            if(mTimer!=null)  {
+                                mTimer.cancel();
+                                mTimer=null;
+                            }
                             continue;
                         } else {
                             Log.e(LOG_TAG, "Send  ACK answer by message[" + sipMessage.getCmd().toString() + "]");
@@ -157,6 +160,7 @@ public class VoipController {
                         mRingControl.ringbackTone_stop();
                     break;
                 case OPENSESSION:
+                    if(mState==STATE.CONNECTING_STATE) break;
                     byte[] keyByte = mCryptoRpc.getKey(sesssionID);
                     mCrypto  = CryptoBroker.getInstance().create("AES");
                     mCrypto.init(keyByte);
@@ -195,6 +199,7 @@ public class VoipController {
                     mState = STATE.RINGING_STATE;
                     break;
                 case OPENSESSION:
+                    if(mState==STATE.CONNECTING_STATE) break;
                     byte[] keyByte = mCryptoRpc.getKey(sesssionID);
                     mCrypto = CryptoBroker.getInstance().create("AES");
                     Log.e(LOG_TAG, "Send Message: " +"keyByte" + keyByte.length);
@@ -315,25 +320,27 @@ public class VoipController {
         UdpSend(mSenderMsg);
         Log.e(LOG_TAG, "Send Message : "  +  cmd.toString());
 
-        mRetryCnt = 3;
-        mTimer.cancel();
+
+        mRetryCnt = RETRY_COUNT;
+        if(mTimer!=null)  {
+            mTimer.cancel();
+            mTimer=null;
+        }
         mTimer = new Timer();
         mTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                // call method
-                Log.e(LOG_TAG, "mRetryCnt: "  +  mRetryCnt);
+                Log.e(LOG_TAG, "mRetryCnt : "  +  mRetryCnt);
                 if(--mRetryCnt==0)
                 {
                     mTimer.cancel();
-                    Log.e(LOG_TAG, "Timeout Control Message");
-                    //showToastInService("sipinvite");
+                    Log.e(LOG_TAG, "Timeout Control Message" );
                     terminateCall();
                 }
                 else
                     UdpSend(mSenderMsg);
             }
-        }, 300,300);
+        }, CONTROL_TIMEOUT, CONTROL_TIMEOUT);
         msgSeq++;
     }
 
