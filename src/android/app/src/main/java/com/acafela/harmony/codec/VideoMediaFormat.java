@@ -11,14 +11,22 @@ public class VideoMediaFormat {
     private static final int VIDEO_FRAME_RATE = 30;               // 30fps
     private static final int VIDEO_IFRAME_INTERVAL = 0;  // TRADE-OFF
     private static final int VIDEO_BIT_RATE = 300000;
+    public static final int VIDEO_WIDTH = 640;
+    public static final int VIDEO_HEIGHT = 480;
 
     public static final int VIDEO_QUEUE_BOUND = 100;
 
-    private MediaFormat mFormat = new MediaFormat();
+    private MediaFormat mFormat = MediaFormat.createVideoFormat(VIDEO_MIME_TYPE,
+            VIDEO_WIDTH,
+            VIDEO_HEIGHT);
 
-    public VideoMediaFormat() {
-        mFormat.setString(MediaFormat.KEY_MIME, VIDEO_MIME_TYPE);
-        mFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
+    public VideoMediaFormat(Boolean useSerface) {
+        if (useSerface) {
+            mFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
+        }
+        else {
+            mFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420Flexible);
+        }
         mFormat.setInteger(MediaFormat.KEY_FRAME_RATE, VIDEO_FRAME_RATE);
         mFormat.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, VIDEO_IFRAME_INTERVAL);
         mFormat.setInteger(MediaFormat.KEY_BIT_RATE, VIDEO_BIT_RATE);

@@ -5,7 +5,7 @@ import com.acafela.harmony.codec.VideoCodecAsync.VideoCallback;
 public class VideoControllerAsync {
     private static final String TAG = VideoControllerAsync.class.getName();
 
-    VideoMediaFormat mVideoMediaFormat = new VideoMediaFormat();
+    VideoMediaFormat mVideoMediaFormat = new VideoMediaFormat(true);
     VideoCodecAsync mVideoEncoder = new VideoCodecAsync(true);
     VideoCodecAsync mVideoDecoder = new VideoCodecAsync(false);
 

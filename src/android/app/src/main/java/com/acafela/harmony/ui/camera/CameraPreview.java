@@ -1,11 +1,17 @@
 package com.acafela.harmony.ui.camera;
 
 import android.content.Context;
+import android.graphics.ImageFormat;
+import android.graphics.Rect;
+import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.acafela.harmony.codec.VideoControllerSync;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import static android.support.constraint.Constraints.TAG;
@@ -14,6 +20,7 @@ import static android.support.constraint.Constraints.TAG;
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
     private SurfaceHolder mHolder;
     private Camera mCamera;
+    private VideoControllerSync mVideoControllerSync;
 
     public CameraPreview(Context context, Camera camera) {
         super(context);
@@ -25,6 +32,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         mHolder.addCallback(this);
         // deprecated setting, but required on Android versions prior to 3.0
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+
+        mVideoControllerSync = new VideoControllerSync();
     }
 
     public void surfaceCreated(SurfaceHolder holder) {
@@ -35,10 +44,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         } catch (IOException e) {
             Log.d(TAG, "Error setting camera preview: " + e.getMessage());
         }
+        mVideoControllerSync.start();
     }
 
     public void surfaceDestroyed(SurfaceHolder holder) {
         // empty. Take care of releasing the Camera preview in your activity.
+        mVideoControllerSync.stop();
     }
 
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
@@ -68,6 +79,19 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             mCamera.setParameters(parameters);
 
             mCamera.setPreviewDisplay(mHolder);
+            mCamera.setPreviewCallback(new Camera.PreviewCallback() {
+                public void onPreviewFrame(byte[] data, Camera camera) {
+                    byte[] encodedBuf = mVideoControllerSync.encode(data);
+                    if (encodedBuf == null) {
+                        return;
+                    }
+                    byte[] decodedBuf = mVideoControllerSync.decode(encodedBuf);
+                    if (decodedBuf == null) {
+                        return;
+                    }
+                    Log.i(TAG, "decodedBuf length: " + decodedBuf.length);
+                }
+            });
             mCamera.startPreview();
 
         } catch (Exception e){
