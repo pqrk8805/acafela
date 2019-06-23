@@ -10,6 +10,7 @@ import android.util.Log;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.LinkedBlockingQueue;
+import android.view.Surface;
 
 import static com.acafela.harmony.codec.VideoMediaFormat.VIDEO_MIME_TYPE;
 import static com.acafela.harmony.codec.VideoMediaFormat.VIDEO_QUEUE_BOUND;
@@ -23,6 +24,7 @@ public class VideoCodecAsync {
 
     private MediaCodec mCodec;
     private boolean mIsEncoder;
+    private Surface mInputSurface;
 
     LinkedBlockingQueue<byte[]> mInputBytesQueue = new LinkedBlockingQueue<>(VIDEO_QUEUE_BOUND);
     VideoCodecAsync.VideoCallback mVideoCallback;
@@ -67,7 +69,7 @@ public class VideoCodecAsync {
 
             @Override
             public void onOutputBufferAvailable(@NonNull MediaCodec codec, int index, @NonNull MediaCodec.BufferInfo info) {
-//				Log.e(TAG, "onOutputBufferAvailable");
+				Log.e(TAG, "onOutputBufferAvailable");
                 ByteBuffer outputBuffer = mCodec.getOutputBuffer(index);
                 byte[] outputBytes = new byte[info.size];
                 outputBuffer.get(outputBytes, 0, info.size);
@@ -96,6 +98,8 @@ public class VideoCodecAsync {
                         MediaCodec.CONFIGURE_FLAG_ENCODE:
                         0);
 
+        if(mIsEncoder) mInputSurface=mCodec.createInputSurface();
+
         mCodec.start();
     }
 
@@ -116,5 +120,12 @@ public class VideoCodecAsync {
 
     public static abstract class VideoCallback {
         public abstract void onOutputBytesAvailable(byte[] outputBytes);
+    }
+
+    /**
+     * Returns the encoder's input surface.
+     */
+    public Surface getInputSurface() {
+        return mInputSurface;
     }
 }

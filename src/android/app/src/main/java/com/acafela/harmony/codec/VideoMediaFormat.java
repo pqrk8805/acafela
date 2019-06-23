@@ -11,7 +11,7 @@ public class VideoMediaFormat {
     private static final int VIDEO_FRAME_RATE = 30;               // 30fps
     private static final int VIDEO_IFRAME_INTERVAL = 0;  // TRADE-OFF
     private static final int VIDEO_BIT_RATE = 300000;
-    public static final int VIDEO_WIDTH = 640;
+    public static final int VIDEO_WIDTH = 320;
     public static final int VIDEO_HEIGHT = 480;
 
     public static final int VIDEO_QUEUE_BOUND = 100;
