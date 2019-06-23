@@ -101,6 +101,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::rpc::UserInfo, email_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::rpc::UserInfo, phone_number_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::rpc::UserInfo, ip_address_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::rpc::UserInfo, enabled_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::rpc::UserInfoList, _internal_metadata_),
@@ -117,8 +118,8 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::acafela::rpc::UserInfo)},
-  { 8, -1, sizeof(::acafela::rpc::UserInfoList)},
-  { 14, -1, sizeof(::acafela::rpc::Email)},
+  { 9, -1, sizeof(::acafela::rpc::UserInfoList)},
+  { 15, -1, sizeof(::acafela::rpc::Email)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -149,20 +150,21 @@ void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\017UserAdmin.proto\022\013acafela.rpc\032\014Common.p"
-      "roto\"@\n\010UserInfo\022\r\n\005email\030\001 \001(\t\022\024\n\014phone"
-      "_number\030\002 \001(\t\022\017\n\007enabled\030\003 \001(\010\"8\n\014UserIn"
-      "foList\022(\n\tuser_info\030\001 \003(\0132\025.acafela.rpc."
-      "UserInfo\"\026\n\005Email\022\r\n\005email\030\001 \001(\t2\360\001\n\tUse"
-      "rAdmin\022@\n\017getUserInfoList\022\022.acafela.rpc."
-      "Empty\032\031.acafela.rpc.UserInfoList\0224\n\ndele"
-      "teUser\022\022.acafela.rpc.Email\032\022.acafela.rpc"
-      ".Error\0225\n\013disableUser\022\022.acafela.rpc.Emai"
-      "l\032\022.acafela.rpc.Error\0224\n\nenableUser\022\022.ac"
-      "afela.rpc.Email\032\022.acafela.rpc.ErrorB\027\252\002\024"
-      "harmony.usradmin.rpcb\006proto3"
+      "roto\"T\n\010UserInfo\022\r\n\005email\030\001 \001(\t\022\024\n\014phone"
+      "_number\030\002 \001(\t\022\022\n\nip_address\030\003 \001(\t\022\017\n\007ena"
+      "bled\030\004 \001(\010\"8\n\014UserInfoList\022(\n\tuser_info\030"
+      "\001 \003(\0132\025.acafela.rpc.UserInfo\"\026\n\005Email\022\r\n"
+      "\005email\030\001 \001(\t2\360\001\n\tUserAdmin\022@\n\017getUserInf"
+      "oList\022\022.acafela.rpc.Empty\032\031.acafela.rpc."
+      "UserInfoList\0224\n\ndeleteUser\022\022.acafela.rpc"
+      ".Email\032\022.acafela.rpc.Error\0225\n\013disableUse"
+      "r\022\022.acafela.rpc.Email\032\022.acafela.rpc.Erro"
+      "r\0224\n\nenableUser\022\022.acafela.rpc.Email\032\022.ac"
+      "afela.rpc.ErrorB\027\252\002\024harmony.usradmin.rpc"
+      "b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 468);
+      descriptor, 488);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "UserAdmin.proto", &protobuf_RegisterTypes);
   ::protobuf_Common_2eproto::AddDescriptors();
@@ -189,6 +191,7 @@ void UserInfo::InitAsDefaultInstance() {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int UserInfo::kEmailFieldNumber;
 const int UserInfo::kPhoneNumberFieldNumber;
+const int UserInfo::kIpAddressFieldNumber;
 const int UserInfo::kEnabledFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -211,6 +214,10 @@ UserInfo::UserInfo(const UserInfo& from)
   if (from.phone_number().size() > 0) {
     phone_number_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.phone_number_);
   }
+  ip_address_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.ip_address().size() > 0) {
+    ip_address_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.ip_address_);
+  }
   enabled_ = from.enabled_;
   // @@protoc_insertion_point(copy_constructor:acafela.rpc.UserInfo)
 }
@@ -218,6 +225,7 @@ UserInfo::UserInfo(const UserInfo& from)
 void UserInfo::SharedCtor() {
   email_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   phone_number_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ip_address_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   enabled_ = false;
 }
 
@@ -229,6 +237,7 @@ UserInfo::~UserInfo() {
 void UserInfo::SharedDtor() {
   email_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   phone_number_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ip_address_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 void UserInfo::SetCachedSize(int size) const {
@@ -253,6 +262,7 @@ void UserInfo::Clear() {
 
   email_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   phone_number_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ip_address_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   enabled_ = false;
   _internal_metadata_.Clear();
 }
@@ -299,10 +309,26 @@ bool UserInfo::MergePartialFromCodedStream(
         break;
       }
 
-      // bool enabled = 3;
+      // string ip_address = 3;
       case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_ip_address()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->ip_address().data(), static_cast<int>(this->ip_address().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "acafela.rpc.UserInfo.ip_address"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // bool enabled = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
@@ -359,9 +385,19 @@ void UserInfo::SerializeWithCachedSizes(
       2, this->phone_number(), output);
   }
 
-  // bool enabled = 3;
+  // string ip_address = 3;
+  if (this->ip_address().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->ip_address().data(), static_cast<int>(this->ip_address().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "acafela.rpc.UserInfo.ip_address");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      3, this->ip_address(), output);
+  }
+
+  // bool enabled = 4;
   if (this->enabled() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(3, this->enabled(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteBool(4, this->enabled(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -400,9 +436,20 @@ void UserInfo::SerializeWithCachedSizes(
         2, this->phone_number(), target);
   }
 
-  // bool enabled = 3;
+  // string ip_address = 3;
+  if (this->ip_address().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->ip_address().data(), static_cast<int>(this->ip_address().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "acafela.rpc.UserInfo.ip_address");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->ip_address(), target);
+  }
+
+  // bool enabled = 4;
   if (this->enabled() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(3, this->enabled(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(4, this->enabled(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -436,7 +483,14 @@ size_t UserInfo::ByteSizeLong() const {
         this->phone_number());
   }
 
-  // bool enabled = 3;
+  // string ip_address = 3;
+  if (this->ip_address().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->ip_address());
+  }
+
+  // bool enabled = 4;
   if (this->enabled() != 0) {
     total_size += 1 + 1;
   }
@@ -476,6 +530,10 @@ void UserInfo::MergeFrom(const UserInfo& from) {
 
     phone_number_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.phone_number_);
   }
+  if (from.ip_address().size() > 0) {
+
+    ip_address_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.ip_address_);
+  }
   if (from.enabled() != 0) {
     set_enabled(from.enabled());
   }
@@ -508,6 +566,8 @@ void UserInfo::InternalSwap(UserInfo* other) {
   email_.Swap(&other->email_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
   phone_number_.Swap(&other->phone_number_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  ip_address_.Swap(&other->ip_address_, &::google::protobuf::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
   swap(enabled_, other->enabled_);
   _internal_metadata_.Swap(&other->_internal_metadata_);

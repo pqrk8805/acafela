@@ -25,20 +25,20 @@ namespace harmony.usradmin.rpc {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Cg9Vc2VyQWRtaW4ucHJvdG8SC2FjYWZlbGEucnBjGgxDb21tb24ucHJvdG8i",
-            "QAoIVXNlckluZm8SDQoFZW1haWwYASABKAkSFAoMcGhvbmVfbnVtYmVyGAIg",
-            "ASgJEg8KB2VuYWJsZWQYAyABKAgiOAoMVXNlckluZm9MaXN0EigKCXVzZXJf",
-            "aW5mbxgBIAMoCzIVLmFjYWZlbGEucnBjLlVzZXJJbmZvIhYKBUVtYWlsEg0K",
-            "BWVtYWlsGAEgASgJMvABCglVc2VyQWRtaW4SQAoPZ2V0VXNlckluZm9MaXN0",
-            "EhIuYWNhZmVsYS5ycGMuRW1wdHkaGS5hY2FmZWxhLnJwYy5Vc2VySW5mb0xp",
-            "c3QSNAoKZGVsZXRlVXNlchISLmFjYWZlbGEucnBjLkVtYWlsGhIuYWNhZmVs",
-            "YS5ycGMuRXJyb3ISNQoLZGlzYWJsZVVzZXISEi5hY2FmZWxhLnJwYy5FbWFp",
-            "bBoSLmFjYWZlbGEucnBjLkVycm9yEjQKCmVuYWJsZVVzZXISEi5hY2FmZWxh",
-            "LnJwYy5FbWFpbBoSLmFjYWZlbGEucnBjLkVycm9yQheqAhRoYXJtb255LnVz",
-            "cmFkbWluLnJwY2IGcHJvdG8z"));
+            "VAoIVXNlckluZm8SDQoFZW1haWwYASABKAkSFAoMcGhvbmVfbnVtYmVyGAIg",
+            "ASgJEhIKCmlwX2FkZHJlc3MYAyABKAkSDwoHZW5hYmxlZBgEIAEoCCI4CgxV",
+            "c2VySW5mb0xpc3QSKAoJdXNlcl9pbmZvGAEgAygLMhUuYWNhZmVsYS5ycGMu",
+            "VXNlckluZm8iFgoFRW1haWwSDQoFZW1haWwYASABKAky8AEKCVVzZXJBZG1p",
+            "bhJACg9nZXRVc2VySW5mb0xpc3QSEi5hY2FmZWxhLnJwYy5FbXB0eRoZLmFj",
+            "YWZlbGEucnBjLlVzZXJJbmZvTGlzdBI0CgpkZWxldGVVc2VyEhIuYWNhZmVs",
+            "YS5ycGMuRW1haWwaEi5hY2FmZWxhLnJwYy5FcnJvchI1CgtkaXNhYmxlVXNl",
+            "chISLmFjYWZlbGEucnBjLkVtYWlsGhIuYWNhZmVsYS5ycGMuRXJyb3ISNAoK",
+            "ZW5hYmxlVXNlchISLmFjYWZlbGEucnBjLkVtYWlsGhIuYWNhZmVsYS5ycGMu",
+            "RXJyb3JCF6oCFGhhcm1vbnkudXNyYWRtaW4ucnBjYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Acafela.Rpc.CommonReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::harmony.usradmin.rpc.UserInfo), global::harmony.usradmin.rpc.UserInfo.Parser, new[]{ "Email", "PhoneNumber", "Enabled" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::harmony.usradmin.rpc.UserInfo), global::harmony.usradmin.rpc.UserInfo.Parser, new[]{ "Email", "PhoneNumber", "IpAddress", "Enabled" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::harmony.usradmin.rpc.UserInfoList), global::harmony.usradmin.rpc.UserInfoList.Parser, new[]{ "UserInfo" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::harmony.usradmin.rpc.Email), global::harmony.usradmin.rpc.Email.Parser, new[]{ "Email_" }, null, null, null)
           }));
@@ -74,6 +74,7 @@ namespace harmony.usradmin.rpc {
     public UserInfo(UserInfo other) : this() {
       email_ = other.email_;
       phoneNumber_ = other.phoneNumber_;
+      ipAddress_ = other.ipAddress_;
       enabled_ = other.enabled_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -105,8 +106,19 @@ namespace harmony.usradmin.rpc {
       }
     }
 
+    /// <summary>Field number for the "ip_address" field.</summary>
+    public const int IpAddressFieldNumber = 3;
+    private string ipAddress_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string IpAddress {
+      get { return ipAddress_; }
+      set {
+        ipAddress_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     /// <summary>Field number for the "enabled" field.</summary>
-    public const int EnabledFieldNumber = 3;
+    public const int EnabledFieldNumber = 4;
     private bool enabled_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Enabled {
@@ -131,6 +143,7 @@ namespace harmony.usradmin.rpc {
       }
       if (Email != other.Email) return false;
       if (PhoneNumber != other.PhoneNumber) return false;
+      if (IpAddress != other.IpAddress) return false;
       if (Enabled != other.Enabled) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -140,6 +153,7 @@ namespace harmony.usradmin.rpc {
       int hash = 1;
       if (Email.Length != 0) hash ^= Email.GetHashCode();
       if (PhoneNumber.Length != 0) hash ^= PhoneNumber.GetHashCode();
+      if (IpAddress.Length != 0) hash ^= IpAddress.GetHashCode();
       if (Enabled != false) hash ^= Enabled.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -162,8 +176,12 @@ namespace harmony.usradmin.rpc {
         output.WriteRawTag(18);
         output.WriteString(PhoneNumber);
       }
+      if (IpAddress.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(IpAddress);
+      }
       if (Enabled != false) {
-        output.WriteRawTag(24);
+        output.WriteRawTag(32);
         output.WriteBool(Enabled);
       }
       if (_unknownFields != null) {
@@ -179,6 +197,9 @@ namespace harmony.usradmin.rpc {
       }
       if (PhoneNumber.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(PhoneNumber);
+      }
+      if (IpAddress.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(IpAddress);
       }
       if (Enabled != false) {
         size += 1 + 1;
@@ -199,6 +220,9 @@ namespace harmony.usradmin.rpc {
       }
       if (other.PhoneNumber.Length != 0) {
         PhoneNumber = other.PhoneNumber;
+      }
+      if (other.IpAddress.Length != 0) {
+        IpAddress = other.IpAddress;
       }
       if (other.Enabled != false) {
         Enabled = other.Enabled;
@@ -222,7 +246,11 @@ namespace harmony.usradmin.rpc {
             PhoneNumber = input.ReadString();
             break;
           }
-          case 24: {
+          case 26: {
+            IpAddress = input.ReadString();
+            break;
+          }
+          case 32: {
             Enabled = input.ReadBool();
             break;
           }
