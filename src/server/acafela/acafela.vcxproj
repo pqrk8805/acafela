@@ -87,6 +87,7 @@
     <ClInclude Include="src\UserAdmin\UserAdmin.grpc.pb.h" />
     <ClInclude Include="src\UserAdmin\UserAdmin.h" />
     <ClInclude Include="src\UserAdmin\UserAdmin.pb.h" />
+    <ClInclude Include="src\UserAdmin\UserAdminMock.h" />
     <ClInclude Include="src\UserAdmin\UserAdminRpc.h" />
     <ClInclude Include="src\UserProfile\EmailSender.h" />
     <ClInclude Include="src\UserProfile\ISecurityProvider.h" />

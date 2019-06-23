@@ -84,6 +84,7 @@
       <DependentUpon>UserAdminView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserAdminViewModel.cs" />
+    <Compile Include="UserInfo.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

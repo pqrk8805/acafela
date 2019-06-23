@@ -227,5 +227,8 @@
     <ClInclude Include="src\UserAdmin\UserAdminRpc.h">
       <Filter>Source Files\UserAdmin</Filter>
     </ClInclude>
+    <ClInclude Include="src\UserAdmin\UserAdminMock.h">
+      <Filter>Source Files\UserAdmin</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
