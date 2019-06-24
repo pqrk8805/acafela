@@ -39,6 +39,8 @@
     </Filter>
     <Filter Include="Source Files\ConferenceCall">
       <UniqueIdentifier>{1f75b5d4-ec14-4a57-88f6-dc023458bf43}</UniqueIdentifier>
+    <Filter Include="Source Files\ConCall">
+      <UniqueIdentifier>{e5a6b83c-82d1-4538-bb25-f90b748417ea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +139,14 @@
     </ClCompile>
     <ClCompile Include="src\ConferenceCall\EmailSenderCC.cpp">
       <Filter>Source Files\ConferenceCall</Filter>
+    <ClCompile Include="src\ConCall\ConCallReserv.grpc.pb.cc">
+      <Filter>Source Files\ConCall</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConCall\ConCallReserv.pb.cc">
+      <Filter>Source Files\ConCall</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConCall\ConCallReservRpc.cpp">
+      <Filter>Source Files\ConCall</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -244,6 +254,14 @@
     </ClInclude>
     <ClInclude Include="src\ConferenceCall\EmailSenderCC.h">
       <Filter>Source Files\ConferenceCall</Filter>
+    <ClInclude Include="src\ConCall\ConCallReserv.grpc.pb.h">
+      <Filter>Source Files\ConCall</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ConCall\ConCallReserv.pb.h">
+      <Filter>Source Files\ConCall</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ConCall\ConCallReservRpc.h">
+      <Filter>Source Files\ConCall</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

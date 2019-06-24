@@ -1,6 +1,7 @@
 #include <iostream>
 #include <thread>
 #include <vector>
+#include "ConCallReservRpc.h"
 #include "DirectoryService.h"
 #include "DirectoryServiceRpc.h"
 #include "CryptoKey.h"
@@ -21,6 +22,7 @@
 #define RPC_PORT_DIRECTORY_SERVICE  "9100"
 #define RPC_PORT_CRYPTO_KEY         "9200"
 #define RPC_PORT_USER_ADMIN         "9300"
+#define RPC_PORT_CONCALL_RESERVE    "9400"
 
 #define CLIENT1_IP "10.0.2.157"
 #define CLIENT2_IP "10.0.1.230"
@@ -68,6 +70,14 @@ int main(int argc, char** argv)
 		FUNC_LOGE("ERROR(%d): fail to start UserAdminRpc server", err);
 		return err;
 	}
+
+    ConCallReservRpc conCallReservRpc;
+    err = conCallReservRpc.start(SERVER_IP ":" RPC_PORT_CONCALL_RESERVE);
+	if (err) {
+		FUNC_LOGE("ERROR(%d): fail to start ConCallReservRpc server", err);
+		return err;
+	}
+
 
 	//
 	////Stub it before implement client side directory service.
