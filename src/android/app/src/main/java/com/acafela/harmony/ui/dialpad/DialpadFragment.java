@@ -175,7 +175,7 @@ public class DialpadFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (callback != null) {
-                    callback.initiateCall(input, true);
+                    callback.initiateCall(input, false);
                 }
             }
         });
@@ -184,7 +184,7 @@ public class DialpadFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (callback != null) {
-                    callback.initiateCall(input, false);
+                    callback.initiateCall(input, true);
                 }
             }
         });
@@ -261,6 +261,6 @@ public class DialpadFragment extends Fragment {
     }
 
     public interface Callback {
-        void initiateCall(String raw, boolean isAudio);
+        void initiateCall(String raw, boolean isVideo);
     }
 }

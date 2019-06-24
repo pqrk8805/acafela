@@ -31,7 +31,7 @@ import com.acafela.harmony.userprofile.UserInfo;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.acafela.harmony.sip.SipMessage.Command.*;
 import static com.acafela.harmony.ui.AudioCallActivity.BROADCAST_BYE;
-import static com.acafela.harmony.ui.AudioCallActivity.INTENT_ISRINGING;
+import static com.acafela.harmony.ui.AudioCallActivity.INTENT_ISCALLEE;
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_PHONENUMBER;
 
 public class VoipController {
@@ -194,7 +194,7 @@ public class VoipController {
                         sendMessage(SipMessage.Command.RINGING);
                         Intent intent = new Intent(mContext, AudioCallActivity.class);
                         intent.putExtra(INTENT_PHONENUMBER, mCallerNumber);
-                        intent.putExtra(INTENT_ISRINGING, true);
+                        intent.putExtra(INTENT_ISCALLEE, true);
                         intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(intent);
                     }

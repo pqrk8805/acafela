@@ -32,6 +32,7 @@ public class TestCallActivity extends AppCompatActivity {
     public static final String INTENT_SIP_INVITE_CALL = "SIPINVITE";
     public static final String INTENT_SIP_ACCEPT_CALL = "SIPACCEPT";
     public static final String INTENT_SIP_TERMINATE_CALL = "SIPTERMINATE";
+    public static final String INTENT_ISVIDEO = "ISVIDEO";
     private static final Pattern IP_ADDRESS
             = Pattern.compile(
             "((25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9])\\.(25[0-5]|2[0-4]"

@@ -1,15 +1,10 @@
 package com.acafela.harmony.ui;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothHeadset;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.media.AudioManager;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +14,7 @@ import android.widget.ToggleButton;
 
 import com.acafela.harmony.R;
 import com.acafela.harmony.service.HarmonyService;
+import com.acafela.harmony.util.AudioPathSelector;
 
 import static com.acafela.harmony.ui.TestCallActivity.INTENT_CONTROL;
 import static com.acafela.harmony.ui.TestCallActivity.INTENT_SIP_ACCEPT_CALL;
@@ -28,10 +24,9 @@ public class AudioCallActivity extends AppCompatActivity {
     private static final String TAG = AudioCallActivity.class.getName();
 
     public static final String INTENT_PHONENUMBER = "INTENT_PHONENUMBER";
-    public static final String INTENT_ISRINGING = "INTENT_ISCALEE";
+    public static final String INTENT_ISCALLEE = "INTENT_ISCALEE";
     public static final String BROADCAST_BYE = "com.acafela.action.bye";
 
-    private AudioManager mAudioManager;
     BroadcastReceiver mBroadcastReceiver;
 
     @Override
@@ -47,15 +42,15 @@ public class AudioCallActivity extends AppCompatActivity {
         TextView phoneNumberTextView = findViewById(R.id.tv_phonenumber);
         phoneNumberTextView.setText(intent.getStringExtra(INTENT_PHONENUMBER));
 
-        boolean isRinging = intent.getBooleanExtra(INTENT_ISRINGING, false);
+        boolean isRinging = intent.getBooleanExtra(INTENT_ISCALLEE, false);
         if (isRinging) {
             findViewById(R.id.fourth_container).setVisibility(View.GONE);
         } else {
             findViewById(R.id.fourth_container_ringing).setVisibility(View.GONE);
         }
 
-        mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        setEarPieceAudio();
+        AudioPathSelector.getInstance().setAudioManager(this);
+        AudioPathSelector.getInstance().setEarPieceAudio();
     }
 
     @Override
@@ -98,17 +93,17 @@ public class AudioCallActivity extends AppCompatActivity {
     public void onClickSpeakerToggleBtn(View v) {
         if (((ToggleButton) v).isChecked()) {
             ((ToggleButton) findViewById(R.id.toggle_bluetooth)).setChecked(false);
-            setSpeakerAudio();
+            AudioPathSelector.getInstance().setSpeakerAudio();
         } else {
-            setEarPieceAudio();
+            AudioPathSelector.getInstance().setEarPieceAudio();
         }
     }
 
     public void onClickBluetoothToggleBtn(View v) {
         if (((ToggleButton) v).isChecked()) {
-            if (isBluetoothConnected()) {
+            if (AudioPathSelector.isBluetoothConnected()) {
                 ((ToggleButton) findViewById(R.id.toggle_speaker)).setChecked(false);
-                setBluetoothAudio();
+                AudioPathSelector.getInstance().setBluetoothAudio();
             } else {
                 ((ToggleButton) findViewById(R.id.toggle_bluetooth)).setChecked(false);
                 Intent intentOpenBluetoothSettings = new Intent();
@@ -116,26 +111,8 @@ public class AudioCallActivity extends AppCompatActivity {
                 startActivity(intentOpenBluetoothSettings);
             }
         } else {
-            setEarPieceAudio();
+            AudioPathSelector.getInstance().setEarPieceAudio();
         }
-    }
-
-    private void setSpeakerAudio() {
-        mAudioManager.setBluetoothScoOn(false);
-        mAudioManager.stopBluetoothSco();
-        mAudioManager.setSpeakerphoneOn(true);
-    }
-
-    private void setEarPieceAudio() {
-        mAudioManager.setBluetoothScoOn(false);
-        mAudioManager.stopBluetoothSco();
-        mAudioManager.setSpeakerphoneOn(false);
-    }
-
-    private void setBluetoothAudio() {
-        mAudioManager.setSpeakerphoneOn(false);
-        mAudioManager.setBluetoothScoOn(true);
-        mAudioManager.startBluetoothSco();
     }
 
     private void terminateCall() {
@@ -144,12 +121,6 @@ public class AudioCallActivity extends AppCompatActivity {
         startService(serviceIntent);
 
         finish();
-    }
-
-    public static boolean isBluetoothConnected() {
-        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        return mBluetoothAdapter != null && mBluetoothAdapter.isEnabled()
-                && mBluetoothAdapter.getProfileConnectionState(BluetoothHeadset.HEADSET) == BluetoothHeadset.STATE_CONNECTED;
     }
 
     private void RegisterReceiver() {

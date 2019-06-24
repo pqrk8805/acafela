@@ -32,10 +32,11 @@ import com.acafela.harmony.ui.main.SectionsPagerAdapter;
 import com.acafela.harmony.ui.main.UserRegisterDialog;
 import com.acafela.harmony.userprofile.UserInfo;
 
-import static com.acafela.harmony.ui.AudioCallActivity.INTENT_ISRINGING;
+import static com.acafela.harmony.ui.AudioCallActivity.INTENT_ISCALLEE;
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_PHONENUMBER;
 import static com.acafela.harmony.ui.TestCallActivity.INTEMT_CALLEE_PHONENUMBER;
 import static com.acafela.harmony.ui.TestCallActivity.INTENT_CONTROL;
+import static com.acafela.harmony.ui.TestCallActivity.INTENT_ISVIDEO;
 import static com.acafela.harmony.ui.TestCallActivity.INTENT_SIP_INVITE_CALL;
 
 public class MainActivity extends AppCompatActivity implements DialpadFragment.Callback {
@@ -225,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
     }
 
     @Override
-    public void initiateCall(String raw, boolean isAudio) {
+    public void initiateCall(String raw, boolean isVideo) {
         Log.i(TAG, "initiateCall: " + raw);
 
         if (raw.equals(HIDDEN_TEST_MAIN)) {
@@ -244,11 +245,12 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
             Intent serviceIntent = new Intent(getApplicationContext(), HarmonyService.class);
             serviceIntent.putExtra(INTENT_CONTROL, INTENT_SIP_INVITE_CALL);
             serviceIntent.putExtra(INTEMT_CALLEE_PHONENUMBER, raw);
+            serviceIntent.putExtra(INTENT_ISVIDEO, false);
             startService(serviceIntent);
 
             Intent activityIntent = new Intent(this, AudioCallActivity.class);
             activityIntent.putExtra(INTENT_PHONENUMBER, raw);
-            activityIntent.putExtra(INTENT_ISRINGING, false);
+            activityIntent.putExtra(INTENT_ISCALLEE, false);
             startActivity(activityIntent);
             return;
         }

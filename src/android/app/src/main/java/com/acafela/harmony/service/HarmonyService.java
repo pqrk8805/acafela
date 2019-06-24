@@ -16,6 +16,8 @@ import com.acafela.harmony.crypto.CryptoBroker;
 import com.acafela.harmony.crypto.ICrypto;
 import com.acafela.harmony.ui.TestCallActivity;
 
+import static com.acafela.harmony.ui.TestCallActivity.INTENT_ISVIDEO;
+
 public class HarmonyService extends Service {
     private static final String LOG_TAG = HarmonyService.class.getName();
 
@@ -55,7 +57,8 @@ public class HarmonyService extends Service {
                 terminateCall();
                 break;
             case TestCallActivity.INTENT_SIP_INVITE_CALL:
-                sipinvite(intent.getStringExtra(TestCallActivity.INTEMT_CALLEE_PHONENUMBER));
+                boolean isVideo = intent.getBooleanExtra(INTENT_ISVIDEO, false);
+                sipinvite(intent.getStringExtra(TestCallActivity.INTEMT_CALLEE_PHONENUMBER), isVideo);
                 break;
             case TestCallActivity.INTENT_SIP_ACCEPT_CALL:
                 sipaccept();
@@ -110,10 +113,10 @@ public class HarmonyService extends Service {
         showToastInService("terminateCall");
     }
 
-    private void sipinvite(String calleeNumber) {
+    private void sipinvite(String calleeNumber, boolean isVideo) {
         Log.i(LOG_TAG, "sipinvite");
         showToastInService("sipinvite");
-        controller.inviteCall(calleeNumber);
+        controller.inviteCall(calleeNumber, isVideo);
     }
     private void sipaccept() {
         controller.acceptCall();
