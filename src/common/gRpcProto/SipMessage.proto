@@ -40,9 +40,10 @@ message SessionInfo
 message SIPMessage {
     Command cmd = 1;
     bool isACK = 2;
-    string from  = 3;
-    string to  = 4;
-		string sessionid  = 5;   
-	  int32  seq = 6;
-	  SessionInfo sessioninfo = 7;
+    bool isVideoCall = 3;
+    string from  = 4;
+    string to  = 5;
+		string sessionid  = 6;   
+	  int32  seq = 7;
+	  SessionInfo sessioninfo = 8;
 }

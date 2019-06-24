@@ -61,6 +61,7 @@ public class VoipController {
     private byte[]mSenderMsg;
     private int mRetryCnt;
     private Timer mTimer;
+    private boolean mIsVideoCall;
 
     private  enum STATE {
         IDLE_STATE,
@@ -126,8 +127,9 @@ public class VoipController {
                                 sesssionID = sipMessage.getSessionid();
                                 mCallerNumber = sipMessage.getFrom();
                                 mCalleeNumber = sipMessage.getTo();
+                                mIsVideoCall = sipMessage.getIsVideoCall();
                             }
-                            replyMessage(sipMessage.getCmd());
+                            replyMessage(sipMessage);
                         }
 
                         Log.e(LOG_TAG, "Got UDP message from " + senderIP + ", message: " + sipMessage.toString());
@@ -231,6 +233,7 @@ public class VoipController {
         isCaller = false;
         mState = STATE.IDLE_STATE;
         msgSeq = 0;
+        mIsVideoCall =false;
     }
 
     private void finishCallActivity() {
@@ -291,26 +294,17 @@ public class VoipController {
         });
         replyThread.start();
     }
-    public void  replyMessage(SipMessage.Command cmd)
+    public void  replyMessage(SIPMessage msg)
     {
-        SIPMessage.Builder builder = SIPMessage.newBuilder();
-        final byte[] mSenderMsg = builder.
-                setCmd(cmd).
-                setIsACK(true).
-                setFrom(mCallerNumber).
-                setTo(mCalleeNumber).
-                setSessionid(sesssionID).
-                setSeq(msgSeq).
-                build().
-                toByteArray();
-        //Log.e(LOG_TAG, "Exception Answer Message: " + buffer.length);
-        UdpSend(mSenderMsg);
+        final byte[] SenderMsg = msg.toBuilder().setIsACK(true).build().toByteArray();
+        UdpSend(SenderMsg);
     }
     public void  sendMessage(SipMessage.Command cmd)
     {
         SIPMessage.Builder builder = SIPMessage.newBuilder();
         final byte[] mSenderMsg = builder.
                 setCmd(cmd).
+                setIsVideoCall(mIsVideoCall).
                 setFrom(mCallerNumber).
                 setTo(mCalleeNumber).
                 setSessionid(sesssionID).
@@ -319,7 +313,6 @@ public class VoipController {
                 toByteArray();
         UdpSend(mSenderMsg);
         Log.e(LOG_TAG, "Send Message : "  +  cmd.toString());
-
 
         mRetryCnt = RETRY_COUNT;
         if(mTimer!=null)  {
@@ -344,7 +337,7 @@ public class VoipController {
         msgSeq++;
     }
 
-    public void inviteCall(String calleeNumber)
+    public void inviteCall(String calleeNumber, boolean isVideoCall)
     {
         if(mState != STATE.IDLE_STATE) return;
         mState = STATE.INVITE_STATE;
@@ -352,6 +345,7 @@ public class VoipController {
         mCallerNumber = UserInfo.getInstance().getPhoneNumber();
         sesssionID = UserInfo.getInstance().getPhoneNumber() + sesssionNo++;
         isCaller = true;
+        mIsVideoCall = isVideoCall;
 
         sendMessage(INVITE);
     }

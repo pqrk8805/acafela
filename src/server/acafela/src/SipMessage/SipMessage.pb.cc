@@ -118,6 +118,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::sip::SIPMessage, cmd_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::sip::SIPMessage, isack_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::sip::SIPMessage, isvideocall_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::sip::SIPMessage, from_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::sip::SIPMessage, to_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::acafela::sip::SIPMessage, sessionid_),
@@ -161,21 +162,22 @@ void AddDescriptorsImpl() {
       "on\022-\n\013sessiontype\030\001 \001(\0162\030.acafela.sip.Se"
       "ssionType\022\n\n\002ip\030\002 \001(\t\022\014\n\004port\030\003 \001(\005\"5\n\013S"
       "essionInfo\022&\n\010sessions\030\001 \003(\0132\024.acafela.s"
-      "ip.Session\"\247\001\n\nSIPMessage\022!\n\003cmd\030\001 \001(\0162\024"
-      ".acafela.sip.Command\022\r\n\005isACK\030\002 \001(\010\022\014\n\004f"
-      "rom\030\003 \001(\t\022\n\n\002to\030\004 \001(\t\022\021\n\tsessionid\030\005 \001(\t"
-      "\022\013\n\003seq\030\006 \001(\005\022-\n\013sessioninfo\030\007 \001(\0132\030.aca"
-      "fela.sip.SessionInfo*\250\001\n\007Command\022\n\n\006INVI"
-      "TE\020\000\022\013\n\007RINGING\020\001\022\016\n\nACCEPTCALL\020\002\022\014\n\010MAK"
-      "ECALL\020\003\022\017\n\013OPENSESSION\020\004\022\016\n\nSTARTVIDEO\020\005"
-      "\022\r\n\tSTOPVIDEO\020\006\022\r\n\tTERMINATE\020\007\022\007\n\003BYE\020\010\022"
-      "\014\n\010REGISTER\020\t\022\020\n\014CLOSESESSION\020\n*O\n\013Sessi"
-      "onType\022\r\n\tSENDAUDIO\020\000\022\020\n\014RECIEVEAUDIO\020\001\022"
-      "\r\n\tSENDVIDEO\020\002\022\020\n\014RECIEVEVIDEO\020\003B\031\n\027com."
-      "acafela.harmony.sipb\006proto3"
+      "ip.Session\"\274\001\n\nSIPMessage\022!\n\003cmd\030\001 \001(\0162\024"
+      ".acafela.sip.Command\022\r\n\005isACK\030\002 \001(\010\022\023\n\013i"
+      "sVideoCall\030\003 \001(\010\022\014\n\004from\030\004 \001(\t\022\n\n\002to\030\005 \001"
+      "(\t\022\021\n\tsessionid\030\006 \001(\t\022\013\n\003seq\030\007 \001(\005\022-\n\013se"
+      "ssioninfo\030\010 \001(\0132\030.acafela.sip.SessionInf"
+      "o*\250\001\n\007Command\022\n\n\006INVITE\020\000\022\013\n\007RINGING\020\001\022\016"
+      "\n\nACCEPTCALL\020\002\022\014\n\010MAKECALL\020\003\022\017\n\013OPENSESS"
+      "ION\020\004\022\016\n\nSTARTVIDEO\020\005\022\r\n\tSTOPVIDEO\020\006\022\r\n\t"
+      "TERMINATE\020\007\022\007\n\003BYE\020\010\022\014\n\010REGISTER\020\t\022\020\n\014CL"
+      "OSESESSION\020\n*O\n\013SessionType\022\r\n\tSENDAUDIO"
+      "\020\000\022\020\n\014RECIEVEAUDIO\020\001\022\r\n\tSENDVIDEO\020\002\022\020\n\014R"
+      "ECIEVEVIDEO\020\003B\031\n\027com.acafela.harmony.sip"
+      "b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 627);
+      descriptor, 648);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "SipMessage.proto", &protobuf_RegisterTypes);
 }
@@ -796,6 +798,7 @@ void SIPMessage::InitAsDefaultInstance() {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int SIPMessage::kCmdFieldNumber;
 const int SIPMessage::kIsACKFieldNumber;
+const int SIPMessage::kIsVideoCallFieldNumber;
 const int SIPMessage::kFromFieldNumber;
 const int SIPMessage::kToFieldNumber;
 const int SIPMessage::kSessionidFieldNumber;
@@ -930,10 +933,24 @@ bool SIPMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // string from = 3;
+      // bool isVideoCall = 3;
       case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &isvideocall_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string from = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_from()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -946,10 +963,10 @@ bool SIPMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // string to = 4;
-      case 4: {
+      // string to = 5;
+      case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(42u /* 42 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_to()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -962,10 +979,10 @@ bool SIPMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // string sessionid = 5;
-      case 5: {
+      // string sessionid = 6;
+      case 6: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(42u /* 42 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(50u /* 50 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_sessionid()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -978,10 +995,10 @@ bool SIPMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // int32 seq = 6;
-      case 6: {
+      // int32 seq = 7;
+      case 7: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(48u /* 48 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(56u /* 56 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -992,10 +1009,10 @@ bool SIPMessage::MergePartialFromCodedStream(
         break;
       }
 
-      // .acafela.sip.SessionInfo sessioninfo = 7;
-      case 7: {
+      // .acafela.sip.SessionInfo sessioninfo = 8;
+      case 8: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(58u /* 58 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(66u /* 66 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
                input, mutable_sessioninfo()));
         } else {
@@ -1041,45 +1058,50 @@ void SIPMessage::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteBool(2, this->isack(), output);
   }
 
-  // string from = 3;
+  // bool isVideoCall = 3;
+  if (this->isvideocall() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(3, this->isvideocall(), output);
+  }
+
+  // string from = 4;
   if (this->from().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->from().data(), static_cast<int>(this->from().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "acafela.sip.SIPMessage.from");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      3, this->from(), output);
+      4, this->from(), output);
   }
 
-  // string to = 4;
+  // string to = 5;
   if (this->to().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->to().data(), static_cast<int>(this->to().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "acafela.sip.SIPMessage.to");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      4, this->to(), output);
+      5, this->to(), output);
   }
 
-  // string sessionid = 5;
+  // string sessionid = 6;
   if (this->sessionid().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->sessionid().data(), static_cast<int>(this->sessionid().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "acafela.sip.SIPMessage.sessionid");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      5, this->sessionid(), output);
+      6, this->sessionid(), output);
   }
 
-  // int32 seq = 6;
+  // int32 seq = 7;
   if (this->seq() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(6, this->seq(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(7, this->seq(), output);
   }
 
-  // .acafela.sip.SessionInfo sessioninfo = 7;
+  // .acafela.sip.SessionInfo sessioninfo = 8;
   if (this->has_sessioninfo()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      7, this->_internal_sessioninfo(), output);
+      8, this->_internal_sessioninfo(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1107,7 +1129,12 @@ void SIPMessage::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(2, this->isack(), target);
   }
 
-  // string from = 3;
+  // bool isVideoCall = 3;
+  if (this->isvideocall() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(3, this->isvideocall(), target);
+  }
+
+  // string from = 4;
   if (this->from().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->from().data(), static_cast<int>(this->from().length()),
@@ -1115,10 +1142,10 @@ void SIPMessage::SerializeWithCachedSizes(
       "acafela.sip.SIPMessage.from");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        3, this->from(), target);
+        4, this->from(), target);
   }
 
-  // string to = 4;
+  // string to = 5;
   if (this->to().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->to().data(), static_cast<int>(this->to().length()),
@@ -1126,10 +1153,10 @@ void SIPMessage::SerializeWithCachedSizes(
       "acafela.sip.SIPMessage.to");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        4, this->to(), target);
+        5, this->to(), target);
   }
 
-  // string sessionid = 5;
+  // string sessionid = 6;
   if (this->sessionid().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->sessionid().data(), static_cast<int>(this->sessionid().length()),
@@ -1137,19 +1164,19 @@ void SIPMessage::SerializeWithCachedSizes(
       "acafela.sip.SIPMessage.sessionid");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        5, this->sessionid(), target);
+        6, this->sessionid(), target);
   }
 
-  // int32 seq = 6;
+  // int32 seq = 7;
   if (this->seq() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(6, this->seq(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(7, this->seq(), target);
   }
 
-  // .acafela.sip.SessionInfo sessioninfo = 7;
+  // .acafela.sip.SessionInfo sessioninfo = 8;
   if (this->has_sessioninfo()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        7, this->_internal_sessioninfo(), deterministic, target);
+        8, this->_internal_sessioninfo(), deterministic, target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1169,28 +1196,28 @@ size_t SIPMessage::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // string from = 3;
+  // string from = 4;
   if (this->from().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->from());
   }
 
-  // string to = 4;
+  // string to = 5;
   if (this->to().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->to());
   }
 
-  // string sessionid = 5;
+  // string sessionid = 6;
   if (this->sessionid().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->sessionid());
   }
 
-  // .acafela.sip.SessionInfo sessioninfo = 7;
+  // .acafela.sip.SessionInfo sessioninfo = 8;
   if (this->has_sessioninfo()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSize(
@@ -1208,7 +1235,12 @@ size_t SIPMessage::ByteSizeLong() const {
     total_size += 1 + 1;
   }
 
-  // int32 seq = 6;
+  // bool isVideoCall = 3;
+  if (this->isvideocall() != 0) {
+    total_size += 1 + 1;
+  }
+
+  // int32 seq = 7;
   if (this->seq() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
@@ -1263,6 +1295,9 @@ void SIPMessage::MergeFrom(const SIPMessage& from) {
   if (from.isack() != 0) {
     set_isack(from.isack());
   }
+  if (from.isvideocall() != 0) {
+    set_isvideocall(from.isvideocall());
+  }
   if (from.seq() != 0) {
     set_seq(from.seq());
   }
@@ -1301,6 +1336,7 @@ void SIPMessage::InternalSwap(SIPMessage* other) {
   swap(sessioninfo_, other->sessioninfo_);
   swap(cmd_, other->cmd_);
   swap(isack_, other->isack_);
+  swap(isvideocall_, other->isvideocall_);
   swap(seq_, other->seq_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
