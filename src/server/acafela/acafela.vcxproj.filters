@@ -37,6 +37,9 @@
     <Filter Include="Source Files\UserAdmin">
       <UniqueIdentifier>{b3b49e2b-ea20-4d9a-989d-f54144097f65}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ConferenceCall">
+      <UniqueIdentifier>{1f75b5d4-ec14-4a57-88f6-dc023458bf43}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -128,6 +131,12 @@
     </ClCompile>
     <ClCompile Include="src\UserAdmin\UserAdminRpc.cpp">
       <Filter>Source Files\UserAdmin</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConferenceCall\ConferenceCallManager.cpp">
+      <Filter>Source Files\ConferenceCall</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConferenceCall\EmailSenderCC.cpp">
+      <Filter>Source Files\ConferenceCall</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -229,6 +238,12 @@
     </ClInclude>
     <ClInclude Include="src\UserAdmin\UserAdminMock.h">
       <Filter>Source Files\UserAdmin</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ConferenceCall\ConferenceCallManager.h">
+      <Filter>Source Files\ConferenceCall</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ConferenceCall\EmailSenderCC.h">
+      <Filter>Source Files\ConferenceCall</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

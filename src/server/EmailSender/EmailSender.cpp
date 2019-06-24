@@ -6,24 +6,24 @@
 int main(int argc, char** argv)
 {
     std::ofstream outFile("mail.txt");
-    outFile << "From: Acafela<아이디@naver.com>" << std::endl;
+    outFile << "From: Acafela<eldian@naver.com>" << std::endl;
     outFile << "To: Customer <"
             << argv[1]
             << ">" << std::endl;
-    outFile << "Subject: [Acafela] password recovery" << std::endl;
+    outFile << "Subject: [Acafela] conference call invitation" << std::endl;
     outFile << std::endl;
     outFile << "Dear Customer," << std::endl;
-    outFile << "Your new password is '"
-            << argv[2]
-            << "'" << std::endl;
+	outFile << "You are invited to the conference call." << std::endl;
+	outFile << "Room number : " << argv[2] << std::endl;
+	outFile << "Date : " << argv[3] << " ~ " << argv[4] << std::endl;            
     outFile << std::endl << "BR" << std::endl;
     outFile.close();
 
 
 	std::stringstream ss;
-    ss << "curl -u 아이디:패스워드" << ' '
+    ss << "curl -u eldian:dpfeldks=84" << ' '
        << "--ssl-reqd smtp://smtp.naver.com "
-       << "--mail-from 아이디@naver.com "
+       << "--mail-from eldian@naver.com "
        << "--mail-rcpt "
 	   << argv[1] << ' '
        << "--upload-file mail.txt";

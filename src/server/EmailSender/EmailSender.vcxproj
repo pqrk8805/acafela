@@ -47,6 +47,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)..\..\_out\acafela\</OutDir>
     <IntDir>$(SolutionDir)..\..\_intermediate\$(ProjectName)\</IntDir>
+    <TargetName>EmailSenderCC</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>

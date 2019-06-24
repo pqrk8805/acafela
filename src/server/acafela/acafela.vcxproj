@@ -16,6 +16,8 @@
     <ClCompile Include="src\Communicator\DataPath.cpp" />
     <ClCompile Include="src\Communicator\Participant.cpp" />
     <ClCompile Include="src\Communicator\ParticipantDirectory.cpp" />
+    <ClCompile Include="src\ConferenceCall\ConferenceCallManager.cpp" />
+    <ClCompile Include="src\ConferenceCall\EmailSenderCC.cpp" />
     <ClCompile Include="src\CryptoKey\CryptoKey.cpp" />
     <ClCompile Include="src\CryptoKey\CryptoKey.grpc.pb.cc" />
     <ClCompile Include="src\CryptoKey\CryptoKey.pb.cc" />
@@ -64,6 +66,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Communicator\communicator.h" />
+    <ClInclude Include="src\ConferenceCall\ConferenceCallManager.h" />
+    <ClInclude Include="src\ConferenceCall\EmailSenderCC.h" />
     <ClInclude Include="src\CryptoKey\CryptoKey.grpc.pb.h" />
     <ClInclude Include="src\CryptoKey\CryptoKey.h" />
     <ClInclude Include="src\CryptoKey\CryptoKey.pb.h" />
