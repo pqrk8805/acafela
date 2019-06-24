@@ -173,6 +173,20 @@ public class VoipController {
                     }
                     mState = STATE.CONNECTING_STATE;
                     break;
+                case CLOSESESSION:
+                    for(int i=0;i<message.getSessioninfo().getSessionsCount();i++) {
+                        int idx;
+                        SipMessage.Session session = message.getSessioninfo().getSessions(i);
+                        for (idx=0; idx < mSessionList.size();idx++){
+                            DataCommunicator data = (DataCommunicator) mSessionList.get(idx);
+                            if(data.getPortNum()==session.getPort())
+                            {
+                                data.endCommunicator();
+                                mSessionList.remove(data);
+                            }
+                        }
+                    }
+                    break;
                 case BYE:
                     endCommunication();
                     mState = STATE.IDLE_STATE;
@@ -212,9 +226,24 @@ public class VoipController {
                     }
                     mState = STATE.CONNECTING_STATE;
                     break;
+                case CLOSESESSION:
+                    for(int i=0;i<message.getSessioninfo().getSessionsCount();i++) {
+                        int idx;
+                        SipMessage.Session session = message.getSessioninfo().getSessions(i);
+                        for (idx=0; idx < mSessionList.size();idx++){
+                            DataCommunicator data = (DataCommunicator) mSessionList.get(idx);
+                            if(data.getPortNum()==session.getPort())
+                            {
+                                data.endCommunicator();
+                                mSessionList.remove(data);
+                            }
+                        }
+                    }
+                    break;
                 case BYE:
                     endCommunication();
                     mState = STATE.IDLE_STATE;
+                    break;
                 case STARTVIDEO:
                 case STOPVIDEO:
                 case TERMINATE:

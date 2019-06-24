@@ -32,6 +32,10 @@ public class ReceiverVideo implements DataCommunicator {
         this.mPort= port;
         return true;
     }
+    public int getPortNum()
+    {
+        return mPort;
+    }
 
     public boolean startCommunicator()
     {

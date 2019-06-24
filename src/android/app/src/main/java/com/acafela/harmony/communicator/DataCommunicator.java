@@ -16,4 +16,5 @@ public interface DataCommunicator {
     public boolean startCommunicator();
     public boolean endCommunicator();
     public SipMessage.SessionType getType();
+    public int getPortNum();
 }

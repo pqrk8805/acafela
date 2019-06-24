@@ -55,6 +55,10 @@ public class SenderAudio implements DataCommunicator {
         this.mPort = port;
         return true;
     }
+    public int getPortNum()
+    {
+        return mPort;
+    }
     public SipMessage.SessionType getType()
     {
         return SipMessage.SessionType.SENDAUDIO;

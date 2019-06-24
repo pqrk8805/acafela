@@ -42,6 +42,10 @@ public class ReceiverAudio implements DataCommunicator {
         mCrypto = crypto;
         mAudioControl = new AudioBufferControl(mCrypto,MAX_AUDIO_SEQNO);
     }
+    public int getPortNum()
+    {
+        return mPort;
+    }
     public boolean setSession(String ip,int port)
     {
         try {
@@ -141,7 +145,7 @@ public class ReceiverAudio implements DataCommunicator {
                                     data.isPrimary = true;
                                 data.length = packet.getLength() - AUDIO_HEADER_SIZE;
                                 data.data = Arrays.copyOfRange(recieveData, AUDIO_HEADER_SIZE, packet.getLength());
-                                Log.i(LOG_TAG, "Packet received length: " + recieveData.length + " seqNo :" + data.length);
+                                //Log.i(LOG_TAG, "Packet received length: " + recieveData.length + " seqNo :" + data.length);
                                 mAudioControl.pushData(data);
                             }
                         }
@@ -199,8 +203,9 @@ public class ReceiverAudio implements DataCommunicator {
                     OutputTrack.play();
                     while (AudioIoPlayerThreadRun)
                     {
-                        if(mAudioControl.size()>0) {
-                            AudioData audioData = mAudioControl.getData();
+                        //if(mAudioControl.size()>0) {
+                        AudioData audioData = mAudioControl.getData();
+                        if(audioData!=null) {
                             byte[] outStream = mCrypto.decrypt(audioData.data, 0, audioData.data.length);
 
                             //if (!MainActivity.BoostAudio)

@@ -43,6 +43,10 @@ public class SenderVideo implements DataCommunicator,Camera.PreviewCallback {
         }
         return true;
     }
+    public int getPortNum()
+    {
+        return mPort;
+    }
     public SipMessage.SessionType getType()
     {
         return SipMessage.SessionType.SENDVIDEO;
