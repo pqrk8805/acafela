@@ -68,6 +68,10 @@ void ConCallReservRpc::shutdown()
         const std::string participant = request->participants(i);
     }
 
+
+    response->set_err(-1);
+    response->set_message("not implemented yet");
+
     return grpc::Status::OK;
 }
 

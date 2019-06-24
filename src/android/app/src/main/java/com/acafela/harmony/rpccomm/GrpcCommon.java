@@ -24,6 +24,16 @@ public class GrpcCommon
     private GrpcCommon()
     {}
 
+    public static ManagedChannel initInsecureChannel(
+                                            String address,
+                                            int port)
+    {
+        return OkHttpChannelBuilder
+                                .forAddress(address, port)
+                                .usePlaintext()
+                                .build();
+    }
+
     public static ManagedChannel initSecureChannel(
                                             String address,
                                             int port,
@@ -33,7 +43,6 @@ public class GrpcCommon
         KeyStore keyStore = createKeyStore(rootCertIS, serverCertIS);
         return OkHttpChannelBuilder
                                 .forAddress(address, port)
-                                .overrideAuthority("localhost")
                                 .useTransportSecurity()
                                 .sslSocketFactory(getSslSocketFactory(keyStore))
                                 .build();

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package acafela.rpc;
+
+option java_package = "com.acafela.harmony.concall";
+
+import "Common.proto";
+
+
+service ConCallReserve {
+    rpc reserve(ConCallResrvInfo) returns (Error);
+}
+
+message ConCallResrvInfo {
+    string from = 1;
+    string to = 2;
+    string host_phonenumber = 3;
+    repeated string participants = 4;
+}

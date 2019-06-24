@@ -36,6 +36,7 @@ copy Common.proto ..\..\android\app\src\main\proto\
 copy UserProfile.proto ..\..\android\app\src\main\proto\
 copy DirectoryService.proto ..\..\android\app\src\main\proto\
 copy CryptoKey.proto ..\..\android\app\src\main\proto\
+copy ConCallReserv.proto ..\..\android\app\src\main\proto\
 
 move Common*.h ..\..\server\acafela\src\RpcCommon\
 move Common*.cc ..\..\server\acafela\src\RpcCommon\

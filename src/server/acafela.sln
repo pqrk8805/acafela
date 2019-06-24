@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "acafela", "acafela\acafela.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcafelaUserAdmin", "AcafelaUserAdmin\AcafelaUserAdmin.csproj", "{E46757A2-95BE-49FF-A16A-4A1454A6C2E2}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EmailSender", "EmailSender\EmailSender.vcxproj", "{A69DBCDE-F2CF-4B3D-9B79-710D18B24FCD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,12 @@ Global
 		{E46757A2-95BE-49FF-A16A-4A1454A6C2E2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E46757A2-95BE-49FF-A16A-4A1454A6C2E2}.Release|x64.ActiveCfg = Release|Any CPU
 		{E46757A2-95BE-49FF-A16A-4A1454A6C2E2}.Release|x64.Build.0 = Release|Any CPU
+		{A69DBCDE-F2CF-4B3D-9B79-710D18B24FCD}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{A69DBCDE-F2CF-4B3D-9B79-710D18B24FCD}.Debug|x64.ActiveCfg = Debug|x64
+		{A69DBCDE-F2CF-4B3D-9B79-710D18B24FCD}.Debug|x64.Build.0 = Debug|x64
+		{A69DBCDE-F2CF-4B3D-9B79-710D18B24FCD}.Release|Any CPU.ActiveCfg = Release|x64
+		{A69DBCDE-F2CF-4B3D-9B79-710D18B24FCD}.Release|x64.ActiveCfg = Release|x64
+		{A69DBCDE-F2CF-4B3D-9B79-710D18B24FCD}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
