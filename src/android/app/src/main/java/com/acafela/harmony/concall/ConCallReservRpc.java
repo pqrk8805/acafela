@@ -10,7 +10,6 @@ import java.util.List;
 import io.grpc.ManagedChannel;
 
 import static com.acafela.harmony.concall.ConCallReserveGrpc.newBlockingStub;
-import com.acafela.harmony.concall.ConCallReserv.ConCallResrvInfo.*;
 
 public class ConCallReservRpc
 {
@@ -47,7 +46,7 @@ public class ConCallReservRpc
                 .addAllParticipants(participants)
                 .build();
         Common.Error err = getBlockingStub().reserve(info);
-;
+
         return err.getErr();
     }
 
