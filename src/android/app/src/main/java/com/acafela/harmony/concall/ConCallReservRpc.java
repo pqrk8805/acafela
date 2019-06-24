@@ -21,7 +21,7 @@ public class ConCallReservRpc
                         String address,
                         int port)
     {
-        mChannel = GrpcCommon.initInsecureChannel(address, port)
+        mChannel = GrpcCommon.initInsecureChannel(address, port);
     }
 
     public ConCallReserveGrpc.ConCallReserveBlockingStub getBlockingStub()
@@ -40,15 +40,13 @@ public class ConCallReservRpc
             return -100;
         }
 
-        Builder builder = ConCallReserv.ConCallResrvInfo.newBuilder()
+        ConCallReserv.ConCallResrvInfo info = ConCallReserv.ConCallResrvInfo.newBuilder()
                 .setHostPhonenumber(hostPhoneNumber)
                 .setFrom(from)
-                .setT
-
-
-
-
-        Common.Error err = getBlockingStub().reserve();
+                .setTo(to)
+                .addAllParticipants(participants)
+                .build();
+        Common.Error err = getBlockingStub().reserve(info);
 ;
         return err.getErr();
     }
