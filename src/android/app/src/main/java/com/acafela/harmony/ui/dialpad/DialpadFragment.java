@@ -3,14 +3,12 @@ package com.acafela.harmony.ui.dialpad;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.acafela.harmony.R;
-import com.acafela.harmony.userprofile.UserInfo;
 import com.google.i18n.phonenumbers.AsYouTypeFormatter;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 
@@ -173,11 +171,20 @@ public class DialpadFragment extends Fragment {
         formatter = PhoneNumberUtil.getInstance()
                 .getAsYouTypeFormatter(formatAsYouType ? regionCode : "");
 
-        view.findViewById(R.id.fab_terminatecall).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.fab_audiocall).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (callback != null) {
-                    callback.initiateCall(digits.getText().toString(), input);
+                    callback.initiateCall(input, true);
+                }
+            }
+        });
+
+        view.findViewById(R.id.fab_videocall).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (callback != null) {
+                    callback.initiateCall(input, false);
                 }
             }
         });
@@ -254,6 +261,6 @@ public class DialpadFragment extends Fragment {
     }
 
     public interface Callback {
-        void initiateCall(String formatted, String raw);
+        void initiateCall(String raw, boolean isAudio);
     }
 }

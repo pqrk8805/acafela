@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
     }
 
     @Override
-    public void initiateCall(String formatted, String raw) {
+    public void initiateCall(String raw, boolean isAudio) {
         Log.i(TAG, "initiateCall: " + raw);
 
         if (raw.equals(HIDDEN_TEST_MAIN)) {
