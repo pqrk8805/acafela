@@ -1,4 +1,4 @@
-package com.acafela.harmony.codec;
+package com.acafela.harmony.codec.audio;
 
 import android.media.MediaFormat;
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.acafela.harmony.codec.gles;
+package com.acafela.harmony.codec.video.gles;
 
 import android.opengl.GLES20;
 import android.opengl.GLES30;

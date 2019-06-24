@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package com.acafela.harmony.codec.gles;
-
-import android.opengl.Matrix;
+package com.acafela.harmony.codec.video.gles;
 
 /**
  * This class essentially represents a viewport-sized sprite that will be rendered with

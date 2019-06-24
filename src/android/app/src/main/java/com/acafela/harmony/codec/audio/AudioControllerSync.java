@@ -1,4 +1,4 @@
-package com.acafela.harmony.codec;
+package com.acafela.harmony.codec.audio;
 
 public class AudioControllerSync {
     private static final String TAG = AudioControllerSync.class.getName();

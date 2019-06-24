@@ -19,10 +19,10 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.acafela.harmony.R;
-import com.acafela.harmony.codec.AudioControllerSync;
+import com.acafela.harmony.codec.audio.AudioControllerSync;
 
-import static com.acafela.harmony.codec.AudioMediaFormat.AUDIO_FRAME_BYTE;
-import static com.acafela.harmony.codec.AudioMediaFormat.AUDIO_CHANNEL_COUNT;
+import static com.acafela.harmony.codec.audio.AudioMediaFormat.AUDIO_FRAME_BYTE;
+import static com.acafela.harmony.codec.audio.AudioMediaFormat.AUDIO_CHANNEL_COUNT;
 
 public class TestEncodingActivity extends AppCompatActivity {
     private static final String TAG = TestEncodingActivity.class.getName();

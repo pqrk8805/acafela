@@ -1,6 +1,6 @@
-package com.acafela.harmony.codec;
+package com.acafela.harmony.codec.audio;
 
-import com.acafela.harmony.codec.AudioCodecAsync.AudoiCallback;
+import com.acafela.harmony.codec.audio.AudioCodecAsync.AudoiCallback;
 
 public class AudioControllerAsync {
     private static final String TAG = AudioControllerAsync.class.getName();

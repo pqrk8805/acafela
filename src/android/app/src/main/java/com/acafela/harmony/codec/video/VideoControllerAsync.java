@@ -1,12 +1,10 @@
-package com.acafela.harmony.codec;
+package com.acafela.harmony.codec.video;
 
 import android.view.Surface;
 
 public class VideoControllerAsync {
     private static final String TAG = VideoControllerAsync.class.getName();
 
-    VideoMediaFormat mVideoMediaFormatSync = new VideoMediaFormat(false);
-    VideoMediaFormat mVideoMediaFormat = new VideoMediaFormat(true);
     VideoEncodeSync mVideoEncoder = new VideoEncodeSync(true);
     VideoDecodeAsync mVideoDecoder;
     boolean isStarted;
@@ -16,9 +14,9 @@ public class VideoControllerAsync {
     }
 
     public void start(Surface surface) {
-        mVideoDecoder = new VideoDecodeAsync(false, surface);
-        mVideoEncoder.start(mVideoMediaFormatSync.getMediaFormat());
-        mVideoDecoder.start(mVideoMediaFormat.getMediaFormat());
+        mVideoDecoder = new VideoDecodeAsync(surface);
+        mVideoEncoder.start();
+        mVideoDecoder.start();
         isStarted = true;
     }
 

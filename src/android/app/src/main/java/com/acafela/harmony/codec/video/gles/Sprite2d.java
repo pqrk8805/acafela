@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package com.acafela.harmony.codec.gles;
+package com.acafela.harmony.codec.video.gles;
 
 import android.opengl.Matrix;
-import android.util.Log;
 
 /**
  * Base class for a 2d object.  Includes position, scale, rotation, and flat-shaded color.

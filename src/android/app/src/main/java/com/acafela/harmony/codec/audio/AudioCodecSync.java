@@ -1,4 +1,4 @@
-package com.acafela.harmony.codec;
+package com.acafela.harmony.codec.audio;
 
 import android.media.MediaCodec;
 import android.media.MediaFormat;
@@ -7,8 +7,8 @@ import android.util.Log;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-import static com.acafela.harmony.codec.AudioMediaFormat.AUDIO_MIME_TYPE;
-import static com.acafela.harmony.codec.AudioMediaFormat.AUDIO_QUEUE_TIMEOUT_US;
+import static com.acafela.harmony.codec.audio.AudioMediaFormat.AUDIO_MIME_TYPE;
+import static com.acafela.harmony.codec.audio.AudioMediaFormat.AUDIO_QUEUE_TIMEOUT_US;
 
 public class AudioCodecSync {
 	private static final String TAG = AudioCodecSync.class.getName();

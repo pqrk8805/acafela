@@ -19,12 +19,12 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.acafela.harmony.R;
-import com.acafela.harmony.codec.AudioCodecAsync.AudoiCallback;
-import com.acafela.harmony.codec.AudioControllerAsync;
+import com.acafela.harmony.codec.audio.AudioCodecAsync.AudoiCallback;
+import com.acafela.harmony.codec.audio.AudioControllerAsync;
 
-import static com.acafela.harmony.codec.AudioMediaFormat.AUDIO_FRAME_BYTE;
-import static com.acafela.harmony.codec.AudioMediaFormat.AUDIO_CHANNEL_COUNT;
-import static com.acafela.harmony.codec.AudioMediaFormat.AUDIO_SAMPLE_RATE;
+import static com.acafela.harmony.codec.audio.AudioMediaFormat.AUDIO_FRAME_BYTE;
+import static com.acafela.harmony.codec.audio.AudioMediaFormat.AUDIO_CHANNEL_COUNT;
+import static com.acafela.harmony.codec.audio.AudioMediaFormat.AUDIO_SAMPLE_RATE;
 
 public class TestAsyncEncodingActivity extends AppCompatActivity {
     private static final String TAG = TestAsyncEncodingActivity.class.getName();

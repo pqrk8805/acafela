@@ -45,6 +45,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".ui.TestVideoEncodingActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".ui.TestVideoEncodingSurfaceActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".ui.TestMainActivity"
             android:screenOrientation="portrait" />
 

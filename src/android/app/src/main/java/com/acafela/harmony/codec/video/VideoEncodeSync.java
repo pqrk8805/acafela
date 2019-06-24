@@ -1,4 +1,4 @@
-package com.acafela.harmony.codec;
+package com.acafela.harmony.codec.video;
 
 import android.media.MediaCodec;
 import android.media.MediaFormat;
@@ -7,8 +7,8 @@ import android.util.Log;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-import static com.acafela.harmony.codec.AudioMediaFormat.AUDIO_QUEUE_TIMEOUT_US;
-import static com.acafela.harmony.codec.VideoMediaFormat.VIDEO_MIME_TYPE;
+import static com.acafela.harmony.codec.audio.AudioMediaFormat.AUDIO_QUEUE_TIMEOUT_US;
+import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_MIME_TYPE;
 
 public class VideoEncodeSync {
 	private static final String TAG = VideoEncodeSync.class.getName();
@@ -20,7 +20,7 @@ public class VideoEncodeSync {
 		mIsEncoder = isEncoder;
 	}
 
-	public void start(MediaFormat format) {
+	public void start() {
 		try {
 			mCodec = mIsEncoder?
 					MediaCodec.createEncoderByType(VIDEO_MIME_TYPE):
@@ -28,8 +28,9 @@ public class VideoEncodeSync {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		VideoMediaFormat format = new VideoMediaFormat(false);
 		mCodec.configure(
-				format,
+				format.getMediaFormat(),
 				null /* surface */,
 				null /* crypto */,
 				mIsEncoder?

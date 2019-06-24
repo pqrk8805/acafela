@@ -7,12 +7,10 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.acafela.harmony.codec.VideoControllerAsync;
+import com.acafela.harmony.codec.video.VideoControllerAsync;
 
-import java.io.IOException;
-
-import static com.acafela.harmony.codec.VideoMediaFormat.VIDEO_HEIGHT;
-import static com.acafela.harmony.codec.VideoMediaFormat.VIDEO_WIDTH;
+import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_HEIGHT;
+import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_WIDTH;
 
 /** A basic Camera preview class */
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
