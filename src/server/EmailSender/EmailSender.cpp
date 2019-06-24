@@ -6,7 +6,7 @@
 int main(int argc, char** argv)
 {
     std::ofstream outFile("mail.txt");
-    outFile << "From: Acafela<bart007@naver.com>" << std::endl;
+    outFile << "From: Acafela<¾ÆÀÌµð@naver.com>" << std::endl;
     outFile << "To: Customer <"
             << argv[1]
             << ">" << std::endl;
