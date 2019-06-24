@@ -208,6 +208,13 @@ public class DialpadFragment extends Fragment {
         outState.putBoolean(EXTRA_CURSOR_VISIBLE, cursorVisible);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        clear();
+    }
+
     private void poll() {
         if (!input.isEmpty()) {
             input = input.substring(0, input.length() - 1);

@@ -27,6 +27,7 @@
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/title_activity_main"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,12 +35,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.AudioCallActivity"></activity>
-        <activity android:name=".ui.TestCallActivity" />
-        <activity android:name=".ui.TestEncodingActivity" />
-        <activity android:name=".ui.TestAsyncEncodingActivity" />
-        <activity android:name=".ui.TestVideoEncodingActivity" />
-        <activity android:name=".ui.TestMainActivity" />
+        <activity android:name=".ui.AudioCallActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.TestCallActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.TestEncodingActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.TestAsyncEncodingActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.TestVideoEncodingActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.TestMainActivity"
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".service.HarmonyService"

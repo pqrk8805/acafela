@@ -6,31 +6,32 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.Surface;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.LinkedBlockingQueue;
-import android.view.Surface;
 
 import static com.acafela.harmony.codec.VideoMediaFormat.VIDEO_MIME_TYPE;
 import static com.acafela.harmony.codec.VideoMediaFormat.VIDEO_QUEUE_BOUND;
 
 
-public class VideoCodecAsync {
-    private static final String TAG = VideoCodecAsync.class.getName();
+public class VideoDecodeAsync {
+    private static final String TAG = VideoDecodeAsync.class.getName();
 
     private HandlerThread mHandlerThread;
     private Handler mHandler;
 
     private MediaCodec mCodec;
     private boolean mIsEncoder;
-    private Surface mInputSurface;
+    private Surface mSurface;
 
     LinkedBlockingQueue<byte[]> mInputBytesQueue = new LinkedBlockingQueue<>(VIDEO_QUEUE_BOUND);
-    VideoCodecAsync.VideoCallback mVideoCallback;
+    VideoDecodeAsync.VideoCallback mVideoCallback;
 
-    public VideoCodecAsync(boolean isEncoder) {
+    public VideoDecodeAsync(boolean isEncoder, Surface surface) {
         mIsEncoder = isEncoder;
+        mSurface = surface;
     }
 
     public void start(MediaFormat format) {
@@ -69,14 +70,14 @@ public class VideoCodecAsync {
 
             @Override
             public void onOutputBufferAvailable(@NonNull MediaCodec codec, int index, @NonNull MediaCodec.BufferInfo info) {
-				Log.e(TAG, "onOutputBufferAvailable");
+//				Log.e(TAG, "onOutputBufferAvailable");
                 ByteBuffer outputBuffer = mCodec.getOutputBuffer(index);
                 byte[] outputBytes = new byte[info.size];
                 outputBuffer.get(outputBytes, 0, info.size);
                 if (mVideoCallback != null) {
                     mVideoCallback.onOutputBytesAvailable(outputBytes);
                 }
-                mCodec.releaseOutputBuffer(index, false);
+                mCodec.releaseOutputBuffer(index, true);
             }
 
             @Override
@@ -92,13 +93,11 @@ public class VideoCodecAsync {
 
         mCodec.configure(
                 format,
-                null /* surface */,
+                mSurface,
                 null /* crypto */,
                 mIsEncoder?
                         MediaCodec.CONFIGURE_FLAG_ENCODE:
                         0);
-
-        if(mIsEncoder) mInputSurface=mCodec.createInputSurface();
 
         mCodec.start();
     }
@@ -114,18 +113,11 @@ public class VideoCodecAsync {
         mInputBytesQueue.offer(rawBytes);
     }
 
-    public void setCallback(VideoCodecAsync.VideoCallback callback) {
+    public void setCallback(VideoDecodeAsync.VideoCallback callback) {
         mVideoCallback = callback;
     }
 
     public static abstract class VideoCallback {
         public abstract void onOutputBytesAvailable(byte[] outputBytes);
-    }
-
-    /**
-     * Returns the encoder's input surface.
-     */
-    public Surface getInputSurface() {
-        return mInputSurface;
     }
 }

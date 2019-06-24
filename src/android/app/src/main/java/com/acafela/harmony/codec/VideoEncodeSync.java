@@ -7,17 +7,16 @@ import android.util.Log;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-import static com.acafela.harmony.codec.AudioMediaFormat.AUDIO_MIME_TYPE;
 import static com.acafela.harmony.codec.AudioMediaFormat.AUDIO_QUEUE_TIMEOUT_US;
 import static com.acafela.harmony.codec.VideoMediaFormat.VIDEO_MIME_TYPE;
 
-public class VideoCodecSync {
-	private static final String TAG = VideoCodecSync.class.getName();
+public class VideoEncodeSync {
+	private static final String TAG = VideoEncodeSync.class.getName();
 
 	private MediaCodec mCodec;
 	private boolean mIsEncoder;
 
-	public VideoCodecSync(boolean isEncoder) {
+	public VideoEncodeSync(boolean isEncoder) {
 		mIsEncoder = isEncoder;
 	}
 

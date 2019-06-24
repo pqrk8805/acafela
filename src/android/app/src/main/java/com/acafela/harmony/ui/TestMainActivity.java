@@ -39,11 +39,6 @@ public class TestMainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void onClickLaunchMainBtn(View v) {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
-
     public void onClickTestAsyncEncodingBtn(View v) {
         Intent intent = new Intent(this, TestAsyncEncodingActivity.class);
         startActivity(intent);

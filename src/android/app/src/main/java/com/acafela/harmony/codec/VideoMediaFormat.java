@@ -8,10 +8,10 @@ public class VideoMediaFormat {
     private static final String TAG = VideoMediaFormat.class.getName();
 
     public static final String VIDEO_MIME_TYPE = MediaFormat.MIMETYPE_VIDEO_AVC;
-    private static final int VIDEO_FRAME_RATE = 30;               // 30fps
-    private static final int VIDEO_IFRAME_INTERVAL = 0;  // TRADE-OFF
-    private static final int VIDEO_BIT_RATE = 300000;
-    public static final int VIDEO_WIDTH = 320;
+    public static final int VIDEO_FRAME_RATE = 30;               // 30fps
+    public static final int VIDEO_IFRAME_INTERVAL = 5;  // TRADE-OFF
+    public static final int VIDEO_BIT_RATE = 3000000;
+    public static final int VIDEO_WIDTH = 640;
     public static final int VIDEO_HEIGHT = 480;
 
     public static final int VIDEO_QUEUE_BOUND = 100;
@@ -32,7 +32,7 @@ public class VideoMediaFormat {
         mFormat.setInteger(MediaFormat.KEY_BIT_RATE, VIDEO_BIT_RATE);
     }
 
-    public MediaFormat getVideoMediaFormat() {
+    public MediaFormat getMediaFormat() {
         return mFormat;
     }
 

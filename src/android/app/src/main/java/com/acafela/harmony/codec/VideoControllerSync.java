@@ -4,12 +4,12 @@ public class VideoControllerSync {
     private static final String TAG = VideoControllerSync.class.getName();
 
     VideoMediaFormat mVideoMediaFormat = new VideoMediaFormat(false);
-    VideoCodecSync mVideoEncoder = new VideoCodecSync(true);
-    VideoCodecSync mVideoDecoder = new VideoCodecSync(false);
+    VideoEncodeSync mVideoEncoder = new VideoEncodeSync(true);
+    VideoEncodeSync mVideoDecoder = new VideoEncodeSync(false);
 
     public void start() {
-        mVideoEncoder.start(mVideoMediaFormat.getVideoMediaFormat());
-        mVideoDecoder.start(mVideoMediaFormat.getVideoMediaFormat());
+        mVideoEncoder.start(mVideoMediaFormat.getMediaFormat());
+        mVideoDecoder.start(mVideoMediaFormat.getMediaFormat());
     }
 
     public void stop() {
