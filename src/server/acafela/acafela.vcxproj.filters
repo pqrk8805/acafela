@@ -39,6 +39,7 @@
     </Filter>
     <Filter Include="Source Files\ConferenceCall">
       <UniqueIdentifier>{1f75b5d4-ec14-4a57-88f6-dc023458bf43}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\ConCall">
       <UniqueIdentifier>{e5a6b83c-82d1-4538-bb25-f90b748417ea}</UniqueIdentifier>
     </Filter>
@@ -139,6 +140,7 @@
     </ClCompile>
     <ClCompile Include="src\ConferenceCall\EmailSenderCC.cpp">
       <Filter>Source Files\ConferenceCall</Filter>
+    </ClCompile>
     <ClCompile Include="src\ConCall\ConCallReserv.grpc.pb.cc">
       <Filter>Source Files\ConCall</Filter>
     </ClCompile>
@@ -254,6 +256,7 @@
     </ClInclude>
     <ClInclude Include="src\ConferenceCall\EmailSenderCC.h">
       <Filter>Source Files\ConferenceCall</Filter>
+    </ClInclude>
     <ClInclude Include="src\ConCall\ConCallReserv.grpc.pb.h">
       <Filter>Source Files\ConCall</Filter>
     </ClInclude>
