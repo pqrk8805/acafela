@@ -16,11 +16,11 @@
     <ClCompile Include="src\Communicator\DataPath.cpp" />
     <ClCompile Include="src\Communicator\Participant.cpp" />
     <ClCompile Include="src\Communicator\ParticipantDirectory.cpp" />
+    <ClCompile Include="src\ConferenceCall\ConCallReserv.grpc.pb.cc" />
+    <ClCompile Include="src\ConferenceCall\ConCallReserv.pb.cc" />
+    <ClCompile Include="src\ConferenceCall\ConCallReservRpc.cpp" />
     <ClCompile Include="src\ConferenceCall\ConferenceCallManager.cpp" />
     <ClCompile Include="src\ConferenceCall\EmailSenderCC.cpp" />
-    <ClCompile Include="src\ConCall\ConCallReserv.grpc.pb.cc" />
-    <ClCompile Include="src\ConCall\ConCallReserv.pb.cc" />
-    <ClCompile Include="src\ConCall\ConCallReservRpc.cpp" />
     <ClCompile Include="src\CryptoKey\CryptoKey.cpp" />
     <ClCompile Include="src\CryptoKey\CryptoKey.grpc.pb.cc" />
     <ClCompile Include="src\CryptoKey\CryptoKey.pb.cc" />
@@ -69,11 +69,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Communicator\communicator.h" />
+    <ClInclude Include="src\ConferenceCall\ConCallReserv.grpc.pb.h" />
+    <ClInclude Include="src\ConferenceCall\ConCallReserv.pb.h" />
+    <ClInclude Include="src\ConferenceCall\ConCallReservRpc.h" />
     <ClInclude Include="src\ConferenceCall\ConferenceCallManager.h" />
     <ClInclude Include="src\ConferenceCall\EmailSenderCC.h" />
-    <ClInclude Include="src\ConCall\ConCallReserv.grpc.pb.h" />
-    <ClInclude Include="src\ConCall\ConCallReserv.pb.h" />
-    <ClInclude Include="src\ConCall\ConCallReservRpc.h" />
     <ClInclude Include="src\CryptoKey\CryptoKey.grpc.pb.h" />
     <ClInclude Include="src\CryptoKey\CryptoKey.h" />
     <ClInclude Include="src\CryptoKey\CryptoKey.pb.h" />
@@ -174,7 +174,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\external\gRPC\include;$(SolutionDir)..\..\external\gRPC\include\third_party\protobuf\src;$(ProjectDir)src;$(ProjectDir)src\RpcCommon;$(ProjectDir)src\UserProfile;$(ProjectDir)src\DirectoryService;$(ProjectDir)src\StorageAccessor;$(ProjectDir)src\CryptoKey;$(ProjectDir)src\UserAdmin;$(ProjectDir)src\ConCall;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\external\gRPC\include;$(SolutionDir)..\..\external\gRPC\include\third_party\protobuf\src;$(ProjectDir)src;$(ProjectDir)src\RpcCommon;$(ProjectDir)src\UserProfile;$(ProjectDir)src\DirectoryService;$(ProjectDir)src\StorageAccessor;$(ProjectDir)src\CryptoKey;$(ProjectDir)src\UserAdmin;$(ProjectDir)src\ConferenceCall;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>SDKDDKVer.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <Link>
