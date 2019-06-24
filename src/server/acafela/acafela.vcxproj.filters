@@ -37,6 +37,9 @@
     <Filter Include="Source Files\UserAdmin">
       <UniqueIdentifier>{b3b49e2b-ea20-4d9a-989d-f54144097f65}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ConCall">
+      <UniqueIdentifier>{e5a6b83c-82d1-4538-bb25-f90b748417ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -128,6 +131,15 @@
     </ClCompile>
     <ClCompile Include="src\UserAdmin\UserAdminRpc.cpp">
       <Filter>Source Files\UserAdmin</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConCall\ConCallReserv.grpc.pb.cc">
+      <Filter>Source Files\ConCall</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConCall\ConCallReserv.pb.cc">
+      <Filter>Source Files\ConCall</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConCall\ConCallReservRpc.cpp">
+      <Filter>Source Files\ConCall</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -229,6 +241,15 @@
     </ClInclude>
     <ClInclude Include="src\UserAdmin\UserAdminMock.h">
       <Filter>Source Files\UserAdmin</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ConCall\ConCallReserv.grpc.pb.h">
+      <Filter>Source Files\ConCall</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ConCall\ConCallReserv.pb.h">
+      <Filter>Source Files\ConCall</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ConCall\ConCallReservRpc.h">
+      <Filter>Source Files\ConCall</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
