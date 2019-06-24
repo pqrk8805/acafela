@@ -1,8 +1,0 @@
-From: Acafela<bart007@naver.com>
-To: Customer <bartkim@gmail.com>
-Subject: [Acafela] password recovery
-
-Dear Customer,
-Your new password is 'xxyyzz'
-
-BR
