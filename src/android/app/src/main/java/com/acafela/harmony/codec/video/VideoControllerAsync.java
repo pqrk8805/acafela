@@ -6,7 +6,7 @@ public class VideoControllerAsync {
     private static final String TAG = VideoControllerAsync.class.getName();
 
     VideoEncodeSync mVideoEncoder = new VideoEncodeSync(true);
-    VideoDecodeAsync mVideoDecoder;
+    VideoDecodeAsyncSurface mVideoDecoder;
     boolean isStarted;
 
     public VideoControllerAsync() {
@@ -14,7 +14,7 @@ public class VideoControllerAsync {
     }
 
     public void start(Surface surface) {
-        mVideoDecoder = new VideoDecodeAsync(surface);
+        mVideoDecoder = new VideoDecodeAsyncSurface(surface);
         mVideoEncoder.start();
         mVideoDecoder.start();
         isStarted = true;

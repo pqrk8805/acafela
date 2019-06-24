@@ -21,8 +21,8 @@ import android.widget.FrameLayout;
 
 import com.acafela.harmony.R;
 import com.acafela.harmony.codec.video.TextureMovieEncoder;
-import com.acafela.harmony.codec.video.VideoDecodeAsync;
-import com.acafela.harmony.codec.video.VideoEncodeSurface;
+import com.acafela.harmony.codec.video.VideoDecodeAsyncSurface;
+import com.acafela.harmony.codec.video.VideoEncodeSyncSurface;
 import com.acafela.harmony.codec.video.gles.FullFrameRect;
 import com.acafela.harmony.codec.video.gles.Texture2dProgram;
 import com.acafela.harmony.ui.camera.CameraUtils;
@@ -127,7 +127,7 @@ public class TestVideoEncodingSurfaceActivity extends Activity
 
     // this is static so it survives activity restarts
     private static TextureMovieEncoder sVideoEncoder = new TextureMovieEncoder();
-    VideoDecodeAsync mVideoDecoder;
+    VideoDecodeAsyncSurface mVideoDecoder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,7 +138,7 @@ public class TestVideoEncodingSurfaceActivity extends Activity
         // to Camera must be made on the same thread.  Note we create this before the renderer
         // thread, so we know the fully-constructed object will be visible.
         mCameraHandler = new CameraHandler(this);
-        sVideoEncoder.setEncodeCallback(new VideoEncodeSurface.VideoCallback() {
+        sVideoEncoder.setEncodeCallback(new VideoEncodeSyncSurface.VideoCallback() {
             @Override
             public void onOutputBytesAvailable(byte[] outputBytes) {
                 Log.i(TAG, "EncodedBytes: " + outputBytes.length);
@@ -341,7 +341,7 @@ public class TestVideoEncodingSurfaceActivity extends Activity
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
         Surface s = new Surface(surface);
-        mVideoDecoder = new VideoDecodeAsync(s);
+        mVideoDecoder = new VideoDecodeAsyncSurface(s);
         mVideoDecoder.start();
     }
 

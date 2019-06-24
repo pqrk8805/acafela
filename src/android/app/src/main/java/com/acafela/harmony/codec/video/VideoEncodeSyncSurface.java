@@ -12,16 +12,16 @@ import static com.acafela.harmony.codec.audio.AudioMediaFormat.AUDIO_QUEUE_TIMEO
 import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_MIME_TYPE;
 
 
-public class VideoEncodeSurface {
-    private static final String TAG = VideoEncodeSurface.class.getName();
+public class VideoEncodeSyncSurface {
+    private static final String TAG = VideoEncodeSyncSurface.class.getName();
 
     private MediaCodec mCodec;
     private Surface mInputSurface;
     private MediaCodec.BufferInfo mBufferInfo;
 
-    VideoEncodeSurface.VideoCallback mVideoCallback;
+    VideoEncodeSyncSurface.VideoCallback mVideoCallback;
 
-    public VideoEncodeSurface() {
+    public VideoEncodeSyncSurface() {
         mBufferInfo = new MediaCodec.BufferInfo();
     }
 
@@ -54,7 +54,7 @@ public class VideoEncodeSurface {
         return mInputSurface;
     }
 
-    public void setCallback(VideoEncodeSurface.VideoCallback callback) {
+    public void setCallback(VideoEncodeSyncSurface.VideoCallback callback) {
         mVideoCallback = callback;
     }
 

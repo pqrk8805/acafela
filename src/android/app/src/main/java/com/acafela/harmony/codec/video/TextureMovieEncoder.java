@@ -71,7 +71,7 @@ public class TextureMovieEncoder implements Runnable {
     private EglCore mEglCore;
     private FullFrameRect mFullScreen;
     private int mTextureId;
-    private VideoEncodeSurface mVideoEncoder;
+    private VideoEncodeSyncSurface mVideoEncoder;
 
     // ----- accessed by multiple threads -----
     private volatile EncoderHandler mHandler;
@@ -217,8 +217,8 @@ public class TextureMovieEncoder implements Runnable {
         mHandler.sendMessage(mHandler.obtainMessage(MSG_SET_TEXTURE_ID, id, 0, null));
     }
 
-    VideoEncodeSurface.VideoCallback mEncodeCallback;
-    public void setEncodeCallback(VideoEncodeSurface.VideoCallback callback) {
+    VideoEncodeSyncSurface.VideoCallback mEncodeCallback;
+    public void setEncodeCallback(VideoEncodeSyncSurface.VideoCallback callback) {
         mEncodeCallback = callback;
     }
 
@@ -363,7 +363,7 @@ public class TextureMovieEncoder implements Runnable {
     }
 
     private void prepareEncoder(EGLContext sharedContext) {
-        mVideoEncoder = new VideoEncodeSurface();
+        mVideoEncoder = new VideoEncodeSyncSurface();
         mVideoEncoder.setCallback(mEncodeCallback);
         VideoMediaFormat mVideoMediaFormat = new VideoMediaFormat(true);
         mVideoEncoder.start(mVideoMediaFormat.getMediaFormat());
@@ -376,7 +376,7 @@ public class TextureMovieEncoder implements Runnable {
     }
 
     private void releaseEncoder() {
-        mVideoEncoder.stop();
+//        mVideoEncoder.stop();
         if (mInputWindowSurface != null) {
             mInputWindowSurface.release();
             mInputWindowSurface = null;

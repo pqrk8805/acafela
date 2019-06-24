@@ -16,8 +16,8 @@ import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_MIME_TYPE;
 import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_QUEUE_BOUND;
 
 
-public class VideoDecodeAsync {
-    private static final String TAG = VideoDecodeAsync.class.getName();
+public class VideoDecodeAsyncSurface {
+    private static final String TAG = VideoDecodeAsyncSurface.class.getName();
 
     private HandlerThread mHandlerThread;
     private Handler mHandler;
@@ -27,7 +27,7 @@ public class VideoDecodeAsync {
 
     LinkedBlockingQueue<byte[]> mInputBytesQueue = new LinkedBlockingQueue<>(VIDEO_QUEUE_BOUND);
 
-    public VideoDecodeAsync(Surface surface) {
+    public VideoDecodeAsyncSurface(Surface surface) {
         mSurface = surface;
     }
 
