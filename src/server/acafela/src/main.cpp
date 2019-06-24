@@ -17,8 +17,7 @@
 
 #define LOG_TAG "MAIN"
 
-//#define SERVER_IP "192.168.1.9"
-#define SERVER_IP "172.20.4.206"
+#define SERVER_IP "192.168.1.9"
 #define RPC_PORT_USERVER_PROFILE    "9000"
 #define RPC_PORT_DIRECTORY_SERVICE  "9100"
 #define RPC_PORT_CRYPTO_KEY         "9200"
