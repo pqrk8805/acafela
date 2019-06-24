@@ -341,40 +341,45 @@ int FileStorageAccessor::enableUser(const std::string& emailAddress)
 	}
 }
 
-//int FileStorageAccessor::saveDSItems(const string& phoneNumber, const string& ipAddress)
-//{
-//	lock_guard<mutex> lock(mDSLock);
-//
-//	DerectoryServiceFile f(phoneNumber, "wb");
-//
-//	f.WriteFile(ipAddress);
-//
-//	return 0;
-//}
-//
-//map<string, string> FileStorageAccessor::getDSItems()
-//{
-//	lock_guard<mutex> lock(mDSLock);
-//
-//	WIN32_FIND_DATA FindFileData;
-//	HANDLE hFind;
-//	wstring path = L"./storage/directoryservice/";
-//
-//	map<string, string> DSMap;
-//	hFind = FindFirstFile(path.c_str(), &FindFileData);
-//	while (hFind != INVALID_HANDLE_VALUE)
-//	{
-//		wstring wfilename = FindFileData.cFileName;
-//		string phoneNumber(wfilename.begin(), wfilename.end());
-//		DerectoryServiceFile f(phoneNumber, "rb");
-//		
-//		string ipAddress = f.ReadFile();
-//		DSMap[phoneNumber] = ipAddress;
-//
-//		if (!FindNextFile(hFind, &FindFileData))
-//			break;
-//	}
-//	FindClose(hFind);
-//	
-//	return DSMap;
-//}
+int FileStorageAccessor::saveCCItem(const string& roomNumber, const string& dateFrom, const string& dateTo, const vector<string>& phoneNumberList)
+{
+	lock_guard<mutex> lock(mCCLock);
+
+	ConferenceCallFile f(roomNumber, "wb");
+
+	string strParticipantsList;
+	const string participantsNum = to_string(phoneNumberList.size());
+	for (const auto& i : phoneNumberList)
+	{
+		strParticipantsList += i + ";";
+	}
+
+	const string data = dateFrom + ";" + dateTo + ";" + participantsNum + ";" + strParticipantsList;
+	f.WriteFile(data);
+
+	return 0;
+}
+
+bool FileStorageAccessor::confirmCCUser(const string& roomNumber, const string& phoneNumber)
+{
+	lock_guard<mutex> lock(mCCLock);
+
+	ConferenceCallFile f(roomNumber, "rb");
+
+	string data = f.ReadFile();
+
+	size_t idx = data.find(";" + phoneNumber + ";");
+
+	if (idx == string::npos)
+		return false;
+	else
+		return true;
+
+	//int offset1 = data.find(';', 0);
+	//int offset2 = data.find(';', offset1 + 1);
+	//int offset3 = data.find(';', offset2 + 1);
+	//string strParticipantsNum = data.substr(offset2, offset3 - offset2 - 1);
+	//int participantsNum = stoi(strParticipantsNum);
+	
+	return true;
+}

@@ -44,6 +44,14 @@ public:
 	std::vector<UserInfo> getDSItems() override;
 	int disableUser(const std::string& emailAddress) override;
 	int enableUser(const std::string& emailAddress) override;
+
+	int saveCCItem( const std::string& roomNumber,
+					const std::string& dateFrom,
+					const std::string& dateTo,
+					const std::vector<std::string>& phoneNumberList) override;
+
+	bool confirmCCUser( const std::string& roomNumber, 
+						const std::string& phoneNumber) override;
 private:
 	std::string FindEmailAddress(const std::string& phoneNumber);
 
@@ -53,4 +61,5 @@ private:
 	std::mutex	mPasswordLock;
 	std::mutex	mPhoneNumberLock;
 	std::mutex	mDSLock;
+	std::mutex	mCCLock;
 };

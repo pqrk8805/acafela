@@ -4,14 +4,14 @@
 #include <thread>
 #include <grpcpp/server.h>
 #include "ConCallReserv.grpc.pb.h"
-#include "IUserAdmin.h"
-
+#include "ConferenceCallManager.h"
 
 class ConCallReservRpc final : public acafela::rpc::ConCallReserve::Service
 {
 private:
     ::grpc::Server* mServer;
     std::thread mWorker;
+	ConferenceCallManager mCCM;
 
     void wait();
 

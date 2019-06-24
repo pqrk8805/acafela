@@ -55,6 +55,13 @@ public:
 	virtual std::vector<UserInfo> getDSItems() = 0;
 	virtual int disableUser(const std::string& emailAddress) = 0;
 	virtual int enableUser(const std::string& emailAddress) = 0;
+
+	virtual int saveCCItem(	const std::string& roomNumber,
+							const std::string& dateFrom,
+							const std::string& dateTo,
+							const std::vector<std::string>& participantsList) = 0;
+	virtual bool confirmCCUser( const std::string& roomNumber,
+								const std::string& phoneNumber) = 0;
 private:
 	static IStorageAccessor* mInst;
 };

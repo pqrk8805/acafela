@@ -44,3 +44,12 @@ public:
 	{
 	}
 };
+
+class ConferenceCallFile : public DBFile
+{
+public:
+	ConferenceCallFile(const std::string& filename, const std::string& access_mode) :
+		DBFile("./storage/conferencecall/" + filename, access_mode)
+	{
+	}
+};
