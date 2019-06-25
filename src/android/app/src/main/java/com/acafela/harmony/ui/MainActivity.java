@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
     private static final int MENU_RESTOREPASSWORD = 2;
     private static final int MENU_PHONENUMBER = 3;
     private static final String HIDDEN_TEST_MAIN = "9999";
+    private static final String HIDDEN_UNREGISTER = "8888";
 
     private DirectoryService mDirectoryService;
 
@@ -95,7 +96,6 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
 
         mDirectoryService = new DirectoryService(this);
         UserInfo.getInstance().load(this);
-//        UserInfo.getInstance().setPhoneNumber("2222");
         if (UserInfo.getInstance().getPhoneNumber().isEmpty()) {
             new Handler().postDelayed(new Runnable() {
                 public void run() {
@@ -232,6 +232,11 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
         if (raw.equals(HIDDEN_TEST_MAIN)) {
             Intent activityIntent = new Intent(this, TestMainActivity.class);
             startActivity(activityIntent);
+            return;
+        }
+        else if (raw.equals(HIDDEN_UNREGISTER)) {
+            UserInfo.getInstance().setPhoneNumber("");
+            finish();
             return;
         }
 
