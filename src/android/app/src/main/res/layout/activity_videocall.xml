@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentStart="true"
+    android:background="@drawable/gradient">
+
+    <LinearLayout
+        android:id="@+id/first_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_uhd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner"
+            android:fontFamily="@font/roboto_black"
+            android:text="UHD"
+            android:textSize="13dp"
+            android:textColor="#171237" />
+        <TextView
+            android:id="@+id/tv_videocall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Video Call"
+            android:fontFamily="@font/roboto_bold"
+            android:textColor="@color/incall_dialpad_background"
+            android:textSize="16dp"
+            android:layout_marginLeft="5dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id= "@+id/second_container"
+        android:layout_width= "match_parent"
+        android:layout_height= "200dp"
+        android:layout_below="@+id/first_container"
+        android:orientation="horizontal">
+        <TextureView
+            android:id="@+id/textureview1"
+            android:layout_height="200dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"/>
+        <TextureView
+            android:id="@+id/textureview2"
+            android:layout_height="200dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id= "@+id/third_container"
+        android:layout_width= "match_parent"
+        android:layout_height= "200dp"
+        android:layout_below="@+id/second_container"
+        android:orientation="horizontal">
+        <TextureView
+            android:id="@+id/textureview3"
+            android:layout_height="200dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"/>
+        <TextureView
+            android:id="@+id/textureview4"
+            android:layout_height="200dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id= "@+id/fourth_container"
+        android:layout_width= "match_parent"
+        android:layout_height= "match_parent"
+        android:layout_below="@+id/third_container"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width= "match_parent"
+            android:layout_height= "match_parent"
+            android:layout_weight="1">
+            <FrameLayout
+                android:id="@+id/camera_preview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width= "match_parent"
+            android:layout_height= "match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_audiocall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:onClick="onClickTerminateCallBtn"
+                android:src="@drawable/fab_ic_end_call"
+                app:backgroundTint="@android:color/holo_red_dark"
+                app:fabSize="normal" />
+        </RelativeLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

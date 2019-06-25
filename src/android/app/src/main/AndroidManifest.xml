@@ -37,6 +37,8 @@
         </activity>
         <activity android:name=".ui.AudioCallActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".ui.VideoCallActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".ui.TestCallActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.TestEncodingActivity"

@@ -43,6 +43,7 @@ public class GrpcCommon
         KeyStore keyStore = createKeyStore(rootCertIS, serverCertIS);
         return OkHttpChannelBuilder
                                 .forAddress(address, port)
+                                .overrideAuthority("localhost")
                                 .useTransportSecurity()
                                 .sslSocketFactory(getSslSocketFactory(keyStore))
                                 .build();
