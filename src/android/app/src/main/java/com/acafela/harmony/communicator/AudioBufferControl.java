@@ -64,7 +64,7 @@ public class AudioBufferControl {
             //현재 seqnumber 재생
             outData = getDataBySeqNo(playerSeqNum);
             if(outData!=null) {
-                    Log.e(LOG_TAG, "currSeq " + outData.seqNo);
+                    //Log.e(LOG_TAG, "currSeq " + outData.seqNo);
             }
 
             //현재 seq 없는경우 이전거 재생
@@ -77,7 +77,10 @@ public class AudioBufferControl {
 
                     outData = getDataBySeqNo(tempSeq);
                     if(outData!=null)
+                    {
+                        Log.e(LOG_TAG, "loss packet" + playerSeqNum + "recovery packet " + outData.seqNo);
                         break;
+                    }
                 }
             }
 
@@ -113,21 +116,21 @@ public class AudioBufferControl {
             if(seqNum - MAX_DISTANCE < 0)
             {
                 if(interSeq > seqNum + MAX_DISTANCE  && interSeq < (MAX_AUDIO_SEQNO -(MAX_DISTANCE-seqNum))) {
-                    Log.e(LOG_TAG, "currSeq " + seqNum + " skipSeq :" + interSeq);
+                    //Log.e(LOG_TAG, "currSeq " + seqNum + " skipSeq :" + interSeq);
                     iter.remove();
                 }
             }
             else if (seqNum + MAX_DISTANCE > MAX_AUDIO_SEQNO)
             {
                 if((seqNum - MAX_DISTANCE) > interSeq && interSeq > (MAX_DISTANCE - (MAX_AUDIO_SEQNO -seqNum))) {
-                    Log.e(LOG_TAG, "currSeq " + seqNum + " skipSeq :" + interSeq);
+                    //Log.e(LOG_TAG, "currSeq " + seqNum + " skipSeq :" + interSeq);
                     iter.remove();
                 }
             }
             else
             {
                 if((seqNum - MAX_DISTANCE) > interSeq || interSeq > seqNum+MAX_DISTANCE) {
-                     Log.e(LOG_TAG, "currSeq " + seqNum + " skipSeq :" + interSeq);
+                     //Log.e(LOG_TAG, "currSeq " + seqNum + " skipSeq :" + interSeq);
                     iter.remove();
                 }
             }
@@ -143,7 +146,7 @@ public class AudioBufferControl {
         for(Iterator<AudioData>iter = mAudioDataQueue.iterator(); iter.hasNext();) {
             AudioData data = iter.next();
             int interSeq = data.seqNo;
-            Log.e(LOG_TAG, "search first " + interSeq);
+           //Log.e(LOG_TAG, "search first " + interSeq);
             if(isFirst)
             {
                 firstNum = interSeq;
