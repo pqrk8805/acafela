@@ -10,7 +10,7 @@
     android:background="@drawable/gradient">
 
     <LinearLayout
-        android:id="@+id/first_container"
+        android:id="@+id/text_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
@@ -37,48 +37,26 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id= "@+id/second_container"
-        android:layout_width= "match_parent"
-        android:layout_height= "200dp"
-        android:layout_below="@+id/first_container"
-        android:orientation="horizontal">
-        <TextureView
-            android:id="@+id/textureview1"
-            android:layout_height="200dp"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"/>
-        <TextureView
-            android:id="@+id/textureview2"
-            android:layout_height="200dp"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"/>
-    </LinearLayout>
+        android:id="@+id/surfaceMain_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_container"
+        android:orientation="vertical">
 
-
-    <LinearLayout
-        android:id= "@+id/third_container"
-        android:layout_width= "match_parent"
-        android:layout_height= "200dp"
-        android:layout_below="@+id/second_container"
-        android:orientation="horizontal">
         <TextureView
-            android:id="@+id/textureview3"
-            android:layout_height="200dp"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"/>
-        <TextureView
-            android:id="@+id/textureview4"
-            android:layout_height="200dp"
+            android:id="@+id/textureviewMain"
+            android:layout_height="400dp"
             android:layout_width="wrap_content"
             android:layout_weight="1"/>
     </LinearLayout>
 
     <LinearLayout
-        android:id= "@+id/fourth_container"
+        android:id= "@+id/bottom_container"
         android:layout_width= "match_parent"
         android:layout_height= "match_parent"
-        android:layout_below="@+id/third_container"
+        android:layout_below="@+id/surfaceMain_container"
         android:orientation="horizontal">
+
         <LinearLayout
             android:layout_width= "match_parent"
             android:layout_height= "match_parent"
@@ -94,7 +72,6 @@
             android:layout_height= "match_parent"
             android:layout_gravity="center"
             android:layout_weight="1">
-
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab_audiocall"
                 android:layout_width="wrap_content"
@@ -105,7 +82,7 @@
                 app:backgroundTint="@android:color/holo_red_dark"
                 app:fabSize="normal" />
         </RelativeLayout>
-    </LinearLayout>
 
+    </LinearLayout>
 
 </RelativeLayout>

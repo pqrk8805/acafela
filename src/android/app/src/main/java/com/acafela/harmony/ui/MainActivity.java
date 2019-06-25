@@ -285,5 +285,4 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
                     PERMISSION_ALL_ID);
         }
     }
-
 }
