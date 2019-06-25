@@ -68,6 +68,7 @@ void ConversationManager::createControlServer(ICryptoKeyMgr * keyManager_p, Conf
 				sendCtrlMsg(tmpPart, std::get<3>(*iter), std::get<1>(*iter));
 				iter = waitAckPacketList.erase(iter);
 				delete tmpPart;
+				break;
 			}
 			LeaveCriticalSection(&waitAckCrit);
 			EnterCriticalSection(&consumeAckCrit);
@@ -175,11 +176,13 @@ bool ConversationManager::consumeMessageHandler(std::string IP, acafela::sip::SI
 				if (isHandledMsgAndAck(sender, true, msg))
 					break;
 				FUNC_LOGI("Request to Make Key");
-				keyManager->generateKey(msg.sessionid());
 				Conversation * conversation = confManager->getConversationRoom(msg.to());
-				if (conversation == nullptr)
+				if (conversation == nullptr) {
+					keyManager->generateKey(msg.to());
 					conversation = confManager->openConversationRoom(msg.to(), msg.isvideocall());
+				}
 				conversation->addParticipant(sender, PortHandler().getPortNumber());
+				conversationMap[sender] = conversation;
 				return true;
 			} else {
 				if (isHandledMsgAndAck(sender, false, msg))
@@ -208,6 +211,8 @@ bool ConversationManager::consumeMessageHandler(std::string IP, acafela::sip::SI
 		CASE(true, TERMINATE) {
 			FUNC_LOGI("Request to Terminate");
 			Conversation * conversation = conversationMap[sender];
+			if (conversation == nullptr)
+				return true;
 			if (!conversation->isP2P() && conversation->getPartCount() > 2) {
 				conversation->removeParticipant(from);
 				conversationMap.erase(from);
