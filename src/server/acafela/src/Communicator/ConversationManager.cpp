@@ -1,9 +1,10 @@
 #include <stdio.h>
+#include <chrono>
 #include "communicator.h"
 #include "../Hislog.h"
 #include "../SipMessage/SipMessage.pb.h"
 #define LOG_TAG "COMMPATH"
-#define TIMEOUT 300
+#define TIMEOUT 3000
 #define SAVEPACKETTIME 2000
 #define TRYCNT 3
 #define CASE(Consume, CMD) \
@@ -59,12 +60,12 @@ void ConversationManager::createControlServer(ICryptoKeyMgr * keyManager_p) {
 					iter = waitAckPacketList.erase(iter);
 					continue;
 				}
-				iter++;
 				if (getTime() - std::get<0>(*iter) < TIMEOUT)
 					continue;
 				Participant * tmpPart = new Participant(std::get<2>(*iter));
 				sendCtrlMsg(tmpPart, std::get<3>(*iter), std::get<1>(*iter));
 				delete tmpPart;
+				iter++;
 			}
 			LeaveCriticalSection(&waitAckCrit);
 			EnterCriticalSection(&consumeAckCrit);

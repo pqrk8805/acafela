@@ -25,7 +25,7 @@ int DirectoryService::update(
                         const std::string& ipAddress)
 {
     FUNC_LOGI("%s : %s", phoneNumber.c_str(), ipAddress.c_str());
-
+#if 0
     int err = mStorageAccessor.confirmPhoneNumberPassword(
                                                     phoneNumber,
                                                     password);
@@ -48,6 +48,12 @@ int DirectoryService::update(
                                         phoneNumber,
                                         info.enabled ? ipAddress : "");
     }
+#endif
+	UserInfo info = { "", phoneNumber, ipAddress, true };
+	mStorageAccessor.saveDSItem(info);
+	ParticipantDirectory().notify_update(
+		phoneNumber,
+		info.enabled ? ipAddress : "");
     return 0;
 }
 
