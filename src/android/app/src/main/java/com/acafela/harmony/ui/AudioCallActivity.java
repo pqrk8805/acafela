@@ -55,7 +55,7 @@ public class AudioCallActivity extends AppCompatActivity {
         AudioPathSelector.getInstance().setAudioManager(this);
         AudioPathSelector.getInstance().setEarPieceAudio();
 
-        mProxiScrController = new ProximityScreenController(this, getWindow());
+        mProxiScrController = new ProximityScreenController(this);
     }
 
     @Override

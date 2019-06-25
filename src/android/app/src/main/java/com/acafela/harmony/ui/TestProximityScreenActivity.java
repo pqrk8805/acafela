@@ -18,7 +18,7 @@ public class TestProximityScreenActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_proximityscreen);
 
-        mController = new ProximityScreenController(this, getWindow());
+        mController = new ProximityScreenController(this);
 
         getWindow();
     }
