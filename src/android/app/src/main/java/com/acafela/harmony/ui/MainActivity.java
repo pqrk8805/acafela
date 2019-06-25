@@ -245,13 +245,22 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
             Intent serviceIntent = new Intent(getApplicationContext(), HarmonyService.class);
             serviceIntent.putExtra(INTENT_CONTROL, INTENT_SIP_INVITE_CALL);
             serviceIntent.putExtra(INTEMT_CALLEE_PHONENUMBER, raw);
-            serviceIntent.putExtra(INTENT_ISVIDEO, false);
+            serviceIntent.putExtra(INTENT_ISVIDEO, isVideo);
             startService(serviceIntent);
 
-            Intent activityIntent = new Intent(this, AudioCallActivity.class);
-            activityIntent.putExtra(INTENT_PHONENUMBER, raw);
-            activityIntent.putExtra(INTENT_ISCALLEE, false);
-            startActivity(activityIntent);
+            if (isVideo) {
+                Intent activityIntent = new Intent(this, VideoCallActivity.class);
+                activityIntent.putExtra(INTENT_PHONENUMBER, raw);
+                activityIntent.putExtra(INTENT_ISCALLEE, false);
+                startActivity(activityIntent);
+            }
+            else {
+                Intent activityIntent = new Intent(this, AudioCallActivity.class);
+                activityIntent.putExtra(INTENT_PHONENUMBER, raw);
+                activityIntent.putExtra(INTENT_ISCALLEE, false);
+                startActivity(activityIntent);
+            }
+
             return;
         }
 
