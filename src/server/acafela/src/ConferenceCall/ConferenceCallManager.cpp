@@ -42,6 +42,8 @@ int ConferenceCallManager::MakeConferenceCall(const string& dateFrom, const stri
 		string emailAddress = mSA->getEmailAddress(i);
 		EmailSenderCC::sendCCInvitation(emailAddress, ccNumber, dateFrom, dateTo);
 	}
+
+	mSA->saveCCItem(ccNumber, dateFrom, dateTo, participantsList);
 	
 	return 0;
 }
