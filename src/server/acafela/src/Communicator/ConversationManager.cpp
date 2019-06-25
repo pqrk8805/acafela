@@ -60,12 +60,14 @@ void ConversationManager::createControlServer(ICryptoKeyMgr * keyManager_p) {
 					iter = waitAckPacketList.erase(iter);
 					continue;
 				}
-				if (getTime() - std::get<0>(*iter) < TIMEOUT)
+				if (getTime() - std::get<0>(*iter) < TIMEOUT) {
+					iter++;
 					continue;
+				}
 				Participant * tmpPart = new Participant(std::get<2>(*iter));
 				sendCtrlMsg(tmpPart, std::get<3>(*iter), std::get<1>(*iter));
+				iter = waitAckPacketList.erase(iter);
 				delete tmpPart;
-				iter++;
 			}
 			LeaveCriticalSection(&waitAckCrit);
 			EnterCriticalSection(&consumeAckCrit);
