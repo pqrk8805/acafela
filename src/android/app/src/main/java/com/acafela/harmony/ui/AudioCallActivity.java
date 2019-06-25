@@ -27,6 +27,10 @@ public class AudioCallActivity extends AppCompatActivity {
     public static final String INTENT_PHONENUMBER = "INTENT_PHONENUMBER";
     public static final String INTENT_ISCALLEE = "INTENT_ISCALEE";
     public static final String BROADCAST_BYE = "com.acafela.action.bye";
+    public static final String BROADCAST_SENDVIDEO = "com.acafela.action.sendvideo";
+    public static final String BROADCAST_RECEIVEVIDEO = "com.acafela.action.receivevideo";
+    public static final String KEY_IP = "KEY_IP";
+    public static final String KEY_PORT = "KEY_PORT";
 
     BroadcastReceiver mBroadcastReceiver;
 

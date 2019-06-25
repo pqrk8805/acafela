@@ -16,7 +16,7 @@ import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_MIME_TYPE;
 import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_QUEUE_BOUND;
 
 
-public class VideoDecodeAsyncSurface {
+public class VideoDecodeAsyncSurface implements IVideoDecoder {
     private static final String TAG = VideoDecodeAsyncSurface.class.getName();
 
     private HandlerThread mHandlerThread;
@@ -99,3 +99,4 @@ public class VideoDecodeAsyncSurface {
         mInputBytesQueue.offer(rawBytes);
     }
 }
+
