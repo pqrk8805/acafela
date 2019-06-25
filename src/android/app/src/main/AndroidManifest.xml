@@ -13,9 +13,12 @@
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-feature android:name="android.hardware.sensor.proximity" android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -50,6 +53,8 @@
         <activity android:name=".ui.TestVideoEncodingSurfaceActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.TestMainActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.TestProximityScreenActivity"
             android:screenOrientation="portrait" />
 
         <service

@@ -49,4 +49,9 @@ public class TestMainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, TestAsyncEncodingActivity.class);
         startActivity(intent);
     }
+
+    public void onClickTestProximityScreenBtn(View v) {
+        Intent intent = new Intent(this, TestProximityScreenActivity.class);
+        startActivity(intent);
+    }
 }

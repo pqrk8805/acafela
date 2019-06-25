@@ -15,6 +15,7 @@ import android.widget.ToggleButton;
 import com.acafela.harmony.R;
 import com.acafela.harmony.service.HarmonyService;
 import com.acafela.harmony.util.AudioPathSelector;
+import com.acafela.harmony.util.ProximityScreenController;
 
 import static com.acafela.harmony.ui.TestCallActivity.INTENT_CONTROL;
 import static com.acafela.harmony.ui.TestCallActivity.INTENT_SIP_ACCEPT_CALL;
@@ -28,6 +29,8 @@ public class AudioCallActivity extends AppCompatActivity {
     public static final String BROADCAST_BYE = "com.acafela.action.bye";
 
     BroadcastReceiver mBroadcastReceiver;
+
+    private ProximityScreenController mProxiScrController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,8 @@ public class AudioCallActivity extends AppCompatActivity {
 
         AudioPathSelector.getInstance().setAudioManager(this);
         AudioPathSelector.getInstance().setEarPieceAudio();
+
+        mProxiScrController = new ProximityScreenController(this, getWindow());
     }
 
     @Override
@@ -62,12 +67,14 @@ public class AudioCallActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         RegisterReceiver();
+        mProxiScrController.activate();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         UnregisterReceiver();
+        mProxiScrController.deactivate();
     }
 
     @Override
