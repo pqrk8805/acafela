@@ -6,10 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".ui.contacts.ContactsFragment">
 
-    <TextView
+    <ListView
+        android:id="@+id/contact_listview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="hello blank fragment" />
+        android:layout_height="match_parent">
+
+    </ListView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
