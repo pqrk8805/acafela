@@ -158,8 +158,10 @@ public class VoipController {
                     mState = STATE.RINGING_STATE;
                     break;
                 case ACCEPTCALL:
-                    if(mState==STATE.RINGING_STATE)
+                    if(mState==STATE.RINGING_STATE) {
                         mRingControl.ringbackTone_stop();
+                        sendMessage(SipMessage.Command.MAKECALL);
+                    }
                     break;
                 case OPENSESSION:
                     if(mState==STATE.CONNECTING_STATE) break;
