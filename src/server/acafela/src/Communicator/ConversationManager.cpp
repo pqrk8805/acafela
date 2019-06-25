@@ -46,6 +46,7 @@ void ConversationManager::createControlServer(ICryptoKeyMgr * keyManager_p, Conf
 					continue;
 				}
 				forwardMessageHandler(std::string(ipStr), msg);
+				continue;
 			}
 			if(!consumeMessageHandler(std::string(ipStr), msg))
 				forwardMessageHandler(std::string(ipStr), msg);
@@ -173,6 +174,8 @@ bool ConversationManager::consumeMessageHandler(std::string IP, acafela::sip::SI
 			if (msg.to().find("#") != std::string::npos) {
 				if (isHandledMsgAndAck(sender, true, msg))
 					break;
+				FUNC_LOGI("Request to Make Key");
+				keyManager->generateKey(msg.sessionid());
 				Conversation * conversation = confManager->getConversationRoom(msg.to());
 				if (conversation == nullptr)
 					conversation = confManager->openConversationRoom(msg.to(), msg.isvideocall());
@@ -201,7 +204,7 @@ bool ConversationManager::consumeMessageHandler(std::string IP, acafela::sip::SI
 			if (conversation->isVideoComm())
 				conversation->startVideoConversation();
 		}
-		return false;
+		return true;
 		CASE(true, TERMINATE) {
 			FUNC_LOGI("Request to Terminate");
 			Conversation * conversation = conversationMap[sender];
