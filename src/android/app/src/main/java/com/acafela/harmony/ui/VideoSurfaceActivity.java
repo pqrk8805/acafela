@@ -120,6 +120,12 @@ public class VideoSurfaceActivity extends Activity
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mCameraHandler.invalidateHandler();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         if (mCamera == null) {

@@ -46,7 +46,6 @@ public class TestVideoEncodingSurfaceActivity extends VideoSurfaceActivity {
     protected void onDestroy() {
         Log.d(TAG, "onDestroy");
         super.onDestroy();
-        mCameraHandler.invalidateHandler();     // paranoia
     }
 
     @Override

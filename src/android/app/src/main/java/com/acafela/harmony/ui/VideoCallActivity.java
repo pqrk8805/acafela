@@ -29,6 +29,8 @@ import com.acafela.harmony.codec.video.VideoDecodeAsyncSurface;
 import com.acafela.harmony.codec.video.VideoEncodeSyncSurface;
 import com.acafela.harmony.codec.video.gles.FullFrameRect;
 import com.acafela.harmony.codec.video.gles.Texture2dProgram;
+import com.acafela.harmony.communicator.VideoHandler;
+import com.acafela.harmony.communicator.VideoReceiverThread;
 import com.acafela.harmony.service.HarmonyService;
 import com.acafela.harmony.ui.camera.CameraHandler;
 import com.acafela.harmony.ui.camera.CameraUtils;
@@ -36,13 +38,24 @@ import com.acafela.harmony.util.AudioPathSelector;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.Socket;
+import java.net.SocketException;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_HEIGHT;
 import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_WIDTH;
+import static com.acafela.harmony.communicator.DataCommunicator.MAX_AUDIO_SEQNO;
+import static com.acafela.harmony.communicator.DataCommunicator.RAW_BUFFER_SIZE;
+import static com.acafela.harmony.communicator.DataCommunicator.isAudioHeader;
 import static com.acafela.harmony.ui.AudioCallActivity.BROADCAST_BYE;
+import static com.acafela.harmony.ui.AudioCallActivity.BROADCAST_RECEIVEVIDEO;
+import static com.acafela.harmony.ui.AudioCallActivity.BROADCAST_SENDVIDEO;
+import static com.acafela.harmony.ui.AudioCallActivity.KEY_IP;
+import static com.acafela.harmony.ui.AudioCallActivity.KEY_PORT;
 import static com.acafela.harmony.ui.TestCallActivity.INTENT_CONTROL;
 import static com.acafela.harmony.ui.TestCallActivity.INTENT_SIP_ACCEPT_CALL;
 import static com.acafela.harmony.ui.TestCallActivity.INTENT_SIP_TERMINATE_CALL;
@@ -52,9 +65,12 @@ public class VideoCallActivity extends VideoSurfaceActivity {
 
     private BroadcastReceiver mBroadcastReceiver;
     private TextureView mTextureView;
+    private VideoHandler mVideoHandler = new VideoHandler();
+    private VideoReceiverThread mVideoReceiverThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate start");
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -65,7 +81,7 @@ public class VideoCallActivity extends VideoSurfaceActivity {
             @Override
             public void onOutputBytesAvailable(byte[] outputBytes) {
                 Log.i(TAG, "EncodedBytes: " + outputBytes.length);
-                mVideoDecoder.enqueueInputBytes(outputBytes);
+                mVideoHandler.sendFrame(outputBytes);
             }
         });
 
@@ -77,12 +93,13 @@ public class VideoCallActivity extends VideoSurfaceActivity {
 
         AudioPathSelector.getInstance().setAudioManager(this);
         AudioPathSelector.getInstance().setSpeakerAudio();
+        Log.d(TAG, "onCreate complete");
     }
 
     @Override
     protected void onDestroy() {
+        Log.d(TAG, "onDestroy");
         super.onDestroy();
-        mCameraHandler.invalidateHandler();
     }
 
     @Override
@@ -122,6 +139,7 @@ public class VideoCallActivity extends VideoSurfaceActivity {
 
     @Override
     public void onBackPressed() {
+        Log.i(TAG, "onBackPressed");
         super.onBackPressed();
         terminateCall();
         finish();
@@ -141,9 +159,11 @@ public class VideoCallActivity extends VideoSurfaceActivity {
     }
 
     private void terminateCall() {
+        Log.i(TAG, "terminateCall");
         Intent serviceIntent = new Intent(getApplicationContext(), HarmonyService.class);
         serviceIntent.putExtra(INTENT_CONTROL, INTENT_SIP_TERMINATE_CALL);
         startService(serviceIntent);
+        mVideoReceiverThread.kill();
 
         finish();
     }
@@ -156,8 +176,20 @@ public class VideoCallActivity extends VideoSurfaceActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(BROADCAST_BYE)) {
-                    Log.i(TAG, "onReceive BYE");
+                    Log.i(TAG, "onReceive BROADCAST_BYE");
                     finish();
+                }
+                else if (intent.getAction().equals(BROADCAST_SENDVIDEO)) {
+                    Log.i(TAG, "onReceive BROADCAST_SENDVIDEO");
+                    String ip = intent.getStringExtra(KEY_IP);
+                    int port = intent.getIntExtra(KEY_PORT, 0);
+                    mVideoHandler.start(ip, port);
+                }
+                else if (intent.getAction().equals(BROADCAST_RECEIVEVIDEO)) {
+                    Log.i(TAG, "onReceive BROADCAST_RECEIVEVIDEO");
+                    int port = intent.getIntExtra(KEY_PORT, 0);
+                    mVideoReceiverThread = new VideoReceiverThread(mVideoDecoder, port);
+                    mVideoReceiverThread.start();
                 }
             }
         };

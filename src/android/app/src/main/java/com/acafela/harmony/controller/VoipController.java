@@ -283,7 +283,7 @@ public class VoipController {
                 communicator = new SenderAudio(mCrypto);
                 break;
             case SENDVIDEO:
-                communicator = new SenderVideo();
+                communicator = new SenderVideo(mContext);
                 break;
             case RECIEVEAUDIO:
                 communicator = new ReceiverAudio(mContext, mCrypto);
