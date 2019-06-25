@@ -206,14 +206,14 @@ public class ReceiverAudio implements DataCommunicator {
                         //if(mAudioControl.size()>0) {
                         AudioData audioData = mAudioControl.getData();
                         if(audioData!=null) {
-                            byte[] outStream = mCrypto.decrypt(audioData.data, 0, audioData.data.length);
+                            //byte[] outStream = mCrypto.decrypt(audioData.data, 0, audioData.data.length);
 
                             //if (!MainActivity.BoostAudio)
                             if (true) {
                                 if(isAudioHeader)
-                                    OutputTrack.write(outStream, 0, RAW_BUFFER_SIZE);
+                                    OutputTrack.write(audioData.data, 0, RAW_BUFFER_SIZE);
                                 else
-                                    OutputTrack.write(outStream, 0, RAW_BUFFER_SIZE);
+                                    OutputTrack.write(audioData.data, 0, RAW_BUFFER_SIZE);
                             } else {
                                 short[] AudioOutputBufferShorts = new short[audioData.data.length / 2];
                                 // to turn bytes to shorts as either big endian or little endian.

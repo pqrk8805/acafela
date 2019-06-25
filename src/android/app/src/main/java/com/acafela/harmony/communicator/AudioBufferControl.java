@@ -27,13 +27,18 @@ public class AudioBufferControl {
         MAX_AUDIO_SEQNO = maxBufferSize;
         isFirstFeeding = true;
         mSemaphore= new Semaphore(1);
+        mCrypto = crypto;
     }
 
     public void pushData(AudioData data)  {
         try {
             mSemaphore.acquire();
             if (isValidCheck(data.seqNo, MAX_DISTANCE))
-                mAudioDataQueue.add(data);
+            {
+                data.data = mCrypto.decrypt(data.data, 0, data.length);
+                data.length = data.data.length;
+            }
+            mAudioDataQueue.add(data);
             receiveSeqNum = data.seqNo;
             mSemaphore.release();
         } catch (InterruptedException e) {
@@ -146,7 +151,6 @@ public class AudioBufferControl {
         for(Iterator<AudioData>iter = mAudioDataQueue.iterator(); iter.hasNext();) {
             AudioData data = iter.next();
             int interSeq = data.seqNo;
-           //Log.e(LOG_TAG, "search first " + interSeq);
             if(isFirst)
             {
                 firstNum = interSeq;
