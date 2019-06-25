@@ -37,7 +37,7 @@ void DataPath::sendSessionControlMsg(Participant * part, acafela::sip::Command c
 		port += 1;
 	session->set_port(port);
 	session->set_ip(isServerPassed ? "SERVER" : part->getIP());
-	ConversationManager().sendControlMessage(ownerPart, msg);
+	ConversationManager().sendCtrlMsg(ownerPart, msg, 0);
 }
 
 void DataPath::broadcastSessionControlMsg(acafela::sip::Command cmd, acafela::sip::SessionType sessionType) {
@@ -71,7 +71,7 @@ void DataPath::broadcastSessionControlMsg(acafela::sip::Command cmd, acafela::si
 			port += 1;
 		session->set_port(port);
 	}
-	ConversationManager().sendControlMessage(ownerPart, msg);
+	ConversationManager().sendCtrlMsg(ownerPart, msg, 0);
 }
 
 void DataPath::startVideoDataPath() {
@@ -96,9 +96,6 @@ void DataPath::openDataPath() {
 }
 
 void DataPath::terminateDataPath() {
-	//server close ½Ã ÀüÃ¼ Close Session ÇÒ °ÍÀÎ°¡? ¾Æ´Ô °Á Bye?
-	//FUNC_LOGI("TERMINATESESSION to %s", ownerPart->getIP().c_str());
-	//broadcastSessionControlMsg(acafela::sip::CLOSESESSION);
 	isWorking = false;
 	isVideoWorking = false;
 	if (isServerPassed) {

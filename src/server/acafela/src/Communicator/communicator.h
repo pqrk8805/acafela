@@ -22,19 +22,26 @@ class Conversation;
 class Participant;
 class ConversationManager {
 private:
+	static CRITICAL_SECTION waitAckCrit;
+	static CRITICAL_SECTION consumeAckCrit;
 	static std::thread * rcvThread;
 	static SocketGroup ctrlStreamSocket;
 	static std::map<Participant *,Conversation *> conversationMap;
-	static std::vector<acafela::sip::SIPMessage> ctrlMessageBuffer;
-	static void messageHandler(std::string IP, acafela::sip::SIPMessage msg);
+	static std::vector<std::tuple<int, acafela::sip::SIPMessage>> consumedPacketList;
+	// time, retry, ip, msg
+	static std::vector<std::tuple<int, int, std::string, acafela::sip::SIPMessage>> waitAckPacketList;
 	static ICryptoKeyMgr * keyManager;
+	static void sayGoodbyeMsg(std::string IP);
+	static void forwardMessageHandler(std::string IP, acafela::sip::SIPMessage msg);
+	static bool consumeMessageHandler(std::string IP, acafela::sip::SIPMessage msg);
+	static void rcvAckHandler(std::string IP, acafela::sip::SIPMessage msg);
+	static bool isHandledMsgAndAck(Participant * part, bool isServerConsumed, acafela::sip::SIPMessage msg);
+	static void setRetryCtrlMsg(std::string ip, acafela::sip::SIPMessage msg, int retryConut);
+	static int getTime();
 public:
 	static void createSocket();
 	static void createControlServer(ICryptoKeyMgr * keyManager);
-	static void sendControlMessage(
-		Participant * to, 
-		acafela::sip::SIPMessage msg
-	);
+	static void sendCtrlMsg(Participant * to, acafela::sip::SIPMessage msg, int retryCount);
 };
 
 class ParticipantDirectory {
@@ -115,7 +122,6 @@ public:
 class Conversation {
 private :
 	std::vector<std::tuple<Participant *, int>> conversationRoom;
-	int sessionId;
 	bool isServerPassed;
 	bool isVideoEnabled;
 public :
@@ -123,11 +129,14 @@ public :
 	bool isP2P() {
 		return !isServerPassed;
 	}
-	void setSessionId(int sessionId) {
-		this->sessionId = sessionId;
-	}
 	bool isVideoComm() {
 		return isVideoEnabled;
+	}
+	void enableVideoConversation() {
+		isVideoEnabled = true;
+	}
+	size_t getPartCount() {
+		return conversationRoom.size();
 	}
 	void startVideoConversation();
 	void stopVideoConversation();

@@ -35,7 +35,7 @@ void Conversation::terminateConversation() {
 		FUNC_LOGI("Send Bye to %s", part->getIP().c_str());
 		msg.set_from("SERVER");
 		msg.set_to(part->getIP());
-		ConversationManager().sendControlMessage(part, msg); 
+		ConversationManager().sendCtrlMsg(part, msg, 0);
 		if (part->getDataPath() != nullptr) {
 			part->getDataPath()->terminateDataPath();
 			delete part->getDataPath();
@@ -58,11 +58,12 @@ void Conversation::boradcast_CtrlExceptMe(Participant * from, acafela::sip::SIPM
 		Participant * part = std::get<0>(partAndPort);
 		if (part == from)
 			continue;
-		ConversationManager().sendControlMessage(part, msg);
+		ConversationManager().sendCtrlMsg(part, msg, 0);
 	}
 }
 
 void Conversation::startVideoConversation() {
+	isVideoEnabled = true;
 	for (auto partAndPort : conversationRoom) {
 		Participant * part = std::get<0>(partAndPort);
 		part->getDataPath()->startVideoDataPath();
@@ -70,6 +71,7 @@ void Conversation::startVideoConversation() {
 }
 
 void Conversation::stopVideoConversation() {
+	isVideoEnabled = false;
 	for (auto partAndPort : conversationRoom) {
 		Participant * part = std::get<0>(partAndPort);
 		part->getDataPath()->stopVideoDataPath();
@@ -102,9 +104,9 @@ void Conversation::removeParticipant(Participant * part) {
 	}
 	for (auto partAndPort : conversationRoom)
 		std::get<0>(partAndPort)->getDataPath()->removeParticipant(part);
-	acafela::sip::SIPMessage returnMessage;
-	returnMessage.set_cmd(acafela::sip::BYE);
-	returnMessage.set_from("SERVER");
-	returnMessage.set_to(part->getIP());
-	ConversationManager().sendControlMessage(part, returnMessage);
+	acafela::sip::SIPMessage msg;
+	msg.set_cmd(acafela::sip::BYE);
+	msg.set_from("SERVER");
+	msg.set_to(part->getIP());
+	ConversationManager().sendCtrlMsg(part, msg, 0);
 }
