@@ -44,6 +44,9 @@ public:
 	virtual std::string getTempPassword(
 		const std::string& emailAddress) = 0;
 
+	virtual std::string getEmailAddress(
+		const std::string& phoneNumber) = 0;
+
 	virtual int deleteUser(const std::string& emailAddress) = 0;	
 
 	virtual int getUserNumber() = 0;
@@ -56,6 +59,7 @@ public:
 	virtual int disableUser(const std::string& emailAddress) = 0;
 	virtual int enableUser(const std::string& emailAddress) = 0;
 
+	virtual std::vector<std::string> getCCNumbers() = 0;
 	virtual int saveCCItem(	const std::string& roomNumber,
 							const std::string& dateFrom,
 							const std::string& dateTo,

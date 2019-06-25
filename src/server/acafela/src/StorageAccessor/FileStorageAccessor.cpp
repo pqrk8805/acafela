@@ -6,6 +6,11 @@
 #include "DBFile.h"
 
 using namespace std;
+std::mutex	FileStorageAccessor::mUserNumberLock;
+std::mutex	FileStorageAccessor::mPasswordLock;
+std::mutex	FileStorageAccessor::mPhoneNumberLock;
+std::mutex	FileStorageAccessor::mDSLock;
+std::mutex	FileStorageAccessor::mCCLock;
 FileStorageAccessor::FileStorageAccessor()
 {
 }
@@ -177,6 +182,37 @@ string FileStorageAccessor::getTempPassword(const string& emailAddress)
 	return numPassword.substr(0, 4);
 }
 
+std::string FileStorageAccessor::getEmailAddress(const string& phoneNumber)
+{
+	string emailAddress;
+	WIN32_FIND_DATA FindFileData;
+	wstring path = L"./storage/phonenumber/*";
+		
+	HANDLE hFind = FindFirstFile(path.c_str(), &FindFileData);
+	while (hFind != INVALID_HANDLE_VALUE)
+	{
+		if (FindFileData.dwFileAttributes != FILE_ATTRIBUTE_DIRECTORY)
+		{
+			wstring wfilename = FindFileData.cFileName;
+			string savedEmailAddress(wfilename.begin(), wfilename.end());
+			
+			PhoneNumberFile f(savedEmailAddress, "rb");
+			string savedPhoneNumber = f.ReadFile();
+
+			if (savedPhoneNumber.compare(phoneNumber) == 0)
+			{
+				break;
+			}			
+		}
+
+		if (!FindNextFile(hFind, &FindFileData))
+			break;
+	}
+	FindClose(hFind);
+
+	return emailAddress;
+}
+
 int FileStorageAccessor::deleteUser(const std::string& emailAddress)
 {
 	wstring wEmailAddress(emailAddress.begin(), emailAddress.end());
@@ -341,6 +377,30 @@ int FileStorageAccessor::enableUser(const std::string& emailAddress)
 	}
 }
 
+std::vector<std::string> FileStorageAccessor::getCCNumbers()
+{
+	WIN32_FIND_DATA FindFileData;
+	wstring path = L"./storage/conferencecall/*";
+
+	vector<string> ccNum;
+	HANDLE hFind = FindFirstFile(path.c_str(), &FindFileData);
+	while (hFind != INVALID_HANDLE_VALUE)
+	{
+		if (FindFileData.dwFileAttributes != FILE_ATTRIBUTE_DIRECTORY)
+		{
+			wstring wfilename = FindFileData.cFileName;
+			string ccNumber(wfilename.begin(), wfilename.end());
+			ccNum.push_back(ccNumber);
+		}
+
+		if (!FindNextFile(hFind, &FindFileData))
+			break;
+	}
+	FindClose(hFind);
+
+	return ccNum;
+}
+
 int FileStorageAccessor::saveCCItem(const string& roomNumber, const string& dateFrom, const string& dateTo, const vector<string>& phoneNumberList)
 {
 	lock_guard<mutex> lock(mCCLock);
@@ -367,6 +427,9 @@ bool FileStorageAccessor::confirmCCUser(const string& roomNumber, const string& 
 	ConferenceCallFile f(roomNumber, "rb");
 
 	string data = f.ReadFile();
+
+	if (data.compare("nullptr") == 0)
+		return false;
 
 	size_t idx = data.find(";" + phoneNumber + ";");
 

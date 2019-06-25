@@ -33,6 +33,9 @@ public:
 	std::string getTempPassword(
 		const std::string& emailAddress) override;
 
+	std::string getEmailAddress(
+		const std::string& phoneNumber) override;
+
 	int deleteUser(const std::string& emailAddress) override;
 	
 	int getUserNumber() override;
@@ -45,6 +48,7 @@ public:
 	int disableUser(const std::string& emailAddress) override;
 	int enableUser(const std::string& emailAddress) override;
 
+	std::vector<std::string> getCCNumbers() override;
 	int saveCCItem( const std::string& roomNumber,
 					const std::string& dateFrom,
 					const std::string& dateTo,
@@ -57,9 +61,9 @@ private:
 
 	int getDSItem(const std::string& emailAddress, UserInfo& ui);
 private:
-	std::mutex	mUserNumberLock;
-	std::mutex	mPasswordLock;
-	std::mutex	mPhoneNumberLock;
-	std::mutex	mDSLock;
-	std::mutex	mCCLock;
+	static std::mutex	mUserNumberLock;
+	static std::mutex	mPasswordLock;
+	static std::mutex	mPhoneNumberLock;
+	static std::mutex	mDSLock;
+	static std::mutex	mCCLock;
 };

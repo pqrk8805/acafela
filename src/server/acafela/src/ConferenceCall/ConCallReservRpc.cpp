@@ -1,12 +1,13 @@
 #include "ConCallReservRpc.h"
 #include "RpcUtils.h"
 #include "Hislog.h"
-
+#include "ConferenceCallManager.h"
 #define LOG_TAG "ConCallReserv"
 
 
 ConCallReservRpc::ConCallReservRpc()
 {
+	mCCM = std::make_unique<ConferenceCallManager>();
 }
 
 ConCallReservRpc::~ConCallReservRpc()
@@ -69,7 +70,7 @@ void ConCallReservRpc::shutdown()
 		participants.push_back(request->participants(i));
     }
 
-	int err = mCCM.MakeConferenceCall(from, to, participants);
+	int err = mCCM->MakeConferenceCall(from, to, participants);
     response->set_err(-1);
     response->set_message("not implemented yet");
 
