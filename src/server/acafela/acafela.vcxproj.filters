@@ -266,5 +266,8 @@
     <ClInclude Include="src\ConferenceCall\IConferenceCall.h">
       <Filter>Source Files\ConferenceCall</Filter>
     </ClInclude>
+    <ClInclude Include="src\Config.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

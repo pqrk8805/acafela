@@ -4,6 +4,7 @@
 #define LOG_TAG "CONV"
 
 Conversation::Conversation(std::vector<std::tuple<Participant *, int>> partList, bool isServerPassed) {
+	this->isServerPassed = isServerPassed;
 	FUNC_LOGI("Make Conversation Room, %s", isServerPassed ? "P2P" : "P2S");
 	for (auto partAndPort : partList) {
 		FUNC_LOGI("%s join room", std::get<0>(partAndPort)->getIP().c_str());
@@ -84,7 +85,7 @@ void Conversation::addParticipant(Participant * part, int port) {
 		std::get<0>(partAndPort)->getDataPath()->addParticipant(part, port);
 	
 	FUNC_LOGI("Create %s data path, RCVPort : %d", part->getIP().c_str(), port);
-	DataPath * dPath = new DataPath(part, this, part->getIP(), port);
+	DataPath * dPath = new DataPath(part, this, part->getIP(), port, isServerPassed);
 	for (auto partAndPort : conversationRoom)
 		dPath->initParticipant(std::get<0>(partAndPort), std::get<1>(partAndPort));
 	conversationRoom.push_back(std::make_tuple(part, port));

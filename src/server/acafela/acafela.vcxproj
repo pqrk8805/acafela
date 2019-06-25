@@ -75,6 +75,7 @@
     <ClInclude Include="src\ConferenceCall\ConferenceCallManager.h" />
     <ClInclude Include="src\ConferenceCall\EmailSenderCC.h" />
     <ClInclude Include="src\ConferenceCall\IConferenceCall.h" />
+    <ClInclude Include="src\Config.h" />
     <ClInclude Include="src\CryptoKey\CryptoKey.grpc.pb.h" />
     <ClInclude Include="src\CryptoKey\CryptoKey.h" />
     <ClInclude Include="src\CryptoKey\CryptoKey.pb.h" />

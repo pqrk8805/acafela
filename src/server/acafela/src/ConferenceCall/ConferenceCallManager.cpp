@@ -26,7 +26,7 @@ string ConferenceCallManager::generateNewCCNumber()
 		});
 
 		if (ret == end(ccNumList))
-			return ccNumber;
+			return "#" + ccNumber;
 	}
 	
 
@@ -45,5 +45,26 @@ int ConferenceCallManager::MakeConferenceCall(const string& dateFrom, const stri
 
 	mSA->saveCCItem(ccNumber, dateFrom, dateTo, participantsList);
 	
+	openConversationRoom(ccNumber, false);
+
 	return 0;
+}
+
+Conversation * ConferenceCallManager::openConversationRoom(std::string ccNo, bool isVideo) {
+	Conversation * conv = new Conversation({}, true);
+	if (isVideo)
+		conv->enableVideoConversation();
+	conversationMap[ccNo] = conv;
+	return conv;
+}
+
+void ConferenceCallManager::removeConversationRoom(std::string ccNo) {
+	conversationMap[ccNo] = nullptr;
+}
+
+Conversation * ConferenceCallManager::getConversationRoom(std::string ccNo) {
+	const auto iter = conversationMap.find(ccNo);
+	if (iter == conversationMap.cend())
+		return nullptr;
+	return conversationMap[ccNo];
 }

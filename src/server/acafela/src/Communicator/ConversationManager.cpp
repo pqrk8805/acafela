@@ -4,9 +4,6 @@
 #include "../Hislog.h"
 #include "../SipMessage/SipMessage.pb.h"
 #define LOG_TAG "COMMPATH"
-#define TIMEOUT 300
-#define SAVEPACKETTIME 2000
-#define TRYCNT 3
 #define CASE(Consume, CMD) \
 	case acafela::sip::CMD:\
 		if (isHandledMsgAndAck(sender,Consume,msg))\
@@ -14,6 +11,7 @@
 
 extern std::vector<std::thread *> additionalThreadList;
 ICryptoKeyMgr * ConversationManager::keyManager;
+ConferenceCallManager * ConversationManager::confManager;
 SocketGroup ConversationManager::ctrlStreamSocket;
 std::thread * ConversationManager::rcvThread;
 CRITICAL_SECTION ConversationManager::waitAckCrit;
@@ -21,8 +19,9 @@ CRITICAL_SECTION ConversationManager::consumeAckCrit;
 std::vector<std::tuple<long long, acafela::sip::SIPMessage>> ConversationManager::consumedPacketList;
 std::vector<std::tuple<long long, int, std::string, acafela::sip::SIPMessage>> ConversationManager::waitAckPacketList;
 std::map<Participant *, Conversation *> ConversationManager::conversationMap;
-void ConversationManager::createControlServer(ICryptoKeyMgr * keyManager_p) {
+void ConversationManager::createControlServer(ICryptoKeyMgr * keyManager_p, ConferenceCallManager * confManager_p) {
 	keyManager = keyManager_p;
+	confManager = confManager_p;
 	createSocket();
 	InitializeCriticalSection(&waitAckCrit);
 	InitializeCriticalSection(&consumeAckCrit);
@@ -164,7 +163,7 @@ bool ConversationManager::consumeMessageHandler(std::string IP, acafela::sip::SI
 	Participant * from = ParticipantDirectory().getFromNumber(msg.from());
 	Participant * to = ParticipantDirectory().getFromNumber(msg.to());
 	Participant * sender = ParticipantDirectory().getFromIP(IP);
-	if (to == nullptr || from == nullptr || sender == nullptr) {
+	if (((msg.to().find("#") == std::string::npos) && to == nullptr) || from == nullptr || sender == nullptr) {
 		sayGoodbyeMsg(IP);
 		return true;
 	}
@@ -172,10 +171,12 @@ bool ConversationManager::consumeMessageHandler(std::string IP, acafela::sip::SI
 		case acafela::sip::INVITE:
 		{
 			if (msg.to().find("#") != std::string::npos) {
-				Participant * tmpPart = new Participant(IP);
 				if (isHandledMsgAndAck(sender, true, msg))
 					break;
-				// 措拳规 立加 备泅
+				Conversation * conversation = confManager->getConversationRoom(msg.to());
+				if (conversation == nullptr)
+					conversation = confManager->openConversationRoom(msg.to(), msg.isvideocall());
+				conversation->addParticipant(sender, PortHandler().getPortNumber());
 				return true;
 			} else {
 				if (isHandledMsgAndAck(sender, false, msg))
@@ -193,7 +194,7 @@ bool ConversationManager::consumeMessageHandler(std::string IP, acafela::sip::SI
 				return false;
 			}
 		}
-		CASE(false, ACCEPTCALL) {
+		CASE(true, MAKECALL) {
 			FUNC_LOGI("Request to Make Call");
 			Conversation * conversation = conversationMap[sender];
 			conversation->makeConversation();

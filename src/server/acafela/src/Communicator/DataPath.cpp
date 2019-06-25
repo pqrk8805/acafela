@@ -36,7 +36,7 @@ void DataPath::sendSessionControlMsg(Participant * part, acafela::sip::Command c
 	if (sessionType > acafela::sip::RECIEVEAUDIO)
 		port += 1;
 	session->set_port(port);
-	session->set_ip(isServerPassed ? "SERVER" : part->getIP());
+	session->set_ip(isServerPassed ? SERVER_IP : part->getIP());
 	ConversationManager().sendCtrlMsg(ownerPart, msg, 0);
 }
 
@@ -55,7 +55,7 @@ void DataPath::broadcastSessionControlMsg(acafela::sip::Command cmd, acafela::si
 	session->set_port(listenPort);
 	session->set_ip(
 		isServerPassed
-		? "SERVER"
+		? SERVER_IP
 		: sendPortDirectory.begin()->first->getIP()
 	);
 	for (auto partAndPort : sendPortDirectory) {
@@ -63,7 +63,7 @@ void DataPath::broadcastSessionControlMsg(acafela::sip::Command cmd, acafela::si
 		session->set_sessiontype((acafela::sip::SessionType)(sessionType+1));
 		session->set_ip(
 			isServerPassed
-			? "SERVER"
+			? SERVER_IP
 			: std::get<0>(partAndPort)->getIP()
 		);
 		int port = std::get<1>(partAndPort);

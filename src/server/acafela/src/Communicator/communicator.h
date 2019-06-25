@@ -1,4 +1,5 @@
 #pragma once
+#include "Config.h"
 #include <vector>
 #include <thread>
 #include <map>
@@ -8,9 +9,7 @@
 #include <windows.h>
 #include "../SipMessage/SipMessage.pb.h"
 #include "../CryptoKey/ICryptoKeyMgr.h"
-#define BUFLEN 512
-#define CTRLSERVERRCVPORT 5000
-#define CTRLSERVERSNDPORT 5001
+#include "../ConferenceCall/ConferenceCallManager.h"
 #pragma comment(lib,"ws2_32.lib")
 
 typedef struct {
@@ -20,6 +19,7 @@ typedef struct {
 
 class Conversation;
 class Participant;
+class ConferenceCallManager;
 class ConversationManager {
 private:
 	static CRITICAL_SECTION waitAckCrit;
@@ -30,6 +30,7 @@ private:
 	static std::vector<std::tuple<long long, acafela::sip::SIPMessage>> consumedPacketList;
 	// time, retry, ip, msg
 	static std::vector<std::tuple<long long, int, std::string, acafela::sip::SIPMessage>> waitAckPacketList;
+	static ConferenceCallManager * confManager;
 	static ICryptoKeyMgr * keyManager;
 	static void sayGoodbyeMsg(std::string IP);
 	static void forwardMessageHandler(std::string IP, acafela::sip::SIPMessage msg);
@@ -40,7 +41,7 @@ private:
 	static long long getTime();
 public:
 	static void createSocket();
-	static void createControlServer(ICryptoKeyMgr * keyManager);
+	static void createControlServer(ICryptoKeyMgr * keyManager, ConferenceCallManager * confManager);
 	static void sendCtrlMsg(Participant * to, acafela::sip::SIPMessage msg, int retryCount);
 };
 
@@ -85,8 +86,6 @@ public:
 		this->isServerPassed = isServerPassed;
 		this->isWorking = true;
 		this->isVideoWorking = false;
-		if(isServerPassed)
-			createServerDataPath();
 	};
 	void openDataPath();
 	void startVideoDataPath();
