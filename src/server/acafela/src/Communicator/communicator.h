@@ -27,9 +27,9 @@ private:
 	static std::thread * rcvThread;
 	static SocketGroup ctrlStreamSocket;
 	static std::map<Participant *,Conversation *> conversationMap;
-	static std::vector<std::tuple<int, acafela::sip::SIPMessage>> consumedPacketList;
+	static std::vector<std::tuple<long long, acafela::sip::SIPMessage>> consumedPacketList;
 	// time, retry, ip, msg
-	static std::vector<std::tuple<int, int, std::string, acafela::sip::SIPMessage>> waitAckPacketList;
+	static std::vector<std::tuple<long long, int, std::string, acafela::sip::SIPMessage>> waitAckPacketList;
 	static ICryptoKeyMgr * keyManager;
 	static void sayGoodbyeMsg(std::string IP);
 	static void forwardMessageHandler(std::string IP, acafela::sip::SIPMessage msg);
@@ -37,7 +37,7 @@ private:
 	static void rcvAckHandler(std::string IP, acafela::sip::SIPMessage msg);
 	static bool isHandledMsgAndAck(Participant * part, bool isServerConsumed, acafela::sip::SIPMessage msg);
 	static void setRetryCtrlMsg(std::string ip, acafela::sip::SIPMessage msg, int retryConut);
-	static int getTime();
+	static long long getTime();
 public:
 	static void createSocket();
 	static void createControlServer(ICryptoKeyMgr * keyManager);

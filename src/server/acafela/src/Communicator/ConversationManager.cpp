@@ -4,7 +4,7 @@
 #include "../Hislog.h"
 #include "../SipMessage/SipMessage.pb.h"
 #define LOG_TAG "COMMPATH"
-#define TIMEOUT 3000
+#define TIMEOUT 300
 #define SAVEPACKETTIME 2000
 #define TRYCNT 3
 #define CASE(Consume, CMD) \
@@ -18,8 +18,8 @@ SocketGroup ConversationManager::ctrlStreamSocket;
 std::thread * ConversationManager::rcvThread;
 CRITICAL_SECTION ConversationManager::waitAckCrit;
 CRITICAL_SECTION ConversationManager::consumeAckCrit;
-std::vector<std::tuple<int, acafela::sip::SIPMessage>> ConversationManager::consumedPacketList;
-std::vector<std::tuple<int, int, std::string, acafela::sip::SIPMessage>> ConversationManager::waitAckPacketList;
+std::vector<std::tuple<long long, acafela::sip::SIPMessage>> ConversationManager::consumedPacketList;
+std::vector<std::tuple<long long, int, std::string, acafela::sip::SIPMessage>> ConversationManager::waitAckPacketList;
 std::map<Participant *, Conversation *> ConversationManager::conversationMap;
 void ConversationManager::createControlServer(ICryptoKeyMgr * keyManager_p) {
 	keyManager = keyManager_p;
@@ -136,8 +136,8 @@ void ConversationManager::createSocket() {
 	}
 }
 
-int ConversationManager::getTime() {
-	return time(NULL);
+long long ConversationManager::getTime() {
+	return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 }
 
 void ConversationManager::setRetryCtrlMsg(std::string ip, acafela::sip::SIPMessage msg, int retryConut) {
