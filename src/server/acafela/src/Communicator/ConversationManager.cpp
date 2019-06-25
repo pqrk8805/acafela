@@ -44,7 +44,7 @@ void ConversationManager::createControlServer(ICryptoKeyMgr * keyManager_p) {
 			if (msg.isack()) {
 				if (msg.from().find("SERVER") != std::string::npos) {
 					rcvAckHandler(ipStr, msg);
-					return;
+					continue;
 				}
 				forwardMessageHandler(std::string(ipStr), msg);
 			}
