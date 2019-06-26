@@ -38,6 +38,7 @@ public class AudioCallActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i(TAG, "onCreate start");
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -60,29 +61,36 @@ public class AudioCallActivity extends AppCompatActivity {
         AudioPathSelector.getInstance().setEarPieceAudio();
 
         mProxiScrController = new ProximityScreenController(this);
+        Log.d(TAG, "onCreate complete");
     }
 
     @Override
     protected void onDestroy() {
+        Log.i(TAG, "onDestroy");
         super.onDestroy();
     }
 
     @Override
     protected void onResume() {
+        Log.i(TAG, "onResume start");
         super.onResume();
         RegisterReceiver();
         mProxiScrController.activate();
+        Log.i(TAG, "onResume complete");
     }
 
     @Override
     protected void onPause() {
+        Log.i(TAG, "onPause start");
         super.onPause();
         UnregisterReceiver();
         mProxiScrController.deactivate();
+        Log.i(TAG, "onResume complete");
     }
 
     @Override
     public void onBackPressed() {
+        Log.i(TAG, "onBackPressed");
         super.onBackPressed();
         terminateCall();
         finish();

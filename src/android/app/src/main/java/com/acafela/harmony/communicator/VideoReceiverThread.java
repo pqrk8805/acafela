@@ -1,7 +1,10 @@
 package com.acafela.harmony.communicator;
 
+import android.util.Log;
+
 import com.acafela.harmony.codec.video.IVideoDecoder;
 import com.acafela.harmony.codec.video.VideoDecodeAsyncSurface;
+import com.acafela.harmony.ui.VideoCallActivity;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -9,6 +12,7 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 
 public class VideoReceiverThread extends Thread {
+    private static final String TAG = VideoCallActivity.class.getName();
 
     private static final int MAX_BUFFER_SIZE = 65000;
 
@@ -24,6 +28,7 @@ public class VideoReceiverThread extends Thread {
 
     @Override
     public void run() {
+        Log.i(TAG, "Start");
         super.run();
 
         mIsRunning = true;

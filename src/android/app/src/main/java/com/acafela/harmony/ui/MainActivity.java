@@ -93,6 +93,17 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
 
         Intent serviceIntent = new Intent(getApplicationContext(), HarmonyService.class);
         startService(serviceIntent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "onDestroy");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         mDirectoryService = new DirectoryService(this);
         UserInfo.getInstance().load(this);
@@ -105,12 +116,6 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
         }else {
             mDirectoryService.update();
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.i(TAG, "onDestroy");
     }
 
     @Override

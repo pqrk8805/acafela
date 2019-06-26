@@ -25,6 +25,7 @@ import com.acafela.harmony.sip.SipMessage.SIPMessage;
 import com.acafela.harmony.crypto.Crypto;
 import com.acafela.harmony.crypto.CryptoBroker;
 import com.acafela.harmony.ui.AudioCallActivity;
+import com.acafela.harmony.ui.VideoCallActivity;
 import com.acafela.harmony.userprofile.UserInfo;
 
 
@@ -39,7 +40,7 @@ public class VoipController {
     public static final int CONTROL_RECIEVE_PORT = 5001;
     private static final String LOG_TAG = "[AcafelaController]";
     private static final int BUFFER_SIZE = 128;
-    public static final int CONTROL_TIMEOUT = 300;
+    public static final int CONTROL_TIMEOUT = 3000;
     public static final int RETRY_COUNT = 3;
     private boolean UdpListenerThreadRun = false;
     private DatagramSocket socket;
@@ -214,11 +215,20 @@ public class VoipController {
                     if(mState==STATE.IDLE_STATE) {
                         mRingControl.ring_start();
                         sendMessage(SipMessage.Command.RINGING);
-                        Intent intent = new Intent(mContext, AudioCallActivity.class);
-                        intent.putExtra(INTENT_PHONENUMBER, mCallerNumber);
-                        intent.putExtra(INTENT_ISCALLEE, true);
-                        intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
-                        mContext.startActivity(intent);
+                        if (message.getIsVideoCall()) {
+                            Intent intent = new Intent(mContext, VideoCallActivity.class);
+                            intent.putExtra(INTENT_PHONENUMBER, mCallerNumber);
+                            intent.putExtra(INTENT_ISCALLEE, true);
+                            intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                            mContext.startActivity(intent);
+                        }
+                        else {
+                            Intent intent = new Intent(mContext, AudioCallActivity.class);
+                            intent.putExtra(INTENT_PHONENUMBER, mCallerNumber);
+                            intent.putExtra(INTENT_ISCALLEE, true);
+                            intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                            mContext.startActivity(intent);
+                        }
                     }
                     mState = STATE.RINGING_STATE;
                     break;

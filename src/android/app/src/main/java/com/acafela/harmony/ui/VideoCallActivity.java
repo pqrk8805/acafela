@@ -70,16 +70,19 @@ public class VideoCallActivity extends VideoSurfaceActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate start");
+        Log.i(TAG, "onCreate start");
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        getActionBar().hide();
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_videocall);
 
         mVideoEncoder.setEncodeCallback(new VideoEncodeSyncSurface.VideoCallback() {
             @Override
             public void onOutputBytesAvailable(byte[] outputBytes) {
+                if (outputBytes == null) {
+                    return;
+                }
                 Log.i(TAG, "EncodedBytes: " + outputBytes.length);
                 mVideoHandler.sendFrame(outputBytes);
             }
@@ -98,13 +101,13 @@ public class VideoCallActivity extends VideoSurfaceActivity {
 
     @Override
     protected void onDestroy() {
-        Log.d(TAG, "onDestroy");
+        Log.i(TAG, "onDestroy");
         super.onDestroy();
     }
 
     @Override
     protected void onResume() {
-        Log.d(TAG, "onPause start");
+        Log.i(TAG, "onResume start");
         super.onResume();
         RegisterReceiver();
         mGLView.onResume();
@@ -119,12 +122,12 @@ public class VideoCallActivity extends VideoSurfaceActivity {
                 mRenderer.changeRecordingState(true);
             }
         });
-        Log.d(TAG, "onResume complete");
+        Log.i(TAG, "onResume complete");
     }
 
     @Override
     protected void onPause() {
-        Log.d(TAG, "onPause start");
+        Log.i(TAG, "onPause start");
         super.onPause();
         UnregisterReceiver();
         mGLView.queueEvent(new Runnable() {
@@ -171,6 +174,8 @@ public class VideoCallActivity extends VideoSurfaceActivity {
     private void RegisterReceiver() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BROADCAST_BYE);
+        intentFilter.addAction(BROADCAST_SENDVIDEO);
+        intentFilter.addAction(BROADCAST_RECEIVEVIDEO);
 
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -181,6 +186,14 @@ public class VideoCallActivity extends VideoSurfaceActivity {
                 }
                 else if (intent.getAction().equals(BROADCAST_SENDVIDEO)) {
                     Log.i(TAG, "onReceive BROADCAST_SENDVIDEO");
+
+                    mGLView.queueEvent(new Runnable() {
+                        @Override public void run() {
+                            // notify the renderer that we want to change the encoder's state
+                            mRenderer.changeRecordingState(true);
+                        }
+                    });
+
                     String ip = intent.getStringExtra(KEY_IP);
                     int port = intent.getIntExtra(KEY_PORT, 0);
                     mVideoHandler.start(ip, port);

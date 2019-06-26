@@ -47,7 +47,7 @@ public class SenderVideo implements DataCommunicator {
             return false;
         }
         IsRunning = true;
-        sendBroadcast(mIpAddress.toString(), mPort);
+        sendBroadcast(mIpAddress.getHostAddress(), mPort);
         return true;
     }
 

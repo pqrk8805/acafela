@@ -3,6 +3,7 @@ package com.acafela.harmony.communicator;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
+import android.util.Log;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -16,36 +17,50 @@ public class VideoHandler {
 
     HandlerThread mHandlerThread;
     Handler mHandler;
+    boolean mIsStarted = false;
 
     DatagramSocket mSocket;
     private InetAddress mIpAddress;
     int mPort;
 
-    public void start(String ip, int port) {
+    public void start(final String ip, final int port) {
+        Log.i(TAG, "start");
+        mIsStarted = false;
         mHandlerThread = new HandlerThread("VideoHandler");
         mHandlerThread.start();
         Looper looper = mHandlerThread.getLooper();
         mHandler = new Handler(looper);
 
         mPort = port;
-        try {
-            mIpAddress = InetAddress.getByName(ip);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-        try {
-            mSocket = new DatagramSocket();
-        } catch (SocketException e) {
-            e.printStackTrace();
-        }
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    mIpAddress = InetAddress.getByName(ip);
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    mSocket = new DatagramSocket();
+                } catch (SocketException e) {
+                    e.printStackTrace();
+                }
+                mIsStarted = true;
+                Log.i(TAG, "start completed, " + "ip: " + mIpAddress.getHostAddress() + ", port: " + port);
+            }
+        });
     }
 
     public void stop() {
+        mIsStarted = false;
         mHandlerThread.quit();
         mHandler = null;
     }
 
     public void sendFrame(final byte[] byteArray) {
+        if (!mIsStarted) {
+            return;
+        }
         mHandler.post(new Runnable() {
             @Override
             public void run() {
