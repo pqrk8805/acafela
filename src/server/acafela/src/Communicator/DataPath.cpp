@@ -102,6 +102,8 @@ void DataPath::terminateDataPath() {
 		closesocket(dataStreamSocket.client);
 		closesocket(dataStreamSocket.server);
 	}
+	for (auto th : threadList)
+		th->join();
 }
 
 void DataPath::listener(SocketGroup socket, bool isVideo) {
@@ -116,6 +118,7 @@ void DataPath::listener(SocketGroup socket, bool isVideo) {
 		int slen = sizeof(si);
 		if ((recv_len = recvfrom(socket.server, buf, BUFLEN, 0, (struct sockaddr *) &si, &slen)) == SOCKET_ERROR)
 			printf("DATAPATH : recvfrom() failed with error code : %d, %s\n", WSAGetLastError(), clientIP.c_str());
+		if (!*workFlag) return;
 		conversation->broadcast_Data(ownerPart, recv_len, buf, isVideo);
 		delete buf;
 	}
@@ -147,6 +150,7 @@ void DataPath::sender(SocketGroup socket, bool isVideo) {
 		if (isVideo) port += 1;
 		server.sin_port = htons(port);
 		inet_pton(AF_INET, clientIP.c_str(), &(server.sin_addr));
+		if (!*workFlag) return;
 		if (sendto(socket.client, buf, recv_len, 0, (struct sockaddr*) &server, sizeof(struct sockaddr_in)) == SOCKET_ERROR)
 			printf("sendto() failed with error code : %d\n", WSAGetLastError());
 		delete buf;

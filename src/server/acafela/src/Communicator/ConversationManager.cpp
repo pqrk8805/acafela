@@ -55,28 +55,25 @@ void ConversationManager::createControlServer(ICryptoKeyMgr * keyManager_p, Conf
 	additionalThreadList.push_back(new std::thread([&] {
 		while (1) {
 			EnterCriticalSection(&waitAckCrit);
-			for (auto iter = waitAckPacketList.begin(); iter != waitAckPacketList.end();) {
-				if (std::get<1>(*iter) >= TRYCNT) {
-					iter = waitAckPacketList.erase(iter);
+			for (int i = 0; i < waitAckPacketList.size(); i++) {
+				auto iter = waitAckPacketList[i];
+				if (std::get<1>(iter) >= TRYCNT) {
+					waitAckPacketList.erase(waitAckPacketList.begin() + i--);
 					continue;
 				}
-				if (getTime() - std::get<0>(*iter) < TIMEOUT) {
-					iter++;
+				if (getTime() - std::get<0>(iter) < TIMEOUT)
 					continue;
-				}
-				Participant * tmpPart = new Participant(std::get<2>(*iter));
-				sendCtrlMsg(tmpPart, std::get<3>(*iter), std::get<1>(*iter));
-				iter = waitAckPacketList.erase(iter);
+				Participant * tmpPart = new Participant(std::get<2>(iter));
+				sendCtrlMsg(tmpPart, std::get<3>(iter), std::get<1>(iter));
 				delete tmpPart;
-				break;
+				waitAckPacketList.erase(waitAckPacketList.begin() + i--);
 			}
 			LeaveCriticalSection(&waitAckCrit);
 			EnterCriticalSection(&consumeAckCrit);
-			for (auto iter = consumedPacketList.begin(); iter != consumedPacketList.end();) {
-				if (getTime() - std::get<0>(*iter) < TIMEOUT)
-					iter++;
-				else
-					iter = consumedPacketList.erase(iter);
+			for (int i = 0; i < consumedPacketList.size(); i++) {
+				auto iter = consumedPacketList[i];
+				if (getTime() - std::get<0>(iter) >= TIMEOUT)
+					consumedPacketList.erase(consumedPacketList.begin() + i--);
 			}
 			LeaveCriticalSection(&consumeAckCrit);
 			Sleep(50);
