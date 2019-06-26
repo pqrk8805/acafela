@@ -1,19 +1,21 @@
 package com.acafela.harmony.communicator;
 
 
-import java.io.IOException;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
+import android.media.audiofx.AcousticEchoCanceler;
 import android.util.Log;
-import android.media.audiofx.AcousticEchoCanceler; // AEC
 
+import com.acafela.harmony.codec.audio.AudioCodecSync;
+import com.acafela.harmony.codec.audio.AudioMediaFormat;
 import com.acafela.harmony.crypto.ICrypto;
 import com.acafela.harmony.sip.SipMessage;
 
+import java.io.IOException;
 import java.io.InputStream;
-import java.net.DatagramSocket;
 import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
@@ -30,6 +32,8 @@ public class SenderAudio implements DataCommunicator {
     private AcousticEchoCanceler mAudioEchoCanceler;
     private int mAudioRecordSessionId;
     // AEC end
+    AudioMediaFormat mAudioMediaFormat = new AudioMediaFormat();
+    AudioCodecSync mAudioEncoder = new AudioCodecSync(true);
     private static int mPacketSeq= 0;
 
         public SenderAudio(ICrypto crypto)
@@ -67,6 +71,7 @@ public class SenderAudio implements DataCommunicator {
     {
         if(isSenderAudioRun)
             return false;
+        mAudioEncoder.start(mAudioMediaFormat.getAudioMediaFormat());
         senderAudioThreadRun = true;
         startSenderAudioThread();
 
@@ -85,6 +90,7 @@ public class SenderAudio implements DataCommunicator {
             }
             Log.i(LOG_TAG, " mSenderThread Join successs");
         }
+        mAudioEncoder.stop();
         senderAudioThreadRun = false;
         isSenderAudioRun = false;
         return true;
@@ -143,14 +149,19 @@ public class SenderAudio implements DataCommunicator {
                                 SendBuffer[1] = (byte) ((mPacketSeq>> 8) & 0x000000ff);
                                 SendBuffer[0] = (byte) 0;//primary packet
                                 if(mPacketSeq++ == MAX_AUDIO_SEQNO) mPacketSeq=0;
-
-                                byte[]  encrypted= mCrypto.encrypt(rawbuf, 0, RAW_BUFFER_SIZE);
+                                byte[] encodedBuf = mAudioEncoder.handle(rawbuf);
+                                if(encodedBuf == null)
+                                    continue;
+                                byte[] encrypted= mCrypto.encrypt(encodedBuf, 0, encodedBuf.length);
                                 System.arraycopy(encrypted,0,SendBuffer,AUDIO_HEADER_SIZE,encrypted.length);
-                                //Log.i(LOG_TAG, "Packet send length: " +  SendBuffer.length + " en : " + encrypted.length +" data : "+ SendBuffer[0]   + SendBuffer[1]+ SendBuffer[2]);
+
+                                int size = encrypted.length + AUDIO_HEADER_SIZE;
+                                //Log.i(LOG_TAG, "Packet send length: " +  size );
 
                                 DatagramPacket packet = new DatagramPacket(
                                         SendBuffer,
-                                        SendBuffer.length,
+                                       // SendBuffer.length,
+                                        size,
                                         mIpAddress,
                                         mPort);
                                 socket.send(packet);
@@ -158,7 +169,8 @@ public class SenderAudio implements DataCommunicator {
                                 SendBuffer[0]=1;
                                 DatagramPacket subPacket = new DatagramPacket(
                                         SendBuffer,
-                                        SendBuffer.length,
+                                        //SendBuffer.length,
+                                        size,
                                         mIpAddress,
                                         mPort);
                                 socket.send(subPacket);

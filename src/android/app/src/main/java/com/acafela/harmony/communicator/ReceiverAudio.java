@@ -1,12 +1,5 @@
 package com.acafela.harmony.communicator;
 
-import java.io.IOException;
-import java.net.DatagramSocket;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.util.Arrays;
-import java.net.InetSocketAddress;
-
 import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.AudioFormat;
@@ -15,10 +8,18 @@ import android.media.AudioTrack;
 import android.os.Process;
 import android.util.Log;
 
+import com.acafela.harmony.codec.audio.AudioCodecSync;
+import com.acafela.harmony.codec.audio.AudioMediaFormat;
 import com.acafela.harmony.crypto.ICrypto;
 import com.acafela.harmony.sip.SipMessage;
 
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.SocketException;
+import java.util.Arrays;
 
 public class ReceiverAudio implements DataCommunicator {
     private static final String LOG_TAG = "ReceiverAudio";
@@ -35,12 +36,15 @@ public class ReceiverAudio implements DataCommunicator {
     private Context mContext;
     private ICrypto mCrypto;
     private AudioBufferControl mAudioControl;
+    AudioMediaFormat mAudioMediaFormat = new AudioMediaFormat();
+    AudioCodecSync mAudioDecoder = new AudioCodecSync(false);
 
     public ReceiverAudio (Context context, ICrypto crypto)
     {
         mContext = context;
         mCrypto = crypto;
         mAudioControl = new AudioBufferControl(mCrypto,MAX_AUDIO_SEQNO);
+
     }
     public int getPortNum()
     {
@@ -75,6 +79,8 @@ public class ReceiverAudio implements DataCommunicator {
             Log.i(LOG_TAG, "UdpReceiveDataThread Thread already Started started");
             return false;
         }
+        mAudioDecoder.start(mAudioMediaFormat.getAudioMediaFormat());
+
         UdpVoipReceiveDataThreadRun = true;
         AudioIoPlayerThreadRun = true;
         startReceiveDataThread();
@@ -109,6 +115,8 @@ public class ReceiverAudio implements DataCommunicator {
         }
 
         mAudioControl.clear();
+        mAudioDecoder.stop();
+
         mPlayerThread = null;
         mRecieverThread = null;
         RecvUdpSocket = null;
@@ -134,7 +142,8 @@ public class ReceiverAudio implements DataCommunicator {
 
                     while (UdpVoipReceiveDataThreadRun) {
                         if(isAudioHeader) {
-                            byte[] recieveData = new byte[ (((RAW_BUFFER_SIZE) / 16 + 1) * 16) + AUDIO_HEADER_SIZE];
+                            //byte[] recieveData = new byte[ (((RAW_BUFFER_SIZE) / 16 + 1) * 16) + AUDIO_HEADER_SIZE];
+                            byte[] recieveData = new byte[19];
                             DatagramPacket packet = new DatagramPacket(recieveData, recieveData.length);
 
                             RecvUdpSocket.receive(packet);
@@ -143,10 +152,15 @@ public class ReceiverAudio implements DataCommunicator {
                                 data.seqNo = (recieveData[1]&0xFF)<<8 | (recieveData[2]&0xFF);
                                 if(recieveData[0] == 0)
                                     data.isPrimary = true;
-                                data.length = packet.getLength() - AUDIO_HEADER_SIZE;
-                                data.data = Arrays.copyOfRange(recieveData, AUDIO_HEADER_SIZE, packet.getLength());
-                                //Log.i(LOG_TAG, "Packet received length: " + recieveData.length + " seqNo :" + data.length);
-                                mAudioControl.pushData(data);
+                                if(mAudioControl.isValidCheck(data.seqNo)) {
+                                    byte[] encryptBuf = Arrays.copyOfRange(recieveData, AUDIO_HEADER_SIZE, packet.getLength());
+                                    byte[] decryptBuf = mCrypto.decrypt(encryptBuf, 0, encryptBuf.length);
+                                    byte[] decodedBuf = mAudioDecoder.handle(decryptBuf);
+                                    if(decodedBuf==null)
+                                        continue;
+                                    data.data = decodedBuf;
+                                    mAudioControl.pushData(data);
+                                }
                             }
                         }
                     }

@@ -32,11 +32,14 @@ public class AudioBufferControl {
 
     public void pushData(AudioData data)  {
         try {
+            //Log.e(LOG_TAG, "currSeq " + outData.seqNo);
             mSemaphore.acquire();
-            if (isValidCheck(data.seqNo, MAX_DISTANCE))
+            isDistanceCheck(data.seqNo,MAX_DISTANCE);
+            //if (isValidCheck(data.seqNo, MAX_DISTANCE))
             {
-                data.data = mCrypto.decrypt(data.data, 0, data.length);
-                data.length = data.data.length;
+            //    data.data = mCrypto.decrypt(data.data, 0, data.length);
+              //  data.length = data.data.length;
+                //Log.e(LOG_TAG, "currSeq " + data.seqNo + " length : " + data.length);
             }
             mAudioDataQueue.add(data);
             receiveSeqNum = data.seqNo;
@@ -52,7 +55,7 @@ public class AudioBufferControl {
         try {
             mSemaphore.acquire();
             if (isFirstFeeding) {
-                if (mAudioDataQueue.size() == MAX_DISTANCE / 2) {
+                if (mAudioDataQueue.size() == MAX_DISTANCE ) {
                     playerSeqNum = getFirstPacketNo();
                     isFirstFeeding = false;
                 } else {
@@ -69,7 +72,7 @@ public class AudioBufferControl {
             //현재 seqnumber 재생
             outData = getDataBySeqNo(playerSeqNum);
             if(outData!=null) {
-                    //Log.e(LOG_TAG, "currSeq " + outData.seqNo);
+                   // Log.e(LOG_TAG, "currSeq " + outData.seqNo);
             }
 
             //현재 seq 없는경우 이전거 재생
@@ -83,7 +86,7 @@ public class AudioBufferControl {
                     outData = getDataBySeqNo(tempSeq);
                     if(outData!=null)
                     {
-                        Log.e(LOG_TAG, "loss packet" + playerSeqNum + "recovery packet " + outData.seqNo);
+                        Log.e(LOG_TAG, "loss packet" + playerSeqNum + " recovery packet " + outData.seqNo);
                         break;
                     }
                 }
@@ -107,16 +110,21 @@ public class AudioBufferControl {
         mAudioDataQueue.clear();
         mAudioDataQueue = null;
     }
-
-    boolean isValidCheck(int seqNum, int distance)
+    boolean isValidCheck(int seqNum)
     {
-        boolean bNeedInsert = true;
-
+        for(Iterator<AudioData>iter = mAudioDataQueue.iterator(); iter.hasNext();)
+        {
+            AudioData data = iter.next();
+            if(seqNum == data.seqNo) return false;
+        }
+        return true;
+    }
+    void isDistanceCheck (int seqNum, int distance)
+    {
         for(Iterator<AudioData>iter = mAudioDataQueue.iterator(); iter.hasNext();)
         {
             AudioData data = iter.next();
             int interSeq = data.seqNo;
-            if(seqNum == data.seqNo) bNeedInsert = false; //바로 리턴해도 될듯?
 
             if(seqNum - MAX_DISTANCE < 0)
             {
@@ -140,7 +148,6 @@ public class AudioBufferControl {
                 }
             }
         }
-        return bNeedInsert;
     }
 
     int getFirstPacketNo()
