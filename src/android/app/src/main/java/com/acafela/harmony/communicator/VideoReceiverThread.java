@@ -46,7 +46,7 @@ public class VideoReceiverThread extends Thread {
                 mSocket.receive(packet);
                 byte[] receivedData = new byte[packet.getLength()];
                 System.arraycopy(
-                        packet.getLength(),
+                        packet.getData(),
                         packet.getOffset(),
                         receivedData,
                         0,

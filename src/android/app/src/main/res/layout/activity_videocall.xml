@@ -53,35 +53,65 @@
     <LinearLayout
         android:id= "@+id/bottom_container"
         android:layout_width= "match_parent"
-        android:layout_height= "match_parent"
+        android:layout_height= "200dp"
         android:layout_below="@+id/surfaceMain_container"
         android:orientation="horizontal">
+        <FrameLayout
+            android:id="@+id/camera_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
-        <LinearLayout
-            android:layout_width= "match_parent"
-            android:layout_height= "match_parent"
-            android:layout_weight="1">
-            <FrameLayout
-                android:id="@+id/camera_preview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
+    <LinearLayout
+        android:id="@+id/button_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:animateLayoutChanges="true"
+        android:elevation="8dp">
 
-        <RelativeLayout
-            android:layout_width= "match_parent"
-            android:layout_height= "match_parent"
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_terminatecall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="1">
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab_audiocall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:onClick="onClickTerminateCallBtn"
-                android:src="@drawable/fab_ic_end_call"
-                app:backgroundTint="@android:color/holo_red_dark"
-                app:fabSize="normal" />
-        </RelativeLayout>
+            android:onClick="onClickTerminateCallBtn"
+            app:fabSize="normal"
+            app:backgroundTint="@android:color/holo_red_dark"
+            android:src="@drawable/fab_ic_end_call" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/button_container_callee"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:animateLayoutChanges="true"
+        android:elevation="8dp"
+        android:orientation="horizontal">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_acceptcall_callee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="onClickAcceptCallBtn"
+            android:src="@drawable/quantum_ic_call_white_24"
+            app:backgroundTint="@android:color/holo_blue_dark"
+            app:fabSize="normal" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_terminatecall_callee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="onClickTerminateCallBtn"
+            android:layout_marginLeft="100dp"
+            app:fabSize="normal"
+            app:backgroundTint="@android:color/holo_red_dark"
+            android:src="@drawable/fab_ic_end_call" />
 
     </LinearLayout>
 
