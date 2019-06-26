@@ -164,10 +164,16 @@ public class VoipController {
                     }
                     break;
                 case OPENSESSION:
-                    if(mState==STATE.CONNECTING_STATE) break;
                     byte[] keyByte = mCryptoRpc.getKey(sesssionID);
+                    if(keyByte.length == 0)
+                    {
+                        Log.e(LOG_TAG, "key is empty");
+                        terminateCall();
+                        break;
+                    }
                     mCrypto  = CryptoBroker.getInstance().create("AES");
                     mCrypto.init(keyByte);
+
 
                     for(int i=0;i<message.getSessioninfo().getSessionsCount();i++) {
                         SipMessage.Session session = message.getSessioninfo().getSessions(i);
@@ -217,7 +223,7 @@ public class VoipController {
                     mState = STATE.RINGING_STATE;
                     break;
                 case OPENSESSION:
-                    if(mState==STATE.CONNECTING_STATE) break;
+                    //if(mState==STATE.CONNECTING_STATE) break;
                     byte[] keyByte = mCryptoRpc.getKey(sesssionID);
                     mCrypto = CryptoBroker.getInstance().create("AES");
                     Log.e(LOG_TAG, "Send Message: " +"keyByte" + keyByte.length);
@@ -374,9 +380,13 @@ public class VoipController {
         mState = STATE.INVITE_STATE;
         mCalleeNumber = calleeNumber;
         mCallerNumber = UserInfo.getInstance().getPhoneNumber();
-        sesssionID = UserInfo.getInstance().getPhoneNumber() + sesssionNo++;
         isCaller = true;
         mIsVideoCall = isVideoCall;
+
+        if(calleeNumber.indexOf("#")==0)
+            sesssionID = calleeNumber;
+        else
+            sesssionID = UserInfo.getInstance().getPhoneNumber() + sesssionNo++;
 
         sendMessage(INVITE);
     }
