@@ -200,6 +200,8 @@ bool ConversationManager::consumeMessageHandler(std::string IP, acafela::sip::SI
 		CASE(true, MAKECALL) {
 			FUNC_LOGI("Request to Make Call");
 			Conversation * conversation = conversationMap[sender];
+			if (conversation == nullptr)
+				return true;
 			conversation->makeConversation();
 			if (conversation->isVideoComm())
 				conversation->startVideoConversation();
@@ -228,12 +230,16 @@ bool ConversationManager::consumeMessageHandler(std::string IP, acafela::sip::SI
 		CASE(true, STARTVIDEO) {
 			FUNC_LOGI("Request to StartVideo");
 			Conversation * conversation = conversationMap[sender];
+			if (conversation == nullptr)
+				return true;
 			conversation->startVideoConversation();
 		}
 		return true;
 		CASE(true, STOPVIDEO) {
 			FUNC_LOGI("Request to StartVideo");
 			Conversation * conversation = conversationMap[sender];
+			if (conversation == nullptr)
+				return true;
 			conversation->stopVideoConversation();
 		}
 		return true;
@@ -252,8 +258,11 @@ void ConversationManager::forwardMessageHandler(std::string IP, acafela::sip::SI
 	//if (conversationMap[sender] == NULL)
 	//	sendCtrlMsg(to, msg);
 	//else
-	if(conversationMap[sender]->isP2P())
-		conversationMap[sender]->boradcast_CtrlExceptMe(sender, msg);
+	Conversation * conversation = conversationMap[sender];
+	if (conversation == nullptr)
+		return;
+	if(conversation->isP2P())
+		conversation->boradcast_CtrlExceptMe(sender, msg);
 }
 
 void ConversationManager::sendCtrlMsg(Participant * to, acafela::sip::SIPMessage msg, int retryCount) {
