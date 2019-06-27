@@ -22,7 +22,7 @@
         <item>EarPiece</item>
         <item>Bluetooth</item>
     </string-array>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Harmony</string>
     <string name="tab_text_1">Dial</string>
     <string name="tab_text_2">Contacts</string>
 
