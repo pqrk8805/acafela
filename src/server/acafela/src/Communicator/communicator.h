@@ -123,6 +123,7 @@ private :
 	std::vector<std::tuple<Participant *, int>> conversationRoom;
 	bool isServerPassed;
 	bool isVideoEnabled;
+	CRITICAL_SECTION critRoom;
 public :
 	Conversation(std::vector<std::tuple<Participant *, int>> partList, bool isServerPassed);
 	bool isP2P() {
