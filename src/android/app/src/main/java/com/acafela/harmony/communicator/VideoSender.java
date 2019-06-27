@@ -12,8 +12,8 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-public class VideoHandler {
-    private static final String TAG = VideoHandler.class.getName();
+public class VideoSender {
+    private static final String TAG = VideoSender.class.getName();
 
     HandlerThread mHandlerThread;
     Handler mHandler;
@@ -26,7 +26,7 @@ public class VideoHandler {
     public void start(final String ip, final int port) {
         Log.i(TAG, "start");
         mIsStarted = false;
-        mHandlerThread = new HandlerThread("VideoHandler");
+        mHandlerThread = new HandlerThread("VideoSender");
         mHandlerThread.start();
         Looper looper = mHandlerThread.getLooper();
         mHandler = new Handler(looper);

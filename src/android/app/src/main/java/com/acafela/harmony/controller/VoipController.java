@@ -299,13 +299,13 @@ public class VoipController {
                 communicator = new SenderAudio(mCrypto);
                 break;
             case SENDVIDEO:
-                communicator = new SenderVideo(mContext);
+                communicator = new SendVideoSession(mContext);
                 break;
             case RECIEVEAUDIO:
                 communicator = new ReceiverAudio(mContext, mCrypto);
                 break;
             case RECIEVEVIDEO:
-                communicator = new ReceiverVideo(mContext);
+                communicator = new ReceiveVideoSession(mContext);
                 break;
             case UNRECOGNIZED:
                 return;
