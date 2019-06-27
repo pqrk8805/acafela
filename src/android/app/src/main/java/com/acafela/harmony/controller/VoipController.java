@@ -40,7 +40,7 @@ public class VoipController {
     public static final int CONTROL_RECIEVE_PORT = 5001;
     private static final String LOG_TAG = "[AcafelaController]";
     private static final int BUFFER_SIZE = 128;
-    public static final int CONTROL_TIMEOUT = 400;
+    public static final int CONTROL_TIMEOUT = 3000;
     public static final int RETRY_COUNT = 3;
     private boolean UdpListenerThreadRun = false;
     private DatagramSocket socket;
@@ -291,7 +291,7 @@ public class VoipController {
 
     void opensession(SipMessage.SessionType type, String ip, int port)
     {
-        Log.e(LOG_TAG, "Send Message: "+ type +"ip" +ip +"port"+ port);
+        Log.e(LOG_TAG, "Send Message: "+ type +", ip: " +ip +", port: "+ port);
         DataCommunicator communicator = null;
         switch(type)
         {

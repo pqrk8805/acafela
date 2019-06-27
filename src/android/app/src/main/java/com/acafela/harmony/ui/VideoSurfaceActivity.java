@@ -232,6 +232,7 @@ public class VideoSurfaceActivity extends FullScreenActivity
 
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+        Log.i(TAG, "onSurfaceTextureAvailable");
         Surface s = new Surface(surface);
         mVideoDecoder = new VideoDecodeAsyncSurface(s);
         mVideoDecoder.start();
@@ -243,6 +244,7 @@ public class VideoSurfaceActivity extends FullScreenActivity
 
     @Override
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+        Log.i(TAG, "onSurfaceTextureDestroyed");
         mVideoDecoder.stop();
         return true;
     }

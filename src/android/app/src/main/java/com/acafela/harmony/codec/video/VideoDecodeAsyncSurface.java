@@ -25,13 +25,14 @@ public class VideoDecodeAsyncSurface implements IVideoDecoder {
     private MediaCodec mCodec;
     private Surface mSurface;
 
-    LinkedBlockingQueue<byte[]> mInputBytesQueue = new LinkedBlockingQueue<>(VIDEO_QUEUE_BOUND);
+    LinkedBlockingQueue<byte[]> mInputBytesQueue;
 
     public VideoDecodeAsyncSurface(Surface surface) {
         mSurface = surface;
     }
 
     public void start() {
+        mInputBytesQueue = new LinkedBlockingQueue<>(VIDEO_QUEUE_BOUND);
         mHandlerThread = new HandlerThread("VideoDecoderHandler");
         mHandlerThread.start();
         mHandler = new Handler(mHandlerThread.getLooper());
@@ -93,6 +94,7 @@ public class VideoDecodeAsyncSurface implements IVideoDecoder {
         mHandlerThread.interrupt();
         mHandlerThread.quit();
         mCodec.release();
+        mInputBytesQueue.clear();
     }
 
     public void enqueueInputBytes(byte[] rawBytes) {
