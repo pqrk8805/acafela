@@ -8,6 +8,7 @@ import android.util.Log;
 import com.acafela.harmony.Config;
 import com.acafela.harmony.R;
 import com.acafela.harmony.dirserv.DirectoryServiceGrpc;
+import com.acafela.harmony.dirserv.DirectoryServiceGrpc.DirectoryServiceBlockingStub;
 import com.acafela.harmony.dirserv.DirectoryServiceOuterClass;
 import com.acafela.harmony.rpc.Common;
 import com.acafela.harmony.userprofile.UserInfo;
@@ -37,13 +38,14 @@ public class DirectoryService {
             LocalIpAddressBin = wifiInfo.getIpAddress();
             LocalIP = String.format(Locale.US, "%d.%d.%d.%d", (LocalIpAddressBin & 0xff), (LocalIpAddressBin >> 8 & 0xff), (LocalIpAddressBin >> 16 & 0xff), (LocalIpAddressBin >> 24 & 0xff));
         }
-        DirectoryServiceGrpc.DirectoryServiceBlockingStub blockingStub =
-                new DirectoryServiceRpc(
-                        Config.SERVER_IP,
-                        Config.RPC_PORT_DIRECTORY_SERVICE,
-                        mContext.getResources().openRawResource(R.raw.ca),
-                        mContext.getResources().openRawResource(R.raw.server)
-                ).getBlockingStub();
+
+        DirectoryServiceRpc directoryServiceRpc = new DirectoryServiceRpc(
+                Config.SERVER_IP,
+                Config.RPC_PORT_DIRECTORY_SERVICE,
+                mContext.getResources().openRawResource(R.raw.ca),
+                mContext.getResources().openRawResource(R.raw.server));
+
+        DirectoryServiceBlockingStub blockingStub = directoryServiceRpc.getBlockingStub();
 
         Common.Error error = null;
         try {
@@ -56,5 +58,6 @@ public class DirectoryService {
         } catch (StatusRuntimeException e) {
             Log.i(TAG, "DirectoryService Update is Interrupted");
         }
+        directoryServiceRpc.shutdown();
     }
 }

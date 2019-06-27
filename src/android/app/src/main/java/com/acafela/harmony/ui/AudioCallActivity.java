@@ -5,10 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -21,7 +19,7 @@ import static com.acafela.harmony.ui.TestCallActivity.INTENT_CONTROL;
 import static com.acafela.harmony.ui.TestCallActivity.INTENT_SIP_ACCEPT_CALL;
 import static com.acafela.harmony.ui.TestCallActivity.INTENT_SIP_TERMINATE_CALL;
 
-public class AudioCallActivity extends AppCompatActivity {
+public class AudioCallActivity extends FullScreenActivity {
     private static final String TAG = AudioCallActivity.class.getName();
 
     public static final String INTENT_PHONENUMBER = "INTENT_PHONENUMBER";
@@ -40,9 +38,6 @@ public class AudioCallActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "onCreate start");
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        getSupportActionBar().hide();
         setContentView(R.layout.activity_audiocall);
 
         Intent intent = getIntent();

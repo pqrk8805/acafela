@@ -8,13 +8,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.TextureView;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.acafela.harmony.R;
 import com.acafela.harmony.codec.video.VideoEncodeSyncSurface;
-import com.acafela.harmony.communicator.VideoHandler;
 import com.acafela.harmony.communicator.VideoReceiverThread;
+import com.acafela.harmony.communicator.VideoSenderThread;
 import com.acafela.harmony.service.HarmonyService;
 import com.acafela.harmony.util.AudioPathSelector;
 
@@ -35,16 +34,13 @@ public class VideoCallActivity extends VideoSurfaceActivity {
 
     private BroadcastReceiver mBroadcastReceiver;
     private TextureView mTextureView;
-    private VideoHandler mVideoHandler = new VideoHandler();
-    private VideoReceiverThread mVideoReceiverThread;
+    private static VideoSenderThread mVideoSenderThread;
+    private static VideoReceiverThread mVideoReceiverThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "onCreate start");
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        getSupportActionBar().hide();
         setContentView(R.layout.activity_videocall);
 
         mVideoEncoder.setEncodeCallback(new VideoEncodeSyncSurface.VideoCallback() {
@@ -53,8 +49,10 @@ public class VideoCallActivity extends VideoSurfaceActivity {
                 if (outputBytes == null) {
                     return;
                 }
-                Log.i(TAG, "EncodedBytes: " + outputBytes.length);
-                mVideoHandler.sendFrame(outputBytes);
+//                Log.d(TAG, "EncodedBytes: " + outputBytes.length);
+                if (mVideoSenderThread != null) {
+                    mVideoSenderThread.enqueueFrame(outputBytes);
+                }
             }
         });
 
@@ -73,7 +71,7 @@ public class VideoCallActivity extends VideoSurfaceActivity {
         }
 
         AudioPathSelector.getInstance().setAudioManager(this);
-        AudioPathSelector.getInstance().setSpeakerAudio();
+        AudioPathSelector.getInstance().setEarPieceAudio();
         Log.d(TAG, "onCreate complete");
     }
 
@@ -88,18 +86,6 @@ public class VideoCallActivity extends VideoSurfaceActivity {
         Log.i(TAG, "onResume start");
         super.onResume();
         RegisterReceiver();
-        mGLView.onResume();
-        mGLView.queueEvent(new Runnable() {
-            @Override public void run() {
-                mRenderer.setCameraPreviewSize(VIDEO_WIDTH, VIDEO_HEIGHT);
-            }
-        });
-        mGLView.queueEvent(new Runnable() {
-            @Override public void run() {
-                // notify the renderer that we want to change the encoder's state
-                mRenderer.changeRecordingState(true);
-            }
-        });
         Log.i(TAG, "onResume complete");
     }
 
@@ -123,7 +109,6 @@ public class VideoCallActivity extends VideoSurfaceActivity {
         Log.i(TAG, "onBackPressed");
         super.onBackPressed();
         terminateCall();
-        finish();
     }
 
     public void onClickAcceptCallBtn(View v) {
@@ -144,7 +129,14 @@ public class VideoCallActivity extends VideoSurfaceActivity {
         Intent serviceIntent = new Intent(getApplicationContext(), HarmonyService.class);
         serviceIntent.putExtra(INTENT_CONTROL, INTENT_SIP_TERMINATE_CALL);
         startService(serviceIntent);
-        mVideoReceiverThread.kill();
+        if (mVideoReceiverThread != null) {
+            mVideoReceiverThread.kill();
+            mVideoReceiverThread = null;
+        }
+        if (mVideoSenderThread != null) {
+            mVideoSenderThread.kill();
+            mVideoSenderThread = null;
+        }
 
         finish();
     }
@@ -160,11 +152,17 @@ public class VideoCallActivity extends VideoSurfaceActivity {
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(BROADCAST_BYE)) {
                     Log.i(TAG, "onReceive BROADCAST_BYE");
-                    finish();
+                    terminateCall();
                 }
                 else if (intent.getAction().equals(BROADCAST_SENDVIDEO)) {
                     Log.i(TAG, "onReceive BROADCAST_SENDVIDEO");
 
+                    mGLView.onResume();
+                    mGLView.queueEvent(new Runnable() {
+                        @Override public void run() {
+                            mRenderer.setCameraPreviewSize(VIDEO_WIDTH, VIDEO_HEIGHT);
+                        }
+                    });
                     mGLView.queueEvent(new Runnable() {
                         @Override public void run() {
                             // notify the renderer that we want to change the encoder's state
@@ -174,13 +172,20 @@ public class VideoCallActivity extends VideoSurfaceActivity {
 
                     String ip = intent.getStringExtra(KEY_IP);
                     int port = intent.getIntExtra(KEY_PORT, 0);
-                    mVideoHandler.start(ip, port);
+                    if (mVideoSenderThread == null) {
+                        mVideoSenderThread = new VideoSenderThread();
+                        mVideoSenderThread.setAddress(ip, port);
+                        mVideoSenderThread.start();
+                    }
                 }
                 else if (intent.getAction().equals(BROADCAST_RECEIVEVIDEO)) {
                     Log.i(TAG, "onReceive BROADCAST_RECEIVEVIDEO");
                     int port = intent.getIntExtra(KEY_PORT, 0);
-                    mVideoReceiverThread = new VideoReceiverThread(mVideoDecoder, port);
-                    mVideoReceiverThread.start();
+                    if (mVideoReceiverThread == null) {
+                        mVideoReceiverThread = new VideoReceiverThread();
+                        mVideoReceiverThread.setDecoder(mVideoDecoder, port);
+                        mVideoReceiverThread.start();
+                    }
                 }
             }
         };

@@ -3,16 +3,13 @@ package com.acafela.harmony.communicator;
 import android.util.Log;
 
 import com.acafela.harmony.codec.video.IVideoDecoder;
-import com.acafela.harmony.codec.video.VideoDecodeAsyncSurface;
-import com.acafela.harmony.ui.VideoCallActivity;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.SocketException;
 
 public class VideoReceiverThread extends Thread {
-    private static final String TAG = VideoCallActivity.class.getName();
+    private static final String TAG = VideoReceiverThread.class.getName();
 
     private static final int MAX_BUFFER_SIZE = 65000;
 
@@ -21,26 +18,41 @@ public class VideoReceiverThread extends Thread {
     private IVideoDecoder mVideoDecoder;
     private int mPort;
 
-    public VideoReceiverThread(IVideoDecoder videoDecoder, int port) {
+    public void setDecoder(IVideoDecoder videoDecoder, int port) {
+        Log.i(TAG, "setDecoder");
         mVideoDecoder = videoDecoder;
         mPort = port;
     }
 
+    public boolean isRunning() {
+        return mIsRunning;
+    }
+
+    private boolean initSocket() {
+        try {
+            if (mSocket == null) {
+                mSocket = new DatagramSocket(mPort);
+                Log.i(TAG, "initSocket Completed");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
     @Override
     public void run() {
-        Log.i(TAG, "Start");
+        Log.i(TAG, "Start, port: " + mPort);
         super.run();
 
         mIsRunning = true;
         byte[] byteArray = new byte[MAX_BUFFER_SIZE];
-        DatagramPacket packet = new DatagramPacket(byteArray, MAX_BUFFER_SIZE);
-        try {
-            mSocket = new DatagramSocket(mPort);
-        } catch (SocketException e) {
-            e.printStackTrace();
+        if (!initSocket()) {
             return;
         }
-
+        DatagramPacket packet = new DatagramPacket(byteArray, MAX_BUFFER_SIZE);
         while(mIsRunning) {
             try {
                 mSocket.receive(packet);
@@ -52,6 +64,7 @@ public class VideoReceiverThread extends Thread {
                         0,
                         packet.getLength());
                 mVideoDecoder.enqueueInputBytes(receivedData);
+//                Log.i(TAG, "Receive Video Packet: " + receivedData.length);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -61,6 +74,8 @@ public class VideoReceiverThread extends Thread {
     }
 
     public void kill() {
+        Log.i(TAG, "kill");
+        this.interrupt();
         mIsRunning = false;
         if (mSocket != null) {
             mSocket.close();

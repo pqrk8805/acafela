@@ -35,6 +35,7 @@ public class AudioCodecAsync {
 				"AudioEncoderHandler":"AudioDecoderHandler");
 		mHandlerThread.start();
 		mHandler = new Handler(mHandlerThread.getLooper());
+		mInputBytesQueue.clear();
 
 		try {
 			mCodec = mIsEncoder?

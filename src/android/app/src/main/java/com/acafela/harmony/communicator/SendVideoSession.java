@@ -13,8 +13,8 @@ import static com.acafela.harmony.ui.AudioCallActivity.BROADCAST_SENDVIDEO;
 import static com.acafela.harmony.ui.AudioCallActivity.KEY_IP;
 import static com.acafela.harmony.ui.AudioCallActivity.KEY_PORT;
 
-public class SenderVideo implements DataCommunicator {
-    private static final String TAG = "SenderVideo";
+public class SendVideoSession implements DataCommunicator {
+    private static final String TAG = "SendVideoSession";
 
     private boolean IsRunning = false;
 
@@ -22,7 +22,7 @@ public class SenderVideo implements DataCommunicator {
     private int mPort;
     private Context mContext;
 
-    public SenderVideo(Context context) {
+    public SendVideoSession(Context context) {
         mContext = context;
     }
 

@@ -11,15 +11,15 @@ import java.net.InetAddress;
 import static com.acafela.harmony.ui.AudioCallActivity.BROADCAST_RECEIVEVIDEO;
 import static com.acafela.harmony.ui.AudioCallActivity.KEY_PORT;
 
-public class ReceiverVideo implements DataCommunicator {
-    static final String TAG = "ReceiverVideo";
+public class ReceiveVideoSession implements DataCommunicator {
+    static final String TAG = "ReceiveVideoSession";
     private boolean IsRunning = false;
 
     private InetAddress mIpAddress;
     private int mPort;
     private Context mContext;
 
-    public ReceiverVideo(Context context) {
+    public ReceiveVideoSession(Context context) {
         mContext = context;
     }
 

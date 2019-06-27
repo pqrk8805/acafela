@@ -1,11 +1,9 @@
 package com.acafela.harmony.ui;
 
-import android.app.Activity;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
@@ -97,7 +95,7 @@ import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_WIDTH;
  * continues to generate preview frames while the Activity is paused.)  The video encoder object
  * is managed as a static property of the Activity.
  */
-public class VideoSurfaceActivity extends AppCompatActivity
+public class VideoSurfaceActivity extends FullScreenActivity
         implements SurfaceTexture.OnFrameAvailableListener, TextureView.SurfaceTextureListener {
     private static final String TAG = VideoSurfaceActivity.class.getName();
 
@@ -234,6 +232,7 @@ public class VideoSurfaceActivity extends AppCompatActivity
 
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+        Log.i(TAG, "onSurfaceTextureAvailable");
         Surface s = new Surface(surface);
         mVideoDecoder = new VideoDecodeAsyncSurface(s);
         mVideoDecoder.start();
@@ -245,6 +244,7 @@ public class VideoSurfaceActivity extends AppCompatActivity
 
     @Override
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+        Log.i(TAG, "onSurfaceTextureDestroyed");
         mVideoDecoder.stop();
         return true;
     }

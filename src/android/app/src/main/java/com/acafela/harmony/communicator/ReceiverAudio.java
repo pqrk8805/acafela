@@ -222,11 +222,12 @@ public class ReceiverAudio implements DataCommunicator {
                         if(audioData!=null) {
                             //byte[] outStream = mCrypto.decrypt(audioData.data, 0, audioData.data.length);
 
+                            //Log.i(LOG_TAG, "Audio Thread check " + OutputTrack.getBufferCapacityInFrames() + "or"+ OutputTrack.getBufferSizeInFrames());
                             //if (!MainActivity.BoostAudio)
                             if (true) {
-                                if(isAudioHeader)
+                                if(isAudioHeader) {
                                     OutputTrack.write(audioData.data, 0, RAW_BUFFER_SIZE);
-                                else
+                                } else
                                     OutputTrack.write(audioData.data, 0, RAW_BUFFER_SIZE);
                             } else {
                                 short[] AudioOutputBufferShorts = new short[audioData.data.length / 2];

@@ -203,7 +203,7 @@ public class CameraSurfaceRenderer implements GLSurfaceView.Renderer {
             // Texture size isn't set yet.  This is only used for the filters, but to be
             // safe we can just skip drawing while we wait for the various races to resolve.
             // (This seems to happen if you toggle the screen off/on with power button.)
-            Log.i(TAG, "Drawing before incoming texture size set; skipping");
+//            Log.d(TAG, "Drawing before incoming texture size set; skipping");
             return;
         }
         if (mIncomingSizeUpdated) {
