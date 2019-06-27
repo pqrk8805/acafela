@@ -32,6 +32,7 @@ public class VideoDecodeAsyncSurface implements IVideoDecoder {
     }
 
     public void start() {
+        Log.i(TAG, "start");
         mInputBytesQueue = new LinkedBlockingQueue<>(VIDEO_QUEUE_BOUND);
         mHandlerThread = new HandlerThread("VideoDecoderHandler");
         mHandlerThread.start();
@@ -90,10 +91,13 @@ public class VideoDecodeAsyncSurface implements IVideoDecoder {
     }
 
     public void stop() {
-        mCodec.stop();
-        mHandlerThread.interrupt();
+        Log.i(TAG, "stop");
         mHandlerThread.quit();
+        mHandlerThread.interrupt();
+        mCodec.stop();
+        mCodec.reset();
         mCodec.release();
+        mCodec = null;
         mInputBytesQueue.clear();
     }
 
