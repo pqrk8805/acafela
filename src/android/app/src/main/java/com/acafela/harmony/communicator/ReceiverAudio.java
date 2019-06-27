@@ -153,11 +153,27 @@ public class ReceiverAudio implements DataCommunicator {
                                 if(recieveData[0] == 0)
                                     data.isPrimary = true;
                                 if(mAudioControl.isValidCheck(data.seqNo)) {
+
                                     byte[] encryptBuf = Arrays.copyOfRange(recieveData, AUDIO_HEADER_SIZE, packet.getLength());
-                                    byte[] decryptBuf = mCrypto.decrypt(encryptBuf, 0, encryptBuf.length);
-                                    byte[] decodedBuf = mAudioDecoder.handle(decryptBuf);
-                                    if(decodedBuf==null)
+                                    if(encryptBuf == null) continue;
+
+                                    byte[] decryptBuf;
+                                    try {
+                                        decryptBuf = mCrypto.decrypt(encryptBuf, 0, encryptBuf.length);
+                                    } catch(IllegalArgumentException e){
+                                        e.printStackTrace();
                                         continue;
+                                    }
+                                    if(decryptBuf == null) continue;
+                                    byte[] decodedBuf;
+
+                                    try {
+                                        decodedBuf = mAudioDecoder.handle(decryptBuf);
+                                    } catch(IllegalArgumentException e){
+                                        e.printStackTrace();
+                                        continue;
+                                    }
+                                    if(decodedBuf==null)  continue;
                                     data.data = decodedBuf;
                                     mAudioControl.pushData(data);
                                 }

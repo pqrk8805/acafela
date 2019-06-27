@@ -10,7 +10,7 @@ import java.util.concurrent.Semaphore;
 
 public class AudioBufferControl {
     private static final String LOG_TAG = "AudioBufferControl";
-    private int MAX_DISTANCE=20;
+    private int MAX_DISTANCE=15;
     private int playerSeqNum;
     private int receiveSeqNum;
     private ICrypto mCrypto;
@@ -54,7 +54,7 @@ public class AudioBufferControl {
             if (isFirstFeeding) {
                 if (mAudioDataQueue.size() == MAX_DISTANCE - 2) {
                     //playerSeqNum = getFirstPacketNo();
-                    playerSeqNum = getOldDataSeqNo();
+                    playerSeqNum = getOldDataSeqNo(true);
                     isFirstFeeding = false;
                 } else {
                     mSemaphore.release();
@@ -65,7 +65,7 @@ public class AudioBufferControl {
             //Exception : 범위가 벗어난경우 가장오래된 데이터로 초기화
             if (checkDistanceError()) {
                 //playerSeqNum = getFirstPacketNo();
-                playerSeqNum = getOldDataSeqNo();
+                playerSeqNum = getOldDataSeqNo(false);
             }
 
             //현재 seqnumber 재생
@@ -243,15 +243,22 @@ public class AudioBufferControl {
         }
         return true;
     }
-    int getOldDataSeqNo()
+    int getOldDataSeqNo(boolean isForce)
     {
+        AudioData data;
         if(mAudioDataQueue.size()==0)
         {
             Log.e(LOG_TAG, "there is no data ");
             return playerSeqNum;
         }
-        AudioData data = (AudioData) mAudioDataQueue.get(0);
-        Log.e(LOG_TAG, "Oldest data SeqNo : " + data.seqNo);
+        if(isForce==false && mAudioDataQueue.size() >MAX_DISTANCE/2)
+        {
+            data = (AudioData)mAudioDataQueue.get(mAudioDataQueue.size()/2);
+            Log.e(LOG_TAG, "Middlet data SeqNo : " + data.seqNo);
+        } else {
+            data = (AudioData) mAudioDataQueue.get(0);
+            Log.e(LOG_TAG, "Oldest data SeqNo : " + data.seqNo);
+        }
         return data.seqNo;
     }
     boolean isExistNextPacket()
