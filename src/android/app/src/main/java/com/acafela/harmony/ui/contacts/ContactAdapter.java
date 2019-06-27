@@ -66,10 +66,18 @@ public class ContactAdapter extends BaseAdapter
                 inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             }
             convertView = inflater.inflate(R.layout.items_contact, parent, false);
+            convertView.setLongClickable(true);
+            convertView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Log.e(LOG_TAG, "onLongClick()");
+                    return false;
+                }
+            });
         }
 
-        TextView nameView = (TextView)convertView.findViewById(R.id.contact_name);
-        TextView numberView = (TextView)convertView.findViewById(R.id.contact_number);
+        TextView nameView = convertView.findViewById(R.id.contact_name);
+        TextView numberView = convertView.findViewById(R.id.contact_number);
 
         final String phone = mContacts.get(position).phone;
 
@@ -77,7 +85,7 @@ public class ContactAdapter extends BaseAdapter
                             + " (" + mContacts.get(position).email + ")");
         numberView.setText(phone);
 
-        Button btnVoiceCall = (Button)convertView.findViewById(R.id.contact_call_btn);
+        Button btnVoiceCall = convertView.findViewById(R.id.contact_call_btn);
         btnVoiceCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,7 +94,7 @@ public class ContactAdapter extends BaseAdapter
             }
         });
 
-        Button btnVideoCall = (Button)convertView.findViewById(R.id.contact_videocall_btn);
+        Button btnVideoCall = convertView.findViewById(R.id.contact_videocall_btn);
         btnVideoCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,7 +111,7 @@ public class ContactAdapter extends BaseAdapter
         Intent serviceIntent = new Intent(mContext, HarmonyService.class);
         serviceIntent.putExtra(TestCallActivity.INTENT_CONTROL, TestCallActivity.INTENT_SIP_INVITE_CALL);
         serviceIntent.putExtra(TestCallActivity.INTEMT_CALLEE_PHONENUMBER, phone);
-        serviceIntent.putExtra(TestCallActivity.INTENT_ISVIDEO, false);
+        serviceIntent.putExtra(TestCallActivity.INTENT_ISVIDEO, isVideo);
         mContext.startService(serviceIntent);
 
         Intent activityIntent = new Intent(mContext,
