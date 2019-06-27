@@ -10,7 +10,7 @@ import java.util.concurrent.Semaphore;
 
 public class AudioBufferControl {
     private static final String LOG_TAG = "AudioBufferControl";
-    private int MAX_DISTANCE=15;
+    private int MAX_DISTANCE=20;
     private int playerSeqNum;
     private int receiveSeqNum;
     private ICrypto mCrypto;
@@ -37,6 +37,7 @@ public class AudioBufferControl {
             mSemaphore.acquire();
             //isDistanceCheck(data.seqNo,MAX_DISTANCE);
             chececkExpiredData();
+            //Log.e(LOG_TAG, "currSeq " + data.seqNo );
             mAudioDataQueue.add(data);
             receiveSeqNum = data.seqNo;
             mSemaphore.release();
@@ -51,7 +52,7 @@ public class AudioBufferControl {
         try {
             mSemaphore.acquire();
             if (isFirstFeeding) {
-                if (mAudioDataQueue.size() == MAX_DISTANCE ) {
+                if (mAudioDataQueue.size() == MAX_DISTANCE - 2) {
                     //playerSeqNum = getFirstPacketNo();
                     playerSeqNum = getOldDataSeqNo();
                     isFirstFeeding = false;
