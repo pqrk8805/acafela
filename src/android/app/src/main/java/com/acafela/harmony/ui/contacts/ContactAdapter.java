@@ -1,49 +1,58 @@
 package com.acafela.harmony.ui.contacts;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.acafela.harmony.R;
+import com.acafela.harmony.service.HarmonyService;
+import com.acafela.harmony.ui.AudioCallActivity;
+import com.acafela.harmony.ui.TestCallActivity;
+import com.acafela.harmony.ui.VideoCallActivity;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ContactAdapter extends BaseAdapter
 {
-    LayoutInflater inflater = null;
-    private ArrayList<ContactModel> mData = null;
-    private int nListCnt = 0;
+    private static final String LOG_TAG = "ContactAdator";
 
-    public ContactAdapter(ArrayList<ContactModel> input_Data)
+    private LayoutInflater inflater = null;
+    private List<ContactEntry> mContacts;
+    private DatabaseHelper mDbHelper;
+    private Context mContext;
+
+    public ContactAdapter(Context context, DatabaseHelper dbHelper)
     {
-        mData = input_Data;
-        nListCnt = mData.size();
+        mContext = context;
+        mDbHelper = dbHelper;
+        mContacts = mDbHelper.query();
     }
 
     @Override
     public int getCount()
     {
-        Log.i("TAG", "getCount");
-        return nListCnt;
+        Log.i(LOG_TAG, "getCount");
+        return mContacts.size();
     }
 
     @Override
     public Object getItem(int position)
     {
-        return null;
+        Log.i(LOG_TAG, "getItem");
+        return mContacts.get(position);
     }
 
     @Override
     public long getItemId(int position)
     {
-        return 0;
+        Log.i(LOG_TAG, "getItemId");
+        return mContacts.get(position).id;
     }
 
     @Override
@@ -54,25 +63,62 @@ public class ContactAdapter extends BaseAdapter
             final Context context = parent.getContext();
             if (inflater == null)
             {
-                inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             }
             convertView = inflater.inflate(R.layout.items_contact, parent, false);
         }
 
-        TextView mName = (TextView) convertView.findViewById(R.id.contact_name);
-        TextView mNumber = (TextView) convertView.findViewById(R.id.contact_number);
+        TextView nameView = (TextView)convertView.findViewById(R.id.contact_name);
+        TextView numberView = (TextView)convertView.findViewById(R.id.contact_number);
 
-        mName.setText(mData.get(position).name);
-        mNumber.setText(mData.get(position).number);
+        final String phone = mContacts.get(position).phone;
 
-        Button button = (Button) convertView.findViewById(R.id.contact_call_btn);
-        button.setOnClickListener(new View.OnClickListener() {
+        nameView.setText(mContacts.get(position).name
+                            + " (" + mContacts.get(position).email + ")");
+        numberView.setText(phone);
+
+        Button btnVoiceCall = (Button)convertView.findViewById(R.id.contact_call_btn);
+        btnVoiceCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("TAG", "onClick Call");
+                Log.i(LOG_TAG, "onClick VoiceCall: " + phone);
+                initiateCall(phone, false);
+            }
+        });
+
+        Button btnVideoCall = (Button)convertView.findViewById(R.id.contact_videocall_btn);
+        btnVideoCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(LOG_TAG, "onClick VideoCall");
+                initiateCall(phone, true);
             }
         });
 
         return convertView;
+    }
+
+    private void initiateCall(String phone, boolean isVideo)
+    {
+        Intent serviceIntent = new Intent(mContext, HarmonyService.class);
+        serviceIntent.putExtra(TestCallActivity.INTENT_CONTROL, TestCallActivity.INTENT_SIP_INVITE_CALL);
+        serviceIntent.putExtra(TestCallActivity.INTEMT_CALLEE_PHONENUMBER, phone);
+        serviceIntent.putExtra(TestCallActivity.INTENT_ISVIDEO, false);
+        mContext.startService(serviceIntent);
+
+        Intent activityIntent = new Intent(mContext,
+                                           isVideo
+                                                ? VideoCallActivity.class
+                                                : AudioCallActivity.class);
+        activityIntent.putExtra(AudioCallActivity.INTENT_PHONENUMBER, phone);
+        activityIntent.putExtra(AudioCallActivity.INTENT_ISCALLEE, false);
+        mContext.startActivity(activityIntent);
+    }
+
+    @Override
+    public void notifyDataSetChanged()
+    {
+        mContacts = mDbHelper.query();
+        super.notifyDataSetChanged();
     }
 }
