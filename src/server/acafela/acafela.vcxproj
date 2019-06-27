@@ -200,7 +200,7 @@ xcopy /y/d/i/e $(SolutionDir)..\..\external\email $(OutDir)</Command>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\external\gRPC\include;$(SolutionDir)..\..\external\gRPC\include\third_party\protobuf\src;$(ProjectDir)src;$(ProjectDir)src\RpcCommon;$(ProjectDir)src\UserProfile;$(ProjectDir)src\DirectoryService;$(ProjectDir)src\StorageAccessor;$(ProjectDir)src\CryptoKey;$(ProjectDir)src\UserAdmin;$(ProjectDir)src\ConCall;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\external\gRPC\include;$(SolutionDir)..\..\external\gRPC\include\third_party\protobuf\src;$(ProjectDir)src;$(ProjectDir)src\RpcCommon;$(ProjectDir)src\UserProfile;$(ProjectDir)src\DirectoryService;$(ProjectDir)src\StorageAccessor;$(ProjectDir)src\CryptoKey;$(ProjectDir)src\UserAdmin;$(ProjectDir)src\ConferenceCall;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>SDKDDKVer.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <Link>

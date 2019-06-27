@@ -8,7 +8,7 @@ namespace AcafelaUserAdmin
 {
     public class Config
     {
-        public static String RPC_SERVER_URL = "localhost:9300";
+        public static String RPC_SERVER_URL = "128.237.119.66:9300";
 
         private Config() { }
     }

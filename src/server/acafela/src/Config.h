@@ -1,5 +1,5 @@
 #pragma once
-#define SERVER_IP "192.168.1.9"
+#define SERVER_IP "128.237.119.66"
 #define RPC_PORT_USERVER_PROFILE    "9000"
 #define RPC_PORT_DIRECTORY_SERVICE  "9100"
 #define RPC_PORT_CRYPTO_KEY         "9200"
