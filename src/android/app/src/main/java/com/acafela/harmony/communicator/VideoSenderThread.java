@@ -59,13 +59,13 @@ public class VideoSenderThread extends Thread {
         while(mIsRunning) {
             byte[] frame = null;
             try {
-                Log.i(TAG, "before take");
+//                Log.i(TAG, "before take");
                     frame = mFrameQueue.take();
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 continue;
             }
-            Log.i(TAG, "mFrameQueue is taken: " + frame.length);
+//            Log.i(TAG, "mFrameQueue is taken: " + frame.length);
             DatagramPacket packet = new DatagramPacket(
                     frame,
                     frame.length,
@@ -78,7 +78,7 @@ public class VideoSenderThread extends Thread {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            Log.i(TAG, "Send Video Packet: " + frame.length);
+//            Log.i(TAG, "Send Video Packet: " + frame.length);
         }
 
         kill();
@@ -109,7 +109,7 @@ public class VideoSenderThread extends Thread {
             e.printStackTrace();
             return;
         }
-        Log.i(TAG, "enqueueFrame mFrameQueue.size(): " + mFrameQueue.size());
-        Log.i(TAG, "enqueueFrame: " + frame.length);
+//        Log.i(TAG, "enqueueFrame mFrameQueue.size(): " + mFrameQueue.size());
+//        Log.i(TAG, "enqueueFrame: " + frame.length);
     }
 }

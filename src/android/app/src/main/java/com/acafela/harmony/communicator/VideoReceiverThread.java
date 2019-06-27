@@ -64,7 +64,7 @@ public class VideoReceiverThread extends Thread {
                         0,
                         packet.getLength());
                 mVideoDecoder.enqueueInputBytes(receivedData);
-                Log.i(TAG, "Receive Video Packet: " + receivedData.length);
+//                Log.i(TAG, "Receive Video Packet: " + receivedData.length);
             } catch (IOException e) {
                 e.printStackTrace();
             }

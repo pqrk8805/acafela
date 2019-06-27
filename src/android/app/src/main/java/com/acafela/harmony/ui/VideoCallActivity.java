@@ -49,7 +49,7 @@ public class VideoCallActivity extends VideoSurfaceActivity {
                 if (outputBytes == null) {
                     return;
                 }
-                Log.d(TAG, "EncodedBytes: " + outputBytes.length);
+//                Log.d(TAG, "EncodedBytes: " + outputBytes.length);
                 if (mVideoSenderThread != null) {
                     mVideoSenderThread.enqueueFrame(outputBytes);
                 }

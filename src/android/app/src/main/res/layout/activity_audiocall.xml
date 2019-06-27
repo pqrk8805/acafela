@@ -31,7 +31,7 @@
             android:id="@+id/tv_voicecall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Voice Call"
+            android:text="Audio Call"
             android:fontFamily="@font/roboto_bold"
             android:textColor="@color/incall_dialpad_background"
             android:textSize="16dp"
