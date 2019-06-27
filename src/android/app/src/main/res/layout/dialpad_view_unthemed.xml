@@ -66,6 +66,7 @@
         android:id="@+id/digits_container"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dialpad_digits_adjustable_height"
+        android:focusableInTouchMode="true"
         android:orientation="horizontal">
 
         <ImageButton android:id="@+id/dialpad_back"

@@ -4,56 +4,26 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.SurfaceTexture;
-import android.hardware.Camera;
-import android.opengl.EGL14;
-import android.opengl.GLSurfaceView;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Display;
-import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.ToggleButton;
 
 import com.acafela.harmony.R;
-import com.acafela.harmony.codec.video.TextureMovieEncoder;
-import com.acafela.harmony.codec.video.VideoDecodeAsyncSurface;
 import com.acafela.harmony.codec.video.VideoEncodeSyncSurface;
-import com.acafela.harmony.codec.video.gles.FullFrameRect;
-import com.acafela.harmony.codec.video.gles.Texture2dProgram;
 import com.acafela.harmony.communicator.VideoHandler;
 import com.acafela.harmony.communicator.VideoReceiverThread;
 import com.acafela.harmony.service.HarmonyService;
-import com.acafela.harmony.ui.camera.CameraHandler;
-import com.acafela.harmony.ui.camera.CameraUtils;
 import com.acafela.harmony.util.AudioPathSelector;
-
-import java.io.IOException;
-import java.lang.ref.WeakReference;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.Socket;
-import java.net.SocketException;
-
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
 
 import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_HEIGHT;
 import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_WIDTH;
-import static com.acafela.harmony.communicator.DataCommunicator.MAX_AUDIO_SEQNO;
-import static com.acafela.harmony.communicator.DataCommunicator.RAW_BUFFER_SIZE;
-import static com.acafela.harmony.communicator.DataCommunicator.isAudioHeader;
 import static com.acafela.harmony.ui.AudioCallActivity.BROADCAST_BYE;
 import static com.acafela.harmony.ui.AudioCallActivity.BROADCAST_RECEIVEVIDEO;
 import static com.acafela.harmony.ui.AudioCallActivity.BROADCAST_SENDVIDEO;
+import static com.acafela.harmony.ui.AudioCallActivity.INTENT_ISCALLEE;
 import static com.acafela.harmony.ui.AudioCallActivity.KEY_IP;
 import static com.acafela.harmony.ui.AudioCallActivity.KEY_PORT;
 import static com.acafela.harmony.ui.TestCallActivity.INTENT_CONTROL;
@@ -93,6 +63,14 @@ public class VideoCallActivity extends VideoSurfaceActivity {
 
         mTextureView = findViewById(R.id.textureviewMain);
         mTextureView.setSurfaceTextureListener(this);
+
+        Intent intent = getIntent();
+        boolean isRinging = intent.getBooleanExtra(INTENT_ISCALLEE, false);
+        if (isRinging) {
+            findViewById(R.id.button_container).setVisibility(View.GONE);
+        } else {
+            findViewById(R.id.button_container_callee).setVisibility(View.GONE);
+        }
 
         AudioPathSelector.getInstance().setAudioManager(this);
         AudioPathSelector.getInstance().setSpeakerAudio();
@@ -153,8 +131,8 @@ public class VideoCallActivity extends VideoSurfaceActivity {
         serviceIntent.putExtra(INTENT_CONTROL, INTENT_SIP_ACCEPT_CALL);
         startService(serviceIntent);
 
-        findViewById(R.id.fourth_container).setVisibility(View.VISIBLE);
-        findViewById(R.id.fourth_container_ringing).setVisibility(View.GONE);
+        findViewById(R.id.button_container).setVisibility(View.VISIBLE);
+        findViewById(R.id.button_container_callee).setVisibility(View.GONE);
     }
 
     public void onClickTerminateCallBtn(View v) {

@@ -52,9 +52,9 @@ public class AudioCallActivity extends AppCompatActivity {
 
         boolean isRinging = intent.getBooleanExtra(INTENT_ISCALLEE, false);
         if (isRinging) {
-            findViewById(R.id.fourth_container).setVisibility(View.GONE);
+            findViewById(R.id.button_container).setVisibility(View.GONE);
         } else {
-            findViewById(R.id.fourth_container_ringing).setVisibility(View.GONE);
+            findViewById(R.id.button_container_callee).setVisibility(View.GONE);
         }
 
         AudioPathSelector.getInstance().setAudioManager(this);
@@ -101,8 +101,8 @@ public class AudioCallActivity extends AppCompatActivity {
         serviceIntent.putExtra(INTENT_CONTROL, INTENT_SIP_ACCEPT_CALL);
         startService(serviceIntent);
 
-        findViewById(R.id.fourth_container).setVisibility(View.VISIBLE);
-        findViewById(R.id.fourth_container_ringing).setVisibility(View.GONE);
+        findViewById(R.id.button_container).setVisibility(View.VISIBLE);
+        findViewById(R.id.button_container_callee).setVisibility(View.GONE);
     }
 
     public void onClickTerminateCallBtn(View v) {
