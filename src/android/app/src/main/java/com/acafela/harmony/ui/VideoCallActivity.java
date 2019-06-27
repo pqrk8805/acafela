@@ -126,6 +126,16 @@ public class VideoCallActivity extends VideoSurfaceActivity {
 
     private void terminateCall() {
         Log.i(TAG, "terminateCall");
+        mGLView.queueEvent(new Runnable() {
+            @Override public void run() {
+                mRenderer.changeRecordingState(false);
+            }
+        });
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         Intent serviceIntent = new Intent(getApplicationContext(), HarmonyService.class);
         serviceIntent.putExtra(INTENT_CONTROL, INTENT_SIP_TERMINATE_CALL);
         startService(serviceIntent);

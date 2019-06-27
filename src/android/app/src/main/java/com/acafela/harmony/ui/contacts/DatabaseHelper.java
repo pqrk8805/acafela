@@ -102,6 +102,11 @@ public class DatabaseHelper extends SQLiteOpenHelper
         return n;
     }
 
+    public String query(String phone)
+    {
+        return null;
+    }
+
     public List<ContactEntry> query()
     {
         List<ContactEntry> contacts = new ArrayList<>();
