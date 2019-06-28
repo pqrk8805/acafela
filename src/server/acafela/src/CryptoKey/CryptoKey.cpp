@@ -55,9 +55,14 @@ void CryptoKey::removeKey(
 	mAESKeyMap.erase(sessionId);
 }
 
+#include <iostream>
 vector<char> CryptoKey::getKey(
                                 const string sessionId)
 {
+	FUNC_LOGI("KeyRequest is entered : %s, key = ", sessionId.c_str());
+	for (auto& i : mAESKeyMap[sessionId])
+		printf("%d", i);
+	std::cout << std::endl;
 	return mAESKeyMap[sessionId];
 }
 

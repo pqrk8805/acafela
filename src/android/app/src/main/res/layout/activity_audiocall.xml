@@ -77,6 +77,19 @@
             android:textSize="18dp"
             android:layout_marginTop="35dp" />
 
+
+        <TextView android:id="@+id/elapsedTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:textAlignment="viewEnd"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/incall_call_banner_subtext_color"
+            android:textSize="@dimen/call_label_text_size"
+            android:text="sdfds"
+            android:singleLine="true"
+            android:visibility="gone" />
+
     </LinearLayout>
 
     <LinearLayout

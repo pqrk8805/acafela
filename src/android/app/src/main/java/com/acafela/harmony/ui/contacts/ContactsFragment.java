@@ -31,7 +31,7 @@ public class ContactsFragment extends Fragment
                         Bundle savedInstanceState)
     {
         mDismissListener = this;
-        mDbHelper = new DatabaseHelper(getContext(), "ContactDB", null, 1);
+        mDbHelper = DatabaseHelper.createContactDatabaseHelper(getContext());
         mContactAdaptor = new ContactAdapter(getContext(), mDbHelper);
         View view = inflater.inflate(R.layout.fragment_contacts, container, false);
 

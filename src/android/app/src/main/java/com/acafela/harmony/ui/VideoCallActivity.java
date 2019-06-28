@@ -9,12 +9,16 @@ import android.util.Log;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.acafela.harmony.R;
 import com.acafela.harmony.codec.video.VideoEncodeSyncSurface;
 import com.acafela.harmony.communicator.VideoReceiverThread;
 import com.acafela.harmony.communicator.VideoSenderThread;
 import com.acafela.harmony.service.HarmonyService;
+import com.acafela.harmony.ui.contacts.DatabaseHelper;
 import com.acafela.harmony.util.AudioPathSelector;
 
 import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_HEIGHT;
@@ -23,6 +27,7 @@ import static com.acafela.harmony.ui.AudioCallActivity.BROADCAST_BYE;
 import static com.acafela.harmony.ui.AudioCallActivity.BROADCAST_RECEIVEVIDEO;
 import static com.acafela.harmony.ui.AudioCallActivity.BROADCAST_SENDVIDEO;
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_ISCALLEE;
+import static com.acafela.harmony.ui.AudioCallActivity.INTENT_PHONENUMBER;
 import static com.acafela.harmony.ui.AudioCallActivity.KEY_IP;
 import static com.acafela.harmony.ui.AudioCallActivity.KEY_PORT;
 import static com.acafela.harmony.ui.TestCallActivity.INTENT_CONTROL;
@@ -63,15 +68,24 @@ public class VideoCallActivity extends VideoSurfaceActivity {
         mTextureView.setSurfaceTextureListener(this);
 
         Intent intent = getIntent();
-        boolean isRinging = intent.getBooleanExtra(INTENT_ISCALLEE, false);
-        if (isRinging) {
+        final String phoneNumber = intent.getStringExtra(INTENT_PHONENUMBER);
+        TextView phoneNumberTextView = findViewById(R.id.tv_phonenumber);
+        phoneNumberTextView.setText(phoneNumber);
+        TextView nameTextView = findViewById(R.id.tv_name);
+        nameTextView.setText(DatabaseHelper.createContactDatabaseHelper(this).query(phoneNumber));
+        boolean isCallee = intent.getBooleanExtra(INTENT_ISCALLEE, false);
+        if (isCallee) {
             findViewById(R.id.button_container).setVisibility(View.GONE);
+            findViewById(R.id.button_container_callee).setVisibility(View.VISIBLE);
         } else {
+            findViewById(R.id.button_container).setVisibility(View.VISIBLE);
             findViewById(R.id.button_container_callee).setVisibility(View.GONE);
         }
 
         AudioPathSelector.getInstance().setAudioManager(this);
-        AudioPathSelector.getInstance().setEarPieceAudio();
+        AudioPathSelector.getInstance().setSpeakerAudio();
+        ToggleButton speakerToggleBtn = findViewById(R.id.toggle_speaker);
+        speakerToggleBtn.setChecked(true);
         Log.d(TAG, "onCreate complete");
     }
 
@@ -118,6 +132,7 @@ public class VideoCallActivity extends VideoSurfaceActivity {
 
         findViewById(R.id.button_container).setVisibility(View.VISIBLE);
         findViewById(R.id.button_container_callee).setVisibility(View.GONE);
+        findViewById(R.id.first_container).setVisibility(View.GONE);
     }
 
     public void onClickTerminateCallBtn(View v) {
@@ -206,6 +221,30 @@ public class VideoCallActivity extends VideoSurfaceActivity {
         if (mBroadcastReceiver != null) {
             unregisterReceiver(mBroadcastReceiver);
             mBroadcastReceiver = null;
+        }
+    }
+
+
+    public void onClickSpeakerToggleBtn(View v) {
+        if (((ToggleButton) v).isChecked()) {
+            ((ToggleButton) findViewById(R.id.toggle_bluetooth)).setChecked(false);
+            AudioPathSelector.getInstance().setSpeakerAudio();
+        } else {
+            AudioPathSelector.getInstance().setEarPieceAudio();
+        }
+    }
+
+    public void onClickBluetoothToggleBtn(View v) {
+        if (((ToggleButton) v).isChecked()) {
+            if (AudioPathSelector.isBluetoothConnected()) {
+                ((ToggleButton) findViewById(R.id.toggle_speaker)).setChecked(false);
+                AudioPathSelector.getInstance().setBluetoothAudio();
+            } else {
+                ((ToggleButton) findViewById(R.id.toggle_bluetooth)).setChecked(false);
+                Toast.makeText(this, "Bluetooth Speaker is not Connected.", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            AudioPathSelector.getInstance().setEarPieceAudio();
         }
     }
 }

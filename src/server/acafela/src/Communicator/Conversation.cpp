@@ -104,7 +104,7 @@ void Conversation::addParticipant(Participant * part, int port) {
 	DataPath * dPath = new DataPath(part, this, part->getIP(), port, isServerPassed);
 	for (auto partAndPort : conversationRoom)
 		dPath->initParticipant(std::get<0>(partAndPort), std::get<1>(partAndPort));
-	conversationRoom.push_back(std::make_tuple(part, port));
+	conversationRoom.push_back({ part, port });
 	part->setDataPath(dPath);
 	dPath->openDataPath();
 	LeaveCriticalSection(&critRoom);
@@ -115,12 +115,12 @@ void Conversation::removeParticipant(Participant * part) {
 	part->getDataPath()->terminateDataPath();
 	delete part->getDataPath();
 	part->clearDataPath();
-	for (auto iter = conversationRoom.begin(); iter < conversationRoom.end(); iter++){
-		if (std::get<0>(*iter) != part)
-			continue;
-		conversationRoom.erase(iter);
-		break;
-	}
+
+	conversationRoom.erase(std::remove_if(begin(conversationRoom), end(conversationRoom), [part](const auto& i)
+	{
+		return std::get<0>(i) == part;
+	}), end(conversationRoom));
+
 	for (auto partAndPort : conversationRoom)
 		std::get<0>(partAndPort)->getDataPath()->removeParticipant(part);
 	LeaveCriticalSection(&critRoom); 

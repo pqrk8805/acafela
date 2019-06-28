@@ -174,12 +174,12 @@ void DataPath::createVideoServerDataPath() {
 void DataPath::addToSendData(Participant * part, int len, char * data, bool isVideo) {
 	char * buf = new char[BUFLEN];
 	memset(buf, NULL, BUFLEN);
-	memcpy(buf, data, len + 1);
+	memcpy(buf, data, len);
 	EnterCriticalSection(&crit);
 	if(!isVideo)
-		dataBuffer.push_back(std::make_tuple(part, len, buf));
+		dataBuffer.push_back({ part, len, buf });
 	else
-		dataVideoBuffer.push_back(std::make_tuple(part, len, buf));
+		dataVideoBuffer.push_back({ part, len, buf });
 	LeaveCriticalSection(&crit);
 }
 

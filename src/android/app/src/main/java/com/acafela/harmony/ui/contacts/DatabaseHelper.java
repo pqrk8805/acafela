@@ -13,8 +13,12 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper
 {
     private static final String LOG_TAG = "SQL_HELPER";
-
     private static final String TABLE_NAME = "HarmonyContacts";
+
+    public static DatabaseHelper createContactDatabaseHelper(Context context)
+    {
+        return new DatabaseHelper(context, "ContactDB", null, 1);
+    }
 
     public DatabaseHelper(
                         Context context,
@@ -104,7 +108,22 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
     public String query(String phone)
     {
-        return null;
+        String name = "";
+        Cursor cursor = null;
+        try {
+            SQLiteDatabase db = getReadableDatabase();
+            cursor = db.query(TABLE_NAME, new String[] {"name"}, "phone=?", new String[] {phone}, null, null, null);
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    name = cursor.getString(cursor.getColumnIndex("name"));
+                    Log.e(LOG_TAG, "name: " + name);
+                    break;
+                }
+            }
+        } finally {
+            if (cursor != null) { cursor.close(); }
+        }
+        return name;
     }
 
     public List<ContactEntry> query()

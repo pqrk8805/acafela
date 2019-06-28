@@ -10,7 +10,7 @@ public class VideoMediaFormat {
     public static final String VIDEO_MIME_TYPE = MediaFormat.MIMETYPE_VIDEO_AVC;
     public static final int VIDEO_FRAME_RATE = 30;               // 30fps
     public static final int VIDEO_IFRAME_INTERVAL = 1;  // TRADE-OFF
-    public static final int VIDEO_BIT_RATE = 100000;
+    public static final int VIDEO_BIT_RATE = 500000;
     public static final int VIDEO_WIDTH = 640;
     public static final int VIDEO_HEIGHT = 480;
 
