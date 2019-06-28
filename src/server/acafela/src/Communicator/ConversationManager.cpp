@@ -40,16 +40,25 @@ void ConversationManager::createControlServer(ICryptoKeyMgr * keyManager_p, Conf
 			delete buf;
 			char ipStr[INET_ADDRSTRLEN];
 			inet_ntop(AF_INET, &(si.sin_addr), ipStr, INET_ADDRSTRLEN);
+			FUNC_LOGI("Receive msg %s : \n----%s----\n%s",
+				ipStr,
+				acafela::sip::Command_descriptor()->FindValueByNumber(msg.cmd())->name().c_str(),
+				msg.DebugString().c_str()
+			);
 			if (msg.isack()) {
 				if (msg.from().find("SERVER") != std::string::npos) {
+					FUNC_LOGI("Receive msg %s : was ACK to server", ipStr);
 					rcvAckHandler(ipStr, msg);
 					continue;
 				}
+				FUNC_LOGI("Receive msg %s : was ACK to another", ipStr);
 				forwardMessageHandler(std::string(ipStr), msg);
 				continue;
 			}
-			if(!consumeMessageHandler(std::string(ipStr), msg))
+			if (!consumeMessageHandler(std::string(ipStr), msg)) {
+				FUNC_LOGI("Receive msg %s : is MSG to another", ipStr);
 				forwardMessageHandler(std::string(ipStr), msg);
+			}
 		}
 	}));
 	additionalThreadList.push_back(new std::thread([&] {
@@ -172,9 +181,9 @@ bool ConversationManager::consumeMessageHandler(std::string IP, acafela::sip::SI
 			if (msg.to().find("#") != std::string::npos) {
 				if (isHandledMsgAndAck(sender, true, msg))
 					break;
-				FUNC_LOGI("Request to Make Key");
 				Conversation * conversation = confManager->getConversationRoom(msg.to());
 				if (conversation == nullptr) {
+					FUNC_LOGI("Request to Make Key in ConvRoom");
 					keyManager->generateKey(msg.to());
 					conversation = confManager->openConversationRoom(msg.to(), msg.isvideocall());
 				}
@@ -218,6 +227,7 @@ bool ConversationManager::consumeMessageHandler(std::string IP, acafela::sip::SI
 				return true;
 			}
 			conversation->terminateConversation();
+			confManager->removeConversationRoom(msg.to());
 			for (auto iter = conversationMap.begin(); iter != conversationMap.end();) {
 				if (std::get<1>(*iter) != conversation)
 					iter++;
