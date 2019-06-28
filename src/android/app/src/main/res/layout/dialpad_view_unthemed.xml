@@ -140,8 +140,8 @@
 
     <include layout="@layout/dialpad" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dialpad_space_below_keys" />
+    <!--<Space-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/dialpad_space_below_keys" />-->
 
 </view>
