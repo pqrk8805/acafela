@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Semaphore;
 
 import com.acafela.harmony.Config;
 import com.acafela.harmony.R;
@@ -63,6 +64,8 @@ public class VoipController {
     private int mRetryCnt;
     private Timer mTimer;
     private boolean mIsVideoCall;
+    static Semaphore mSemaphore;
+
 
     private  enum STATE {
         IDLE_STATE,
@@ -76,6 +79,7 @@ public class VoipController {
     {
         mState = STATE.IDLE_STATE;
         mSessionList = new ArrayList<DataCommunicator>();
+        mSemaphore= new Semaphore(1);
         mContext = context;
         mRingControl= new RingController(mContext);
         mCryptoRpc = new CryptoKeyRpc(
@@ -134,7 +138,9 @@ public class VoipController {
                         }
 
                         Log.e(LOG_TAG, "Got UDP message from " + senderIP + ", message: " + sipMessage.toString());
+                        mSemaphore.acquire();
                         handle(sipMessage);
+                        mSemaphore.release();
                     }
                     Log.e(LOG_TAG, "Call Listener ending");
                     socket.disconnect();
@@ -174,7 +180,6 @@ public class VoipController {
                     }
                     mCrypto  = CryptoBroker.getInstance().create("AES");
                     mCrypto.init(keyByte);
-
 
                     for(int i=0;i<message.getSessioninfo().getSessionsCount();i++) {
                         SipMessage.Session session = message.getSessioninfo().getSessions(i);
@@ -404,8 +409,15 @@ public class VoipController {
     public void terminateCall()
     {
         if(mState == STATE.IDLE_STATE) return;
-        endCommunication();
+        try {
+            mSemaphore.acquire();
+            endCommunication();
+            mSemaphore.release();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         sendMessage(SipMessage.Command.TERMINATE);
+
     }
     public void acceptCall()
     {

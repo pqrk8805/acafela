@@ -10,7 +10,7 @@ import java.util.concurrent.Semaphore;
 
 public class AudioBufferControl {
     private static final String LOG_TAG = "AudioBufferControl";
-    private int MAX_DISTANCE=15;
+    private int MAX_DISTANCE=16;
     private int playerSeqNum;
     private int receiveSeqNum;
     private ICrypto mCrypto;
@@ -19,7 +19,6 @@ public class AudioBufferControl {
     private boolean isFirstFeeding;
     static Semaphore mSemaphore;
     private AudioData backupData = new AudioData();
-    static int retrycnt=0;
 
     AudioBufferControl(ICrypto crypto,int maxBufferSize)
     {
@@ -37,7 +36,7 @@ public class AudioBufferControl {
             mSemaphore.acquire();
             //isDistanceCheck(data.seqNo,MAX_DISTANCE);
             chececkExpiredData();
-            //Log.e(LOG_TAG, "currSeq " + data.seqNo );
+            //Log.e(LOG_TAG, "<<<<< currSeq " + data.seqNo );
             mAudioDataQueue.add(data);
             receiveSeqNum = data.seqNo;
             mSemaphore.release();
@@ -76,16 +75,8 @@ public class AudioBufferControl {
                 // Log.e(LOG_TAG, "currSeq " + outData.seqNo);
             }
             else {
-                if(isExistNextPacket()==false) {
-                    if (retrycnt++ < 5) {
-                        mSemaphore.release();
-                        Thread.sleep(30);
-                        return null;
-                    } else
-                        retrycnt = 0;
-                }
                 // 없는경우 마지막 data로 재생
-                Log.e(LOG_TAG, "Loss Packet : " + playerSeqNum + " use BackupData :" + backupData.seqNo);
+                Log.e(LOG_TAG, "BackupData :" + backupData.seqNo + " playerSeqNum : " + playerSeqNum +  " receiver : " + receiveSeqNum);
                 outData = backupData;
             }
 
@@ -267,12 +258,20 @@ public class AudioBufferControl {
         {
             AudioData data = iter.next();
 
-            if(data.seqNo > playerSeqNum)
+            if(data.seqNo > playerSeqNum){
+                /*Log.e(LOG_TAG, "===================>check  : " + data.seqNo +" player : " + playerSeqNum +" receiver : " + receiveSeqNum);
+                for(Iterator<AudioData>iter2 = mAudioDataQueue.iterator(); iter2.hasNext();)
+                {
+                    AudioData data2 = iter2.next();
+                    Log.i(LOG_TAG, "data  : " + data2.seqNo);
+                }*/
                 return true;
-
+            }
             if(data.seqNo - MAX_DISTANCE < 0 )
-                if(data.seqNo + MAX_AUDIO_SEQNO > playerSeqNum)
+                if(data.seqNo + MAX_AUDIO_SEQNO > playerSeqNum){
+                    //Log.e(LOG_TAG, "Oldest data SeqNo : " + data.seqNo);
                     return true;
+                }
         }
         return false;
     }

@@ -132,6 +132,7 @@ public class ReceiverAudio implements DataCommunicator {
         mRecieverThread = new Thread(new Runnable() {
             @Override
             public void run() {
+                Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO);
                 // Create an instance of AudioTrack, used for playing back audio
                 Log.i(LOG_TAG, "Receive Data Thread Started. Thread id: " + Thread.currentThread().getId());
                 try {
@@ -139,6 +140,7 @@ public class ReceiverAudio implements DataCommunicator {
                     RecvUdpSocket = new DatagramSocket(null);
                     RecvUdpSocket.setReuseAddress(true);
                     RecvUdpSocket.bind(new InetSocketAddress(mPort));
+                    //int dataNum=0;
 
                     while (UdpVoipReceiveDataThreadRun) {
                         if(isAudioHeader) {
@@ -147,36 +149,30 @@ public class ReceiverAudio implements DataCommunicator {
                             DatagramPacket packet = new DatagramPacket(recieveData, recieveData.length);
 
                             RecvUdpSocket.receive(packet);
-                            {
-                                AudioData data = new AudioData();
-                                data.seqNo = (recieveData[1]&0xFF)<<8 | (recieveData[2]&0xFF);
-                                if(recieveData[0] == 0)
-                                    data.isPrimary = true;
-                                if(mAudioControl.isValidCheck(data.seqNo)) {
 
-                                    byte[] encryptBuf = Arrays.copyOfRange(recieveData, AUDIO_HEADER_SIZE, packet.getLength());
-                                    if(encryptBuf == null) continue;
-
-                                    byte[] decryptBuf;
-                                    try {
-                                        decryptBuf = mCrypto.decrypt(encryptBuf, 0, encryptBuf.length);
-                                    } catch(IllegalArgumentException e){
-                                        e.printStackTrace();
-                                        continue;
-                                    }
-                                    if(decryptBuf == null) continue;
-                                    byte[] decodedBuf;
-
-                                    try {
-                                        decodedBuf = mAudioDecoder.handle(decryptBuf);
-                                    } catch(IllegalArgumentException e){
-                                        e.printStackTrace();
-                                        continue;
-                                    }
-                                    if(decodedBuf==null)  continue;
-                                    data.data = decodedBuf;
-                                    mAudioControl.pushData(data);
+                            AudioData data = new AudioData();
+                            data.seqNo = (recieveData[1]&0xFF)<<8 | (recieveData[2]&0xFF);
+                            if(recieveData[0] == 0)
+                                data.isPrimary = true;
+                            if(mAudioControl.isValidCheck(data.seqNo)) {
+                                /*if(dataNum+1 != data.seqNo) {
+                                    Log.e(LOG_TAG, "skip data" + (dataNum + 1));
                                 }
+                                dataNum = data.seqNo;*/
+
+                                byte[] encryptBuf = Arrays.copyOfRange(recieveData, AUDIO_HEADER_SIZE, packet.getLength());
+                                if(encryptBuf == null) continue;
+
+                                byte[] decryptBuf;
+                                try {
+                                    decryptBuf = mCrypto.decrypt(encryptBuf, 0, encryptBuf.length);
+                                } catch(IllegalArgumentException e){
+                                    e.printStackTrace();
+                                    continue;
+                                }
+                                if(decryptBuf == null) continue;
+                                data.data = decryptBuf;
+                                mAudioControl.pushData(data);
                             }
                         }
                     }
@@ -235,16 +231,25 @@ public class ReceiverAudio implements DataCommunicator {
                     {
                         //if(mAudioControl.size()>0) {
                         AudioData audioData = mAudioControl.getData();
-                        if(audioData!=null) {
-                            //byte[] outStream = mCrypto.decrypt(audioData.data, 0, audioData.data.length);
 
-                            //Log.i(LOG_TAG, "Audio Thread check " + OutputTrack.getBufferCapacityInFrames() + "or"+ OutputTrack.getBufferSizeInFrames());
+                        //data.data = decodedBuf;
+
+                        if(audioData!=null) {
+                            byte[] decodedBuf;
+
+                            try {
+                                decodedBuf = mAudioDecoder.handle(audioData.data);
+                            } catch(IllegalArgumentException e){
+                                e.printStackTrace();
+                                continue;
+                            }
+                            if(decodedBuf==null)  continue;
                             //if (!MainActivity.BoostAudio)
                             if (true) {
                                 if(isAudioHeader) {
-                                    OutputTrack.write(audioData.data, 0, RAW_BUFFER_SIZE);
+                                    OutputTrack.write(decodedBuf, 0, RAW_BUFFER_SIZE);
                                 } else
-                                    OutputTrack.write(audioData.data, 0, RAW_BUFFER_SIZE);
+                                    OutputTrack.write(decodedBuf, 0, RAW_BUFFER_SIZE);
                             } else {
                                 short[] AudioOutputBufferShorts = new short[audioData.data.length / 2];
                                 // to turn bytes to shorts as either big endian or little endian.
