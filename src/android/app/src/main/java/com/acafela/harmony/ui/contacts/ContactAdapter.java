@@ -1,13 +1,16 @@
 package com.acafela.harmony.ui.contacts;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.acafela.harmony.R;
@@ -19,6 +22,7 @@ import com.acafela.harmony.ui.VideoCallActivity;
 import java.util.List;
 
 public class ContactAdapter extends BaseAdapter
+                                implements DialogInterface.OnDismissListener
 {
     private static final String LOG_TAG = "ContactAdator";
 
@@ -26,9 +30,11 @@ public class ContactAdapter extends BaseAdapter
     private List<ContactEntry> mContacts;
     private DatabaseHelper mDbHelper;
     private Context mContext;
+    private DialogInterface.OnDismissListener mDismissListener;
 
     public ContactAdapter(Context context, DatabaseHelper dbHelper)
     {
+        mDismissListener = this;
         mContext = context;
         mDbHelper = dbHelper;
         mContacts = mDbHelper.query();
@@ -66,12 +72,42 @@ public class ContactAdapter extends BaseAdapter
                 inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             }
             convertView = inflater.inflate(R.layout.items_contact, parent, false);
+            final View itemView = convertView;
+            final int index = position;
             convertView.setLongClickable(true);
             convertView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     Log.e(LOG_TAG, "onLongClick()");
-                    return false;
+
+                    PopupMenu popupMenu = new PopupMenu(mContext, itemView);
+                    popupMenu.getMenuInflater().inflate(R.menu.menu_contact_item, popupMenu.getMenu());
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.menu_contact_delete:
+                                    mDbHelper.delete(mContacts.get(index).id);
+                                    notifyDataSetChanged();
+                                    break;
+                                case R.id.menu_contact_edit:
+                                {
+                                    final ContactEditDialog dlg = new ContactEditDialog(
+                                                                            mContext,
+                                                                            mDbHelper,
+                                                                            mContacts.get(index));
+                                    dlg.setOnDismissListener(mDismissListener);
+                                    dlg.show();
+                                }
+                                    break;
+                                default:
+                                    break;
+                            }
+                            return true;
+                        }
+                    });
+                    popupMenu.show();
+                    return true;
                 }
             });
         }
@@ -128,5 +164,10 @@ public class ContactAdapter extends BaseAdapter
     {
         mContacts = mDbHelper.query();
         super.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        notifyDataSetChanged();
     }
 }
