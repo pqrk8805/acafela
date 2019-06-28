@@ -227,10 +227,12 @@ bool ConversationManager::consumeMessageHandler(std::string IP, acafela::sip::SI
 			}
 			conversation->terminateConversation();
 			confManager->removeConversationRoom(msg.to());
-			conversationMap.erase(std::remove_if(begin(conversationMap), end(conversationMap), [conversation](const auto& i)
-			{
-				return std::get<1>(i) == conversation
-			}), end(conversationMap));
+			for (auto iter = conversationMap.begin(); iter != conversationMap.end();) {
+				if (std::get<1>(*iter) != conversation)
+					iter++;
+				else
+					iter = conversationMap.erase(iter);
+			}
 			delete conversation;
 		}
 		return true;
