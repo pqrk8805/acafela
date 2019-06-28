@@ -34,6 +34,7 @@ import com.acafela.harmony.ui.main.UserRegisterDialog;
 import com.acafela.harmony.userprofile.UserInfo;
 
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_ISCALLEE;
+import static com.acafela.harmony.ui.AudioCallActivity.INTENT_ISCONFERENCECALL;
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_PHONENUMBER;
 import static com.acafela.harmony.ui.TestCallActivity.INTEMT_CALLEE_PHONENUMBER;
 import static com.acafela.harmony.ui.TestCallActivity.INTENT_CONTROL;
@@ -263,8 +264,12 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
             return;
         }
 
-        if (raw.length() == 4 ||
-                (raw.length() == 5 && raw.charAt(0) == '#')) {
+        boolean isConferenceCall = false;
+        if (raw.length() == 5 && raw.charAt(0) == '#') {
+            isConferenceCall = true;
+        }
+
+        if (raw.length() == 4 || isConferenceCall) {
             Intent serviceIntent = new Intent(getApplicationContext(), HarmonyService.class);
             serviceIntent.putExtra(INTENT_CONTROL, INTENT_SIP_INVITE_CALL);
             serviceIntent.putExtra(INTEMT_CALLEE_PHONENUMBER, raw);
@@ -275,6 +280,12 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
                 Intent activityIntent = new Intent(this, VideoCallActivity.class);
                 activityIntent.putExtra(INTENT_PHONENUMBER, raw);
                 activityIntent.putExtra(INTENT_ISCALLEE, false);
+                if (isConferenceCall) {
+                    activityIntent.putExtra(INTENT_ISCONFERENCECALL, true);
+                }
+                else {
+                    activityIntent.putExtra(INTENT_ISCONFERENCECALL, false);
+                }
                 startActivity(activityIntent);
             }
             else {

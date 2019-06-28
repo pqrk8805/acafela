@@ -5,7 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.acafela.harmony.ui.VideoSurfaceActivity;
+import com.acafela.harmony.ui.CameraSenderActivity;
 
 import java.lang.ref.WeakReference;
 
@@ -22,10 +22,10 @@ public class CameraHandler extends Handler {
     public static final int MSG_SET_SURFACE_TEXTURE = 0;
 
     // Weak reference to the Activity; only access this from the UI thread.
-    private WeakReference<VideoSurfaceActivity> mWeakActivity;
+    private WeakReference<CameraSenderActivity> mWeakActivity;
 
-    public CameraHandler(VideoSurfaceActivity activity) {
-        mWeakActivity = new WeakReference<VideoSurfaceActivity>(activity);
+    public CameraHandler(CameraSenderActivity activity) {
+        mWeakActivity = new WeakReference<CameraSenderActivity>(activity);
     }
 
     /**
@@ -41,7 +41,7 @@ public class CameraHandler extends Handler {
         int what = inputMessage.what;
         Log.d(TAG, "CameraHandler [" + this + "]: what=" + what);
 
-        VideoSurfaceActivity activity = mWeakActivity.get();
+        CameraSenderActivity activity = mWeakActivity.get();
         if (activity == null) {
             Log.w(TAG, "CameraHandler.handleMessage: activity is null");
             return;

@@ -32,6 +32,7 @@ public class AudioCallActivity extends FullScreenActivity {
 
     public static final String INTENT_PHONENUMBER = "INTENT_PHONENUMBER";
     public static final String INTENT_ISCALLEE = "INTENT_ISCALEE";
+    public static final String INTENT_ISCONFERENCECALL = "IINTENT_ISCONFERENCECALL";
     public static final String BROADCAST_BYE = "com.acafela.action.bye";
     public static final String BROADCAST_SENDVIDEO = "com.acafela.action.sendvideo";
     public static final String BROADCAST_RECEIVEVIDEO = "com.acafela.action.receivevideo";
@@ -56,9 +57,9 @@ public class AudioCallActivity extends FullScreenActivity {
 
         Intent intent = getIntent();
         final String phoneNumber = intent.getStringExtra(INTENT_PHONENUMBER);
-        TextView phoneNumberTextView = findViewById(R.id.tv_phonenumber);
+        TextView phoneNumberTextView = findViewById(R.id.tv_yourphonenumber);
         phoneNumberTextView.setText(phoneNumber);
-        TextView nameTextView = findViewById(R.id.tv_name);
+        TextView nameTextView = findViewById(R.id.tv_yourname);
         nameTextView.setText(DatabaseHelper.createContactDatabaseHelper(this).query(phoneNumber));
         boolean isRinging = intent.getBooleanExtra(INTENT_ISCALLEE, false);
         if (isRinging) {

@@ -10,7 +10,7 @@
     android:background="@drawable/gradient">
 
     <LinearLayout
-        android:id="@+id/first_container"
+        android:id="@+id/uhdcalltext_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
@@ -43,13 +43,13 @@
         android:id="@+id/second_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/first_container"
+        android:layout_below="@+id/uhdcalltext_container"
         android:layout_marginTop="100dp"
         android:gravity="center"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_phonenumber"
+            android:id="@+id/tv_yourphonenumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_medium"
@@ -58,7 +58,7 @@
             android:textSize="23dp" />
 
         <TextView
-            android:id="@+id/tv_name"
+            android:id="@+id/tv_yourname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Jaeho Lee"
