@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.acafela.harmony.R;
 import com.acafela.harmony.directoryservice.DirectoryService;
 import com.acafela.harmony.service.HarmonyService;
+import com.acafela.harmony.ui.concall.ConcallReserveDialog;
 import com.acafela.harmony.ui.dialpad.DialpadFragment;
 import com.acafela.harmony.ui.main.ChangePwDialog;
 import com.acafela.harmony.ui.main.RestorePwDialog;
@@ -51,7 +52,8 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
     private static final int MENU_REGISTER = 0;
     private static final int MENU_CHANGEPASSWORD = 1;
     private static final int MENU_RESTOREPASSWORD = 2;
-    private static final int MENU_PHONENUMBER = 3;
+    private static final int MENU_RESERVCONCALL = 3;
+    private static final int MENU_PHONENUMBER = 4;
     private static final String HIDDEN_TEST_MAIN = "9999";
     private static final String HIDDEN_UNREGISTER = "8888";
 
@@ -131,12 +133,14 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
             menu.getItem(MENU_REGISTER).setEnabled(true);
             menu.getItem(MENU_CHANGEPASSWORD).setEnabled(false);
             menu.getItem(MENU_RESTOREPASSWORD).setEnabled(false);
+            menu.getItem(MENU_RESERVCONCALL).setEnabled(false);
             menu.getItem(MENU_PHONENUMBER).setVisible(false);
         }
         else {
             menu.getItem(MENU_REGISTER).setEnabled(false);
             menu.getItem(MENU_CHANGEPASSWORD).setEnabled(true);
             menu.getItem(MENU_RESTOREPASSWORD).setEnabled(true);
+            menu.getItem(MENU_RESERVCONCALL).setEnabled(true);
             menu.getItem(MENU_PHONENUMBER).setVisible(true);
             menu.getItem(MENU_PHONENUMBER).setTitle(UserInfo.getInstance().getPhoneNumber());
         }
@@ -156,6 +160,9 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
                 break;
             case R.id.menu_restorepassword:
                 showRestorePwDialog();
+                break;
+            case R.id.menu_reserve_concall:
+                showConcallReserveDialog();
                 break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -213,6 +220,12 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
                 }
             }
         });
+    }
+
+    private void showConcallReserveDialog()
+    {
+        final ConcallReserveDialog dlg = new ConcallReserveDialog(this);
+        dlg.show();
     }
 
     private void showPopup(String text) {
