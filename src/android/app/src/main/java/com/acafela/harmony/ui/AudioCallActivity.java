@@ -41,10 +41,8 @@ public class AudioCallActivity extends FullScreenActivity {
         setContentView(R.layout.activity_audiocall);
 
         Intent intent = getIntent();
-
         TextView phoneNumberTextView = findViewById(R.id.tv_phonenumber);
         phoneNumberTextView.setText(intent.getStringExtra(INTENT_PHONENUMBER));
-
         boolean isRinging = intent.getBooleanExtra(INTENT_ISCALLEE, false);
         if (isRinging) {
             findViewById(R.id.button_container).setVisibility(View.GONE);
