@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:fontFamily="@font/roboto_medium"
-            android:text="Jaeho Lee"
+            android:text=""
             android:textColor="@color/incall_dialpad_background"
             android:textSize="20dp" />
 

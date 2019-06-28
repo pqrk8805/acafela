@@ -18,6 +18,7 @@ import com.acafela.harmony.codec.video.VideoEncodeSyncSurface;
 import com.acafela.harmony.communicator.VideoReceiverThread;
 import com.acafela.harmony.communicator.VideoSenderThread;
 import com.acafela.harmony.service.HarmonyService;
+import com.acafela.harmony.ui.contacts.DatabaseHelper;
 import com.acafela.harmony.util.AudioPathSelector;
 
 import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_HEIGHT;
@@ -67,8 +68,11 @@ public class VideoCallActivity extends VideoSurfaceActivity {
         mTextureView.setSurfaceTextureListener(this);
 
         Intent intent = getIntent();
+        final String phoneNumber = intent.getStringExtra(INTENT_PHONENUMBER);
         TextView phoneNumberTextView = findViewById(R.id.tv_phonenumber);
-        phoneNumberTextView.setText(intent.getStringExtra(INTENT_PHONENUMBER));
+        phoneNumberTextView.setText(phoneNumber);
+        TextView nameTextView = findViewById(R.id.tv_name);
+        nameTextView.setText(DatabaseHelper.createContactDatabaseHelper(this).query(phoneNumber));
         boolean isCallee = intent.getBooleanExtra(INTENT_ISCALLEE, false);
         if (isCallee) {
             findViewById(R.id.button_container).setVisibility(View.GONE);
