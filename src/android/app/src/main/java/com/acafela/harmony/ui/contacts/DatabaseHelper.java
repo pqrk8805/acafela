@@ -108,7 +108,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
     public String query(String phone)
     {
-        String name = phone;
+        String name = "";
         Cursor cursor = null;
         try {
             SQLiteDatabase db = getReadableDatabase();
