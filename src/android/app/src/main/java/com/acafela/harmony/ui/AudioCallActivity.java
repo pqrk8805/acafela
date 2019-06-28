@@ -12,6 +12,7 @@ import android.widget.ToggleButton;
 
 import com.acafela.harmony.R;
 import com.acafela.harmony.service.HarmonyService;
+import com.acafela.harmony.ui.contacts.DatabaseHelper;
 import com.acafela.harmony.util.AudioPathSelector;
 import com.acafela.harmony.util.ProximityScreenController;
 
@@ -41,8 +42,11 @@ public class AudioCallActivity extends FullScreenActivity {
         setContentView(R.layout.activity_audiocall);
 
         Intent intent = getIntent();
+        final String phoneNumber = intent.getStringExtra(INTENT_PHONENUMBER);
         TextView phoneNumberTextView = findViewById(R.id.tv_phonenumber);
-        phoneNumberTextView.setText(intent.getStringExtra(INTENT_PHONENUMBER));
+        phoneNumberTextView.setText(phoneNumber);
+        TextView nameTextView = findViewById(R.id.tv_name);
+        nameTextView.setText(DatabaseHelper.createContactDatabaseHelper(this).query(phoneNumber));
         boolean isRinging = intent.getBooleanExtra(INTENT_ISCALLEE, false);
         if (isRinging) {
             findViewById(R.id.button_container).setVisibility(View.GONE);
