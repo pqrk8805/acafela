@@ -5,17 +5,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.acafela.harmony.R;
+import com.acafela.harmony.controller.VoipController.STATE;
 import com.acafela.harmony.service.HarmonyService;
+import com.acafela.harmony.ui.call.CallTimer;
+import com.acafela.harmony.ui.call.InCallDateUtils;
 import com.acafela.harmony.ui.contacts.DatabaseHelper;
+import com.acafela.harmony.ui.dialpad.AnimUtils;
 import com.acafela.harmony.util.AudioPathSelector;
 import com.acafela.harmony.util.ProximityScreenController;
 
+import static com.acafela.harmony.controller.VoipController.STATE.RINGING_STATE;
 import static com.acafela.harmony.ui.TestCallActivity.INTENT_CONTROL;
 import static com.acafela.harmony.ui.TestCallActivity.INTENT_SIP_ACCEPT_CALL;
 import static com.acafela.harmony.ui.TestCallActivity.INTENT_SIP_TERMINATE_CALL;
@@ -28,12 +35,18 @@ public class AudioCallActivity extends FullScreenActivity {
     public static final String BROADCAST_BYE = "com.acafela.action.bye";
     public static final String BROADCAST_SENDVIDEO = "com.acafela.action.sendvideo";
     public static final String BROADCAST_RECEIVEVIDEO = "com.acafela.action.receivevideo";
+    public static final String BROADCAST_CONNECTING = "com.acafela.action.connecting";
     public static final String KEY_IP = "KEY_IP";
     public static final String KEY_PORT = "KEY_PORT";
+    private static final long CALL_TIME_UPDATE_INTERVAL_MS = 1000;
 
     BroadcastReceiver mBroadcastReceiver;
 
     private ProximityScreenController mProxiScrController;
+    private CallTimer mCallTimer;
+    private TextView mElapsedTime;
+    private long mConnectTimeMillis;
+    private STATE mState = RINGING_STATE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +71,16 @@ public class AudioCallActivity extends FullScreenActivity {
         AudioPathSelector.getInstance().setEarPieceAudio();
 
         mProxiScrController = new ProximityScreenController(this);
+
+        mElapsedTime = findViewById(R.id.elapsedTime);
+        mState = RINGING_STATE;
+        mCallTimer = new CallTimer(new Runnable() {
+            @Override
+            public void run() {
+                updateCallTime();
+            }
+        });
+        mCallTimer.start(CALL_TIME_UPDATE_INTERVAL_MS);
         Log.d(TAG, "onCreate complete");
     }
 
@@ -91,6 +114,31 @@ public class AudioCallActivity extends FullScreenActivity {
         super.onBackPressed();
         terminateCall();
         finish();
+    }
+
+    public void updateCallTime() {
+        if (mState == STATE.CONNECTING_STATE) {
+            final long duration = System.currentTimeMillis() - mConnectTimeMillis;
+            setCallElapsedTime(true, duration);
+        }
+    }
+
+    public void setCallElapsedTime(boolean show, long duration) {
+        if (show) {
+            if (mElapsedTime.getVisibility() != View.VISIBLE) {
+                AnimUtils.fadeIn(mElapsedTime, AnimUtils.DEFAULT_DURATION);
+            }
+            String callTimeElapsed = DateUtils.formatElapsedTime(duration / 1000);
+            mElapsedTime.setText(callTimeElapsed);
+
+            String durationDescription =
+                    InCallDateUtils.formatDuration(this, duration);
+            mElapsedTime.setContentDescription(
+                    !TextUtils.isEmpty(durationDescription) ? durationDescription : null);
+        } else {
+            // hide() animation has no effect if it is already hidden.
+            AnimUtils.fadeOut(mElapsedTime, AnimUtils.DEFAULT_DURATION);
+        }
     }
 
     public void onClickAcceptCallBtn(View v) {
@@ -132,6 +180,8 @@ public class AudioCallActivity extends FullScreenActivity {
     }
 
     private void terminateCall() {
+        mCallTimer.cancel();
+
         Intent serviceIntent = new Intent(getApplicationContext(), HarmonyService.class);
         serviceIntent.putExtra(INTENT_CONTROL, INTENT_SIP_TERMINATE_CALL);
         startService(serviceIntent);
@@ -142,13 +192,19 @@ public class AudioCallActivity extends FullScreenActivity {
     private void RegisterReceiver() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BROADCAST_BYE);
+        intentFilter.addAction(BROADCAST_CONNECTING);
 
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(BROADCAST_BYE)) {
                     Log.i(TAG, "onReceive BYE");
-                    finish();
+                    terminateCall();
+                }
+                else if (intent.getAction().equals(BROADCAST_CONNECTING)) {
+                    Log.i(TAG, "onReceive CONNECTING");
+                    mConnectTimeMillis = System.currentTimeMillis();
+                    mState = STATE.CONNECTING_STATE;
                 }
             }
         };

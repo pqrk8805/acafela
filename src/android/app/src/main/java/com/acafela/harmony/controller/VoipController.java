@@ -32,6 +32,7 @@ import com.acafela.harmony.userprofile.UserInfo;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.acafela.harmony.sip.SipMessage.Command.*;
 import static com.acafela.harmony.ui.AudioCallActivity.BROADCAST_BYE;
+import static com.acafela.harmony.ui.AudioCallActivity.BROADCAST_CONNECTING;
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_ISCALLEE;
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_PHONENUMBER;
 
@@ -64,7 +65,7 @@ public class VoipController {
     private Timer mTimer;
     private boolean mIsVideoCall;
 
-    private  enum STATE {
+    public  enum STATE {
         IDLE_STATE,
         INVITE_STATE,
         RINGING_STATE,
@@ -180,6 +181,7 @@ public class VoipController {
                         SipMessage.Session session = message.getSessioninfo().getSessions(i);
                         opensession(session.getSessiontype(), session.getIp(), session.getPort());
                     }
+                    informConnectingState();
                     mState = STATE.CONNECTING_STATE;
                     break;
                 case CLOSESESSION:
@@ -242,6 +244,7 @@ public class VoipController {
                         SipMessage.Session session = message.getSessioninfo().getSessions(i);
                         opensession(session.getSessiontype(), session.getIp(), session.getPort());
                     }
+                    informConnectingState();
                     mState = STATE.CONNECTING_STATE;
                     break;
                 case CLOSESESSION:
@@ -281,6 +284,12 @@ public class VoipController {
         mState = STATE.IDLE_STATE;
         msgSeq = 0;
         mIsVideoCall =false;
+    }
+
+    private void informConnectingState() {
+        Log.i(LOG_TAG, "informConnectingState");
+        Intent intent = new Intent(BROADCAST_CONNECTING);
+        mContext.sendBroadcast(intent);
     }
 
     private void finishCallActivity() {
