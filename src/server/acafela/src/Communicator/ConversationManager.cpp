@@ -79,11 +79,10 @@ void ConversationManager::createControlServer(ICryptoKeyMgr * keyManager_p, Conf
 			}
 			LeaveCriticalSection(&waitAckCrit);
 			EnterCriticalSection(&consumeAckCrit);
-			for (int i = 0; i < consumedPacketList.size(); i++) {
-				auto iter = consumedPacketList[i];
-				if (getTime() - std::get<0>(iter) >= TIMEOUT)
-					consumedPacketList.erase(consumedPacketList.begin() + i--);
-			}
+			consumedPacketList.erase(std::remove_if(begin(consumedPacketList), end(consumedPacketList), [](const auto& i)
+			{
+				return getTime() - std::get<0>(i) >= TIMEOUT;
+			}), end(consumedPacketList));
 			LeaveCriticalSection(&consumeAckCrit);
 			Sleep(50);
 		}
@@ -119,7 +118,7 @@ bool ConversationManager::isHandledMsgAndAck(Participant * part, bool isServerCo
 		LeaveCriticalSection(&consumeAckCrit);
 		return true;
 	}
-	consumedPacketList.push_back(std::make_tuple(getTime(), msg));
+	consumedPacketList.push_back({ getTime(), msg });
 	LeaveCriticalSection(&consumeAckCrit);
 	return false;
 }
@@ -151,7 +150,7 @@ long long ConversationManager::getTime() {
 
 void ConversationManager::setRetryCtrlMsg(std::string ip, acafela::sip::SIPMessage msg, int retryConut) {
 	EnterCriticalSection(&waitAckCrit);
-	waitAckPacketList.push_back(std::make_tuple(getTime(), retryConut, ip, msg));
+	waitAckPacketList.push_back({ getTime(), retryConut, ip, msg });
 	LeaveCriticalSection(&waitAckCrit);
 }
 
@@ -196,8 +195,8 @@ bool ConversationManager::consumeMessageHandler(std::string IP, acafela::sip::SI
 				FUNC_LOGI("Request to Make Key");
 				keyManager->generateKey(msg.sessionid());
 				Conversation * conversation = new Conversation({
-					std::make_tuple(from,PortHandler().getPortNumber()),
-					std::make_tuple(to,PortHandler().getPortNumber())
+					{from,PortHandler().getPortNumber()},
+					{to,PortHandler().getPortNumber()}
 					}, false);
 				if(msg.isvideocall())
 					conversation->enableVideoConversation();
@@ -228,12 +227,10 @@ bool ConversationManager::consumeMessageHandler(std::string IP, acafela::sip::SI
 			}
 			conversation->terminateConversation();
 			confManager->removeConversationRoom(msg.to());
-			for (auto iter = conversationMap.begin(); iter != conversationMap.end();) {
-				if (std::get<1>(*iter) != conversation)
-					iter++;
-				else
-					iter = conversationMap.erase(iter);
-			}
+			conversationMap.erase(std::remove_if(begin(conversationMap), end(conversationMap), [conversation](const auto& i)
+			{
+				return std::get<1>(i) == conversation
+			}), end(conversationMap));
 			delete conversation;
 		}
 		return true;

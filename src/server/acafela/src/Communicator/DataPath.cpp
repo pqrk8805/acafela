@@ -177,9 +177,9 @@ void DataPath::addToSendData(Participant * part, int len, char * data, bool isVi
 	memcpy(buf, data, len);
 	EnterCriticalSection(&crit);
 	if(!isVideo)
-		dataBuffer.push_back(std::make_tuple(part, len, buf));
+		dataBuffer.push_back({ part, len, buf });
 	else
-		dataVideoBuffer.push_back(std::make_tuple(part, len, buf));
+		dataVideoBuffer.push_back({ part, len, buf });
 	LeaveCriticalSection(&crit);
 }
 
