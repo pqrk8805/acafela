@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
             menu.getItem(MENU_REGISTER).setEnabled(true);
             menu.getItem(MENU_CHANGEPASSWORD).setEnabled(false);
             menu.getItem(MENU_RESTOREPASSWORD).setEnabled(false);
-            menu.getItem(MENU_RESERVCONCALL).setEnabled(true);
+            menu.getItem(MENU_RESERVCONCALL).setEnabled(false);
             menu.getItem(MENU_PHONENUMBER).setVisible(false);
         }
         else {
