@@ -11,6 +11,7 @@ import com.acafela.harmony.codec.audio.AudioCodecSync;
 import com.acafela.harmony.codec.audio.AudioMediaFormat;
 import com.acafela.harmony.crypto.ICrypto;
 import com.acafela.harmony.sip.SipMessage;
+import com.acafela.harmony.util.AverageTimeCheck;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +21,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 
 import static com.acafela.harmony.codec.audio.AudioMediaFormat.AUDIO_SAMPLE_RATE;
+import static com.acafela.harmony.codec.audio.AudioMediaFormat.RAW_BUFFER_SIZE;
 
 
 public class SenderAudio implements DataCommunicator {
@@ -37,6 +39,10 @@ public class SenderAudio implements DataCommunicator {
     AudioMediaFormat mAudioMediaFormat = new AudioMediaFormat();
     AudioCodecSync mAudioEncoder = new AudioCodecSync(true);
     private static int mPacketSeq= 0;
+
+    private AverageTimeCheck encodeTimeCheck = new AverageTimeCheck();
+    private AverageTimeCheck encrytionTimeCheck = new AverageTimeCheck();
+    private AverageTimeCheck socketSendTimeCheck = new AverageTimeCheck();
 
         public SenderAudio(ICrypto crypto)
     {
@@ -78,6 +84,10 @@ public class SenderAudio implements DataCommunicator {
         startSenderAudioThread();
 
         isSenderAudioRun = true;
+
+        encodeTimeCheck.init("encodeTimeCheck");
+        encrytionTimeCheck.init("encrytionTimeCheck");
+        socketSendTimeCheck.init("socketSendTimeCheck");
         return true;
     }
     public boolean endCommunicator()
@@ -95,6 +105,10 @@ public class SenderAudio implements DataCommunicator {
         mAudioEncoder.stop();
         senderAudioThreadRun = false;
         isSenderAudioRun = false;
+
+        encodeTimeCheck.finish();
+        encrytionTimeCheck.finish();
+        socketSendTimeCheck.finish();
         return true;
     }
 
@@ -151,11 +165,15 @@ public class SenderAudio implements DataCommunicator {
                                 SendBuffer[1] = (byte) ((mPacketSeq>> 8) & 0x000000ff);
                                 SendBuffer[0] = (byte) 0;//primary packet
                                 if(mPacketSeq++ == MAX_AUDIO_SEQNO) mPacketSeq=0;
+                                encodeTimeCheck.timeCheckStart();
                                 byte[] encodedBuf = mAudioEncoder.handle(rawbuf);
+                                encodeTimeCheck.timeCheckFinish();
                                 if(encodedBuf == null)
                                     continue;
                                 //Log.e(LOG_TAG,"encode size"+ encodedBuf.length);
+                                encrytionTimeCheck.timeCheckStart();
                                 byte[] encrypted= mCrypto.encrypt(encodedBuf, 0, encodedBuf.length);
+                                encrytionTimeCheck.timeCheckFinish();
                                 System.arraycopy(encrypted,0,SendBuffer,AUDIO_HEADER_SIZE,encrypted.length);
                                 //Log.e(LOG_TAG,"encrypted size"+ encrypted.length);
                                 int size = encrypted.length + AUDIO_HEADER_SIZE;
@@ -167,7 +185,9 @@ public class SenderAudio implements DataCommunicator {
                                         size,
                                         mIpAddress,
                                         mPort);
+                                socketSendTimeCheck.timeCheckStart();
                                 socket.send(packet);
+                                socketSendTimeCheck.timeCheckFinish();
 
                                 SendBuffer[0]=1;
                                 DatagramPacket subPacket = new DatagramPacket(

@@ -12,6 +12,7 @@ import com.acafela.harmony.codec.audio.AudioCodecSync;
 import com.acafela.harmony.codec.audio.AudioMediaFormat;
 import com.acafela.harmony.crypto.ICrypto;
 import com.acafela.harmony.sip.SipMessage;
+import com.acafela.harmony.util.AverageTimeCheck;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -21,9 +22,8 @@ import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.util.Arrays;
 
-import javax.crypto.IllegalBlockSizeException;
-
 import static com.acafela.harmony.codec.audio.AudioMediaFormat.AUDIO_SAMPLE_RATE;
+import static com.acafela.harmony.codec.audio.AudioMediaFormat.RAW_BUFFER_SIZE;
 
 public class ReceiverAudio implements DataCommunicator {
     private static final String LOG_TAG = "ReceiverAudio";
@@ -42,6 +42,9 @@ public class ReceiverAudio implements DataCommunicator {
     private AudioBufferControl mAudioControl;
     AudioMediaFormat mAudioMediaFormat = new AudioMediaFormat();
     AudioCodecSync mAudioDecoder = new AudioCodecSync(false);
+
+    private AverageTimeCheck decrytionTimeCheck = new AverageTimeCheck();
+    private AverageTimeCheck decodeTimeCheck = new AverageTimeCheck();
 
     public ReceiverAudio (Context context, ICrypto crypto)
     {
@@ -91,6 +94,9 @@ public class ReceiverAudio implements DataCommunicator {
         startAudioPlayerThread();
 
         isReceverAudioRun = true;
+
+        decrytionTimeCheck.init("decrytionTimeCheck");
+        decodeTimeCheck.init("decodeTimeCheck");
         return true;
     }
     public boolean endCommunicator()
@@ -128,6 +134,8 @@ public class ReceiverAudio implements DataCommunicator {
         UdpVoipReceiveDataThreadRun = false;
         isReceverAudioRun = false;
 
+        decrytionTimeCheck.finish();
+        decodeTimeCheck.finish();
         return true;
     }
     private void startReceiveDataThread()
@@ -171,7 +179,9 @@ public class ReceiverAudio implements DataCommunicator {
 
                                 byte[] decryptBuf;
                                 try {
+                                    decrytionTimeCheck.timeCheckStart();
                                     decryptBuf = mCrypto.decrypt(encryptBuf, 0, encryptBuf.length);
+                                    decrytionTimeCheck.timeCheckFinish();
                                 } catch(IllegalArgumentException e){
                                     e.printStackTrace();
                                     continue;
@@ -249,7 +259,9 @@ public class ReceiverAudio implements DataCommunicator {
                             byte[] decodedBuf;
 
                             try {
+                                decodeTimeCheck.timeCheckStart();
                                 decodedBuf = mAudioDecoder.handle(audioData.data);
+                                decodeTimeCheck.timeCheckFinish();
                             } catch(IllegalArgumentException e){
                                 e.printStackTrace();
                                 continue;
@@ -257,10 +269,12 @@ public class ReceiverAudio implements DataCommunicator {
                             if(decodedBuf==null)  continue;
                             //if (!MainActivity.BoostAudio)
                             if (true) {
+
                                 if(isAudioHeader) {
                                     OutputTrack.write(decodedBuf, 0, RAW_BUFFER_SIZE);
-                                } else
+                                } else {
                                     OutputTrack.write(decodedBuf, 0, RAW_BUFFER_SIZE);
+                                }
                             } else {
                                 short[] AudioOutputBufferShorts = new short[audioData.data.length / 2];
                                 // to turn bytes to shorts as either big endian or little endian.

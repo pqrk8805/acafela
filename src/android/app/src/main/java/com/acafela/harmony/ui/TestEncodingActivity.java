@@ -21,9 +21,9 @@ import android.widget.Toast;
 import com.acafela.harmony.R;
 import com.acafela.harmony.codec.audio.AudioControllerSync;
 
-import static com.acafela.harmony.codec.audio.AudioMediaFormat.AUDIO_FRAME_BYTE;
 import static com.acafela.harmony.codec.audio.AudioMediaFormat.AUDIO_CHANNEL_COUNT;
 import static com.acafela.harmony.codec.audio.AudioMediaFormat.AUDIO_SAMPLE_RATE;
+import static com.acafela.harmony.codec.audio.AudioMediaFormat.RAW_BUFFER_SIZE;
 
 public class TestEncodingActivity extends AppCompatActivity {
     private static final String TAG = TestEncodingActivity.class.getName();
@@ -176,7 +176,7 @@ public class TestEncodingActivity extends AppCompatActivity {
             recorder.startRecording();
             track.play();
 
-            byte[] inBuf = new byte[AUDIO_FRAME_BYTE];
+            byte[] inBuf = new byte[RAW_BUFFER_SIZE];
 
             try {
                 while (!Thread.interrupted()) {

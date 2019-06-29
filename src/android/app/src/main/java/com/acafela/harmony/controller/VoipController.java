@@ -11,6 +11,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -301,7 +302,7 @@ public class VoipController {
 
     void opensession(SipMessage.SessionType type, String ip, int port , byte[] keyByte)
     {
-        Log.e(LOG_TAG, "open session: "+ type +", ip: " +ip +", port: "+ port + " keybByte" + keyByte.toString());
+        Log.e(LOG_TAG, "open session: "+ type +", ip: " +ip +", port: "+ port + " keybByte" + Arrays.toString(keyByte));
         DataCommunicator communicator = null;
         ICrypto crypto;
         switch(type)

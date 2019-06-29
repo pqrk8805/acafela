@@ -14,8 +14,11 @@ public class AudioMediaFormat {
     public static final int AUDIO_BIT_RATE_7950 = 7950;
     public static final int AUDIO_BIT_RATE_12200 = 12200;
 
+    private static final int MILLISECONDS_IN_A_SECOND = 1000;
+    private static final int SAMPLE_INTERVAL = 20;   // Milliseconds
+    private static final int BYTES_PER_SAMPLE = 2;    // Bytes Per Sample
+    public static final int RAW_BUFFER_SIZE = AUDIO_SAMPLE_RATE / (MILLISECONDS_IN_A_SECOND / SAMPLE_INTERVAL) * BYTES_PER_SAMPLE;
     public static final int AUDIO_QUEUE_TIMEOUT_US = 10000;
-    public static final int AUDIO_FRAME_BYTE = 160* AUDIO_CHANNEL_COUNT *2;
     public static final int AUDIO_QUEUE_BOUND = 100;
 
     private MediaFormat mFormat = new MediaFormat();

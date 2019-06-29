@@ -22,9 +22,9 @@ import com.acafela.harmony.R;
 import com.acafela.harmony.codec.audio.AudioCodecAsync.AudoiCallback;
 import com.acafela.harmony.codec.audio.AudioControllerAsync;
 
-import static com.acafela.harmony.codec.audio.AudioMediaFormat.AUDIO_FRAME_BYTE;
 import static com.acafela.harmony.codec.audio.AudioMediaFormat.AUDIO_CHANNEL_COUNT;
 import static com.acafela.harmony.codec.audio.AudioMediaFormat.AUDIO_SAMPLE_RATE;
+import static com.acafela.harmony.codec.audio.AudioMediaFormat.RAW_BUFFER_SIZE;
 
 public class TestAsyncEncodingActivity extends AppCompatActivity {
     private static final String TAG = TestAsyncEncodingActivity.class.getName();
@@ -194,7 +194,7 @@ public class TestAsyncEncodingActivity extends AppCompatActivity {
 
             recorder.startRecording();
 
-            byte[] inBuf = new byte[AUDIO_FRAME_BYTE];
+            byte[] inBuf = new byte[RAW_BUFFER_SIZE];
 
             try {
                 while (!Thread.interrupted()) {
