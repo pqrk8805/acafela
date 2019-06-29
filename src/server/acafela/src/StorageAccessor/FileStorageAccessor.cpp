@@ -194,13 +194,14 @@ std::string FileStorageAccessor::getEmailAddress(const string& phoneNumber)
 		if (FindFileData.dwFileAttributes != FILE_ATTRIBUTE_DIRECTORY)
 		{
 			wstring wfilename = FindFileData.cFileName;
-			string savedEmailAddress(wfilename.begin(), wfilename.end());
+			string savedEmailAddress(wfilename.begin(), wfilename.end());			
 			
 			PhoneNumberFile f(savedEmailAddress, "rb");
 			string savedPhoneNumber = f.ReadFile();
 
-			if (savedPhoneNumber.compare(phoneNumber) == 0)
+			if (savedPhoneNumber.substr(0, phoneNumber.length()).compare(phoneNumber) == 0)
 			{
+				emailAddress = savedEmailAddress;
 				break;
 			}			
 		}

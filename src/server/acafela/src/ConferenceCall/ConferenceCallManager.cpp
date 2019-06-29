@@ -40,7 +40,7 @@ int ConferenceCallManager::MakeConferenceCall(const string& dateFrom, const stri
 	for (const auto& i : participantsList)
 	{
 		string emailAddress = mSA->getEmailAddress(i);
-		EmailSenderCC::sendCCInvitation(emailAddress, ccNumber, dateFrom, dateTo);
+		EmailSenderCC::sendCCInvitation(emailAddress, ccNumber, "\"" + dateFrom + "\"", "\"" + dateTo + "\"");
 	}
 
 	mSA->saveCCItem(ccNumber, dateFrom, dateTo, participantsList);
