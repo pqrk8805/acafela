@@ -124,7 +124,8 @@ public class SenderAudio implements DataCommunicator {
                 // Create an instance of AudioTrack, used for playing back audio
                 Log.i(LOG_TAG, "Receive Data Thread Started. Thread id: " + Thread.currentThread().getId());
                 InputStream InputPlayFile;
-                byte[] SendBuffer = new byte[AUDIO_HEADER_SIZE + RAW_BUFFER_SIZE + 16];
+                //byte[] SendBuffer = new byte[AUDIO_HEADER_SIZE + RAW_BUFFER_SIZE + 16];
+                byte[] SendBuffer = new byte[PACKET_TOTAL_SIZE];
 
                 AudioRecord Recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, AUDIO_SAMPLE_RATE,
                         AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT,
@@ -176,7 +177,8 @@ public class SenderAudio implements DataCommunicator {
                                 encrytionTimeCheck.timeCheckFinish();
                                 System.arraycopy(encrypted,0,SendBuffer,AUDIO_HEADER_SIZE,encrypted.length);
                                 //Log.e(LOG_TAG,"encrypted size"+ encrypted.length);
-                                int size = encrypted.length + AUDIO_HEADER_SIZE;
+                                //int size = encrypted.length + AUDIO_HEADER_SIZE;
+                                int size = PACKET_TOTAL_SIZE;
                                 //Log.i(LOG_TAG, "Packet send length: " +  size );
 
                                 DatagramPacket packet = new DatagramPacket(

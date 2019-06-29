@@ -263,7 +263,7 @@ public class AudioBufferControl {
         if(isForce==false && mAudioDataQueue.size() >MAX_DISTANCE/2)
         {
             data = (AudioData)mAudioDataQueue.get(mAudioDataQueue.size()/2);
-            Log.e(LOG_TAG, "Middlet data SeqNo : " + data.seqNo);
+            Log.e(LOG_TAG, "Middle data SeqNo : " + data.seqNo);
         } else {
             data = (AudioData) mAudioDataQueue.get(0);
             Log.e(LOG_TAG, "Oldest data SeqNo : " + data.seqNo);

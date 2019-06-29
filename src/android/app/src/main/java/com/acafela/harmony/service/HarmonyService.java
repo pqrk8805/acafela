@@ -41,6 +41,8 @@ public class HarmonyService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i(LOG_TAG, "onStartCommand");
+        if(intent == null)
+            return super.onStartCommand(intent, flags, startId);
 
         String control = intent.getStringExtra(TestCallActivity.INTENT_CONTROL);
         Log.i(LOG_TAG, "INTENT_CONTROL: " + control);

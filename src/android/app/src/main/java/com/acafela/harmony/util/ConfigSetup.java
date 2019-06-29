@@ -34,6 +34,7 @@ public class ConfigSetup {
                 InputStreamReader inputreader = new InputStreamReader(instream);
                 BufferedReader buffreader = new BufferedReader(inputreader);
                 fileServer = buffreader.readLine();
+                System.out.println("Init serverip : " + fileServer);
                 return fileServer;
             }
         }
@@ -54,7 +55,7 @@ public class ConfigSetup {
                 InetAddress.getByName(serverip);
                 outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
                 outputStream.write(serverip.getBytes());
-                //System.out.println("save serverip : " + serverip);
+                System.out.println("save serverip : " + serverip);
                 outputStream.close();
             } catch (Exception i) {
                 i.printStackTrace();

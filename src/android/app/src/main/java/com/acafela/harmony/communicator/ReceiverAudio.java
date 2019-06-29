@@ -157,7 +157,7 @@ public class ReceiverAudio implements DataCommunicator {
                     while (UdpVoipReceiveDataThreadRun) {
                         if(isAudioHeader) {
                             //byte[] recieveData = new byte[ (((RAW_BUFFER_SIZE) / 16 + 1) * 16) + AUDIO_HEADER_SIZE];
-                            byte[] recieveData = new byte[51];
+                            byte[] recieveData = new byte[PACKET_TOTAL_SIZE];
                             DatagramPacket packet = new DatagramPacket(recieveData, recieveData.length);
 
                             RecvUdpSocket.receive(packet);
@@ -169,12 +169,12 @@ public class ReceiverAudio implements DataCommunicator {
                            //Log.i(LOG_TAG, " data" + data.seqNo + " lenth : " + recieveData.length);
 
                             if(mAudioControl.isValidCheck(data.seqNo)) {
-                                if(dataNum+1 != data.seqNo) {
+                                /*if(dataNum+1 != data.seqNo) {
                                     Log.e(LOG_TAG, "skip data" + (dataNum + 1));
                                 }
-                                dataNum = data.seqNo;
+                                dataNum = data.seqNo;*/
                                 //Log.e(LOG_TAG, " data" + data.seqNo);
-                                byte[] encryptBuf = Arrays.copyOfRange(recieveData, AUDIO_HEADER_SIZE, packet.getLength());
+                                byte[] encryptBuf = Arrays.copyOfRange(recieveData, AUDIO_HEADER_SIZE, PACKET_SIZE);
                                 if(encryptBuf == null) continue;
 
                                 byte[] decryptBuf;
@@ -253,8 +253,6 @@ public class ReceiverAudio implements DataCommunicator {
                         AudioData audioData = mAudioControl.getData();
 
                         //data.data = decodedBuf;
-
-
                         if(audioData!=null) {
                             byte[] decodedBuf;
 
@@ -269,7 +267,6 @@ public class ReceiverAudio implements DataCommunicator {
                             if(decodedBuf==null)  continue;
                             //if (!MainActivity.BoostAudio)
                             if (true) {
-
                                 if(isAudioHeader) {
                                     OutputTrack.write(decodedBuf, 0, RAW_BUFFER_SIZE);
                                 } else {
