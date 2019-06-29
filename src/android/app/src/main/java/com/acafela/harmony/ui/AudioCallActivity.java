@@ -17,7 +17,7 @@ import com.acafela.harmony.controller.VoipController.STATE;
 import com.acafela.harmony.service.HarmonyService;
 import com.acafela.harmony.ui.call.CallTimer;
 import com.acafela.harmony.ui.call.InCallDateUtils;
-import com.acafela.harmony.ui.contacts.DatabaseHelper;
+import com.acafela.harmony.ui.contacts.ContactDbHelper;
 import com.acafela.harmony.ui.dialpad.AnimUtils;
 import com.acafela.harmony.util.AudioPathSelector;
 import com.acafela.harmony.util.ProximityScreenController;
@@ -59,7 +59,7 @@ public class AudioCallActivity extends FullScreenActivity {
         TextView phoneNumberTextView = findViewById(R.id.tv_phonenumber);
         phoneNumberTextView.setText(phoneNumber);
         TextView nameTextView = findViewById(R.id.tv_name);
-        nameTextView.setText(DatabaseHelper.createContactDatabaseHelper(this).query(phoneNumber));
+        nameTextView.setText(ContactDbHelper.CreateHelper(this).query(phoneNumber));
         boolean isRinging = intent.getBooleanExtra(INTENT_ISCALLEE, false);
         if (isRinging) {
             findViewById(R.id.button_container).setVisibility(View.GONE);

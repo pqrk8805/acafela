@@ -1,4 +1,4 @@
-package com.acafela.harmony.ui.contacts;
+package com.acafela.harmony.ui.concall;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -10,37 +10,36 @@ import android.widget.EditText;
 
 import com.acafela.harmony.R;
 
-public class ContactAddDialog extends Dialog
-{
-    private static final String LOG_TAG = "ContactAddDlg";
-    private ContactDbHelper mDbHelper;
 
-    public ContactAddDialog(@NonNull Context context,
-                            @NonNull ContactDbHelper dbHelper) {
+public class ConcallAddParticipantDlg extends Dialog
+{
+    private static final String LOG_TAG = "CCAddPartDlg";
+
+    private View.OnClickListener mOkClickListener;
+
+    public ConcallAddParticipantDlg(@NonNull Context context,
+                                    @NonNull View.OnClickListener okClickListener)
+    {
         super(context);
 
-        mDbHelper = dbHelper;
+        mOkClickListener = okClickListener;
         setViews(context);
     }
 
     private void setViews(final Context context) {
-        setContentView(R.layout.dialog_contact_add);
+        setContentView(R.layout.dialog_concall_participant_add);
         setCancelable(true);
 
-        final EditText etName = findViewById(R.id.editText_name);
-        final EditText etPhone = findViewById(R.id.editText_phone);
-        final EditText etEmail = findViewById(R.id.editText_email);
+        final EditText editTest = findViewById(R.id.editText_phone);
+
         Button buttonRegister = findViewById(R.id.btn_add);
         buttonRegister.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                Log.d(LOG_TAG, "onClick() ADD");
-                long id = mDbHelper.insert(
-                                    etName.getText().toString(),
-                                    etPhone.getText().toString(),
-                                    etEmail.getText().toString());
+                Log.d(LOG_TAG, "onClick() Add");
+                mOkClickListener.onClick(editTest);
                 dismiss();
             }
         });

@@ -27,9 +27,7 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
+            android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/et_concall_to"
                 android:layout_width="match_parent"
@@ -38,21 +36,30 @@
                 android:hint="to" />
         </android.support.design.widget.TextInputLayout>
 
-        <ListView
-            android:id="@+id/lv_concall_participants"
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_concall_add_participants"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:tint="@android:color/white"
-            app:backgroundTint="@android:color/holo_blue_dark"
-            app:srcCompat="@android:drawable/ic_input_add"/>
+            android:textSize="15dp"
+            android:text="Participants"/>
 
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                     android:layout_width="match_parent"
+                     android:layout_height="150dp">
+            <ListView android:id="@+id/lv_concall_participants"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent" />
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_concall_add_participants"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="@dimen/fab_margin"
+                android:tint="@android:color/white"
+                app:backgroundTint="@android:color/holo_blue_dark"
+                app:srcCompat="@android:drawable/ic_input_add"/>
+        </FrameLayout>
 
         <LinearLayout
             android:orientation="horizontal"

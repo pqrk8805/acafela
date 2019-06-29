@@ -10,17 +10,17 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DatabaseHelper extends SQLiteOpenHelper
+public class ContactDbHelper extends SQLiteOpenHelper
 {
     private static final String LOG_TAG = "SQL_HELPER";
     private static final String TABLE_NAME = "HarmonyContacts";
 
-    public static DatabaseHelper createContactDatabaseHelper(Context context)
+    public static ContactDbHelper CreateHelper(Context context)
     {
-        return new DatabaseHelper(context, "ContactDB", null, 1);
+        return new ContactDbHelper(context, "ContactDB", null, 1);
     }
 
-    public DatabaseHelper(
+    public ContactDbHelper(
                         Context context,
                         String name,
                         SQLiteDatabase.CursorFactory factory,
@@ -108,7 +108,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 
     public String query(String phone)
     {
-        String name = "";
+        String name = "Unknown";
         Cursor cursor = null;
         try {
             SQLiteDatabase db = getReadableDatabase();
