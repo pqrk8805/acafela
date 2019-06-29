@@ -90,6 +90,8 @@ public class AudioCallActivity extends FullScreenActivity {
     protected void onDestroy() {
         Log.i(TAG, "onDestroy");
         super.onDestroy();
+
+        mProxiScrController.deactivate();
     }
 
     @Override
