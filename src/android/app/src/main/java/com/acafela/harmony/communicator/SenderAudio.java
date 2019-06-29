@@ -19,6 +19,8 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
+import static com.acafela.harmony.codec.audio.AudioMediaFormat.AUDIO_SAMPLE_RATE;
+
 
 public class SenderAudio implements DataCommunicator {
     private  InetAddress mIpAddress;
@@ -110,9 +112,9 @@ public class SenderAudio implements DataCommunicator {
                 InputStream InputPlayFile;
                 byte[] SendBuffer = new byte[AUDIO_HEADER_SIZE + RAW_BUFFER_SIZE + 16];
 
-                AudioRecord Recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLE_RATE,
+                AudioRecord Recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, AUDIO_SAMPLE_RATE,
                         AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT,
-                        AudioRecord.getMinBufferSize(SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT));
+                        AudioRecord.getMinBufferSize(AUDIO_SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT));
 
                 // AEC start
                 mAudioRecordSessionId = Recorder.getAudioSessionId();
@@ -152,9 +154,10 @@ public class SenderAudio implements DataCommunicator {
                                 byte[] encodedBuf = mAudioEncoder.handle(rawbuf);
                                 if(encodedBuf == null)
                                     continue;
+                                //Log.e(LOG_TAG,"encode size"+ encodedBuf.length);
                                 byte[] encrypted= mCrypto.encrypt(encodedBuf, 0, encodedBuf.length);
                                 System.arraycopy(encrypted,0,SendBuffer,AUDIO_HEADER_SIZE,encrypted.length);
-
+                                //Log.e(LOG_TAG,"encrypted size"+ encrypted.length);
                                 int size = encrypted.length + AUDIO_HEADER_SIZE;
                                 //Log.i(LOG_TAG, "Packet send length: " +  size );
 

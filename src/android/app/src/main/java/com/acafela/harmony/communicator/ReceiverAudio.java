@@ -21,6 +21,10 @@ import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.util.Arrays;
 
+import javax.crypto.IllegalBlockSizeException;
+
+import static com.acafela.harmony.codec.audio.AudioMediaFormat.AUDIO_SAMPLE_RATE;
+
 public class ReceiverAudio implements DataCommunicator {
     private static final String LOG_TAG = "ReceiverAudio";
     private  InetAddress mIpAddress;
@@ -140,12 +144,12 @@ public class ReceiverAudio implements DataCommunicator {
                     RecvUdpSocket = new DatagramSocket(null);
                     RecvUdpSocket.setReuseAddress(true);
                     RecvUdpSocket.bind(new InetSocketAddress(mPort));
-                    //int dataNum=0;
+                    int dataNum=0;
 
                     while (UdpVoipReceiveDataThreadRun) {
                         if(isAudioHeader) {
                             //byte[] recieveData = new byte[ (((RAW_BUFFER_SIZE) / 16 + 1) * 16) + AUDIO_HEADER_SIZE];
-                            byte[] recieveData = new byte[19];
+                            byte[] recieveData = new byte[51];
                             DatagramPacket packet = new DatagramPacket(recieveData, recieveData.length);
 
                             RecvUdpSocket.receive(packet);
@@ -154,12 +158,14 @@ public class ReceiverAudio implements DataCommunicator {
                             data.seqNo = (recieveData[1]&0xFF)<<8 | (recieveData[2]&0xFF);
                             if(recieveData[0] == 0)
                                 data.isPrimary = true;
+                           //Log.i(LOG_TAG, " data" + data.seqNo + " lenth : " + recieveData.length);
+
                             if(mAudioControl.isValidCheck(data.seqNo)) {
-                                /*if(dataNum+1 != data.seqNo) {
+                                if(dataNum+1 != data.seqNo) {
                                     Log.e(LOG_TAG, "skip data" + (dataNum + 1));
                                 }
-                                dataNum = data.seqNo;*/
-
+                                dataNum = data.seqNo;
+                                //Log.e(LOG_TAG, " data" + data.seqNo);
                                 byte[] encryptBuf = Arrays.copyOfRange(recieveData, AUDIO_HEADER_SIZE, packet.getLength());
                                 if(encryptBuf == null) continue;
 
@@ -169,7 +175,11 @@ public class ReceiverAudio implements DataCommunicator {
                                 } catch(IllegalArgumentException e){
                                     e.printStackTrace();
                                     continue;
-                                }
+                                } /*catch(IllegalBlockSizeException h){
+                                    //.printStackTrace();
+                                    continue;
+                                }*/
+
                                 if(decryptBuf == null) continue;
                                 data.data = decryptBuf;
                                 mAudioControl.pushData(data);
@@ -218,7 +228,7 @@ public class ReceiverAudio implements DataCommunicator {
                                 .build())
                         .setAudioFormat(new AudioFormat.Builder()
                                 .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
-                                .setSampleRate(SAMPLE_RATE)
+                                .setSampleRate(AUDIO_SAMPLE_RATE)
                                 .setChannelMask(AudioFormat.CHANNEL_OUT_MONO).build())
                         .setBufferSizeInBytes(RAW_BUFFER_SIZE)
                         .setTransferMode(AudioTrack.MODE_STREAM)
@@ -233,6 +243,7 @@ public class ReceiverAudio implements DataCommunicator {
                         AudioData audioData = mAudioControl.getData();
 
                         //data.data = decodedBuf;
+
 
                         if(audioData!=null) {
                             byte[] decodedBuf;

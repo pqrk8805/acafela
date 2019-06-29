@@ -23,6 +23,7 @@ import com.acafela.harmony.codec.audio.AudioControllerSync;
 
 import static com.acafela.harmony.codec.audio.AudioMediaFormat.AUDIO_FRAME_BYTE;
 import static com.acafela.harmony.codec.audio.AudioMediaFormat.AUDIO_CHANNEL_COUNT;
+import static com.acafela.harmony.codec.audio.AudioMediaFormat.AUDIO_SAMPLE_RATE;
 
 public class TestEncodingActivity extends AppCompatActivity {
     private static final String TAG = TestEncodingActivity.class.getName();
@@ -134,20 +135,18 @@ public class TestEncodingActivity extends AppCompatActivity {
 
     private class AudioThread extends Thread {
 
-        static final int SAMPLE_RATE = 8000;
-
         @Override
         public void run() {
             Process.setThreadPriority(Process.THREAD_PRIORITY_MORE_FAVORABLE);
 
 
-            int minBufSize = AudioRecord.getMinBufferSize(SAMPLE_RATE,
+            int minBufSize = AudioRecord.getMinBufferSize(AUDIO_SAMPLE_RATE,
                     AUDIO_CHANNEL_COUNT == 1 ? AudioFormat.CHANNEL_IN_MONO : AudioFormat.CHANNEL_IN_STEREO,
                     AudioFormat.ENCODING_PCM_16BIT);
 
             // initialize audio recorder
             AudioRecord recorder = new AudioRecord(MediaRecorder.AudioSource.MIC,
-                    SAMPLE_RATE,
+                    AUDIO_SAMPLE_RATE,
                     AUDIO_CHANNEL_COUNT == 1 ? AudioFormat.CHANNEL_IN_MONO : AudioFormat.CHANNEL_IN_STEREO,
                     AudioFormat.ENCODING_PCM_16BIT,
                     minBufSize);
@@ -168,7 +167,7 @@ public class TestEncodingActivity extends AppCompatActivity {
             }
 
             AudioTrack track = new AudioTrack(AudioManager.STREAM_SYSTEM,
-                    SAMPLE_RATE,
+                    AUDIO_SAMPLE_RATE,
                     AUDIO_CHANNEL_COUNT == 1 ? AudioFormat.CHANNEL_OUT_MONO : AudioFormat.CHANNEL_OUT_STEREO,
                     AudioFormat.ENCODING_PCM_16BIT,
                     minBufSize,

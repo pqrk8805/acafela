@@ -52,10 +52,9 @@ public class VoipController {
     private int sesssionNo=0;
     private String sesssionID;
     private int msgSeq =0;
-    private ICrypto mCrypto;
     private boolean isCaller =false;
     private boolean isRun =false;
-    RingController mRingControl = null;
+    RingController mRingControl;
     private CryptoKeyRpc mCryptoRpc;
     private List<DataCommunicator> mSessionList;
     private String mCalleeNumber;
@@ -179,12 +178,10 @@ public class VoipController {
                         terminateCall();
                         break;
                     }
-                    mCrypto  = CryptoBroker.getInstance().create("AES");
-                    mCrypto.init(keyByte);
 
                     for(int i=0;i<message.getSessioninfo().getSessionsCount();i++) {
                         SipMessage.Session session = message.getSessioninfo().getSessions(i);
-                        opensession(session.getSessiontype(), session.getIp(), session.getPort());
+                        opensession(session.getSessiontype(), session.getIp(), session.getPort(),keyByte);
                     }
                     informConnectingState();
                     mState = STATE.CONNECTING_STATE;
@@ -242,12 +239,10 @@ public class VoipController {
                 case OPENSESSION:
                     //if(mState==STATE.CONNECTING_STATE) break;
                     byte[] keyByte = mCryptoRpc.getKey(sesssionID);
-                    mCrypto = CryptoBroker.getInstance().create("AES");
-                    Log.e(LOG_TAG, "Send Message: " +"keyByte" + keyByte.length);
-                    mCrypto.init(keyByte);
+                    //Log.e(LOG_TAG, "Send Message: " +"keyByte" + keyByte.length);
                     for(int i=0;i<message.getSessioninfo().getSessionsCount();i++) {
                         SipMessage.Session session = message.getSessioninfo().getSessions(i);
-                        opensession(session.getSessiontype(), session.getIp(), session.getPort());
+                        opensession(session.getSessiontype(), session.getIp(), session.getPort(),keyByte);
                     }
                     informConnectingState();
                     mState = STATE.CONNECTING_STATE;
@@ -303,20 +298,25 @@ public class VoipController {
         mContext.sendBroadcast(intent);
     }
 
-    void opensession(SipMessage.SessionType type, String ip, int port)
+    void opensession(SipMessage.SessionType type, String ip, int port , byte[] keyByte)
     {
-        Log.e(LOG_TAG, "Send Message: "+ type +", ip: " +ip +", port: "+ port);
+        Log.e(LOG_TAG, "open session: "+ type +", ip: " +ip +", port: "+ port + " keybByte" + keyByte.toString());
         DataCommunicator communicator = null;
+        ICrypto crypto;
         switch(type)
         {
             case SENDAUDIO:
-                communicator = new SenderAudio(mCrypto);
+                crypto  = CryptoBroker.getInstance().create("AES");
+                crypto.init(keyByte);
+                communicator = new SenderAudio(crypto);
                 break;
             case SENDVIDEO:
                 communicator = new SendVideoSession(mContext);
                 break;
             case RECIEVEAUDIO:
-                communicator = new ReceiverAudio(mContext, mCrypto);
+                crypto  = CryptoBroker.getInstance().create("AES");
+                crypto.init(keyByte);
+                communicator = new ReceiverAudio(mContext, crypto);
                 break;
             case RECIEVEVIDEO:
                 communicator = new ReceiveVideoSession(mContext);

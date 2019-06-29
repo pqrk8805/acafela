@@ -5,12 +5,13 @@ import android.util.Log;
 import com.acafela.harmony.crypto.ICrypto;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.concurrent.Semaphore;
 
 public class AudioBufferControl {
     private static final String LOG_TAG = "AudioBufferControl";
-    private int MAX_DISTANCE=16;
+    private int MAX_DISTANCE=20;
     private int playerSeqNum;
     private int receiveSeqNum;
     private ICrypto mCrypto;
@@ -205,9 +206,26 @@ public class AudioBufferControl {
 
     AudioData getDataBySeqNo(int targetNo)
     {
+        int checkCnt=0;
         for (Iterator<AudioData> iter = mAudioDataQueue.iterator(); iter.hasNext(); ) {
-            AudioData data = iter.next();
+            AudioData data;
+            try {
+                data = iter.next();
+            } catch (ConcurrentModificationException e)
+            {
+                e.printStackTrace();
+                return null;
+            }
+            checkCnt++;
             if (data.seqNo == targetNo) {
+                if(checkCnt>MAX_DISTANCE-5) {
+                    try {
+                        Thread.sleep(150);
+                        Log.i(LOG_TAG,"need Delay...");
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
                 return data;
             }
         }
