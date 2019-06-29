@@ -186,7 +186,7 @@
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y/d/i/e $(ProjectDir)certs $(OutDir)certs
-xcopy /y/d/i/e $(SolutionDir)..\..\external\email $(OutDir)</Command>
+xcopy /y/d/i/e $(ProjectDir)emailsender $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
