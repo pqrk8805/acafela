@@ -21,6 +21,7 @@ import com.acafela.harmony.R;
 import com.acafela.harmony.concall.ConCallReservRpc;
 import com.acafela.harmony.ui.contacts.ContactDbHelper;
 import com.acafela.harmony.userprofile.UserInfo;
+import com.acafela.harmony.util.ConfigSetup;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -85,7 +86,7 @@ public class ConcallReserveDlg extends Dialog
                 }
 
                 ConCallReservRpc rpc = new ConCallReservRpc(
-                                    Config.SERVER_IP,
+                                    ConfigSetup.getInstance().getServerIP(context),
                                     Config.RPC_PORT_CONFERENCE_CALL_RESERVE);
                 int err = rpc.reserve(
                                     UserInfo.getInstance().getPhoneNumber(),

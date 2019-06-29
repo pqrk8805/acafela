@@ -49,7 +49,7 @@ void ConCallReservRpc::shutdown()
                             const ::acafela::rpc::ConCallResrvInfo* request,
                             ::acafela::rpc::Error* response)
 {
-    FUNC_LOGI("");
+    FUNC_LOGI("reserve()");
     // from
     //
     const std::string& from = request->from();
@@ -64,15 +64,15 @@ void ConCallReservRpc::shutdown()
 
     // 참석자 목록
     //
-	std::vector<std::string> participants;
+	std::vector<std::string> participants = { host };
     for (int i = 0; i < request->participants_size(); ++i) {
         //const std::string participant = request->participants(i);
 		participants.push_back(request->participants(i));
     }
 
 	int err = mCCM->MakeConferenceCall(from, to, participants);
-    response->set_err(-1);
-    response->set_message("not implemented yet");
+    response->set_err(err);
+    response->set_message("OK");
 
     return grpc::Status::OK;
 }

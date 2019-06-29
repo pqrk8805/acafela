@@ -101,7 +101,12 @@ void DataPath::terminateDataPath() {
 	if (isServerPassed) {
 		closesocket(dataStreamSocket.client);
 		closesocket(dataStreamSocket.server);
+		closesocket(dataVideoStreamSocket.client);
+		closesocket(dataVideoStreamSocket.server);
 	}
+}
+
+void DataPath::waitForTerminate() {
 	for (auto th : threadList)
 		th->join();
 }
@@ -123,7 +128,7 @@ void DataPath::listener(SocketGroup socket, bool isVideo) {
 		delete buf;
 	}
 }
-
+/*
 void DataPath::sender(SocketGroup socket, bool isVideo) {
 	bool * workFlag = &isWorking;
 	if(isVideo) workFlag = &isVideoWorking;
@@ -156,19 +161,35 @@ void DataPath::sender(SocketGroup socket, bool isVideo) {
 		delete buf;
 	}
 }
+*/
+
+void DataPath::sender(SocketGroup socket, bool isVideo, std::tuple<Participant *, int, char *> dBuffer) {
+	Participant * targetPart = std::get<0>(dBuffer);
+	int recv_len = std::get<1>(dBuffer);
+	char * buf = std::get<2>(dBuffer);
+	struct sockaddr_in server;
+	server.sin_family = AF_INET;
+	int port = sendPortDirectory[targetPart];
+	if (isVideo) port += 1;
+	server.sin_port = htons(port);
+	inet_pton(AF_INET, clientIP.c_str(), &(server.sin_addr));
+	if (sendto(socket.client, buf, recv_len, 0, (struct sockaddr*) &server, sizeof(struct sockaddr_in)) == SOCKET_ERROR)
+		printf("sendto() failed with error code : %d\n", WSAGetLastError());
+	delete buf;
+}
 
 void DataPath::createServerDataPath() {
 	InitializeCriticalSection(&crit);
 	createSocket(dataStreamSocket, false);
 	threadList.push_back(new std::thread(&DataPath::listener, this, dataStreamSocket, false));
-	threadList.push_back(new std::thread(&DataPath::sender, this, dataStreamSocket, false));
+	//threadList.push_back(new std::thread(&DataPath::sender, this, dataStreamSocket, false));
 }
 
 void DataPath::createVideoServerDataPath() {
 	createSocket(dataVideoStreamSocket, true);
 	isVideoWorking = true;
 	threadList.push_back(new std::thread(&DataPath::listener, this, dataVideoStreamSocket, true));
-	threadList.push_back(new std::thread(&DataPath::sender, this, dataVideoStreamSocket, true));
+	//threadList.push_back(new std::thread(&DataPath::sender, this, dataVideoStreamSocket, true));
 }
 
 void DataPath::addToSendData(Participant * part, int len, char * data, bool isVideo) {
@@ -176,10 +197,12 @@ void DataPath::addToSendData(Participant * part, int len, char * data, bool isVi
 	memset(buf, NULL, BUFLEN);
 	memcpy(buf, data, len);
 	EnterCriticalSection(&crit);
-	if(!isVideo)
-		dataBuffer.push_back({ part, len, buf });
-	else
-		dataVideoBuffer.push_back({ part, len, buf });
+	sender(
+		isVideo 
+		? dataVideoStreamSocket 
+		: dataStreamSocket
+		, isVideo, { part, len, buf }
+	);
 	LeaveCriticalSection(&crit);
 }
 
@@ -198,8 +221,12 @@ void DataPath::createSocket(SocketGroup& streamSocket, bool isVideo) {
 	server.sin_addr.s_addr = INADDR_ANY;
 	int port = receivePort;
 	if (isVideo) port += 1;
-	server.sin_port = htons(port);
-
+	server.sin_port = htons(port); 
+	struct timeval tv;
+	tv.tv_sec = 0;
+	tv.tv_usec = TIMEOUT*1000;
+	if(setsockopt(streamSocket.server, SOL_SOCKET, SO_RCVTIMEO, (char*)&tv, sizeof(tv)))
+		printf("Error!\n");
 	if (bind(streamSocket.server, (struct sockaddr *)&server, sizeof(server)) == SOCKET_ERROR)
 		FUNC_LOGE("Bind failed with error code : %d", WSAGetLastError());
 }
