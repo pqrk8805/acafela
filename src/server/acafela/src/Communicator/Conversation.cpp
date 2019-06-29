@@ -48,6 +48,7 @@ void Conversation::terminateConversation() {
 		if (part->getDataPath() != nullptr)
 			part->getDataPath()->terminateDataPath();
 	}
+	LeaveCriticalSection(&critRoom);
 	for (auto partAndPort : convCopy) {
 		Participant * part = std::get<0>(partAndPort);
 		if (part->getDataPath() != nullptr) {
@@ -56,7 +57,6 @@ void Conversation::terminateConversation() {
 			part->clearDataPath();
 		}
 	}
-	LeaveCriticalSection(&critRoom);
 }
 
 void Conversation::broadcast_Data(Participant * partSend, int len, char * data, bool isVideo) {
