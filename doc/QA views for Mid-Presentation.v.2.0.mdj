@@ -17,7 +17,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFrI6GqzSNnwaw="
 					},
-					"name": "Phone",
+					"name": "Client",
 					"attributes": [
 						{
 							"_type": "UMLPort",
@@ -130,7 +130,7 @@
 											"top": 94,
 											"width": 287,
 											"height": 13,
-											"text": "Phone"
+											"text": "Client"
 										},
 										{
 											"_type": "LabelView",
@@ -298,11 +298,11 @@
 								"$ref": "AAAAAAFrI6vyoCepky0="
 							},
 							"font": "Arial;15;0",
-							"left": 440,
+							"left": 408,
 							"top": 16,
-							"width": 60.009765625,
-							"height": 27,
-							"text": "System"
+							"width": 129,
+							"height": 42,
+							"text": "Harmony System"
 						}
 					]
 				},
@@ -333,11 +333,11 @@
 								"$ref": "AAAAAAFrI6GqziNot6c="
 							},
 							"font": "Arial;13;0",
-							"left": 560,
+							"left": 528,
 							"top": 192,
-							"width": 60,
-							"height": 25,
-							"text": "System"
+							"width": 121,
+							"height": 38,
+							"text": "Harmony System"
 						},
 						{
 							"_type": "UMLComponentView",
@@ -382,7 +382,7 @@
 											"top": 252,
 											"width": 263,
 											"height": 13,
-											"text": "Phone"
+											"text": "Client"
 										},
 										{
 											"_type": "LabelView",
@@ -1188,7 +1188,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFrI6GqzSNnwaw="
 					},
-					"name": "Phone",
+					"name": "Client",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -1274,11 +1274,11 @@
 								"$ref": "AAAAAAFrI8t/yjS3io4="
 							},
 							"font": "Arial;15;0",
-							"left": 456,
+							"left": 424,
 							"top": 128,
-							"width": 60.009765625,
-							"height": 27,
-							"text": "System"
+							"width": 129,
+							"height": 42,
+							"text": "Harmony System"
 						},
 						{
 							"_type": "UMLComponentView",
@@ -1323,7 +1323,7 @@
 											"top": 196,
 											"width": 279,
 											"height": 13,
-											"text": "Phone"
+											"text": "Client"
 										},
 										{
 											"_type": "LabelView",
@@ -2179,7 +2179,7 @@
 											"top": 241,
 											"width": 125,
 											"height": 13,
-											"text": "Phone"
+											"text": "Client"
 										},
 										{
 											"_type": "LabelView",
@@ -2560,7 +2560,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFrI6GqzSNnwaw="
 					},
-					"name": "Phone"
+					"name": "Client"
 				},
 				{
 					"_type": "UMLNode",
@@ -2621,7 +2621,7 @@
 											"top": 286,
 											"width": 174,
 											"height": 13,
-											"text": "Phone"
+											"text": "Client"
 										},
 										{
 											"_type": "LabelView",
@@ -3103,7 +3103,7 @@
 											"top": 286,
 											"width": 175,
 											"height": 13,
-											"text": "Phone"
+											"text": "Client"
 										},
 										{
 											"_type": "LabelView",
@@ -4476,7 +4476,7 @@
 															"top": 180,
 															"width": 567.61181640625,
 															"height": 13,
-															"text": "Phone"
+															"text": "Client"
 														},
 														{
 															"_type": "LabelView",
@@ -4484,6 +4484,7 @@
 															"_parent": {
 																"$ref": "AAAAAAFrXjzaLykSHFs="
 															},
+															"visible": false,
 															"font": "Arial;13;0",
 															"left": 245,
 															"top": 195,
@@ -4509,7 +4510,7 @@
 													"left": 240,
 													"top": 160,
 													"width": 577.61181640625,
-													"height": 53,
+													"height": 38,
 													"stereotypeLabel": {
 														"$ref": "AAAAAAFrXjzaLykTyYs="
 													},
@@ -4544,9 +4545,9 @@
 															},
 															"visible": false,
 															"font": "Arial;13;0",
-															"left": -160,
-															"top": -32,
-															"width": 32.8935546875,
+															"left": 245,
+															"top": 218,
+															"width": 591.61181640625,
 															"height": 13,
 															"text": "+data",
 															"horizontalAlignment": 0
@@ -4562,9 +4563,9 @@
 															},
 															"visible": false,
 															"font": "Arial;13;0",
-															"left": -160,
-															"top": -32,
-															"width": 41.55810546875,
+															"left": 245,
+															"top": 233,
+															"width": 591.61181640625,
 															"height": 13,
 															"text": "+signal",
 															"horizontalAlignment": 0
@@ -4572,9 +4573,9 @@
 													],
 													"visible": false,
 													"font": "Arial;13;0",
-													"left": -80,
-													"top": -16,
-													"width": 10,
+													"left": 240,
+													"top": 213,
+													"width": 601.61181640625,
 													"height": 10
 												},
 												{
@@ -4633,7 +4634,6 @@
 											"width": 601.61181640625,
 											"height": 473,
 											"stereotypeDisplay": "decoration-label",
-											"showNamespace": true,
 											"nameCompartment": {
 												"$ref": "AAAAAAFrXjzaLykSHFs="
 											},
@@ -7330,7 +7330,8 @@
 									"_parent": {
 										"$ref": "AAAAAAFrYzd1dOUelPs="
 									},
-									"name": "Role1"
+									"name": "Role1",
+									"type": ""
 								},
 								{
 									"_type": "UMLAttribute",
@@ -7338,7 +7339,8 @@
 									"_parent": {
 										"$ref": "AAAAAAFrYzd1dOUelPs="
 									},
-									"name": "Role2"
+									"name": "Role2",
+									"type": ""
 								}
 							]
 						},
@@ -8381,7 +8383,8 @@
 									"_parent": {
 										"$ref": "AAAAAAFrY0cH0OZZCqM="
 									},
-									"name": "Role1"
+									"name": "Role1",
+									"type": ""
 								},
 								{
 									"_type": "UMLAttribute",
@@ -8389,7 +8392,8 @@
 									"_parent": {
 										"$ref": "AAAAAAFrY0cH0OZZCqM="
 									},
-									"name": "Role2"
+									"name": "Role2",
+									"type": ""
 								}
 							]
 						}
@@ -26392,7 +26396,7 @@
 											"top": 158,
 											"width": 647,
 											"height": 13,
-											"text": "Phone"
+											"text": "Client"
 										},
 										{
 											"_type": "LabelView",
@@ -26400,6 +26404,7 @@
 											"_parent": {
 												"$ref": "AAAAAAFrJXmuOesD4UA="
 											},
+											"visible": false,
 											"font": "Arial;13;0",
 											"left": 133,
 											"top": 173,
@@ -26425,7 +26430,7 @@
 									"left": 128,
 									"top": 151,
 									"width": 657,
-									"height": 40,
+									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAFrJXmuOesEjCw="
 									},
@@ -26446,7 +26451,6 @@
 							"top": 136,
 							"width": 657,
 							"height": 609,
-							"showNamespace": true,
 							"nameCompartment": {
 								"$ref": "AAAAAAFrJXmuOesD4UA="
 							}
