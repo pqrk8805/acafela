@@ -28,18 +28,6 @@ public class TestMainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void onClickTestVideoEncodingBtn(View v)
-    {
-        Intent intent = new Intent(this, TestVideoEncodingActivity.class);
-        startActivity(intent);
-    }
-
-    public void onClickTestVideoEncodingSurfaceBtn(View v)
-    {
-        Intent intent = new Intent(this, TestVideoEncodingSurfaceActivity.class);
-        startActivity(intent);
-    }
-
     public void onClickTestEncodingBtn(View v) {
         Intent intent = new Intent(this, TestEncodingActivity.class);
         startActivity(intent);

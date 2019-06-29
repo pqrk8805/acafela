@@ -39,6 +39,12 @@ public class DirectoryService {
             LocalIP = String.format(Locale.US, "%d.%d.%d.%d", (LocalIpAddressBin & 0xff), (LocalIpAddressBin >> 8 & 0xff), (LocalIpAddressBin >> 16 & 0xff), (LocalIpAddressBin >> 24 & 0xff));
         }
 
+        // When phone is Wifi Hot spot, wifiInfo.getIpAddress() returns "0.0.0.0"
+        // But, default IP address of hotspot is "192.168.43.1".
+        if (LocalIP.compareTo("0.0.0.0") == 0) {
+            LocalIP = "192.168.43.1";
+        }
+
         DirectoryServiceRpc directoryServiceRpc = new DirectoryServiceRpc(
                 Config.SERVER_IP,
                 Config.RPC_PORT_DIRECTORY_SERVICE,

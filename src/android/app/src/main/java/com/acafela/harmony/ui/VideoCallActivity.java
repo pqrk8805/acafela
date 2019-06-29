@@ -4,8 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.SurfaceTexture;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -14,12 +16,14 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.acafela.harmony.R;
-import com.acafela.harmony.codec.video.VideoEncodeSyncSurface;
+import com.acafela.harmony.codec.video.VideoDecodeAsyncSurface;
 import com.acafela.harmony.communicator.VideoReceiverThread;
 import com.acafela.harmony.communicator.VideoSenderThread;
 import com.acafela.harmony.service.HarmonyService;
 import com.acafela.harmony.ui.contacts.ContactDbHelper;
 import com.acafela.harmony.util.AudioPathSelector;
+
+import java.util.ArrayList;
 
 import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_HEIGHT;
 import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_WIDTH;
@@ -27,6 +31,7 @@ import static com.acafela.harmony.ui.AudioCallActivity.BROADCAST_BYE;
 import static com.acafela.harmony.ui.AudioCallActivity.BROADCAST_RECEIVEVIDEO;
 import static com.acafela.harmony.ui.AudioCallActivity.BROADCAST_SENDVIDEO;
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_ISCALLEE;
+import static com.acafela.harmony.ui.AudioCallActivity.INTENT_ISCONFERENCECALL;
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_PHONENUMBER;
 import static com.acafela.harmony.ui.AudioCallActivity.KEY_IP;
 import static com.acafela.harmony.ui.AudioCallActivity.KEY_PORT;
@@ -34,58 +39,47 @@ import static com.acafela.harmony.ui.TestCallActivity.INTENT_CONTROL;
 import static com.acafela.harmony.ui.TestCallActivity.INTENT_SIP_ACCEPT_CALL;
 import static com.acafela.harmony.ui.TestCallActivity.INTENT_SIP_TERMINATE_CALL;
 
-public class VideoCallActivity extends VideoSurfaceActivity {
+public class VideoCallActivity extends CameraSenderActivity
+        implements TextureView.SurfaceTextureListener {
     private static final String TAG = VideoCallActivity.class.getName();
 
     private BroadcastReceiver mBroadcastReceiver;
-    private TextureView mTextureView;
-    private static VideoSenderThread mVideoSenderThread;
-    private static VideoReceiverThread mVideoReceiverThread;
+    private static ArrayList<VideoReceiverThread> mVideoReceiverThreadList = new ArrayList<>();
+    protected ArrayList<VideoDecodeAsyncSurface> mVideoDecoderList = new ArrayList<>();
+    private static int attctedViewCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "onCreate start");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_videocall);
 
-        mVideoEncoder.setEncodeCallback(new VideoEncodeSyncSurface.VideoCallback() {
-            @Override
-            public void onOutputBytesAvailable(byte[] outputBytes) {
-                if (outputBytes == null) {
-                    return;
-                }
-//                Log.d(TAG, "EncodedBytes: " + outputBytes.length);
-                if (mVideoSenderThread != null) {
-                    mVideoSenderThread.enqueueFrame(outputBytes);
-                }
-            }
-        });
-
-        FrameLayout preview = findViewById(R.id.camera_preview);
-        preview.addView(mGLView);
-
-        mTextureView = findViewById(R.id.textureviewMain);
-        mTextureView.setSurfaceTextureListener(this);
+        attctedViewCount = 0;
+        mVideoReceiverThreadList.clear();
+        mVideoDecoderList.clear();
 
         Intent intent = getIntent();
-        final String phoneNumber = intent.getStringExtra(INTENT_PHONENUMBER);
-        TextView phoneNumberTextView = findViewById(R.id.tv_phonenumber);
-        phoneNumberTextView.setText(phoneNumber);
-        TextView nameTextView = findViewById(R.id.tv_name);
-        nameTextView.setText(ContactDbHelper.CreateHelper(this).query(phoneNumber));
-        boolean isCallee = intent.getBooleanExtra(INTENT_ISCALLEE, false);
-        if (isCallee) {
-            findViewById(R.id.button_container).setVisibility(View.GONE);
-            findViewById(R.id.button_container_callee).setVisibility(View.VISIBLE);
-        } else {
-            findViewById(R.id.button_container).setVisibility(View.VISIBLE);
-            findViewById(R.id.button_container_callee).setVisibility(View.GONE);
+        boolean isConferenceCall = intent.getBooleanExtra(INTENT_ISCONFERENCECALL, false);
+        if (isConferenceCall) {
+            setContentView(R.layout.activity_videocall_conference);
+            {
+                TextureView textureView = findViewById(R.id.yourview1);
+                textureView.setSurfaceTextureListener(this); }
+            {
+                TextureView textureView = findViewById(R.id.yourview2);
+                textureView.setSurfaceTextureListener(this); }
+            {
+                TextureView textureView = findViewById(R.id.yourview3);
+                textureView.setSurfaceTextureListener(this); }
         }
+        else {
+            setContentView(R.layout.activity_videocall);
+            TextureView textureView = findViewById(R.id.yourview);
+            textureView.setSurfaceTextureListener(this);
+        }
+        FrameLayout preview = findViewById(R.id.myview);
+        preview.addView(mGLView);
 
-        AudioPathSelector.getInstance().setAudioManager(this);
-        AudioPathSelector.getInstance().setSpeakerAudio();
-        ToggleButton speakerToggleBtn = findViewById(R.id.toggle_speaker);
-        speakerToggleBtn.setChecked(true);
+        initUi();
         Log.d(TAG, "onCreate complete");
     }
 
@@ -108,13 +102,6 @@ public class VideoCallActivity extends VideoSurfaceActivity {
         Log.i(TAG, "onPause start");
         super.onPause();
         UnregisterReceiver();
-        mGLView.queueEvent(new Runnable() {
-            @Override public void run() {
-                // Tell the renderer that it's about to be paused so it can clean up.
-                mRenderer.notifyPausing();
-            }
-        });
-        mGLView.onPause();
         Log.d(TAG, "onPause complete");
     }
 
@@ -122,20 +109,6 @@ public class VideoCallActivity extends VideoSurfaceActivity {
     public void onBackPressed() {
         Log.i(TAG, "onBackPressed");
         super.onBackPressed();
-        terminateCall();
-    }
-
-    public void onClickAcceptCallBtn(View v) {
-        Intent serviceIntent = new Intent(getApplicationContext(), HarmonyService.class);
-        serviceIntent.putExtra(INTENT_CONTROL, INTENT_SIP_ACCEPT_CALL);
-        startService(serviceIntent);
-
-        findViewById(R.id.button_container).setVisibility(View.VISIBLE);
-        findViewById(R.id.button_container_callee).setVisibility(View.GONE);
-        findViewById(R.id.first_container).setVisibility(View.GONE);
-    }
-
-    public void onClickTerminateCallBtn(View v) {
         terminateCall();
     }
 
@@ -154,14 +127,14 @@ public class VideoCallActivity extends VideoSurfaceActivity {
         Intent serviceIntent = new Intent(getApplicationContext(), HarmonyService.class);
         serviceIntent.putExtra(INTENT_CONTROL, INTENT_SIP_TERMINATE_CALL);
         startService(serviceIntent);
-        if (mVideoReceiverThread != null) {
-            mVideoReceiverThread.kill();
-            mVideoReceiverThread = null;
+        for (VideoReceiverThread thread : mVideoReceiverThreadList) {
+            thread.kill();
         }
-        if (mVideoSenderThread != null) {
-            mVideoSenderThread.kill();
-            mVideoSenderThread = null;
+        mVideoReceiverThreadList.clear();
+        for (VideoDecodeAsyncSurface decoder : mVideoDecoderList) {
+            decoder.stop();
         }
+        mVideoDecoderList.clear();
 
         finish();
     }
@@ -202,15 +175,15 @@ public class VideoCallActivity extends VideoSurfaceActivity {
                         mVideoSenderThread.setAddress(ip, port);
                         mVideoSenderThread.start();
                     }
+                    hideTextView();
                 }
                 else if (intent.getAction().equals(BROADCAST_RECEIVEVIDEO)) {
                     Log.i(TAG, "onReceive BROADCAST_RECEIVEVIDEO");
                     int port = intent.getIntExtra(KEY_PORT, 0);
-                    if (mVideoReceiverThread == null) {
-                        mVideoReceiverThread = new VideoReceiverThread();
-                        mVideoReceiverThread.setDecoder(mVideoDecoder, port);
-                        mVideoReceiverThread.start();
-                    }
+                    VideoReceiverThread thread = new VideoReceiverThread();
+                    thread.setDecoder(mVideoDecoderList.get(attctedViewCount), port);
+                    attctedViewCount++;
+                    thread.start();
                 }
             }
         };
@@ -224,6 +197,48 @@ public class VideoCallActivity extends VideoSurfaceActivity {
         }
     }
 
+    private void hideTextView() {
+        findViewById(R.id.uhdcalltext_container).setVisibility(View.GONE);
+        findViewById(R.id.callstate_container).setVisibility(View.GONE);
+        findViewById(R.id.yourinfo_container).setVisibility(View.GONE);
+    }
+
+    protected void initUi() {
+        Intent intent = getIntent();
+        final String phoneNumber = intent.getStringExtra(INTENT_PHONENUMBER);
+        TextView phoneNumberTextView = findViewById(R.id.tv_yourphonenumber);
+        phoneNumberTextView.setText(phoneNumber);
+        TextView nameTextView = findViewById(R.id.tv_yourname);
+        nameTextView.setText(DatabaseHelper.createContactDatabaseHelper(this).query(phoneNumber));
+        boolean isCallee = intent.getBooleanExtra(INTENT_ISCALLEE, false);
+        if (isCallee) {
+            findViewById(R.id.button_container).setVisibility(View.GONE);
+            findViewById(R.id.button_container_callee).setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.button_container).setVisibility(View.VISIBLE);
+            findViewById(R.id.button_container_callee).setVisibility(View.GONE);
+        }
+
+        AudioPathSelector.getInstance().setAudioManager(this);
+        AudioPathSelector.getInstance().setSpeakerAudio();
+        ToggleButton speakerToggleBtn = findViewById(R.id.toggle_speaker);
+        speakerToggleBtn.setChecked(true);
+    }
+
+
+    public void onClickAcceptCallBtn(View v) {
+        Intent serviceIntent = new Intent(getApplicationContext(), HarmonyService.class);
+        serviceIntent.putExtra(INTENT_CONTROL, INTENT_SIP_ACCEPT_CALL);
+        startService(serviceIntent);
+
+        findViewById(R.id.button_container).setVisibility(View.VISIBLE);
+        findViewById(R.id.button_container_callee).setVisibility(View.GONE);
+        findViewById(R.id.uhdcalltext_container).setVisibility(View.GONE);
+    }
+
+    public void onClickTerminateCallBtn(View v) {
+        terminateCall();
+    }
 
     public void onClickSpeakerToggleBtn(View v) {
         if (((ToggleButton) v).isChecked()) {
@@ -246,5 +261,27 @@ public class VideoCallActivity extends VideoSurfaceActivity {
         } else {
             AudioPathSelector.getInstance().setEarPieceAudio();
         }
+    }
+
+    @Override
+    public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+        Log.i(TAG, "onSurfaceTextureAvailable");
+        Surface s = new Surface(surface);
+        VideoDecodeAsyncSurface decoder = new VideoDecodeAsyncSurface(s);
+        decoder.start();
+        mVideoDecoderList.add(decoder);
+    }
+
+    @Override
+    public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
+    }
+
+    @Override
+    public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+        return true;
+    }
+
+    @Override
+    public void onSurfaceTextureUpdated(SurfaceTexture surface) {
     }
 }
