@@ -20,7 +20,7 @@ import com.acafela.harmony.codec.video.VideoDecodeAsyncSurface;
 import com.acafela.harmony.communicator.VideoReceiverThread;
 import com.acafela.harmony.communicator.VideoSenderThread;
 import com.acafela.harmony.service.HarmonyService;
-import com.acafela.harmony.ui.contacts.DatabaseHelper;
+import com.acafela.harmony.ui.contacts.ContactDbHelper;
 import com.acafela.harmony.util.AudioPathSelector;
 
 import java.util.ArrayList;
@@ -209,7 +209,7 @@ public class VideoCallActivity extends CameraSenderActivity
         TextView phoneNumberTextView = findViewById(R.id.tv_yourphonenumber);
         phoneNumberTextView.setText(phoneNumber);
         TextView nameTextView = findViewById(R.id.tv_yourname);
-        nameTextView.setText(DatabaseHelper.createContactDatabaseHelper(this).query(phoneNumber));
+        nameTextView.setText(ContactDbHelper.CreateHelper(this).query(phoneNumber));
         boolean isCallee = intent.getBooleanExtra(INTENT_ISCALLEE, false);
         if (isCallee) {
             findViewById(R.id.button_container).setVisibility(View.GONE);

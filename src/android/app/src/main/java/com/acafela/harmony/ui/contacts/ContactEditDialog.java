@@ -15,14 +15,14 @@ public class ContactEditDialog extends Dialog
     private static final String LOG_TAG = "ContactAddDlg";
 
     public ContactEditDialog(@NonNull Context context,
-                             @NonNull DatabaseHelper dbHelper,
+                             @NonNull ContactDbHelper dbHelper,
                              @NonNull ContactEntry contactEntry) {
         super(context);
 
         setViews(dbHelper, contactEntry);
     }
 
-    private void setViews(final DatabaseHelper dbHelper, final ContactEntry contact) {
+    private void setViews(final ContactDbHelper dbHelper, final ContactEntry contact) {
         setContentView(R.layout.dialog_contact_edit);
         setCancelable(true);
 

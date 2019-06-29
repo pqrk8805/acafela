@@ -26,13 +26,13 @@ public class ContactAdapter extends BaseAdapter
 {
     private static final String LOG_TAG = "ContactAdator";
 
-    private LayoutInflater inflater = null;
+    private LayoutInflater mInflater = null;
     private List<ContactEntry> mContacts;
-    private DatabaseHelper mDbHelper;
+    private ContactDbHelper mDbHelper;
     private Context mContext;
     private DialogInterface.OnDismissListener mDismissListener;
 
-    public ContactAdapter(Context context, DatabaseHelper dbHelper)
+    public ContactAdapter(Context context, ContactDbHelper dbHelper)
     {
         mDismissListener = this;
         mContext = context;
@@ -67,11 +67,10 @@ public class ContactAdapter extends BaseAdapter
         if (convertView == null)
         {
             final Context context = parent.getContext();
-            if (inflater == null)
-            {
-                inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            if (mInflater == null) {
+                mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             }
-            convertView = inflater.inflate(R.layout.items_contact, parent, false);
+            convertView = mInflater.inflate(R.layout.items_contact, parent, false);
             final View itemView = convertView;
             final int index = position;
             convertView.setLongClickable(true);

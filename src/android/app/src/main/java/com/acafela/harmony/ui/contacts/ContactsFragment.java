@@ -3,7 +3,6 @@ package com.acafela.harmony.ui.contacts;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +12,9 @@ import android.widget.ListView;
 import com.acafela.harmony.R;
 
 public class ContactsFragment extends Fragment
-                                implements DialogInterface.OnDismissListener {
-
-    private FloatingActionButton mFab;
-    private DatabaseHelper mDbHelper;
+                                implements DialogInterface.OnDismissListener
+{
+    private ContactDbHelper mDbHelper;
     private ContactAdapter mContactAdaptor;
     private DialogInterface.OnDismissListener mDismissListener;
 
@@ -31,15 +29,15 @@ public class ContactsFragment extends Fragment
                         Bundle savedInstanceState)
     {
         mDismissListener = this;
-        mDbHelper = DatabaseHelper.createContactDatabaseHelper(getContext());
+        mDbHelper = ContactDbHelper.CreateHelper(getContext());
         mContactAdaptor = new ContactAdapter(getContext(), mDbHelper);
         View view = inflater.inflate(R.layout.fragment_contacts, container, false);
 
         ListView listView = view.findViewById(R.id.contact_listview);
         listView.setAdapter(mContactAdaptor);
 
-        mFab = view.findViewById(R.id.fab);
-        mFab.setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.fab).setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view) {
                 final ContactAddDialog contactAddDlg

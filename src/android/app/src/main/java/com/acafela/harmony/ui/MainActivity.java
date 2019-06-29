@@ -25,7 +25,7 @@ import android.widget.TextView;
 import com.acafela.harmony.R;
 import com.acafela.harmony.directoryservice.DirectoryService;
 import com.acafela.harmony.service.HarmonyService;
-import com.acafela.harmony.ui.concall.ConcallReserveDialog;
+import com.acafela.harmony.ui.concall.ConcallReserveDlg;
 import com.acafela.harmony.ui.dialpad.DialpadFragment;
 import com.acafela.harmony.ui.main.ChangePwDialog;
 import com.acafela.harmony.ui.main.RestorePwDialog;
@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
 
     private void showConcallReserveDialog()
     {
-        final ConcallReserveDialog dlg = new ConcallReserveDialog(this);
+        final ConcallReserveDlg dlg = new ConcallReserveDlg(this);
         dlg.show();
     }
 
