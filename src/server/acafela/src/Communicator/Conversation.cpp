@@ -35,16 +35,23 @@ void Conversation::makeConversation() {
 
 void Conversation::terminateConversation() {
 	EnterCriticalSection(&critRoom);
-	for (auto partAndPort : conversationRoom) {
-		Participant * part = std::get<0>(partAndPort);
+	std::vector<std::tuple<Participant *, int>> convCopy(conversationRoom);
+	for (auto partAndPort = conversationRoom.begin(); partAndPort != conversationRoom.end();) {
+		Participant * part = std::get<0>(*partAndPort);
+		partAndPort = conversationRoom.erase(partAndPort);
 		acafela::sip::SIPMessage msg;
 		msg.set_cmd(acafela::sip::BYE);
 		FUNC_LOGI("Send Bye to %s", part->getIP().c_str());
 		msg.set_from("SERVER");
 		msg.set_to(part->getIP());
 		ConversationManager().sendCtrlMsg(part, msg, 0);
-		if (part->getDataPath() != nullptr) {
+		if (part->getDataPath() != nullptr)
 			part->getDataPath()->terminateDataPath();
+	}
+	for (auto partAndPort : convCopy) {
+		Participant * part = std::get<0>(partAndPort);
+		if (part->getDataPath() != nullptr) {
+			part->getDataPath()->waitForTerminate();
 			delete part->getDataPath();
 			part->clearDataPath();
 		}

@@ -91,8 +91,9 @@ public:
 	void startVideoDataPath();
 	void terminateDataPath();
 	void stopVideoDataPath();
+	void waitForTerminate();
 	void listener(SocketGroup socket, bool isVideo);
-	void sender(SocketGroup socket, bool isVideo);
+	void sender(SocketGroup socket, bool isVideo, std::tuple<Participant *, int, char *> dBuffer);
 	void initParticipant(Participant * part, int port);
 	void addParticipant(Participant * part, int port);
 	void removeParticipant(Participant * part);
