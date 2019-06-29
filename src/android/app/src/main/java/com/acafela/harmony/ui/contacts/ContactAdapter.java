@@ -114,10 +114,14 @@ public class ContactAdapter extends BaseAdapter
         TextView nameView = convertView.findViewById(R.id.contact_name);
         TextView numberView = convertView.findViewById(R.id.contact_number);
 
+        final String name = mContacts.get(position).name;
         final String phone = mContacts.get(position).phone;
+        final String email = mContacts.get(position).email;
 
-        nameView.setText(mContacts.get(position).name
-                            + " (" + mContacts.get(position).email + ")");
+        if (email == null || email.isEmpty())
+            nameView.setText(name);
+        else
+            nameView.setText(name + " (" + email + ")");
         numberView.setText(phone);
 
         Button btnVoiceCall = convertView.findViewById(R.id.contact_call_btn);

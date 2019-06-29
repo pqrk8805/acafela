@@ -3,38 +3,41 @@ package com.acafela.harmony.util;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.PowerManager;
+import android.util.Log;
 
 public class ProximityScreenController
 {
     private static final String LOG_TAG = "ProxScr";
 
     private Context mContext;
+    PowerManager.WakeLock mWakeLock;
 
     public ProximityScreenController(Context context)
     {
         mContext = context;
+
+        PowerManager pm = (PowerManager)mContext.getSystemService(
+                                                        Context.POWER_SERVICE);
+        @SuppressLint("InvalidWakeLockTag")
+        PowerManager.WakeLock wl = pm.newWakeLock(
+                                PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK,
+                                "HarmonyTag");
+        mWakeLock = wl;
     }
 
     public void activate()
     {
-        PowerManager pm = (PowerManager)mContext.getSystemService(
-                                                        Context.POWER_SERVICE);
-        @SuppressLint("InvalidWakeLockTag")
-        PowerManager.WakeLock wl = pm.newWakeLock(
-                                    PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK,
-                                    "HarmoyTag");
-        wl.acquire();
+        Log.i(LOG_TAG, "activate()");
+
+        if (mWakeLock.isHeld() == false)
+            mWakeLock.acquire();
     }
 
     public void deactivate()
     {
-        PowerManager pm = (PowerManager)mContext.getSystemService(
-                                                        Context.POWER_SERVICE);
-        @SuppressLint("InvalidWakeLockTag")
-        PowerManager.WakeLock wl = pm.newWakeLock(
-                                    PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK,
-                                    "HarmoyTag");
-        if (wl.isHeld())
-            wl.release();
+        Log.i(LOG_TAG, "deactivate()");
+
+        if (mWakeLock.isHeld())
+            mWakeLock.release();
     }
 }

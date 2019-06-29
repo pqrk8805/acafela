@@ -64,7 +64,7 @@ void ConCallReservRpc::shutdown()
 
     // 참석자 목록
     //
-	std::vector<std::string> participants;
+	std::vector<std::string> participants = { host };
     for (int i = 0; i < request->participants_size(); ++i) {
         //const std::string participant = request->participants(i);
 		participants.push_back(request->participants(i));
