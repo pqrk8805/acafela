@@ -72,6 +72,7 @@ public class AudioCallActivity extends FullScreenActivity {
         AudioPathSelector.getInstance().setEarPieceAudio();
 
         mProxiScrController = new ProximityScreenController(this);
+        mProxiScrController.activate();
 
         mElapsedTime = findViewById(R.id.elapsedTime);
         mState = RINGING_STATE;
@@ -113,6 +114,8 @@ public class AudioCallActivity extends FullScreenActivity {
     public void onBackPressed() {
         Log.i(TAG, "onBackPressed");
         super.onBackPressed();
+        UnregisterReceiver();
+        mProxiScrController.deactivate();
         terminateCall();
         finish();
     }

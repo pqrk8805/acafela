@@ -22,8 +22,9 @@ public class ProximityScreenController
         @SuppressLint("InvalidWakeLockTag")
         PowerManager.WakeLock wl = pm.newWakeLock(
                                     PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK,
-                                    "HarmoyTag");
-        wl.acquire();
+                                    "HarmonyTag");
+        if (wl.isHeld() == false)
+            wl.acquire();
     }
 
     public void deactivate()
@@ -33,7 +34,7 @@ public class ProximityScreenController
         @SuppressLint("InvalidWakeLockTag")
         PowerManager.WakeLock wl = pm.newWakeLock(
                                     PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK,
-                                    "HarmoyTag");
+                                    "HarmonyTag");
         if (wl.isHeld())
             wl.release();
     }
