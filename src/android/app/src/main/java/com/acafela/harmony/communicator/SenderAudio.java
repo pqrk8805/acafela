@@ -128,7 +128,7 @@ public class SenderAudio implements DataCommunicator {
 
                 AudioRecord Recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, AUDIO_SAMPLE_RATE,
                         AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT,
-                        AudioRecord.getMinBufferSize(AUDIO_SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT));
+                            AudioRecord.getMinBufferSize(AUDIO_SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT));
 
                 // AEC start
                 mAudioRecordSessionId = Recorder.getAudioSessionId();
@@ -149,11 +149,12 @@ public class SenderAudio implements DataCommunicator {
 
                 int BytesRead;
                 byte[] rawbuf = new byte[RAW_BUFFER_SIZE];
-
+                byte[] sendBuf = new byte[RAW_BUFFER_SIZE*COMBINE_DATA +AUDIO_HEADER_SIZE];
                 try
                 {
                     DatagramSocket socket = new DatagramSocket();
                     Recorder.startRecording();
+                    int combineCtn=0;
                     while (senderAudioThreadRun)
                     {
                         // Capture audio from microphone and send
@@ -161,6 +162,34 @@ public class SenderAudio implements DataCommunicator {
 
                         if (BytesRead == RAW_BUFFER_SIZE) {
                             if(isAudioHeader) {
+                                byte[] encodedBuf = mAudioEncoder.handle(rawbuf);
+                                if(encodedBuf == null) continue;
+                                byte[] encrypted= mCrypto.encrypt(encodedBuf, 0, encodedBuf.length);
+                                if(encrypted == null) continue;
+                                //Log.e(LOG_TAG,"encrypted size"+ encrypted.length);
+                                if(combineCtn++ < COMBINE_DATA) {
+                                    System.arraycopy(encrypted,0,SendBuffer,(AUDIO_HEADER_SIZE +encrypted.length * combineCtn ),encrypted.length);
+                                } else {
+                                    SendBuffer[2] = (byte) (mPacketSeq & 0x000000ff);
+                                    SendBuffer[1] = (byte) ((mPacketSeq>> 8) & 0x000000ff);
+                                    SendBuffer[0] = (byte) 0;//primary packet
+
+                                    combineCtn=0;
+                                    if(mPacketSeq++ == MAX_AUDIO_SEQNO) mPacketSeq=0;
+                                    for(int j=0;j<3;j++) {
+                                        DatagramPacket packet = new DatagramPacket(
+                                                SendBuffer,
+                                                // SendBuffer.length,
+                                                encodedBuf.length * COMBINE_DATA + AUDIO_HEADER_SIZE,
+                                                mIpAddress,
+                                                mPort);
+                                        socketSendTimeCheck.timeCheckStart();
+                                        socket.send(packet);
+                                        socketSendTimeCheck.timeCheckFinish();
+                                    }
+                                }
+                                //if(encodedBuf == null) continue;
+                                /*
                                 SendBuffer[2] = (byte) (mPacketSeq & 0x000000ff);
                                 SendBuffer[1] = (byte) ((mPacketSeq>> 8) & 0x000000ff);
                                 SendBuffer[0] = (byte) 0;//primary packet
@@ -205,6 +234,7 @@ public class SenderAudio implements DataCommunicator {
                                                             mIpAddress,
                                                             mPort);
                                 socket.send(packet);
+                                */
                             }
                         }
                     }

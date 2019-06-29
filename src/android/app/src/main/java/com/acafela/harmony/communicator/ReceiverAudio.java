@@ -157,7 +157,7 @@ public class ReceiverAudio implements DataCommunicator {
                     while (UdpVoipReceiveDataThreadRun) {
                         if(isAudioHeader) {
                             //byte[] recieveData = new byte[ (((RAW_BUFFER_SIZE) / 16 + 1) * 16) + AUDIO_HEADER_SIZE];
-                            byte[] recieveData = new byte[51];
+                            byte[] recieveData = new byte[147];
                             DatagramPacket packet = new DatagramPacket(recieveData, recieveData.length);
 
                             RecvUdpSocket.receive(packet);
@@ -249,15 +249,10 @@ public class ReceiverAudio implements DataCommunicator {
                     OutputTrack.play();
                     while (AudioIoPlayerThreadRun)
                     {
-                        //if(mAudioControl.size()>0) {
                         AudioData audioData = mAudioControl.getData();
-
-                        //data.data = decodedBuf;
-
-
                         if(audioData!=null) {
+                            data.
                             byte[] decodedBuf;
-
                             try {
                                 decodeTimeCheck.timeCheckStart();
                                 decodedBuf = mAudioDecoder.handle(audioData.data);
@@ -268,26 +263,12 @@ public class ReceiverAudio implements DataCommunicator {
                             }
                             if(decodedBuf==null)  continue;
                             //if (!MainActivity.BoostAudio)
-                            if (true) {
 
-                                if(isAudioHeader) {
-                                    OutputTrack.write(decodedBuf, 0, RAW_BUFFER_SIZE);
-                                } else {
-                                    OutputTrack.write(decodedBuf, 0, RAW_BUFFER_SIZE);
-                                }
+
+                            if(isAudioHeader) {
+                                OutputTrack.write(decodedBuf, 0, RAW_BUFFER_SIZE);
                             } else {
-                                short[] AudioOutputBufferShorts = new short[audioData.data.length / 2];
-                                // to turn bytes to shorts as either big endian or little endian.
-                                for (int i = 0; i < AudioOutputBufferShorts.length; i++) { // 16bit sample size
-                                    int value = AudioOutputBufferShorts[i] * 10; //increase level by gain=20dB: Math.pow(10., dB/20.);  dB to gain factor
-                                    if (value > 32767) {
-                                        value = 32767;
-                                    } else if (value < -32767) {
-                                        value = -32767;
-                                    }
-                                    AudioOutputBufferShorts[i] = (short) value;
-                                }
-                                OutputTrack.write(AudioOutputBufferShorts, 0, AudioOutputBufferShorts.length);
+                                OutputTrack.write(decodedBuf, 0, RAW_BUFFER_SIZE);
                             }
                         }
                     }
@@ -295,7 +276,6 @@ public class ReceiverAudio implements DataCommunicator {
                     OutputTrack.stop();
                     OutputTrack.flush();
                     OutputTrack.release();
-
 
                     if (audioManager != null) audioManager.setMode(PreviousAudioManagerMode);
                     Log.i(LOG_TAG, "Audio Thread Stopped");
