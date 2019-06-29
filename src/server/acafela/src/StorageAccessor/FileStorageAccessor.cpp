@@ -216,22 +216,25 @@ std::string FileStorageAccessor::getEmailAddress(const string& phoneNumber)
 int FileStorageAccessor::deleteUser(const std::string& emailAddress)
 {
 	wstring wEmailAddress(emailAddress.begin(), emailAddress.end());
+	wstring extension;
+	if (emailAddress.substr(emailAddress.length() - 4, 4).compare(".bin") != 0)
+		extension = L".bin";
 	{
 		lock_guard<mutex> lock(mPasswordLock);
 
-		wstring wPath = L"./storage/password/" + wEmailAddress + L".bin";
+		wstring wPath = L"./storage/password/" + wEmailAddress + extension;
 		DeleteFile(wPath.c_str());
 	}
 	{
 		lock_guard<mutex> lock(mUserNumberLock);
 
-		wstring wPath = L"./storage/phonenumber/" + wEmailAddress + L".bin";
+		wstring wPath = L"./storage/phonenumber/" + wEmailAddress + extension;
 		DeleteFile(wPath.c_str());
 	}
 	{
 		lock_guard<mutex> lock(mDSLock);
 
-		wstring wPath = L"./storage/directoryservice/" + wEmailAddress + L".bin";
+		wstring wPath = L"./storage/directoryservice/" + wEmailAddress + extension;
 		DeleteFile(wPath.c_str());
 	}
 
