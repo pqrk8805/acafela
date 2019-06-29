@@ -200,8 +200,12 @@ std::string FileStorageAccessor::getEmailAddress(const string& phoneNumber)
 			string savedPhoneNumber = f.ReadFile();
 
 			if (savedPhoneNumber.substr(0, phoneNumber.length()).compare(phoneNumber) == 0)
-			{
-				emailAddress = savedEmailAddress;
+			{				
+				if (savedEmailAddress.find(".bin") != string::npos)
+					emailAddress = savedEmailAddress.substr(0, savedEmailAddress.length() - 4);
+				else
+					emailAddress = savedEmailAddress;
+					
 				break;
 			}			
 		}
