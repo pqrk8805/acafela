@@ -101,6 +101,8 @@ void DataPath::terminateDataPath() {
 	if (isServerPassed) {
 		closesocket(dataStreamSocket.client);
 		closesocket(dataStreamSocket.server);
+		closesocket(dataVideoStreamSocket.client);
+		closesocket(dataVideoStreamSocket.server);
 	}
 	for (auto th : threadList)
 		th->join();
@@ -198,8 +200,12 @@ void DataPath::createSocket(SocketGroup& streamSocket, bool isVideo) {
 	server.sin_addr.s_addr = INADDR_ANY;
 	int port = receivePort;
 	if (isVideo) port += 1;
-	server.sin_port = htons(port);
-
+	server.sin_port = htons(port); 
+	struct timeval tv;
+	tv.tv_sec = 0;
+	tv.tv_usec = TIMEOUT*1000;
+	if(setsockopt(streamSocket.server, SOL_SOCKET, SO_RCVTIMEO, (char*)&tv, sizeof(tv)))
+		printf("Error!\n");
 	if (bind(streamSocket.server, (struct sockaddr *)&server, sizeof(server)) == SOCKET_ERROR)
 		FUNC_LOGE("Bind failed with error code : %d", WSAGetLastError());
 }

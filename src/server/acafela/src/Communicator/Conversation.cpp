@@ -107,6 +107,8 @@ void Conversation::addParticipant(Participant * part, int port) {
 	conversationRoom.push_back({ part, port });
 	part->setDataPath(dPath);
 	dPath->openDataPath();
+	if (isVideoComm())
+		dPath->startVideoDataPath();
 	LeaveCriticalSection(&critRoom);
 }
 
