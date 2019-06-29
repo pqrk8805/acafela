@@ -228,6 +228,12 @@ int FileStorageAccessor::deleteUser(const std::string& emailAddress)
 		wstring wPath = L"./Storage/phonenumber/" + wEmailAddress + L".bin";
 		DeleteFile(wPath.c_str());
 	}
+	{
+		lock_guard<mutex> lock(mDSLock);
+
+		wstring wPath = L"./Storage/directoryservice/" + wEmailAddress + L".bin";
+		DeleteFile(wPath.c_str());
+	}
 
 	return 0;
 }
