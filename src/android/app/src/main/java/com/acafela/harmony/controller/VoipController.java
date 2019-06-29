@@ -28,6 +28,7 @@ import com.acafela.harmony.crypto.CryptoBroker;
 import com.acafela.harmony.ui.AudioCallActivity;
 import com.acafela.harmony.ui.VideoCallActivity;
 import com.acafela.harmony.userprofile.UserInfo;
+import com.acafela.harmony.util.ConfigSetup;
 
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -83,12 +84,12 @@ public class VoipController {
         mContext = context;
         mRingControl= new RingController(mContext);
         mCryptoRpc = new CryptoKeyRpc(
-                        Config.SERVER_IP,
+                        ConfigSetup.getInstance().getServerIP(mContext),
                         Config.RPC_PORT_CRYPTO_KEY,
                         context.getResources().openRawResource(R.raw.ca),
                         context.getResources().openRawResource(R.raw.server));
         try {
-            this.mIpAddress = InetAddress.getByName(Config.SERVER_IP);
+            this.mIpAddress = InetAddress.getByName(ConfigSetup.getInstance().getServerIP(mContext));
         } catch (Exception e) {
             Log.e(LOG_TAG, "Exception Answer Message: " + e);
             return ;

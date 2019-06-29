@@ -15,6 +15,7 @@ import com.acafela.harmony.crypto.Crypto;
 import com.acafela.harmony.crypto.CryptoBroker;
 import com.acafela.harmony.crypto.ICrypto;
 import com.acafela.harmony.ui.TestCallActivity;
+import com.acafela.harmony.util.ConfigSetup;
 
 import static com.acafela.harmony.ui.TestCallActivity.INTENT_ISVIDEO;
 
@@ -65,6 +66,10 @@ public class HarmonyService extends Service {
                 break;
             case TestCallActivity.INTENT_SIP_TERMINATE_CALL:
                 sipterminate();
+                break;
+            case TestCallActivity.INTENT_SAVE_SERVER:
+                String ip = intent.getStringExtra(TestCallActivity.INTENT_SERVERIP);
+                saveServer(ip);
                 break;
         }
         return super.onStartCommand(intent, flags, startId);
@@ -137,5 +142,8 @@ public class HarmonyService extends Service {
                 Toast.makeText(getApplicationContext(), string, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private void saveServer (String serverIp) {
+        ConfigSetup.getInstance().saveServerIP(getApplicationContext(),serverIp);
     }
 }

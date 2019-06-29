@@ -20,10 +20,9 @@ import com.acafela.harmony.userprofile.UserProfileGrpc;
 import com.acafela.harmony.userprofile.UserProfileOuterClass;
 import com.acafela.harmony.userprofile.UserProfileOuterClass.RegisterResp;
 import com.acafela.harmony.userprofile.UserProfileRpc;
+import com.acafela.harmony.util.ConfigSetup;
 
 import io.grpc.StatusRuntimeException;
-
-import static com.acafela.harmony.Config.SERVER_IP;
 
 public class UserRegisterDialog extends Dialog {
     private static final String TAG = UserRegisterDialog.class.getName();
@@ -117,7 +116,7 @@ public class UserRegisterDialog extends Dialog {
         @Override
         protected Void doInBackground(Void... voids) {
             UserProfileGrpc.UserProfileBlockingStub blockingStub = new UserProfileRpc(
-                    SERVER_IP,
+                    ConfigSetup.getInstance().getServerIP(getContext()),
                     Config.RPC_PORT_USER_PROFILE,
                     mActivity.getResources().openRawResource(R.raw.ca),
                     mActivity.getResources().openRawResource(R.raw.server)).
@@ -125,7 +124,7 @@ public class UserRegisterDialog extends Dialog {
 
             RegisterResp registerResp = null;
             try {
-                Log.i(TAG, "SERVER_IP: " + SERVER_IP);
+                Log.i(TAG, "SERVER_IP: " + ConfigSetup.getInstance().getServerIP(getContext()));
                 registerResp = blockingStub.registerUser(UserProfileOuterClass.RegisterParam.newBuilder().
                         setEmailAddress(mEmail).setPassword(mPw).build());
 

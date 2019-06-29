@@ -18,6 +18,7 @@ import com.acafela.harmony.userprofile.FormatChecker;
 import com.acafela.harmony.userprofile.UserProfileGrpc;
 import com.acafela.harmony.userprofile.UserProfileOuterClass;
 import com.acafela.harmony.userprofile.UserProfileRpc;
+import com.acafela.harmony.util.ConfigSetup;
 
 import io.grpc.StatusRuntimeException;
 
@@ -123,7 +124,7 @@ public class ChangePwDialog extends Dialog {
         @Override
         protected Void doInBackground(Void... voids) {
             UserProfileGrpc.UserProfileBlockingStub blockingStub = new UserProfileRpc(
-                    Config.SERVER_IP,
+                    ConfigSetup.getInstance().getServerIP(getContext()),
                     Config.RPC_PORT_USER_PROFILE,
                     mActivity.getResources().openRawResource(R.raw.ca),
                     mActivity.getResources().openRawResource(R.raw.server)).

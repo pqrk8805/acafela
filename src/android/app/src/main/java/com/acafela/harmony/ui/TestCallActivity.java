@@ -32,6 +32,8 @@ public class TestCallActivity extends AppCompatActivity {
     public static final String INTENT_SIP_INVITE_CALL = "SIPINVITE";
     public static final String INTENT_SIP_ACCEPT_CALL = "SIPACCEPT";
     public static final String INTENT_SIP_TERMINATE_CALL = "SIPTERMINATE";
+    public static final String INTENT_SAVE_SERVER = "SAVESERVER";
+
     public static final String INTENT_ISVIDEO = "ISVIDEO";
     private static final Pattern IP_ADDRESS
             = Pattern.compile(
@@ -103,7 +105,7 @@ public class TestCallActivity extends AppCompatActivity {
         startService(intent);
     }
 
-    public void onClickSipInviteCallBtn(View v) {
+    public void onClickServerSaveBtn(View v) {
         Log.d(LOG_TAG, "onClickTerminateCallBtn");
 
         String RemoteIP = "";
@@ -122,25 +124,9 @@ public class TestCallActivity extends AppCompatActivity {
             alert.show();
         }
 
-        //int remoteSNDPort = Integer.parseInt(((TextView)findViewById(R.id.editTextRemoteSendPort)).getText().toString());
-        //int remoteRCVPort = Integer.parseInt(((TextView)findViewById(R.id.editTextRemoteRcvPort)).getText().toString());
         Intent intent = new Intent(getApplicationContext(), HarmonyService.class);
-        intent.putExtra(INTENT_CONTROL, INTENT_SIP_INVITE_CALL);
-        intent.putExtra(INTEMT_CALLEE_PHONENUMBER, "0000");
-        startService(intent);
-    }
-    public void onClickSipAcceptCallBtn(View v) {
-        Log.d(LOG_TAG, "onClickTerminateCallBtn");
-
-        Intent intent = new Intent(getApplicationContext(), HarmonyService.class);
-        intent.putExtra(INTENT_CONTROL, INTENT_SIP_ACCEPT_CALL);
-        startService(intent);
-    }
-    public void onClickSipTerminateCallBtn(View v) {
-        Log.d(LOG_TAG, "onClickTerminateCallBtn");
-
-        Intent intent = new Intent(getApplicationContext(), HarmonyService.class);
-        intent.putExtra(INTENT_CONTROL, INTENT_SIP_TERMINATE_CALL);
+        intent.putExtra(INTENT_CONTROL, INTENT_SAVE_SERVER);
+        intent.putExtra(INTENT_SERVERIP, RemoteIP);
         startService(intent);
     }
 }

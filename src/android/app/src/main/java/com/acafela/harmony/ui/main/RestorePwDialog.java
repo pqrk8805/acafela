@@ -19,6 +19,7 @@ import com.acafela.harmony.userprofile.UserInfo;
 import com.acafela.harmony.userprofile.UserProfileGrpc;
 import com.acafela.harmony.userprofile.UserProfileOuterClass.RestorePasswordParam;
 import com.acafela.harmony.userprofile.UserProfileRpc;
+import com.acafela.harmony.util.ConfigSetup;
 
 import io.grpc.StatusRuntimeException;
 
@@ -119,7 +120,7 @@ public class RestorePwDialog extends Dialog {
         @Override
         protected Void doInBackground(Void... voids) {
             UserProfileGrpc.UserProfileBlockingStub blockingStub = new UserProfileRpc(
-                    Config.SERVER_IP,
+                    ConfigSetup.getInstance().getServerIP(getContext()),
                     Config.RPC_PORT_USER_PROFILE,
                     mActivity.getResources().openRawResource(R.raw.ca),
                     mActivity.getResources().openRawResource(R.raw.server)).

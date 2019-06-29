@@ -12,6 +12,7 @@ import com.acafela.harmony.dirserv.DirectoryServiceGrpc.DirectoryServiceBlocking
 import com.acafela.harmony.dirserv.DirectoryServiceOuterClass;
 import com.acafela.harmony.rpc.Common;
 import com.acafela.harmony.userprofile.UserInfo;
+import com.acafela.harmony.util.ConfigSetup;
 
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -46,7 +47,7 @@ public class DirectoryService {
         }
 
         DirectoryServiceRpc directoryServiceRpc = new DirectoryServiceRpc(
-                Config.SERVER_IP,
+                ConfigSetup.getInstance().getServerIP(mContext),
                 Config.RPC_PORT_DIRECTORY_SERVICE,
                 mContext.getResources().openRawResource(R.raw.ca),
                 mContext.getResources().openRawResource(R.raw.server));
