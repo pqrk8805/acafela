@@ -209,7 +209,7 @@ public class VideoCallActivity extends CameraSenderActivity
         TextView phoneNumberTextView = findViewById(R.id.tv_yourphonenumber);
         phoneNumberTextView.setText(phoneNumber);
         TextView nameTextView = findViewById(R.id.tv_yourname);
-        nameTextView.setText(DatabaseHelper.createContactDatabaseHelper(this).query(phoneNumber));
+        nameTextView.setText(ContactDbHelper.CreateHelper(this).query(phoneNumber));
         boolean isCallee = intent.getBooleanExtra(INTENT_ISCALLEE, false);
         if (isCallee) {
             findViewById(R.id.button_container).setVisibility(View.GONE);
