@@ -12,7 +12,7 @@ import com.acafela.harmony.codec.audio.AudioCodecSync;
 import com.acafela.harmony.codec.audio.AudioMediaFormat;
 import com.acafela.harmony.crypto.ICrypto;
 import com.acafela.harmony.sip.SipMessage;
-import com.acafela.harmony.util.AverageTimeCheck;
+import com.acafela.harmony.util.TimeStatistics;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -43,8 +43,8 @@ public class ReceiverAudio implements DataCommunicator {
     AudioMediaFormat mAudioMediaFormat = new AudioMediaFormat();
     AudioCodecSync mAudioDecoder = new AudioCodecSync(false);
 
-    private AverageTimeCheck decrytionTimeCheck = new AverageTimeCheck();
-    private AverageTimeCheck decodeTimeCheck = new AverageTimeCheck();
+    private TimeStatistics decrytionTimeCheck = new TimeStatistics();
+    private TimeStatistics decodeTimeCheck = new TimeStatistics();
 
     public ReceiverAudio (Context context, ICrypto crypto)
     {

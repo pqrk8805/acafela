@@ -11,7 +11,7 @@ import com.acafela.harmony.codec.audio.AudioCodecSync;
 import com.acafela.harmony.codec.audio.AudioMediaFormat;
 import com.acafela.harmony.crypto.ICrypto;
 import com.acafela.harmony.sip.SipMessage;
-import com.acafela.harmony.util.AverageTimeCheck;
+import com.acafela.harmony.util.TimeStatistics;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,9 +40,9 @@ public class SenderAudio implements DataCommunicator {
     AudioCodecSync mAudioEncoder = new AudioCodecSync(true);
     private static int mPacketSeq= 0;
 
-    private AverageTimeCheck encodeTimeCheck = new AverageTimeCheck();
-    private AverageTimeCheck encrytionTimeCheck = new AverageTimeCheck();
-    private AverageTimeCheck socketSendTimeCheck = new AverageTimeCheck();
+    private TimeStatistics encodeTimeCheck = new TimeStatistics();
+    private TimeStatistics encrytionTimeCheck = new TimeStatistics();
+    private TimeStatistics socketSendTimeCheck = new TimeStatistics();
 
         public SenderAudio(ICrypto crypto)
     {
