@@ -10,7 +10,6 @@ public class ProximityScreenController
     private static final String LOG_TAG = "ProxScr";
 
     private Context mContext;
-    @SuppressLint("InvalidWakeLockTag")
     PowerManager.WakeLock mWakeLock;
 
     public ProximityScreenController(Context context)
@@ -29,14 +28,7 @@ public class ProximityScreenController
     public void activate()
     {
         Log.i(LOG_TAG, "activate()");
-        /*
-        PowerManager pm = (PowerManager)mContext.getSystemService(
-                                                        Context.POWER_SERVICE);
-        @SuppressLint("InvalidWakeLockTag")
-        PowerManager.WakeLock wl = pm.newWakeLock(
-                                    PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK,
-                                    "HarmonyTag");
-        */
+
         if (mWakeLock.isHeld() == false)
             mWakeLock.acquire();
     }
@@ -44,14 +36,7 @@ public class ProximityScreenController
     public void deactivate()
     {
         Log.i(LOG_TAG, "deactivate()");
-        /*
-        PowerManager pm = (PowerManager)mContext.getSystemService(
-                                                        Context.POWER_SERVICE);
-        @SuppressLint("InvalidWakeLockTag")
-        PowerManager.WakeLock wl = pm.newWakeLock(
-                                    PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK,
-                                    "HarmonyTag");
-        */
+
         if (mWakeLock.isHeld())
             mWakeLock.release();
     }
