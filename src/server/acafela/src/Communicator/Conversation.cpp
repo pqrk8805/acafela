@@ -121,14 +121,15 @@ void Conversation::addParticipant(Participant * part, int port) {
 
 void Conversation::removeParticipant(Participant * part) {
 	EnterCriticalSection(&critRoom); 
-	part->getDataPath()->terminateDataPath();
-	delete part->getDataPath();
-	part->clearDataPath();
-
 	conversationRoom.erase(std::remove_if(begin(conversationRoom), end(conversationRoom), [part](const auto& i)
 	{
 		return std::get<0>(i) == part;
 	}), end(conversationRoom));
+	part->getDataPath()->terminateDataPath();
+	LeaveCriticalSection(&critRoom);
+	part->getDataPath()->waitForTerminate();
+	delete part->getDataPath();
+	part->clearDataPath();
 
 	for (auto partAndPort : conversationRoom)
 		std::get<0>(partAndPort)->getDataPath()->removeParticipant(part);
