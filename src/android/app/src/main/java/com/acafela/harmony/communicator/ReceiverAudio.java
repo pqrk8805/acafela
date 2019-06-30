@@ -265,26 +265,11 @@ public class ReceiverAudio implements DataCommunicator {
                                 continue;
                             }
                             if(decodedBuf==null)  continue;
-                            //if (!MainActivity.BoostAudio)
-                            if (true) {
-                                if(isAudioHeader) {
-                                    OutputTrack.write(decodedBuf, 0, RAW_BUFFER_SIZE);
-                                } else {
-                                    OutputTrack.write(decodedBuf, 0, RAW_BUFFER_SIZE);
-                                }
+
+                            if(isAudioHeader) {
+                                OutputTrack.write(decodedBuf, 0, RAW_BUFFER_SIZE);
                             } else {
-                                short[] AudioOutputBufferShorts = new short[audioData.data.length / 2];
-                                // to turn bytes to shorts as either big endian or little endian.
-                                for (int i = 0; i < AudioOutputBufferShorts.length; i++) { // 16bit sample size
-                                    int value = AudioOutputBufferShorts[i] * 10; //increase level by gain=20dB: Math.pow(10., dB/20.);  dB to gain factor
-                                    if (value > 32767) {
-                                        value = 32767;
-                                    } else if (value < -32767) {
-                                        value = -32767;
-                                    }
-                                    AudioOutputBufferShorts[i] = (short) value;
-                                }
-                                OutputTrack.write(AudioOutputBufferShorts, 0, AudioOutputBufferShorts.length);
+                                OutputTrack.write(decodedBuf, 0, RAW_BUFFER_SIZE);
                             }
                         }
                     }

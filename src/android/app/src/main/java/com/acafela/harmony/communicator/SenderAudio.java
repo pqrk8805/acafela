@@ -162,6 +162,7 @@ public class SenderAudio implements DataCommunicator {
 
                         if (BytesRead == RAW_BUFFER_SIZE) {
                             if(isAudioHeader) {
+
                                 SendBuffer[2] = (byte) (mPacketSeq & 0x000000ff);
                                 SendBuffer[1] = (byte) ((mPacketSeq>> 8) & 0x000000ff);
                                 SendBuffer[0] = (byte) 0;//primary packet
@@ -178,27 +179,19 @@ public class SenderAudio implements DataCommunicator {
                                 System.arraycopy(encrypted,0,SendBuffer,AUDIO_HEADER_SIZE,encrypted.length);
                                 //Log.e(LOG_TAG,"encrypted size"+ encrypted.length);
                                 //int size = encrypted.length + AUDIO_HEADER_SIZE;
-                                int size = PACKET_TOTAL_SIZE;
                                 //Log.i(LOG_TAG, "Packet send length: " +  size );
-
-                                DatagramPacket packet = new DatagramPacket(
-                                        SendBuffer,
-                                       // SendBuffer.length,
-                                        size,
-                                        mIpAddress,
-                                        mPort);
-                                socketSendTimeCheck.timeCheckStart();
-                                socket.send(packet);
-                                socketSendTimeCheck.timeCheckFinish();
-
-                                SendBuffer[0]=1;
-                                DatagramPacket subPacket = new DatagramPacket(
-                                        SendBuffer,
-                                        //SendBuffer.length,
-                                        size,
-                                        mIpAddress,
-                                        mPort);
-                                socket.send(subPacket);
+                                for(byte i=0; i< DUPLICATE_COUNT; i++) {
+                                    SendBuffer[0] = i;
+                                    DatagramPacket packet = new DatagramPacket(
+                                            SendBuffer,
+                                            // SendBuffer.length,
+                                            PACKET_TOTAL_SIZE,
+                                            mIpAddress,
+                                            mPort);
+                                    socketSendTimeCheck.timeCheckStart();
+                                    socket.send(packet);
+                                    socketSendTimeCheck.timeCheckFinish();
+                                }
                             } else {
                                 byte[] encrypted = mCrypto.encrypt(rawbuf, 0, RAW_BUFFER_SIZE);
                                 DatagramPacket packet = new DatagramPacket(
