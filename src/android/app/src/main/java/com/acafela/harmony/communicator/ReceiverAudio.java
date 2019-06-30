@@ -50,7 +50,7 @@ public class ReceiverAudio implements DataCommunicator {
     {
         mContext = context;
         mCrypto = crypto;
-        mAudioControl = new AudioBufferControl(mCrypto,MAX_AUDIO_SEQNO);
+        mAudioControl = new AudioBufferControl(mContext, MAX_AUDIO_SEQNO);
 
     }
     public int getPortNum()

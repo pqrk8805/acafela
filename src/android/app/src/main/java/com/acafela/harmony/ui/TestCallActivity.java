@@ -32,6 +32,7 @@ public class TestCallActivity extends AppCompatActivity {
     public static final String INTENT_SIP_INVITE_CALL = "SIPINVITE";
     public static final String INTENT_SIP_ACCEPT_CALL = "SIPACCEPT";
     public static final String INTENT_SIP_TERMINATE_CALL = "SIPTERMINATE";
+    public static final String INTENT_SIP_DATA_TIMEOUT = "SIPDATATIMEOUT";
     public static final String INTENT_SAVE_SERVER = "SAVESERVER";
 
     public static final String INTENT_ISVIDEO = "ISVIDEO";

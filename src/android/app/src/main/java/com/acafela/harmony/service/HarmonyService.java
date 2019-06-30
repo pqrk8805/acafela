@@ -69,6 +69,9 @@ public class HarmonyService extends Service {
             case TestCallActivity.INTENT_SIP_TERMINATE_CALL:
                 sipterminate();
                 break;
+            case TestCallActivity.INTENT_SIP_DATA_TIMEOUT:
+                sipdatatimeout();
+                break;
             case TestCallActivity.INTENT_SAVE_SERVER:
                 String ip = intent.getStringExtra(TestCallActivity.INTENT_SERVERIP);
                 saveServer(ip);
@@ -117,7 +120,7 @@ public class HarmonyService extends Service {
         receiverAudio.endCommunicator();
 
         Log.i(LOG_TAG, "terminateCall");
-        showToastInService("terminateCall");
+        //showToastInService("terminateCall");
     }
 
     private void sipinvite(String calleeNumber, boolean isVideo) {
@@ -128,13 +131,20 @@ public class HarmonyService extends Service {
     private void sipaccept() {
         controller.acceptCall();
         Log.i(LOG_TAG, "sipaccept");
-        showToastInService("sipaccept");
+        //showToastInService("sipaccept");
     }
     private void sipterminate() {
         Log.i(LOG_TAG, "sipterminate");
         controller.terminateCall();
-        showToastInService("sipterminate");
+        //showToastInService("sipterminate");
     }
+
+    private void sipdatatimeout() {
+        Log.i(LOG_TAG, "sipdatatimeout");
+        controller.terminateCall();
+        showToastInService("ERROR : AUDIO DATA TIMEOUT");
+    }
+
     private void showToastInService(final String string) {
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
@@ -147,5 +157,6 @@ public class HarmonyService extends Service {
     }
     private void saveServer (String serverIp) {
         ConfigSetup.getInstance().saveServerIP(getApplicationContext(),serverIp);
+        showToastInService("save serverIP : " + serverIp);
     }
 }

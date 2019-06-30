@@ -2,7 +2,10 @@ package com.acafela.harmony.controller;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -436,5 +439,16 @@ public class VoipController {
         if(isCaller) return;
         mRingControl.ring_stop();
         sendMessage(SipMessage.Command.ACCEPTCALL);
+    }
+
+    private void showToastInService(final String string) {
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+
+            @Override
+            public void run() {
+                Toast.makeText(mContext, string, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

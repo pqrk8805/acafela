@@ -1,35 +1,47 @@
 package com.acafela.harmony.communicator;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.acafela.harmony.crypto.ICrypto;
+import com.acafela.harmony.service.HarmonyService;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.concurrent.Semaphore;
 
+import static com.acafela.harmony.ui.TestCallActivity.INTENT_CONTROL;
+import static com.acafela.harmony.ui.TestCallActivity.INTENT_SIP_DATA_TIMEOUT;
+
 public class AudioBufferControl {
     private static final String LOG_TAG = "AudioBufferControl";
     private int MAX_DISTANCE=20;
     private int playerSeqNum;
     private int receiveSeqNum;
-    private ICrypto mCrypto;
+    //private ICrypto mCrypto;
+    private Context mContext;
     private int MAX_AUDIO_SEQNO;
     private ArrayList mAudioDataQueue;
     private boolean isFirstFeeding;
     static Semaphore mSemaphore;
     private AudioData backupData = new AudioData();
+    private int  lossCount = 0;
+    private int  monitorCont = 0;
+    private int  PERIOD_LOSS_CHECK_TIME = 50*10;
 
-    AudioBufferControl(ICrypto crypto,int maxBufferSize)
+    private int  MAX_LOSS_NUM = PERIOD_LOSS_CHECK_TIME* 50 /100;
+
+
+    AudioBufferControl(Context context,int maxBufferSize)
     {
         mAudioDataQueue = new ArrayList<AudioData>();
         playerSeqNum = 0;
-        mCrypto = crypto;
+        mContext = context;
         MAX_AUDIO_SEQNO = maxBufferSize;
         isFirstFeeding = true;
         mSemaphore= new Semaphore(1);
-        mCrypto = crypto;
     }
 
     public void pushData(AudioData data)  {
@@ -77,8 +89,22 @@ public class AudioBufferControl {
             }
             else {
                 // 없는경우 마지막 data로 재생
-                Log.e(LOG_TAG, "BackupData :" + backupData.seqNo + " playerSeqNum : " + playerSeqNum +  " receiver : " + receiveSeqNum);
+                lossCount++;
+                //Log.e(LOG_TAG, "LOSS : " + lossCount + " TOTAL :" + MAX_LOSS_NUM);
+                Log.e(LOG_TAG, "[LOSS]BackupData :" + backupData.seqNo + " playerSeqNum : " + playerSeqNum +  " receiver : " + receiveSeqNum);
                 outData = backupData;
+            }
+
+            if(monitorCont++ >PERIOD_LOSS_CHECK_TIME) {
+                monitorCont = 0;
+                lossCount = 0;
+            } else if(lossCount > MAX_LOSS_NUM) {
+                Log.e(LOG_TAG, "DATA TIMEOUT ERROR");
+                Intent intent = new Intent(mContext, HarmonyService.class);
+                intent.putExtra(INTENT_CONTROL, INTENT_SIP_DATA_TIMEOUT);
+                mContext.startService(intent);
+                monitorCont = 0;
+                lossCount = 0;
             }
 
             //현재 seq 없는경우 이전거 재생
