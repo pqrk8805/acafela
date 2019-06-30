@@ -33,6 +33,7 @@ import com.acafela.harmony.ui.AudioCallActivity;
 import com.acafela.harmony.ui.VideoCallActivity;
 import com.acafela.harmony.userprofile.UserInfo;
 import com.acafela.harmony.util.ConfigSetup;
+import com.acafela.harmony.util.ControlMessageTestor;
 
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -48,7 +49,8 @@ public class VoipController {
     private static final String LOG_TAG = "[AcafelaController]";
     private static final int BUFFER_SIZE = 128;
     public static final int CONTROL_TIMEOUT = 2000;
-    public static final int RETRY_COUNT = 3;
+    public static final int RETRY_COUNT = 3; // RETRY_COUNT = 0 means No Retry.
+    public static final int CONTROLMSG_DUPLICATE_COUNT = 1; // CONTROLMSG_DUPLICATE_COUNT = 1 means not duplicated.
     private boolean UdpListenerThreadRun = false;
     private DatagramSocket socket;
     private  InetAddress mIpAddress;
@@ -68,6 +70,7 @@ public class VoipController {
     private byte[]mSenderMsg;
     private int mRetryCnt;
     private Timer mTimer;
+    private Object mSyncTimer = new Object();
     private boolean mIsVideoCall;
     static Semaphore mSemaphore;
 
@@ -125,9 +128,9 @@ public class VoipController {
 
                         if(sipMessage.getIsACK()) {
                             Log.e(LOG_TAG, "message get ACK [" + sipMessage.getCmd().toString() + "]");
-                            if(mTimer!=null)  {
-                                mTimer.cancel();
-                                mTimer=null;
+                            cancelTimer();
+                            if (sipMessage.getCmd().toString().compareTo("INVITE") == 0) {
+                                ControlMessageTestor.getInstance().getAck();
                             }
                             continue;
                         } else {
@@ -347,7 +350,10 @@ public class VoipController {
                 try {
                     DatagramSocket socket = new DatagramSocket();
                     DatagramPacket packet = new DatagramPacket(buffer, buffer.length, mIpAddress, CONTROL_SEND_PORT);
-                    socket.send(packet);
+
+                    for (int i = 0; i<CONTROLMSG_DUPLICATE_COUNT; i++) {
+                        socket.send(packet);
+                    }
                     //Log.e(LOG_TAG, "Send Message: "+ mIpAddress);
                     socket.disconnect();
                     socket.close();
@@ -377,30 +383,38 @@ public class VoipController {
                 setSeq(msgSeq).
                 build().
                 toByteArray();
-        UdpSend(mSenderMsg);
         Log.e(LOG_TAG, "Send Message : "  +  cmd.toString());
 
         mRetryCnt = RETRY_COUNT;
-        if(mTimer!=null)  {
-            mTimer.cancel();
-            mTimer=null;
-        }
-        mTimer = new Timer();
-        mTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                Log.e(LOG_TAG, "mRetryCnt : "  +  mRetryCnt);
-                if(--mRetryCnt==0)
-                {
-                    mTimer.cancel();
-                    Log.e(LOG_TAG, "Timeout Control Message" );
-                    terminateCall();
+        cancelTimer();
+
+        synchronized (mSyncTimer) {
+            mTimer = new Timer();
+            mTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    if (mRetryCnt == -1) {
+                        mTimer.cancel();
+                        Log.e(LOG_TAG, "Timeout Control Message");
+                        terminateCall();
+                    } else {
+                        Log.e(LOG_TAG, "mRetryCnt : " + mRetryCnt);
+                        UdpSend(mSenderMsg);
+                    }
+                    mRetryCnt--;
                 }
-                else
-                    UdpSend(mSenderMsg);
-            }
-        }, 0, CONTROL_TIMEOUT);
+            }, 0, CONTROL_TIMEOUT);
+        }
         msgSeq++;
+    }
+
+    private void cancelTimer() {
+        synchronized (mSyncTimer) {
+            if(mTimer!=null)  {
+                mTimer.cancel();
+                mTimer=null;
+            }
+        }
     }
 
     public void inviteCall(String calleeNumber, boolean isVideoCall)

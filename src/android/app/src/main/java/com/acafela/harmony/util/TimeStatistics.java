@@ -4,7 +4,7 @@ import android.util.Log;
 
 public class TimeStatistics {
     private static final String TAG = TimeStatistics.class.getName();
-    private final boolean mUseTimeStatistics = true;
+    private final boolean mUseTimeStatistics = false;
     private final boolean mUseNanoSeconds = true;
 
     private String mFunctionName;

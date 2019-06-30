@@ -32,6 +32,7 @@ import com.acafela.harmony.ui.main.RestorePwDialog;
 import com.acafela.harmony.ui.main.SectionsPagerAdapter;
 import com.acafela.harmony.ui.main.UserRegisterDialog;
 import com.acafela.harmony.userprofile.UserInfo;
+import com.acafela.harmony.util.ControlMessageTestor;
 
 import java.io.File;
 
@@ -123,6 +124,8 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
         }else {
             mDirectoryService.update();
         }
+
+        ControlMessageTestor.getInstance().init(this, 100);
     }
 
     @Override
