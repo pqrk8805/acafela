@@ -365,8 +365,7 @@ public class TextureMovieEncoder implements Runnable {
     private void prepareEncoder(EGLContext sharedContext) {
         mVideoEncoder = new VideoEncodeSyncSurface();
         mVideoEncoder.setCallback(mEncodeCallback);
-        VideoMediaFormat mVideoMediaFormat = new VideoMediaFormat(true);
-        mVideoEncoder.start(mVideoMediaFormat.getMediaFormat());
+        mVideoEncoder.start(VideoMediaFormat.getInstance().getMediaFormat(true));
         mEglCore = new EglCore(sharedContext, EglCore.FLAG_RECORDABLE);
         mInputWindowSurface = new WindowSurface(mEglCore, mVideoEncoder.getInputSurface(), true);
         mInputWindowSurface.makeCurrent();

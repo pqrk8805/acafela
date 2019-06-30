@@ -17,6 +17,7 @@ import android.widget.ToggleButton;
 
 import com.acafela.harmony.R;
 import com.acafela.harmony.codec.video.VideoDecodeAsyncSurface;
+import com.acafela.harmony.codec.video.VideoMediaFormat;
 import com.acafela.harmony.communicator.VideoReceiverThread;
 import com.acafela.harmony.communicator.VideoSenderThread;
 import com.acafela.harmony.service.HarmonyService;
@@ -26,8 +27,10 @@ import com.acafela.harmony.util.AudioPathSelector;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_HEIGHT;
-import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_WIDTH;
+import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_HEIGHT_HIGHQ;
+import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_HEIGHT_LOWQ;
+import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_WIDTH_HIGHQ;
+import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_WIDTH_LOWQ;
 import static com.acafela.harmony.ui.AudioCallActivity.BROADCAST_BYE;
 import static com.acafela.harmony.ui.AudioCallActivity.BROADCAST_RECEIVEVIDEO;
 import static com.acafela.harmony.ui.AudioCallActivity.BROADCAST_SENDVIDEO;
@@ -48,20 +51,28 @@ public class VideoCallActivity extends CameraSenderActivity
     private static ArrayList<VideoReceiverThread> mVideoReceiverThreadList = new ArrayList<>();
     protected ArrayList<VideoDecodeAsyncSurface> mVideoDecoderList = new ArrayList<>();
     private ArrayList<Integer> mPortArray = new ArrayList<>();
-    private static int attctedViewCount;
+    private static int mAttctedViewCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "onCreate start");
+
+        Intent intent = getIntent();
+        boolean isConferenceCall = intent.getBooleanExtra(INTENT_ISCONFERENCECALL, false);
+        if (isConferenceCall) {
+            VideoMediaFormat.getInstance().setHighQuality(false);
+        }
+        else {
+            VideoMediaFormat.getInstance().setHighQuality(true);
+        }
+
         super.onCreate(savedInstanceState);
 
-        attctedViewCount = 0;
+        mAttctedViewCount = 0;
         mVideoReceiverThreadList.clear();
         mVideoDecoderList.clear();
         mPortArray.clear();
 
-        Intent intent = getIntent();
-        boolean isConferenceCall = intent.getBooleanExtra(INTENT_ISCONFERENCECALL, false);
         if (isConferenceCall) {
             setContentView(R.layout.activity_videocall_conference);
             {
@@ -165,7 +176,9 @@ public class VideoCallActivity extends CameraSenderActivity
                     mGLView.onResume();
                     mGLView.queueEvent(new Runnable() {
                         @Override public void run() {
-                            mRenderer.setCameraPreviewSize(VIDEO_WIDTH, VIDEO_HEIGHT);
+                            mRenderer.setCameraPreviewSize(
+                                    VideoMediaFormat.getInstance().getWidth(),
+                                    VideoMediaFormat.getInstance().getHeight());
                         }
                     });
                     mGLView.queueEvent(new Runnable() {
@@ -194,8 +207,8 @@ public class VideoCallActivity extends CameraSenderActivity
                     }
                     Log.i(TAG, "new VideoReceiverThread");
                     VideoReceiverThread thread = new VideoReceiverThread();
-                    thread.setDecoder(mVideoDecoderList.get(attctedViewCount), port);
-                    attctedViewCount++;
+                    thread.setDecoder(mVideoDecoderList.get(mAttctedViewCount), port);
+                    mAttctedViewCount++;
                     mPortArray.add(port);
                     thread.start();
                 }
