@@ -27,10 +27,6 @@ import com.acafela.harmony.util.AudioPathSelector;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_HEIGHT_HIGHQ;
-import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_HEIGHT_LOWQ;
-import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_WIDTH_HIGHQ;
-import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_WIDTH_LOWQ;
 import static com.acafela.harmony.ui.AudioCallActivity.BROADCAST_BYE;
 import static com.acafela.harmony.ui.AudioCallActivity.BROADCAST_RECEIVEVIDEO;
 import static com.acafela.harmony.ui.AudioCallActivity.BROADCAST_SENDVIDEO;
@@ -201,7 +197,7 @@ public class VideoCallActivity extends CameraSenderActivity
                     int port = intent.getIntExtra(KEY_PORT, 0);
                     Log.i(TAG, "onReceive BROADCAST_RECEIVEVIDEO: " + port);
                     Log.i(TAG, "mPortArray: " + Arrays.toString(mPortArray.toArray()));
-                    if (mPortArray.contains(mPortArray)) {
+                    if (mPortArray.contains(port)) {
                         Log.e(TAG, "mPortArray has already " + port);
                         return;
                     }
