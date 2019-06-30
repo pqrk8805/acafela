@@ -123,11 +123,12 @@ public class ChangePwDialog extends Dialog {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            UserProfileGrpc.UserProfileBlockingStub blockingStub = new UserProfileRpc(
+            UserProfileRpc userProfileGrpc = new UserProfileRpc(
                     ConfigSetup.getInstance().getServerIP(getContext()),
                     Config.RPC_PORT_USER_PROFILE,
                     mActivity.getResources().openRawResource(R.raw.ca),
-                    mActivity.getResources().openRawResource(R.raw.server)).
+                    mActivity.getResources().openRawResource(R.raw.server));
+            UserProfileGrpc.UserProfileBlockingStub blockingStub = userProfileGrpc.
                     getBlockingStub();
 
             Common.Error error = null;
@@ -147,6 +148,7 @@ public class ChangePwDialog extends Dialog {
                 mResponse = error.getErr();
             }
 
+            userProfileGrpc.shutdown();
             mProgressDialog.dismiss();
             dismiss();
 

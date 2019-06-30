@@ -115,11 +115,12 @@ public class UserRegisterDialog extends Dialog {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            UserProfileGrpc.UserProfileBlockingStub blockingStub = new UserProfileRpc(
+            UserProfileRpc userProfileGrpc = new UserProfileRpc(
                     ConfigSetup.getInstance().getServerIP(getContext()),
                     Config.RPC_PORT_USER_PROFILE,
                     mActivity.getResources().openRawResource(R.raw.ca),
-                    mActivity.getResources().openRawResource(R.raw.server)).
+                    mActivity.getResources().openRawResource(R.raw.server));
+            UserProfileGrpc.UserProfileBlockingStub blockingStub = userProfileGrpc.
                     getBlockingStub();
 
             RegisterResp registerResp = null;
@@ -140,6 +141,7 @@ public class UserRegisterDialog extends Dialog {
                 }
             }
 
+            userProfileGrpc.shutdown();
             mProgressDialog.dismiss();
             dismiss();
 

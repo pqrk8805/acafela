@@ -27,4 +27,12 @@ public class UserProfileRpc
     {
         return UserProfileGrpc.newBlockingStub(mChannel);
     }
+
+    public void shutdown()
+    {
+        if (mChannel != null) {
+            mChannel.shutdown();
+            mChannel = null;
+        }
+    }
 }
