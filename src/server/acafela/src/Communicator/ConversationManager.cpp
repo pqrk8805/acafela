@@ -7,7 +7,7 @@
 #define CASE(Consume, CMD) \
 	case acafela::sip::CMD:\
 		if (isHandledMsgAndAck(sender,Consume,msg))\
-			break;
+			return true;
 
 extern std::vector<std::thread *> additionalThreadList;
 ICryptoKeyMgr * ConversationManager::keyManager;
@@ -179,7 +179,7 @@ bool ConversationManager::consumeMessageHandler(std::string IP, acafela::sip::SI
 		{
 			if (msg.to().find("#") != std::string::npos) {
 				if (isHandledMsgAndAck(sender, true, msg))
-					break;
+					return true;
 				Conversation * conversation = confManager->getConversationRoom(msg.to());
 				if (conversation == nullptr) {
 					FUNC_LOGI("Request to Make Key in ConvRoom");
@@ -191,7 +191,7 @@ bool ConversationManager::consumeMessageHandler(std::string IP, acafela::sip::SI
 				return true;
 			} else {
 				if (isHandledMsgAndAck(sender, false, msg))
-					break;
+					return false;
 				FUNC_LOGI("Request to Make Key");
 				keyManager->generateKey(msg.sessionid());
 				Conversation * conversation = new Conversation({
@@ -213,8 +213,8 @@ bool ConversationManager::consumeMessageHandler(std::string IP, acafela::sip::SI
 			conversation->makeConversation();
 			if (conversation->isVideoComm())
 				conversation->startVideoConversation();
+			return true;
 		}
-		return true;
 		CASE(true, TERMINATE) {
 			FUNC_LOGI("Request to Terminate");
 			Conversation * conversation = conversationMap[sender];
@@ -234,24 +234,24 @@ bool ConversationManager::consumeMessageHandler(std::string IP, acafela::sip::SI
 					iter = conversationMap.erase(iter);
 			}
 			delete conversation;
+			return true;
 		}
-		return true;
 		CASE(true, STARTVIDEO) {
 			FUNC_LOGI("Request to StartVideo");
 			Conversation * conversation = conversationMap[sender];
 			if (conversation == nullptr)
 				return true;
 			conversation->startVideoConversation();
+			return true;
 		}
-		return true;
 		CASE(true, STOPVIDEO) {
 			FUNC_LOGI("Request to StartVideo");
 			Conversation * conversation = conversationMap[sender];
 			if (conversation == nullptr)
 				return true;
 			conversation->stopVideoConversation();
+			return true;
 		}
-		return true;
 	}
 	return false;
 }
