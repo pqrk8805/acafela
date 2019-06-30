@@ -7,9 +7,8 @@ import android.util.Log;
 
 import com.acafela.harmony.Config;
 import com.acafela.harmony.R;
-import com.acafela.harmony.dirserv.DirectoryServiceGrpc;
 import com.acafela.harmony.dirserv.DirectoryServiceGrpc.DirectoryServiceBlockingStub;
-import com.acafela.harmony.dirserv.DirectoryServiceOuterClass;
+import com.acafela.harmony.dirserv.DirectoryServiceOuterClass.DirInfo;
 import com.acafela.harmony.rpc.Common;
 import com.acafela.harmony.userprofile.UserInfo;
 import com.acafela.harmony.util.ConfigSetup;
@@ -23,6 +22,7 @@ import static android.content.Context.WIFI_SERVICE;
 
 public class DirectoryService {
     private static final String TAG = DirectoryService.class.getName();
+    private static final int NUM_OF_RETRY = 3;
 
     private Context mContext;
 
@@ -55,16 +55,21 @@ public class DirectoryService {
 
         DirectoryServiceBlockingStub blockingStub = directoryServiceRpc.getBlockingStub();
 
-        Common.Error error = null;
-        try {
-            error = blockingStub.withDeadlineAfter(1, TimeUnit.SECONDS).update(DirectoryServiceOuterClass.DirInfo.newBuilder().
-                    setAddress(LocalIP).
-                    setPhoneNumber(UserInfo.getInstance().getPhoneNumber()).
-                    build());
-
-            Log.e(TAG, error.toString());
-        } catch (StatusRuntimeException e) {
-            Log.i(TAG, "DirectoryService Update is Interrupted");
+        DirInfo info = DirInfo.newBuilder()
+                        .setAddress(LocalIP)
+                        .setPhoneNumber(UserInfo.getInstance().getPhoneNumber())
+                        .build();
+        for (int i = 0; i < NUM_OF_RETRY; ++i) {
+            try {
+                Common.Error error = blockingStub
+                            .withDeadlineAfter(1, TimeUnit.SECONDS)
+                            .update(info);
+                Log.d(TAG, "RPC Result(" + error.getErr() + "): " + error.toString());
+                if (error.getErr() == 0)
+                    break;
+            } catch (StatusRuntimeException e) {
+                Log.w(TAG, "DirectoryService Update is Interrupted");
+            }
         }
         directoryServiceRpc.shutdown();
     }
