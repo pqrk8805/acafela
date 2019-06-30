@@ -396,7 +396,7 @@ public class VoipController {
                 else
                     UdpSend(mSenderMsg);
             }
-        }, CONTROL_TIMEOUT, CONTROL_TIMEOUT);
+        }, 0, CONTROL_TIMEOUT);
         msgSeq++;
     }
 
