@@ -12,8 +12,8 @@ public class VideoMediaFormat {
     public static final String VIDEO_MIME_TYPE = MediaFormat.MIMETYPE_VIDEO_VP8;
     public static final int VIDEO_FRAME_RATE = 20;               // 30fps
     public static final int VIDEO_IFRAME_INTERVAL = 1;  // TRADE-OFF
-    public static final int VIDEO_BIT_RATE_LOW = 100000;
-    public static final int VIDEO_BIT_RATE_HIGH = 100000;
+    public static final int VIDEO_BIT_RATE_LOW = 30000;
+    public static final int VIDEO_BIT_RATE_HIGH = 50000;
     public static final int VIDEO_WIDTH_HIGHQ = 320;
     public static final int VIDEO_WIDTH_LOWQ = 320;
     public static final int VIDEO_HEIGHT_HIGHQ = 240;

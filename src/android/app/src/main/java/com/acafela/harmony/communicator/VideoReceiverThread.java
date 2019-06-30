@@ -17,6 +17,7 @@ public class VideoReceiverThread extends Thread {
     private DatagramSocket mSocket;
     private IVideoDecoder mVideoDecoder;
     private int mPort;
+    private int oldPacketLength = 0;
 
     public void setDecoder(IVideoDecoder videoDecoder, int port) {
         Log.i(TAG, "setDecoder");
@@ -56,13 +57,18 @@ public class VideoReceiverThread extends Thread {
         while(mIsRunning) {
             try {
                 mSocket.receive(packet);
-                byte[] receivedData = new byte[packet.getLength()];
+                int currentPacketLength = packet.getLength();
+                if (oldPacketLength == currentPacketLength) {
+                    continue;
+                }
+                oldPacketLength = currentPacketLength;
+                byte[] receivedData = new byte[currentPacketLength];
                 System.arraycopy(
                         packet.getData(),
                         packet.getOffset(),
                         receivedData,
                         0,
-                        packet.getLength());
+                        currentPacketLength);
                 mVideoDecoder.enqueueInputBytes(receivedData);
 //                Log.i(TAG, "Receive Video Packet: " + receivedData.length);
             } catch (IOException e) {

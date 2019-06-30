@@ -11,6 +11,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class VideoSenderThread extends Thread {
     private static final String TAG = VideoSenderThread.class.getName();
 
+    private static final int DUPLICATE_FRAME_COUNT = 2;
+
     private boolean mIsRunning;
 
     private DatagramSocket mSocket;
@@ -73,7 +75,9 @@ public class VideoSenderThread extends Thread {
                     mPort);
             try {
                 if (mSocket != null) {
-                    mSocket.send(packet);
+                    for (int i=0; i<DUPLICATE_FRAME_COUNT; i++) {
+                        mSocket.send(packet);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
