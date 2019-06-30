@@ -57,7 +57,7 @@ public class DirectoryService {
 
         Common.Error error = null;
         try {
-            error = blockingStub.withDeadlineAfter(2, TimeUnit.SECONDS).update(DirectoryServiceOuterClass.DirInfo.newBuilder().
+            error = blockingStub.withDeadlineAfter(1, TimeUnit.SECONDS).update(DirectoryServiceOuterClass.DirInfo.newBuilder().
                     setAddress(LocalIP).
                     setPhoneNumber(UserInfo.getInstance().getPhoneNumber()).
                     build());

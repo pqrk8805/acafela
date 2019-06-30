@@ -50,7 +50,7 @@ public class VoipController {
     private static final int BUFFER_SIZE = 128;
     public static final int CONTROL_TIMEOUT = 2000;
     public static final int RETRY_COUNT = 3; // RETRY_COUNT = 0 means No Retry.
-    public static final int CONTROLMSG_DUPLICATE_COUNT = 1; // CONTROLMSG_DUPLICATE_COUNT = 1 means not duplicated.
+    public static final int CONTROLMSG_DUPLICATE_COUNT = 5; // CONTROLMSG_DUPLICATE_COUNT = 1 means not duplicated.
     private boolean UdpListenerThreadRun = false;
     private DatagramSocket socket;
     private  InetAddress mIpAddress;
@@ -351,9 +351,7 @@ public class VoipController {
                     DatagramSocket socket = new DatagramSocket();
                     DatagramPacket packet = new DatagramPacket(buffer, buffer.length, mIpAddress, CONTROL_SEND_PORT);
 
-                    for (int i = 0; i<CONTROLMSG_DUPLICATE_COUNT; i++) {
-                        socket.send(packet);
-                    }
+                    socket.send(packet);
                     //Log.e(LOG_TAG, "Send Message: "+ mIpAddress);
                     socket.disconnect();
                     socket.close();
@@ -399,7 +397,9 @@ public class VoipController {
                         terminateCall();
                     } else {
                         Log.e(LOG_TAG, "mRetryCnt : " + mRetryCnt);
-                        UdpSend(mSenderMsg);
+                        for (int i = 0; i<CONTROLMSG_DUPLICATE_COUNT; i++) {
+                            UdpSend(mSenderMsg);
+                        }
                     }
                     mRetryCnt--;
                 }
