@@ -120,14 +120,6 @@ public class EglSurfaceBase {
     }
 
     /**
-     * Makes our EGL context and surface current for drawing, using the supplied surface
-     * for reading.
-     */
-    public void makeCurrentReadFrom(EglSurfaceBase readSurface) {
-        mEglCore.makeCurrent(mEGLSurface, readSurface.mEGLSurface);
-    }
-
-    /**
      * Calls eglSwapBuffers.  Use this to "publish" the current frame.
      *
      * @return false on failure
@@ -147,51 +139,5 @@ public class EglSurfaceBase {
      */
     public void setPresentationTime(long nsecs) {
         mEglCore.setPresentationTime(mEGLSurface, nsecs);
-    }
-
-    /**
-     * Saves the EGL surface to a file.
-     * <p>
-     * Expects that this object's EGL surface is current.
-     */
-    public void saveFrame(File file) throws IOException {
-        if (!mEglCore.isCurrent(mEGLSurface)) {
-            throw new RuntimeException("Expected EGL context/surface is not current");
-        }
-
-        // glReadPixels fills in a "direct" ByteBuffer with what is essentially big-endian RGBA
-        // data (i.e. a byte of red, followed by a byte of green...).  While the Bitmap
-        // constructor that takes an int[] wants little-endian ARGB (blue/red swapped), the
-        // Bitmap "copy pixels" method wants the same format GL provides.
-        //
-        // Ideally we'd have some way to re-use the ByteBuffer, especially if we're calling
-        // here often.
-        //
-        // Making this even more interesting is the upside-down nature of GL, which means
-        // our output will look upside down relative to what appears on screen if the
-        // typical GL conventions are used.
-
-        String filename = file.toString();
-
-        int width = getWidth();
-        int height = getHeight();
-        ByteBuffer buf = ByteBuffer.allocateDirect(width * height * 4);
-        buf.order(ByteOrder.LITTLE_ENDIAN);
-        GLES20.glReadPixels(0, 0, width, height,
-                GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, buf);
-        GlUtil.checkGlError("glReadPixels");
-        buf.rewind();
-
-        BufferedOutputStream bos = null;
-        try {
-            bos = new BufferedOutputStream(new FileOutputStream(filename));
-            Bitmap bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-            bmp.copyPixelsFromBuffer(buf);
-            bmp.compress(Bitmap.CompressFormat.PNG, 90, bos);
-            bmp.recycle();
-        } finally {
-            if (bos != null) bos.close();
-        }
-        Log.d(TAG, "Saved " + width + "x" + height + " frame as '" + filename + "'");
     }
 }

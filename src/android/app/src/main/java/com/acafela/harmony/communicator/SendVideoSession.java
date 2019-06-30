@@ -73,6 +73,11 @@ public class SendVideoSession implements DataCommunicator {
     }
 
     private void sendBroadcast(String ip,int port) {
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         Log.i(TAG, "sendBroadcast BROADCAST_SENDVIDEO");
         Log.i(TAG, "ip: " + ip + ", port: " + port);
         Intent intent = new Intent(BROADCAST_SENDVIDEO);

@@ -46,6 +46,7 @@ public class DirectoryService {
             LocalIP = "192.168.43.1";
         }
 
+        Log.i(TAG, "update directoryService: " + LocalIP);
         DirectoryServiceRpc directoryServiceRpc = new DirectoryServiceRpc(
                 ConfigSetup.getInstance().getServerIP(mContext),
                 Config.RPC_PORT_DIRECTORY_SERVICE,

@@ -33,6 +33,8 @@ import com.acafela.harmony.ui.main.SectionsPagerAdapter;
 import com.acafela.harmony.ui.main.UserRegisterDialog;
 import com.acafela.harmony.userprofile.UserInfo;
 
+import java.io.File;
+
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_ISCALLEE;
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_ISCONFERENCECALL;
 import static com.acafela.harmony.ui.AudioCallActivity.INTENT_PHONENUMBER;
@@ -40,6 +42,7 @@ import static com.acafela.harmony.ui.TestCallActivity.INTEMT_CALLEE_PHONENUMBER;
 import static com.acafela.harmony.ui.TestCallActivity.INTENT_CONTROL;
 import static com.acafela.harmony.ui.TestCallActivity.INTENT_ISVIDEO;
 import static com.acafela.harmony.ui.TestCallActivity.INTENT_SIP_INVITE_CALL;
+import static com.acafela.harmony.util.ConfigSetup.filename;
 
 public class MainActivity extends AppCompatActivity implements DialpadFragment.Callback {
     private static final String TAG = MainActivity.class.getName();
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
     private static final int MENU_PHONENUMBER = 4;
     private static final String HIDDEN_TEST_MAIN = "9999";
     private static final String HIDDEN_UNREGISTER = "8888";
+    private static final String HIDDEN_REMOVE_SERVER_IP = "7777";
 
     private DirectoryService mDirectoryService;
 
@@ -251,6 +255,12 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
         if (raw.equals(HIDDEN_TEST_MAIN)) {
             Intent activityIntent = new Intent(this, TestMainActivity.class);
             startActivity(activityIntent);
+            return;
+        }
+        else if (raw.equals(HIDDEN_REMOVE_SERVER_IP)) {
+            String path = getFilesDir().getAbsolutePath() + "/" + filename;
+            File file = new File(path);
+            file.delete();
             return;
         }
         else if (raw.equals(HIDDEN_UNREGISTER)) {

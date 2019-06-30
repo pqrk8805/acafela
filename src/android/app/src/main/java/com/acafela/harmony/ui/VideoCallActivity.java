@@ -24,6 +24,7 @@ import com.acafela.harmony.ui.contacts.ContactDbHelper;
 import com.acafela.harmony.util.AudioPathSelector;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_HEIGHT;
 import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_WIDTH;
@@ -46,6 +47,7 @@ public class VideoCallActivity extends CameraSenderActivity
     private BroadcastReceiver mBroadcastReceiver;
     private static ArrayList<VideoReceiverThread> mVideoReceiverThreadList = new ArrayList<>();
     protected ArrayList<VideoDecodeAsyncSurface> mVideoDecoderList = new ArrayList<>();
+    private ArrayList<Integer> mPortArray = new ArrayList<>();
     private static int attctedViewCount;
 
     @Override
@@ -56,6 +58,7 @@ public class VideoCallActivity extends CameraSenderActivity
         attctedViewCount = 0;
         mVideoReceiverThreadList.clear();
         mVideoDecoderList.clear();
+        mPortArray.clear();
 
         Intent intent = getIntent();
         boolean isConferenceCall = intent.getBooleanExtra(INTENT_ISCONFERENCECALL, false);
@@ -135,6 +138,10 @@ public class VideoCallActivity extends CameraSenderActivity
             decoder.stop();
         }
         mVideoDecoderList.clear();
+        if (mVideoSenderThread != null) {
+            mVideoSenderThread.kill();
+            mVideoSenderThread = null;
+        }
 
         finish();
     }
@@ -178,11 +185,18 @@ public class VideoCallActivity extends CameraSenderActivity
                     hideTextView();
                 }
                 else if (intent.getAction().equals(BROADCAST_RECEIVEVIDEO)) {
-                    Log.i(TAG, "onReceive BROADCAST_RECEIVEVIDEO");
                     int port = intent.getIntExtra(KEY_PORT, 0);
+                    Log.i(TAG, "onReceive BROADCAST_RECEIVEVIDEO: " + port);
+                    Log.i(TAG, "mPortArray: " + Arrays.toString(mPortArray.toArray()));
+                    if (mPortArray.contains(mPortArray)) {
+                        Log.e(TAG, "mPortArray has already " + port);
+                        return;
+                    }
+                    Log.i(TAG, "new VideoReceiverThread");
                     VideoReceiverThread thread = new VideoReceiverThread();
                     thread.setDecoder(mVideoDecoderList.get(attctedViewCount), port);
                     attctedViewCount++;
+                    mPortArray.add(port);
                     thread.start();
                 }
             }
@@ -219,10 +233,15 @@ public class VideoCallActivity extends CameraSenderActivity
             findViewById(R.id.button_container_callee).setVisibility(View.GONE);
         }
 
+//        AudioPathSelector.getInstance().setAudioManager(this);
+//        AudioPathSelector.getInstance().setSpeakerAudio();
+//        ToggleButton speakerToggleBtn = findViewById(R.id.toggle_speaker);
+//        speakerToggleBtn.setChecked(true);
+
         AudioPathSelector.getInstance().setAudioManager(this);
-        AudioPathSelector.getInstance().setSpeakerAudio();
+        AudioPathSelector.getInstance().setEarPieceAudio();
         ToggleButton speakerToggleBtn = findViewById(R.id.toggle_speaker);
-        speakerToggleBtn.setChecked(true);
+        speakerToggleBtn.setChecked(false);
     }
 
 

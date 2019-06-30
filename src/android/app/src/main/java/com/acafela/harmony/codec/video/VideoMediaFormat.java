@@ -4,15 +4,16 @@ import android.media.MediaFormat;
 import android.media.MediaCodecInfo;
 
 public class VideoMediaFormat {
-
     private static final String TAG = VideoMediaFormat.class.getName();
 
-    public static final String VIDEO_MIME_TYPE = MediaFormat.MIMETYPE_VIDEO_AVC;
-    public static final int VIDEO_FRAME_RATE = 30;               // 30fps
+    public static final String VIDEO_MIME_TYPE = MediaFormat.MIMETYPE_VIDEO_VP8;
+    public static final int VIDEO_FRAME_RATE = 20;               // 30fps
     public static final int VIDEO_IFRAME_INTERVAL = 1;  // TRADE-OFF
-    public static final int VIDEO_BIT_RATE = 500000;
-    public static final int VIDEO_WIDTH = 640;
-    public static final int VIDEO_HEIGHT = 480;
+    public static final int VIDEO_BIT_RATE = 100000;
+    public static final int VIDEO_WIDTH = 320;
+    public static final int VIDEO_HEIGHT = 240;
+    public static final int VIDEO_WIDTH_P2P = 640;
+    public static final int VIDEO_HEIGHT_P2P = 480;
 
     public static final int VIDEO_QUEUE_BOUND = 100;
 

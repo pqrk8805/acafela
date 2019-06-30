@@ -12,7 +12,7 @@ import java.net.InetAddress;
 
 public class ConfigSetup {
     private static ConfigSetup INSTANCE;
-    final static String filename = "configFile";
+    public final static String filename = "configFile";
     static String fileServer;
 
     public synchronized static ConfigSetup getInstance() {
