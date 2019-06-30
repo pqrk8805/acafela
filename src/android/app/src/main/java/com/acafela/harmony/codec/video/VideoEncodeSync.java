@@ -28,9 +28,8 @@ public class VideoEncodeSync {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		VideoMediaFormat format = new VideoMediaFormat(false);
 		mCodec.configure(
-				format.getMediaFormat(),
+				VideoMediaFormat.getInstance().getMediaFormat(false),
 				null /* surface */,
 				null /* crypto */,
 				mIsEncoder?

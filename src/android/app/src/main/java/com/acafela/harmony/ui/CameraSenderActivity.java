@@ -12,14 +12,17 @@ import android.view.WindowManager;
 import com.acafela.harmony.codec.video.CameraSurfaceRenderer;
 import com.acafela.harmony.codec.video.TextureMovieEncoder;
 import com.acafela.harmony.codec.video.VideoEncodeSyncSurface;
+import com.acafela.harmony.codec.video.VideoMediaFormat;
 import com.acafela.harmony.communicator.VideoSenderThread;
 import com.acafela.harmony.ui.camera.CameraHandler;
 import com.acafela.harmony.ui.camera.CameraUtils;
 
 import java.io.IOException;
 
-import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_HEIGHT;
-import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_WIDTH;
+import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_HEIGHT_HIGHQ;
+import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_HEIGHT_LOWQ;
+import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_WIDTH_HIGHQ;
+import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_WIDTH_LOWQ;
 
 public class CameraSenderActivity extends FullScreenActivity
         implements SurfaceTexture.OnFrameAvailableListener {
@@ -49,7 +52,7 @@ public class CameraSenderActivity extends FullScreenActivity
                 if (outputBytes == null) {
                     return;
                 }
-//                Log.d(TAG, "EncodedBytes: " + outputBytes.length);
+                Log.d(TAG, "EncodedBytes: " + outputBytes.length);
                 if (mVideoSenderThread != null) {
                     mVideoSenderThread.enqueueFrame(outputBytes);
                 }
@@ -67,11 +70,12 @@ public class CameraSenderActivity extends FullScreenActivity
         mCameraHandler.invalidateHandler();
     }
 
-    @Override
     protected void onResume() {
         super.onResume();
         if (mCamera == null) {
-            openCamera(VIDEO_WIDTH, VIDEO_HEIGHT);      // updates mCameraPreviewWidth/Height
+            openCamera(
+                    VideoMediaFormat.getInstance().getWidth(),
+                    VideoMediaFormat.getInstance().getHeight());
         }
     }
 

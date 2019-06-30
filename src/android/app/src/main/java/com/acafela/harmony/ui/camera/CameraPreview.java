@@ -9,8 +9,8 @@ import android.view.SurfaceView;
 
 import com.acafela.harmony.codec.video.VideoControllerAsync;
 
-import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_HEIGHT;
-import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_WIDTH;
+import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_HEIGHT_LOWQ;
+import static com.acafela.harmony.codec.video.VideoMediaFormat.VIDEO_WIDTH_LOWQ;
 
 /** A basic Camera preview class */
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
@@ -35,7 +35,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void surfaceCreated(SurfaceHolder holder) {
-        openCamera(VIDEO_WIDTH, VIDEO_HEIGHT);
+        openCamera(VIDEO_WIDTH_LOWQ, VIDEO_HEIGHT_LOWQ);
         mCamera.setDisplayOrientation(90);
     }
 

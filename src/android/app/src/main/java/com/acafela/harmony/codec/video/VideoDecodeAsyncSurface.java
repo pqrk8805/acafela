@@ -80,9 +80,8 @@ public class VideoDecodeAsyncSurface implements IVideoDecoder {
             }
         }, mHandler);
 
-        VideoMediaFormat format = new VideoMediaFormat(true);
         mCodec.configure(
-                format.getMediaFormat(),
+                VideoMediaFormat.getInstance().getMediaFormat(true),
                 mSurface,
                 null /* crypto */,
                 0);
