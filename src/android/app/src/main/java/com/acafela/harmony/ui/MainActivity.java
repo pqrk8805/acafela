@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
         Log.i(TAG, "onCreate");
 
         requestPermissions();
+        mDirectoryService = new DirectoryService(this);
 
         setContentView(R.layout.activity_main);
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
@@ -99,6 +100,8 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
         toolbar.setTitle(getResources().getString(R.string.app_name));
         setSupportActionBar(toolbar);
 
+        mDirectoryService.update();
+
         Intent serviceIntent = new Intent(getApplicationContext(), HarmonyService.class);
         startService(serviceIntent);
     }
@@ -113,7 +116,6 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
     protected void onResume() {
         super.onResume();
 
-        mDirectoryService = new DirectoryService(this);
         UserInfo.getInstance().load(this);
         if (UserInfo.getInstance().getPhoneNumber().isEmpty()) {
             new Handler().postDelayed(new Runnable() {
@@ -121,8 +123,6 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
                     showPopup("Please Register");
                 }
             }, 1000);
-        }else {
-            mDirectoryService.update();
         }
 
         ControlMessageTestor.getInstance().init(this, 100);
@@ -191,6 +191,8 @@ public class MainActivity extends AppCompatActivity implements DialpadFragment.C
                 if (UserInfo.getInstance().getPhoneNumber().isEmpty()) {
                     showPopup("Please Register");
                 }
+
+                mDirectoryService.update();
             }
         });
     }

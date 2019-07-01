@@ -22,9 +22,10 @@ import static android.content.Context.WIFI_SERVICE;
 
 public class DirectoryService {
     private static final String TAG = DirectoryService.class.getName();
-    private static final int NUM_OF_RETRY = 3;
+    private static final int NUM_OF_RETRY = 400;
 
     private Context mContext;
+    private Thread mDirServiceUpdator;
 
     public DirectoryService(Context context) {
         mContext = context;
@@ -47,30 +48,39 @@ public class DirectoryService {
         }
 
         Log.i(TAG, "update directoryService: " + LocalIP);
-        DirectoryServiceRpc directoryServiceRpc = new DirectoryServiceRpc(
-                ConfigSetup.getInstance().getServerIP(mContext),
-                Config.RPC_PORT_DIRECTORY_SERVICE,
-                mContext.getResources().openRawResource(R.raw.ca),
-                mContext.getResources().openRawResource(R.raw.server));
+        final String ipAddress = LocalIP;
 
-        DirectoryServiceBlockingStub blockingStub = directoryServiceRpc.getBlockingStub();
+        mDirServiceUpdator = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DirectoryServiceRpc directoryServiceRpc = new DirectoryServiceRpc(
+                        ConfigSetup.getInstance().getServerIP(mContext),
+                        Config.RPC_PORT_DIRECTORY_SERVICE,
+                        mContext.getResources().openRawResource(R.raw.ca),
+                        mContext.getResources().openRawResource(R.raw.server));
 
-        DirInfo info = DirInfo.newBuilder()
-                        .setAddress(LocalIP)
+                final DirectoryServiceBlockingStub blockingStub = directoryServiceRpc.getBlockingStub();
+
+                final DirInfo info = DirInfo.newBuilder()
+                        .setAddress(ipAddress)
                         .setPhoneNumber(UserInfo.getInstance().getPhoneNumber())
                         .build();
-        for (int i = 0; i < NUM_OF_RETRY; ++i) {
-            try {
-                Common.Error error = blockingStub
-                            .withDeadlineAfter(1, TimeUnit.SECONDS)
-                            .update(info);
-                Log.d(TAG, "RPC Result(" + error.getErr() + "): " + error.toString());
-                if (error.getErr() == 0)
-                    break;
-            } catch (StatusRuntimeException e) {
-                Log.w(TAG, "DirectoryService Update is Interrupted");
+                for (int i = 0; i < NUM_OF_RETRY; ++i) {
+                    Log.d(TAG, "update try: " + i);
+                    try {
+                        Common.Error error = blockingStub
+                                .withDeadlineAfter(1000, TimeUnit.MILLISECONDS)
+                                .update(info);
+                        Log.d(TAG, "RPC Result(" + error.getErr() + "): " + error.toString());
+                        if (error.getErr() == 0)
+                            break;
+                    } catch (StatusRuntimeException e) {
+                        Log.w(TAG, "DirectoryService Update is Interrupted");
+                    }
+                }
+                directoryServiceRpc.shutdown();
             }
-        }
-        directoryServiceRpc.shutdown();
+        });
+        mDirServiceUpdator.start();
     }
 }
