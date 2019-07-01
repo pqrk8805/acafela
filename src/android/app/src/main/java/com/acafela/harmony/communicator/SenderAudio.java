@@ -39,6 +39,7 @@ public class SenderAudio implements DataCommunicator {
     AudioMediaFormat mAudioMediaFormat = new AudioMediaFormat();
     AudioCodecSync mAudioEncoder = new AudioCodecSync(true);
     private static int mPacketSeq= 0;
+    boolean isFirst;
 
     private TimeStatistics encodeTimeCheck = new TimeStatistics();
     private TimeStatistics encrytionTimeCheck = new TimeStatistics();
@@ -47,6 +48,7 @@ public class SenderAudio implements DataCommunicator {
         public SenderAudio(ICrypto crypto)
     {
         mCrypto = crypto;
+        isFirst = true;
     }
 
     public boolean setSession(String ip,int port)
@@ -153,6 +155,7 @@ public class SenderAudio implements DataCommunicator {
 
                 try
                 {
+
                     DatagramSocket socket = new DatagramSocket();
                     Recorder.startRecording();
                     while (senderAudioThreadRun)
@@ -180,6 +183,10 @@ public class SenderAudio implements DataCommunicator {
                                 //Log.e(LOG_TAG,"encrypted size"+ encrypted.length);
                                 //int size = encrypted.length + AUDIO_HEADER_SIZE;
                                 //Log.i(LOG_TAG, "Packet send length: " +  size );
+                                if(isFirst== true) {
+                                    Log.e(LOG_TAG, "First Sending Ready");
+                                    isFirst = false;
+                                }
                                 for(byte i=0; i< DUPLICATE_COUNT; i++) {
                                     SendBuffer[0] = i;
                                     DatagramPacket packet = new DatagramPacket(

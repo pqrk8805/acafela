@@ -18,7 +18,7 @@ import static com.acafela.harmony.ui.TestCallActivity.INTENT_SIP_DATA_TIMEOUT;
 
 public class AudioBufferControl {
     private static final String LOG_TAG = "AudioBufferControl";
-    private int MAX_DISTANCE = 20; //x*20ms buffer
+    private int MAX_DISTANCE = 14; //x*20ms buffer
     private int REMAIN_BUFFER_SIZE = 4;
     private int DELAY_TIME = 50;
     private int playerSeqNum;
@@ -57,6 +57,7 @@ public class AudioBufferControl {
             //Log.e(LOG_TAG, "<<<<< currSeq " + data.seqNo );
             mAudioDataQueue.add(data);
             receiveSeqNum = data.seqNo;
+
             mSemaphore.release();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -69,9 +70,10 @@ public class AudioBufferControl {
         try {
             mSemaphore.acquire();
             if (isFirstFeeding) {
-                if (mAudioDataQueue.size() == MAX_DISTANCE - REMAIN_BUFFER_SIZE) {
+                if (mAudioDataQueue.size() > MAX_DISTANCE - REMAIN_BUFFER_SIZE) {
                     //playerSeqNum = getFirstPacketNo();
                     playerSeqNum = getOldDataSeqNo(true);
+                    Log.e(LOG_TAG,"First Feeding Ready ..." + mAudioDataQueue.size());
                     isFirstFeeding = false;
                 } else {
                     mSemaphore.release();
@@ -266,7 +268,7 @@ public class AudioBufferControl {
     {
         if(mAudioDataQueue.size() > MAX_DISTANCE)
         {
-            for(int cnt = mAudioDataQueue.size() - MAX_DISTANCE  ; cnt>0 ;cnt-- ){
+            for(int cnt = mAudioDataQueue.size() - MAX_DISTANCE  ; cnt > 0 ;cnt-- ){
                 //Log.e(LOG_TAG, "mAudioDataQueue.size() " + mAudioDataQueue.size() + " cnt :" + cnt);
                 //mAudioDataQueue.remove(mAudioDataQueue.size() -1);
                 mAudioDataQueue.remove(0);
