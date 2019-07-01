@@ -12,13 +12,15 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.concurrent.Semaphore;
 
+import static com.acafela.harmony.communicator.DataCommunicator.BLANK_SEQNO;
 import static com.acafela.harmony.ui.TestCallActivity.INTENT_CONTROL;
 import static com.acafela.harmony.ui.TestCallActivity.INTENT_SIP_DATA_TIMEOUT;
 
 public class AudioBufferControl {
     private static final String LOG_TAG = "AudioBufferControl";
-    private int MAX_DISTANCE=20;
-    private int REMAIN_BUFFER_SIZE = 5;
+    private int MAX_DISTANCE = 20; //x*20ms buffer
+    private int REMAIN_BUFFER_SIZE = 4;
+    private int DELAY_TIME = 50;
     private int playerSeqNum;
     private int receiveSeqNum;
     //private ICrypto mCrypto;
@@ -43,6 +45,8 @@ public class AudioBufferControl {
         MAX_AUDIO_SEQNO = maxBufferSize;
         isFirstFeeding = true;
         mSemaphore= new Semaphore(1);
+        backupData.seqNo = BLANK_SEQNO;
+        //backupData.data = new byte[32];
     }
 
     public void pushData(AudioData data)  {
@@ -84,9 +88,9 @@ public class AudioBufferControl {
             //현재 seqnumber 재생
             outData = getDataBySeqNo(playerSeqNum);
             if(outData!=null) {
-                backupData.seqNo = outData.seqNo;
-                backupData.data = outData.data.clone();
-                // Log.e(LOG_TAG, "currSeq " + outData.seqNo);
+                //backupData.seqNo = outData.seqNo;
+                //backupData.data = outData.data.clone();
+                // Log.e(LOG_TAG, "currSeq " + outData.seqNo + "size : " + backupData.data.length);
             }
             else {
                 // 없는경우 마지막 data로 재생
@@ -247,8 +251,8 @@ public class AudioBufferControl {
             if (data.seqNo == targetNo) {
                 if(checkCnt>MAX_DISTANCE-REMAIN_BUFFER_SIZE) {
                     try {
-                        Thread.sleep(50);
-                        Log.i(LOG_TAG,"need Delay...");
+                        Thread.sleep(DELAY_TIME);
+                        Log.i(LOG_TAG,"need Delay..." + targetNo);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

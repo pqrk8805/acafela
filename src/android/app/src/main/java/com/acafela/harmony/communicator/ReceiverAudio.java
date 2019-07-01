@@ -247,6 +247,7 @@ public class ReceiverAudio implements DataCommunicator {
                         .build();
                 {
                     OutputTrack.play();
+                    byte []blank_data = new byte[RAW_BUFFER_SIZE];
                     while (AudioIoPlayerThreadRun)
                     {
                         //if(mAudioControl.size()>0) {
@@ -255,7 +256,10 @@ public class ReceiverAudio implements DataCommunicator {
                         //data.data = decodedBuf;
                         if(audioData!=null) {
                             byte[] decodedBuf;
-
+                            if(audioData.seqNo == BLANK_SEQNO){
+                                OutputTrack.write(blank_data, 0, RAW_BUFFER_SIZE);
+                                continue;
+                            }
                             try {
                                 decodeTimeCheck.timeCheckStart();
                                 decodedBuf = mAudioDecoder.handle(audioData.data);
