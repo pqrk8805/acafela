@@ -18,6 +18,7 @@ import static com.acafela.harmony.ui.TestCallActivity.INTENT_SIP_DATA_TIMEOUT;
 public class AudioBufferControl {
     private static final String LOG_TAG = "AudioBufferControl";
     private int MAX_DISTANCE=20;
+    private int REMAIN_BUFFER_SIZE = 5;
     private int playerSeqNum;
     private int receiveSeqNum;
     //private ICrypto mCrypto;
@@ -64,7 +65,7 @@ public class AudioBufferControl {
         try {
             mSemaphore.acquire();
             if (isFirstFeeding) {
-                if (mAudioDataQueue.size() == MAX_DISTANCE - 2) {
+                if (mAudioDataQueue.size() == MAX_DISTANCE - REMAIN_BUFFER_SIZE) {
                     //playerSeqNum = getFirstPacketNo();
                     playerSeqNum = getOldDataSeqNo(true);
                     isFirstFeeding = false;
@@ -244,9 +245,9 @@ public class AudioBufferControl {
             }
             checkCnt++;
             if (data.seqNo == targetNo) {
-                if(checkCnt>MAX_DISTANCE-5) {
+                if(checkCnt>MAX_DISTANCE-REMAIN_BUFFER_SIZE) {
                     try {
-                        Thread.sleep(150);
+                        Thread.sleep(50);
                         Log.i(LOG_TAG,"need Delay...");
                     } catch (InterruptedException e) {
                         e.printStackTrace();
