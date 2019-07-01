@@ -4008,7 +4008,7 @@
 													"top": 344,
 													"width": 125,
 													"height": 13,
-													"text": "Encoding",
+													"text": "Encoder",
 													"wordWrap": true
 												},
 												{
@@ -4431,7 +4431,7 @@
 													"top": 618,
 													"width": 125,
 													"height": 13,
-													"text": "Encoding",
+													"text": "Encoder",
 													"wordWrap": true
 												},
 												{
@@ -4674,7 +4674,7 @@
 													"top": 902,
 													"width": 125,
 													"height": 13,
-													"text": "Encoding",
+													"text": "Encoder",
 													"wordWrap": true
 												},
 												{
@@ -5049,7 +5049,7 @@
 													"top": 1139,
 													"width": 125,
 													"height": 13,
-													"text": "Decoding",
+													"text": "Decoder",
 													"wordWrap": true
 												},
 												{
@@ -5456,7 +5456,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFrXjABxyaXUWA="
 									},
-									"name": "Encoding",
+									"name": "Encoder",
 									"ownedElements": [
 										{
 											"_type": "DFDDataFlow",
@@ -5533,7 +5533,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFrXjABxyaXUWA="
 									},
-									"name": "Decoding",
+									"name": "Decoder",
 									"ownedElements": [
 										{
 											"_type": "DFDDataFlow",
@@ -7583,7 +7583,7 @@
 													"top": 296,
 													"width": 78.18994140625,
 													"height": 13,
-													"text": "Player",
+													"text": "Decoder",
 													"wordWrap": true
 												},
 												{
@@ -8260,7 +8260,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFrYLsHgGcOoFk="
 									},
-									"name": "Player"
+									"name": "Decoder"
 								}
 							]
 						}
