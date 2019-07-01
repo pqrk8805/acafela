@@ -49,6 +49,8 @@ int DirectoryService::update(
                                         info.enabled ? ipAddress : "");
     }
 #endif
+	if (phoneNumber.empty() || phoneNumber.compare("") == 0 || phoneNumber.compare("0000") == 0)
+		return 0;
 	UserInfo info = { "", phoneNumber, ipAddress, true };
 	mStorageAccessor.saveDSItem(info);
 	ParticipantDirectory().notify_update(
