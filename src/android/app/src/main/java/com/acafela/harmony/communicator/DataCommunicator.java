@@ -9,6 +9,7 @@ public interface DataCommunicator {
     int PACKET_SIZE= 48 + AUDIO_HEADER_SIZE;
     int PACKET_TOTAL_SIZE = PACKET_SIZE; //if it's want to add padding, set value over PACKET_SIZE
     int DUPLICATE_COUNT = 2;
+    int BLANK_SEQNO =11111;
 
     boolean setSession(String ip,int port);
     boolean startCommunicator();

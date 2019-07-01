@@ -48,9 +48,9 @@ public class VoipController {
     public static final int CONTROL_RECIEVE_PORT = 5001;
     private static final String LOG_TAG = "[AcafelaController]";
     private static final int BUFFER_SIZE = 128;
-    public static final int CONTROL_TIMEOUT = 2000;
-    public static final int RETRY_COUNT = 3; // RETRY_COUNT = 0 means No Retry.
-    public static final int CONTROLMSG_DUPLICATE_COUNT = 5; // CONTROLMSG_DUPLICATE_COUNT = 1 means not duplicated.
+    public static final int CONTROL_TIMEOUT = 500;
+    public static final int RETRY_COUNT = 10; // RETRY_COUNT = 0 means No Retry.
+    public static final int CONTROLMSG_DUPLICATE_COUNT = 1; // CONTROLMSG_DUPLICATE_COUNT = 1 means not duplicated.
     private boolean UdpListenerThreadRun = false;
     private DatagramSocket socket;
     private  InetAddress mIpAddress;
