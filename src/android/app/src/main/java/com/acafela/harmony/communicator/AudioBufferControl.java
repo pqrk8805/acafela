@@ -34,7 +34,7 @@ public class AudioBufferControl {
     private int  monitorCont = 0;
     private int  PERIOD_LOSS_CHECK_TIME = 50*10;
 
-    private int  MAX_LOSS_NUM = PERIOD_LOSS_CHECK_TIME* 50 /100;
+    private int  MAX_LOSS_NUM = PERIOD_LOSS_CHECK_TIME* 60 /100;
 
 
     AudioBufferControl(Context context,int maxBufferSize)
