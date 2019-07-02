@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -32,6 +33,7 @@ import com.acafela.harmony.crypto.CryptoBroker;
 import com.acafela.harmony.ui.AudioCallActivity;
 import com.acafela.harmony.ui.VideoCallActivity;
 import com.acafela.harmony.userprofile.UserInfo;
+import com.acafela.harmony.util.AudioPathSelector;
 import com.acafela.harmony.util.ConfigSetup;
 import com.acafela.harmony.util.ControlMessageTestor;
 
@@ -91,10 +93,10 @@ public class VoipController {
         mContext = context;
         mRingControl= new RingController(mContext);
         mCryptoRpc = new CryptoKeyRpc(
-                        ConfigSetup.getInstance().getServerIP(mContext),
-                        Config.RPC_PORT_CRYPTO_KEY,
-                        context.getResources().openRawResource(R.raw.ca),
-                        context.getResources().openRawResource(R.raw.server));
+                ConfigSetup.getInstance().getServerIP(mContext),
+                Config.RPC_PORT_CRYPTO_KEY,
+                context.getResources().openRawResource(R.raw.ca),
+                context.getResources().openRawResource(R.raw.server));
         try {
             this.mIpAddress = InetAddress.getByName(ConfigSetup.getInstance().getServerIP(mContext));
         } catch (Exception e) {
@@ -225,6 +227,14 @@ public class VoipController {
             switch (message.getCmd()) {
                 case INVITE:
                     if(mState==STATE.IDLE_STATE) {
+
+                        AudioPathSelector.getInstance().setAudioManager(mContext);
+                        if (AudioPathSelector.getInstance().isBluetoothConnected()) {
+                            AudioPathSelector.getInstance().setBluetoothAudio();
+                        }
+                        else {
+                            AudioPathSelector.getInstance().setEarPieceAudio();
+                        }
                         mRingControl.ring_start();
                         sendMessage(SipMessage.Command.RINGING);
                         if (message.getIsVideoCall()) {
@@ -342,7 +352,7 @@ public class VoipController {
             session.endCommunicator();
         mSessionList.clear();
     }
-//////////////////////////////////////////////
+    //////////////////////////////////////////////
     private void UdpSend( final byte[] buffer) {
         Thread replyThread = new Thread(new Runnable() {
             @Override
