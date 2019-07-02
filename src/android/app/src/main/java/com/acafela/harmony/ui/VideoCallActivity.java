@@ -90,6 +90,17 @@ public class VideoCallActivity extends CameraSenderActivity
         preview.addView(mGLView);
 
         initUi();
+
+
+        AudioPathSelector.getInstance().setAudioManager(this);
+        if (AudioPathSelector.getInstance().isBluetoothConnected()) {
+            AudioPathSelector.getInstance().setBluetoothAudio();
+            ((ToggleButton) findViewById(R.id.toggle_speaker)).setChecked(false);
+            ((ToggleButton) findViewById(R.id.toggle_bluetooth)).setChecked(true);
+        }
+        else {
+            AudioPathSelector.getInstance().setEarPieceAudio();
+        }
         Log.d(TAG, "onCreate complete");
     }
 
@@ -241,16 +252,6 @@ public class VideoCallActivity extends CameraSenderActivity
             findViewById(R.id.button_container).setVisibility(View.VISIBLE);
             findViewById(R.id.button_container_callee).setVisibility(View.GONE);
         }
-
-//        AudioPathSelector.getInstance().setAudioManager(this);
-//        AudioPathSelector.getInstance().setSpeakerAudio();
-//        ToggleButton speakerToggleBtn = findViewById(R.id.toggle_speaker);
-//        speakerToggleBtn.setChecked(true);
-
-        AudioPathSelector.getInstance().setAudioManager(this);
-        AudioPathSelector.getInstance().setEarPieceAudio();
-        ToggleButton speakerToggleBtn = findViewById(R.id.toggle_speaker);
-        speakerToggleBtn.setChecked(false);
     }
 
 

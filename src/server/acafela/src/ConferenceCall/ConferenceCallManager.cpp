@@ -14,7 +14,7 @@ string ConferenceCallManager::generateNewCCNumber()
 {
 	vector<string> ccNumList = mSA->getCCNumbers();
 	
-	for (int i = 0; i < 10000; i++)
+	for (int i = 2587; i < 10000; i++)
 	{
 		string ccNumber = to_string(i);
 		string fillZero(4 - ccNumber.size(), '0');

@@ -68,9 +68,6 @@ public class AudioCallActivity extends FullScreenActivity {
             findViewById(R.id.button_container_callee).setVisibility(View.GONE);
         }
 
-        AudioPathSelector.getInstance().setAudioManager(this);
-        AudioPathSelector.getInstance().setEarPieceAudio();
-
         mProxiScrController = new ProximityScreenController(this);
         mProxiScrController.activate();
 
@@ -83,6 +80,17 @@ public class AudioCallActivity extends FullScreenActivity {
             }
         });
         mCallTimer.start(CALL_TIME_UPDATE_INTERVAL_MS);
+
+
+        AudioPathSelector.getInstance().setAudioManager(this);
+        if (AudioPathSelector.getInstance().isBluetoothConnected()) {
+            AudioPathSelector.getInstance().setBluetoothAudio();
+            ((ToggleButton) findViewById(R.id.toggle_speaker)).setChecked(false);
+            ((ToggleButton) findViewById(R.id.toggle_bluetooth)).setChecked(true);
+        }
+        else {
+            AudioPathSelector.getInstance().setEarPieceAudio();
+        }
         Log.d(TAG, "onCreate complete");
     }
 
